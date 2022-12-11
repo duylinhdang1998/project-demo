@@ -1,0 +1,19 @@
+{
+  "name": "Name",
+  "mobile": "Mobile",
+  "email": "Email",
+  "total_order": "Total order",
+  "details": "Passenger details",
+  "account_created": "Account created on",
+  "lastName": "Lastname",
+  "firstName": "Firstname",
+  "country": "Country",
+  "trip": "Trip",
+  "date": "Date",
+  "order_total": "Order total",
+  "edit": "Edit passenger",
+  "block": "Block passenger",
+  "block_message": "Are you sure, you want to block this passenger?",
+  "passenger": "Passenger",
+  "passengers": "Passengers"
+}

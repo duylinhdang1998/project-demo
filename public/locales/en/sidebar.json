@@ -1,0 +1,13 @@
+{
+  "dashboard": "Dashboard",
+  "ticket_sale": "Ticket sales",
+  "package_sale": "Package sales",
+  "service_settings": "Services settings",
+  "routers": "Routers",
+  "pacakage_settings": "Package settings",
+  "vehicles": "Vehicles",
+  "staff": "Staff",
+  "passengers": "Passengers",
+  "destinations": "Destinations",
+  "reporting": "Reportings"
+}

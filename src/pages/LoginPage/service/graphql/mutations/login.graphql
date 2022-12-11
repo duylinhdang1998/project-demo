@@ -1,0 +1,5 @@
+mutation loginMutation($username: String!, $password: String!, $domain: String, $prefixDomain: String) {
+  login(loginInput: { username: $username, password: $password, domain: $domain, prefixDomain: $prefixDomain }) {
+    ...JWTFields
+  }
+}

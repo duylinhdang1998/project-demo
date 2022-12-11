@@ -1,0 +1,30 @@
+.tbus-table {
+  overflow: hidden;
+  width: 100%;
+  .ant-table-cell {
+    background-color: #fff !important;
+    &::before {
+      display: none;
+    }
+  }
+  .ant-pagination {
+    .ant-pagination-prev,
+    .ant-pagination-next {
+      background-color: #fff;
+      border-radius: 4px !important;
+      border: none !important;
+    }
+    .ant-pagination-item {
+      background-color: #fff !important;
+      border-radius: 4px !important;
+      border: none !important;
+      &-active {
+        background-color: #1aa6ee !important;
+        border-color: transparent;
+        a {
+          color: #fff !important;
+        }
+      }
+    }
+  }
+}

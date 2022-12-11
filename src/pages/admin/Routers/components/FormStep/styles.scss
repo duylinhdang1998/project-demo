@@ -1,0 +1,8 @@
+.custom-big-calendar {
+  .cell_wrapper + .cell_wrapper {
+    border-left: 1px solid #ddd;
+  }
+  .cell_wrapper:hover .rbc-row-content {
+    color: #fff !important;
+  }
+}

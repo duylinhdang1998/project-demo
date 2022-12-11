@@ -1,0 +1,10 @@
+import { makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material';
+export const useToastStyle = makeStyles((theme: Theme) => ({
+  toastSuccess: {
+    backgroundColor: theme.palette.success.light,
+  },
+  toastError: {
+    backgroundColor: theme.palette.error.main,
+  },
+}));

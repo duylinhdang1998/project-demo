@@ -1,0 +1,21 @@
+html,
+body {
+  font-family: 'Google sans sans-serif';
+  height: 100%;
+}
+
+.Toastify__close-button {
+  align-self: center !important;
+  color: #fff !important;
+}
+
+a,
+li {
+  text-decoration: none !important;
+}
+
+input[name='rfs-q'] {
+  border: 1px solid #d7d7d7d7;
+  border-radius: 4px;
+  font-size: 14px;
+}

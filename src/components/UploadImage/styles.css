@@ -1,0 +1,17 @@
+.upload-wrapper .picture-uploader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e8f6fd;
+  border: 1px dashed #1aa6ee;
+  width: 100%;
+  height: 170px;
+}
+
+.upload-wrapper .hidden {
+  display: none !important;
+}
+
+.upload-wrapper .ant-image {
+  width: 100%;
+}

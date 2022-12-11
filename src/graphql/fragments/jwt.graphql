@@ -1,0 +1,19 @@
+fragment JWTFields on JWT {
+  token
+  refreshToken
+  expiresAt
+  jwtPayload {
+    _id
+    user {
+      _id
+      createdAt
+      fullName
+      phoneNumber
+      updatedAt
+      username
+      type
+    }
+  }
+  tokenType
+  refreshTokenExpiresAt
+}

@@ -1,0 +1,12 @@
+query me {
+  me {
+    _id
+    createdAt
+    fullName
+    phoneNumber
+    updatedAt
+    username
+    type
+    address
+  }
+}

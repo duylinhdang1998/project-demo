@@ -1,0 +1,23 @@
+{
+  "vehicles": "Vehicles",
+  "vehicle": "Vehicle",
+  "registration_id": "Registration ID",
+  "route_id": "Route ID",
+  "eco_seats": "ECO seats",
+  "vip_seats": "VIP seats",
+  "brand": "Brand",
+  "model": "Model",
+  "services": "Services",
+  "merchandises": "Merchandises",
+  "attach_photo": "Attach a photo of the vehicle",
+  "date": "Date",
+  "descriptions": "Descriptions",
+  "driver_name": "Driver name",
+  "kilometers": "Kilometers",
+  "fuel_fees": "Fuel fees",
+  "extra_fees": "Extra fees",
+  "reminder_date": "Reminder date",
+  "total_kilometer": "Total kilometers",
+  "attach_document": "Attach a document",
+  "event_lists": "Event list"
+}
