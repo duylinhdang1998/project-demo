@@ -1,5 +1,5 @@
-import { RouteObject } from 'react-router-dom';
+import { RouteObject } from "react-router-dom";
 
-export interface Page extends RouteObject {
+export type Page = RouteObject & {
   roles?: string[];
-}
+};
