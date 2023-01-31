@@ -1,41 +1,42 @@
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { Box, Typography } from '@mui/material';
-import { ColumnsType } from 'antd/lib/table';
-import { MapPinIcon, StopCircleSvg } from 'assets';
-import ActionTable from 'components/ActionTable/ActionTable';
-import AntTable from 'components/AntTable/AntTable';
-import DeleteIcon from 'components/SvgIcon/DeleteIcon';
-import EditIcon from 'components/SvgIcon/EditIcon';
-import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import { RoutePrograms } from 'models/RoutePrograms';
-import useAuthStore from 'pages/LoginPage/store/auth';
-import React, { memo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
-import ToolTipAddress from './ToolTipAddress';
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { Box, Typography } from "@mui/material";
+import { ColumnsType } from "antd/lib/table";
+import { MapPinIcon, StopCircleSvg } from "assets";
+import ActionTable from "components/ActionTable/ActionTable";
+import AntTable from "components/AntTable/AntTable";
+import DeleteIcon from "components/SvgIcon/DeleteIcon";
+import EditIcon from "components/SvgIcon/EditIcon";
+import TextWithIcon from "components/TextWithIcon/TextWithIcon";
+import { useAppSelector } from "hooks/useAppSelector";
+import { RoutePrograms } from "models/RoutePrograms";
+import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { selectAuth } from "store/auth/selectors";
+import { v4 as uuid } from "uuid";
+import ToolTipAddress from "./ToolTipAddress";
 
 const dataSource: RoutePrograms[] = [];
 
 for (let i = 0; i < 6; i++) {
   dataSource.push({
     id: i.toString(),
-    route: ['Lyon Gare Perrache', '5 address', 'Lyon Gare Perrache'],
-    departure_time: '02/27/2022 - 10H30',
-    arrival_time: '02/27/2022 - 14H30',
-    vehicle: 'Mercedes',
+    route: ["Lyon Gare Perrache", "5 address", "Lyon Gare Perrache"],
+    departure_time: "02/27/2022 - 10H30",
+    arrival_time: "02/27/2022 - 14H30",
+    vehicle: "Mercedes",
     vip_seats: i + 1,
     eco_seats: i + 1,
   });
 }
 
 function TableRoutes() {
-  const { t } = useTranslation(['dashboard', 'translation']);
+  const { t } = useTranslation(["dashboard", "translation"]);
   const navigate = useNavigate();
-  const { userInfo } = useAuthStore();
+  const { userInfo } = useAppSelector(selectAuth);
 
   const handleEdit = (row: RoutePrograms) => {
-    navigate('/admin/routers/edit/' + row.id, {
+    navigate("/admin/routers/edit/" + row.id, {
       state: {
         router: row,
         isMulti: true,
@@ -45,68 +46,96 @@ function TableRoutes() {
 
   const handleDelete = () => {};
   const actions = [
-    { id: uuid(), label: 'edit', icon: <EditIcon />, onClick: handleEdit },
+    { id: uuid(), label: "edit", icon: <EditIcon />, onClick: handleEdit },
     {
       id: uuid(),
-      label: 'copy',
+      label: "copy",
       icon: (
         <ContentCopyIcon
           sx={{
-            color: '#858C93',
-            fontSize: '20px',
+            color: "#858C93",
+            fontSize: "20px",
           }}
         />
       ),
       onClick: handleEdit,
     },
-    { id: uuid(), label: 'delete', icon: <DeleteIcon />, onClick: handleDelete, color: '#FF2727' },
+    {
+      id: uuid(),
+      label: "delete",
+      icon: <DeleteIcon />,
+      onClick: handleDelete,
+      color: "#FF2727",
+    },
   ];
 
   const columns: ColumnsType<RoutePrograms> = [
     {
-      key: 'id',
-      dataIndex: 'id',
-      title: () => <Typography variant="headerTable">{t('id')}</Typography>,
+      key: "id",
+      dataIndex: "id",
+      title: () => <Typography variant="headerTable">{t("id")}</Typography>,
       sorter: true,
-      render: (value: string) => <Typography variant="body2">{value}</Typography>,
+      render: (value: string) => (
+        <Typography variant="body2">{value}</Typography>
+      ),
       width: 100,
-      align: 'center',
+      align: "center",
     },
     {
-      key: 'route',
-      dataIndex: 'route',
-      title: () => <Typography variant="headerTable">{t('route')}</Typography>,
+      key: "route",
+      dataIndex: "route",
+      title: () => <Typography variant="headerTable">{t("route")}</Typography>,
       sorter: true,
       render: (value: string[]) => {
         return value.map((v, index) =>
           index !== 1 ? (
-            <TextWithIcon key={index.toString()} text={v} icon={MapPinIcon} color="#2D9AFF" />
+            <TextWithIcon
+              key={index.toString()}
+              text={v}
+              icon={MapPinIcon}
+              color="#2D9AFF"
+            />
           ) : (
             <ToolTipAddress>
-              <TextWithIcon text={v} key={index.toString()} icon={StopCircleSvg} color="#33CC7F" />
+              <TextWithIcon
+                text={v}
+                key={index.toString()}
+                icon={StopCircleSvg}
+                color="#33CC7F"
+              />
             </ToolTipAddress>
-          ),
+          )
         );
       },
     },
     {
-      key: 'departure_time',
-      dataIndex: 'departure_time',
-      title: () => <Typography variant="headerTable">{t('departure_time')}</Typography>,
+      key: "departure_time",
+      dataIndex: "departure_time",
+      title: () => (
+        <Typography variant="headerTable">{t("departure_time")}</Typography>
+      ),
       sorter: true,
-      render: (value: string) => <Typography variant="body2">{value}</Typography>,
+      render: (value: string) => (
+        <Typography variant="body2">{value}</Typography>
+      ),
     },
     {
-      key: 'arrival_time',
-      dataIndex: 'arrival_time',
-      title: () => <Typography variant="headerTable">{t('arrival_time')}</Typography>,
+      key: "arrival_time",
+      dataIndex: "arrival_time",
+      title: () => (
+        <Typography variant="headerTable">{t("arrival_time")}</Typography>
+      ),
       sorter: true,
-      render: (value: string) => <Typography variant="body2">{value}</Typography>,
+      render: (value: string) => (
+        <Typography variant="body2">{value}</Typography>
+      ),
     },
     {
-      key: 'vehicle',
-      dataIndex: 'vehicle',
-      title: () => <Typography variant="headerTable">{t('vehicles')}</Typography>,
+      key: "vehicle",
+      dataIndex: "vehicle",
+      title: () => (
+        <Typography variant="headerTable">{t("vehicles")}</Typography>
+      ),
       sorter: true,
       render: (value: string) => (
         <Box>
@@ -114,38 +143,51 @@ function TableRoutes() {
           <Typography variant="body2">DX728AM</Typography>
         </Box>
       ),
-      align: 'center',
+      align: "center",
       width: 120,
     },
     {
-      key: 'vip_seats',
-      dataIndex: 'vip_seats',
-      title: () => <Typography variant="headerTable">{t('vip_seats')}</Typography>,
-      render: (value: number) => <Typography variant="body2">{value}</Typography>,
-      width: 120,
-      align: 'center',
-    },
-    {
-      key: 'eco_seats',
-      dataIndex: 'eco_seats',
-      title: () => <Typography variant="headerTable">{t('eco_seats')}</Typography>,
+      key: "vip_seats",
+      dataIndex: "vip_seats",
+      title: () => (
+        <Typography variant="headerTable">{t("vip_seats")}</Typography>
+      ),
       render: (value: number) => (
-        <Typography variant="body2" color={value === 12 ? '#FF2727' : 'inherit'}>
-          {value === 12 ? 'Full' : value}
+        <Typography variant="body2">{value}</Typography>
+      ),
+      width: 120,
+      align: "center",
+    },
+    {
+      key: "eco_seats",
+      dataIndex: "eco_seats",
+      title: () => (
+        <Typography variant="headerTable">{t("eco_seats")}</Typography>
+      ),
+      render: (value: number) => (
+        <Typography
+          variant="body2"
+          color={value === 12 ? "#FF2727" : "inherit"}
+        >
+          {value === 12 ? "Full" : value}
         </Typography>
       ),
       width: 120,
-      align: 'center',
+      align: "center",
     },
     {
-      title: () => t('translation:action'),
+      title: () => t("translation:action"),
       render: (_, row) => <ActionTable actions={actions} row={row} />,
       width: 80,
     },
   ];
   return (
     <Box my="24px">
-      <AntTable columns={userInfo?.role === 'admin' ? columns : columns.slice(0, -1)} dataSource={dataSource} rowKey={(r) => r.id} />
+      <AntTable
+        columns={userInfo?.role === "admin" ? columns : columns.slice(0, -1)}
+        dataSource={dataSource}
+        rowKey={(r) => r.id}
+      />
     </Box>
   );
 }

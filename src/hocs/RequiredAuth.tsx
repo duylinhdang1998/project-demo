@@ -1,10 +1,10 @@
-import useAuthStore from 'pages/LoginPage/store/auth';
-import React, { useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useAppSelector } from "hooks/useAppSelector";
+import React, { useEffect } from "react";
+import { Navigate } from "react-router-dom";
+import { selectAuth } from "store/auth/selectors";
 
 export default function RequiredAuth({ children }) {
-  const { token, userInfo } = useAuthStore();
-  const location = useLocation();
+  const { token, userInfo } = useAppSelector(selectAuth);
 
   useEffect(() => {
     console.log({ userInfo, token });
