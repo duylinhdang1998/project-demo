@@ -5,7 +5,7 @@ import { AccountRoutes } from "./account-routes";
 import { AdminRoutes } from "./admin-routes";
 import { AgentRoutes } from "./agent-routes";
 
-export const getRoutes = (role: string) => {
+export const getRoutes = () => {
   return [
     {
       path: "/",
