@@ -8,7 +8,7 @@ import { useAppDispatch } from "hooks/useAppDispatch";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { authActions } from "store/auth/selectors";
+import { authActions } from "store/auth/authSlice";
 import { accountSettings } from "./accountSettings";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -84,8 +84,7 @@ function AccountDropdown({ avatar, role, fullname }: AccountDropdownProps) {
 
   const handleItem = (i: any) => () => {
     if (i.name === "logout") {
-      dispatch(authActions.logout);
-      navigate("/auth/login", { replace: true });
+      dispatch(authActions.logout({}));
       return;
     }
     return navigate("/account" + i.path);

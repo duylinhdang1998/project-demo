@@ -1,7 +1,7 @@
 import { UserInfo } from "models/UserInfo";
 
 export interface LoginRequest {
-  username: string;
+  email: string;
   password: string;
 }
 

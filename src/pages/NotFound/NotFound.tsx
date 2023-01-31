@@ -1,18 +1,17 @@
 import { Box } from "@mui/material";
 import Button from "components/Button/Button";
-import { useAppSelector } from "hooks/useAppSelector";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { selectAuth } from "store/auth/selectors";
 import "./style.css";
 
 export default function NotFound() {
   const { t } = useTranslation();
-  const { userInfo } = useAppSelector(selectAuth);
   const navigate = useNavigate();
+
   const handleBack = () => {
-    navigate(userInfo?.role === "admin" ? "/admin" : "/agent");
+    navigate("/");
   };
+
   return (
     <Box
       display="flex"

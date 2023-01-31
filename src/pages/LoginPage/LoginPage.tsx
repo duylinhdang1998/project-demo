@@ -37,25 +37,20 @@ function LoginPage() {
     mode: "all",
   });
   const handleNavigate = () => {
-    navigate("/auth/sign-up");
+    navigate("/sign-up");
   };
 
   const onSubmit = (values: Values) => {
-    console.log({ values });
     dispatch(
       authActions.loginRequest({
         password: values.password,
-        username: values.email,
+        email: values.email,
       })
     );
-    // console.log({ aaa: userInfo });
-    navigate(values.email.includes("admin") ? "/admin" : "/agent", {
-      replace: true,
-    });
   };
 
   const handleForgotPage = () => {
-    navigate("/auth/forgot-password");
+    navigate("/forgot-password");
   };
 
   return (

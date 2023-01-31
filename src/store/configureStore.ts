@@ -12,7 +12,7 @@ const isDev = process.env.NODE_ENV === "development";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["nightMode"],
+  whitelist: ["auth"],
 };
 
 const sagaMiddleware = createSagaMiddleware();

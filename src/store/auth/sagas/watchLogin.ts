@@ -5,9 +5,14 @@ function* handleLogin({
   payload,
 }: ReturnType<typeof authActions.loginRequest>) {
   try {
-    const { password, username } = payload;
-    console.log(username, password);
-    yield put(authActions.loginSuccess({ role: "admin", token: "" }));
+    const { password, email } = payload;
+    console.log(email, password);
+    yield put(
+      authActions.loginSuccess({
+        role: email.includes("admin") ? "admin" : "agent",
+        token: "TOKEN",
+      })
+    );
   } catch {
     yield put(authActions.loginFailure({}));
   }

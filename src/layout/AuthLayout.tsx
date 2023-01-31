@@ -2,7 +2,9 @@ import { Box, Grid, Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import logoTbus from "assets/images/logo-tbus.png";
 import ChangeLanguage from "components/ChangeLanguage/ChangeLanguage";
-import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { selectAuth } from "store/auth/selectors";
 
 export const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -31,6 +33,16 @@ export const useStyles = makeStyles((theme: Theme) => {
 
 export default function AuthLayout() {
   const classes = useStyles();
+  const { isLoggedIn, userInfo } = useSelector(selectAuth);
+  const location = useLocation();
+
+  if (isLoggedIn && userInfo) {
+    return <Navigate to={userInfo.role === "admin" ? "/admin" : "/agent"} />;
+  }
+
+  if (location.pathname === "/") {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <Box height="100vh">

@@ -1,180 +1,180 @@
-import RequiredAuth from 'hocs/RequiredAuth';
-import * as Page from 'pages';
-import { RouteObject } from 'react-router-dom';
+import RequiredAuth from "hocs/RequiredAuth";
+import * as Page from "pages";
+import { RouteObject } from "react-router-dom";
 
 export const AdminRoutes: RouteObject[] = [
   {
     index: true,
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.Dashboard />
       </RequiredAuth>
     ),
   },
   {
-    path: 'ticket-sales',
+    path: "ticket-sales",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.TicketSales />
       </RequiredAuth>
     ),
   },
   {
-    path: 'ticket-sales/:id',
+    path: "ticket-sales/:id",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.DetailTicketPage />
       </RequiredAuth>
     ),
   },
   {
-    path: 'package-sales',
+    path: "package-sales",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.PackageSales />
       </RequiredAuth>
     ),
   },
   {
-    path: 'services-settings',
+    path: "services-settings",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.ServicesSettings />
       </RequiredAuth>
     ),
   },
   {
-    path: 'add-service',
+    path: "add-service",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.AddService />
       </RequiredAuth>
     ),
   },
   {
-    path: 'package-settings',
+    path: "package-settings",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.PackageSettings />
       </RequiredAuth>
     ),
   },
   {
-    path: 'add-package-settings',
+    path: "add-package-settings",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.AddPacakageSettings />
       </RequiredAuth>
     ),
   },
   {
-    path: 'vehicles',
+    path: "vehicles",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.Vehicles />
       </RequiredAuth>
     ),
   },
   {
-    path: 'add-new-vehicles',
+    path: "add-new-vehicles",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.AddNewVehicles />
       </RequiredAuth>
     ),
   },
   {
-    path: 'add-new-event',
+    path: "add-new-event",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.AddNewEvent />
       </RequiredAuth>
     ),
   },
   {
-    path: 'list-events',
+    path: "list-events",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.ListEvents />
       </RequiredAuth>
     ),
   },
   {
-    path: 'staff',
+    path: "staff",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.Staff />
       </RequiredAuth>
     ),
   },
   {
-    path: 'add-new-staff',
+    path: "add-new-staff",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.AddStaff />
       </RequiredAuth>
     ),
   },
   {
-    path: 'passengers',
+    path: "passengers",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.Passengers />
       </RequiredAuth>
     ),
   },
   {
-    path: 'passengers/:id',
+    path: "passengers/:id",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.PassengerDetail />
       </RequiredAuth>
     ),
   },
   {
-    path: 'destinations',
+    path: "destinations",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.Destinations />
       </RequiredAuth>
     ),
   },
   {
-    path: 'add-new-destinations',
+    path: "add-new-destinations",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.AddNewDestinations />
       </RequiredAuth>
     ),
   },
   {
-    path: '/admin/routers',
+    path: "/admin/routers",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.Routers />
       </RequiredAuth>
     ),
   },
   {
-    path: '/admin/routers/create-oneway',
+    path: "/admin/routers/create-oneway",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.CreateOneWay />
       </RequiredAuth>
     ),
   },
   {
-    path: '/admin/routers/create-multi',
+    path: "/admin/routers/create-multi",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.CreateMultiStopWay />
       </RequiredAuth>
     ),
   },
   {
-    path: '/admin/routers/edit/:id',
+    path: "/admin/routers/edit/:id",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="admin">
         <Page.EditRouter />
       </RequiredAuth>
     ),
