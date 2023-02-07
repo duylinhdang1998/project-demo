@@ -1,11 +1,14 @@
+import env from "env";
 import qs from "qs";
 import { RootState } from "store/configureStore";
 import ConfigureAxios from "./fetchApi";
 
+console.log(env);
+
 const axiosConfig = new ConfigureAxios({
   configure: {
     method: "GET",
-    baseURL: "http://18.142.145.111:12598",
+    baseURL: env.apiEndPoint,
     timeout: 10000,
     paramsSerializer: qs.stringify,
   },

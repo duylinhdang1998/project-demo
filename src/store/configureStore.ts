@@ -6,8 +6,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import rootSaga from "store/rootSagas";
 import rootReducers from "store/rootReducers";
 import { configureStore } from "@reduxjs/toolkit";
-
-const isDev = process.env.NODE_ENV === "development";
+import env from "env";
 
 const persistConfig = {
   key: "root",
@@ -23,7 +22,7 @@ const reducers = persistReducer(
   })
 );
 const middlewares: Middleware[] = [sagaMiddleware];
-if (isDev) {
+if (env.isDevMode) {
   middlewares.push(logger);
 }
 
@@ -40,8 +39,6 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export { store, persistor };
-export function getActionType<TAction>(
-  reduxAction: (...payload: any) => { type: TAction }
-): TAction {
+export function getActionType<TAction>(reduxAction: (...payload: any) => { type: TAction }): TAction {
   return reduxAction().type;
 }
