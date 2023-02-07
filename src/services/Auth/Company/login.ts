@@ -7,6 +7,7 @@ interface Login {
   password: string;
 }
 
+type Role = "COMPANY_ADMIN" | "COMPANY_AGENT" | "COMPANY_DRIVER" | "PASSENGER";
 interface ResponseSuccess {
   code: number;
   data: {
@@ -14,7 +15,7 @@ interface ResponseSuccess {
       _id: string;
       companyCode: string;
       email: string;
-      role: string; // FIXME: ENUM chưa có
+      role: Role;
       status: string; // FIXME: ENUM chưa có
       createdAt: string;
       updatedAt: string;
@@ -34,6 +35,7 @@ interface ResponseFailure {
   message: "An error occurred";
 }
 
+const ACCEPT_ROLES: Role[] = ["COMPANY_ADMIN", "COMPANY_AGENT"];
 export const login = async (_: Login): Promise<ResponseSuccess> => {
   const response: AxiosResponse<ResponseSuccess | ResponseFailure> = await fetchAPI.request({
     method: "POST",
@@ -44,7 +46,7 @@ export const login = async (_: Login): Promise<ResponseSuccess> => {
     },
   });
 
-  if (response.data.code === 0) {
+  if (response.data.code === 0 && ACCEPT_ROLES.includes(response.data.data.rbacCompany.role)) {
     return response.data as ResponseSuccess;
   }
   const response_ = response as AxiosResponse<ResponseFailure>;
