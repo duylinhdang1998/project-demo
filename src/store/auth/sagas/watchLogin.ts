@@ -1,20 +1,26 @@
-import { put, takeLatest } from "redux-saga/effects";
+import { put, retry, SagaReturnType, takeLatest } from "redux-saga/effects";
+import { login } from "services/Auth/Company/login";
 import { getActionType } from "store/configureStore";
 import { authActions } from "../authSlice";
-function* handleLogin({
-  payload,
-}: ReturnType<typeof authActions.loginRequest>) {
+function* handleLogin({ payload }: ReturnType<typeof authActions.loginRequest>) {
+  const { password, email, onFailure, onSuccess } = payload;
   try {
-    const { password, email } = payload;
-    console.log(email, password);
+    const { data }: SagaReturnType<typeof login> = yield retry(3, 1000, login, {
+      email,
+      password,
+    });
     yield put(
       authActions.loginSuccess({
-        role: email.includes("admin") ? "admin" : "agent",
-        token: "TOKEN",
+        // FIXME: ENUM chưa có
+        role: data.rbacCompany.role === "COMPANY_ADMIN" ? "admin" : "agent",
+        token: `${data.payload.type} ${data.payload.accessToken}`,
       })
     );
-  } catch {
+    onSuccess();
+  } catch (error) {
+    console.log("watchLogin.ts", error);
     yield put(authActions.loginFailure({}));
+    onFailure();
   }
 }
 

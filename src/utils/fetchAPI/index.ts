@@ -1,18 +1,18 @@
-import qs from 'qs';
-import ConfigureAxios from './fetchApi';
+import qs from "qs";
+import ConfigureAxios from "./fetchApi";
 
 const axiosConfig = new ConfigureAxios({
   configure: {
-    method: 'GET',
-    baseURL: process.env.REACT_APP_ENDPOINT_URL,
+    method: "GET",
+    baseURL: "http://18.142.145.111:12598",
     timeout: 10000,
     paramsSerializer: qs.stringify,
   },
   setAccessToken() {
-    return '';
+    return "";
   },
   setRefreshToken() {
-    return '';
+    return "";
   },
 });
 

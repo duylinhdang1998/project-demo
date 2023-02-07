@@ -4,12 +4,14 @@ import { LoginFailure, LoginRequest, LoginSuccess } from "./actions/Login";
 import { Logout } from "./actions/Logout";
 
 interface AuthState {
+  statusLogin: Status;
   token: string;
   isLoggedIn: boolean;
   userInfo?: UserInfo;
 }
 
 const initialState: AuthState = {
+  statusLogin: "idle",
   token: "",
   isLoggedIn: false,
   userInfo: {},
@@ -20,7 +22,10 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginRequest: (state, _action: PayloadAction<LoginRequest>) => {
-      return state;
+      return {
+        ...state,
+        statusLogin: "loading",
+      };
     },
     loginSuccess: (state, action: PayloadAction<LoginSuccess>) => {
       const { role, token } = action.payload;
@@ -29,10 +34,14 @@ const authSlice = createSlice({
         isLoggedIn: true,
         token,
         userInfo: { role },
+        statusLogin: "success",
       };
     },
     loginFailure: (state, _action: PayloadAction<LoginFailure>) => {
-      return state;
+      return {
+        ...state,
+        statusLogin: "failure",
+      };
     },
     logout: (_state, _action: PayloadAction<Logout>) => {
       return initialState;

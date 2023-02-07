@@ -1,4 +1,9 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+} from "axios";
 
 interface Configure {
   configure: AxiosRequestConfig;
@@ -6,7 +11,10 @@ interface Configure {
   setRefreshToken: () => string;
 }
 
-type Success<ResponseDataT> = (res: AxiosResponse<ResponseDataT>, originalRequest: AxiosRequestConfig) => void;
+type Success<ResponseDataT> = (
+  res: AxiosResponse<ResponseDataT>,
+  originalRequest: AxiosRequestConfig
+) => void;
 
 type Failure = (error: AxiosError) => void;
 
@@ -29,13 +37,17 @@ export default class ConfigureAxios {
   private setAccessToken: () => string;
   private setRefreshToken: () => string;
 
-  public constructor({ configure, setAccessToken, setRefreshToken }: Configure) {
+  public constructor({
+    configure,
+    setAccessToken,
+    setRefreshToken,
+  }: Configure) {
     this.setAccessToken = setAccessToken;
     this.setRefreshToken = setRefreshToken;
     this.axiosInstance = axios.create(configure);
   }
 
-  public create = (cancel = '') => {
+  public create = (cancel = "") => {
     return {
       request: (requestConfig: AxiosRequestConfig) => {
         const source = CancelToken.source();
@@ -61,19 +73,25 @@ export default class ConfigureAxios {
       if (setCondition(config) && !config?.headers?.Authorization) {
         if (!!accessToken) {
           //@ts-ignore
-          config.headers.Authorization = `Bearer ${accessToken}`;
+          config.headers.Authorization = accessToken;
         }
       }
       return config;
     });
   };
 
-  private handleRefreshTokenAsync = async <ResponseDataT, AxiosDataReturnT>(config: Config<ResponseDataT, AxiosDataReturnT>, error: AxiosError) => {
+  private handleRefreshTokenAsync = async <ResponseDataT, AxiosDataReturnT>(
+    config: Config<ResponseDataT, AxiosDataReturnT>,
+    error: AxiosError
+  ) => {
     const { url, axiosData, success, failure } = config;
     try {
       const refreshToken = this.setRefreshToken();
       const accessToken = this.setAccessToken();
-      const res = await this.axiosInstance.post(url, axiosData(refreshToken, accessToken));
+      const res = await this.axiosInstance.post(
+        url,
+        axiosData(refreshToken, accessToken)
+      );
       success(res, error.config);
       return await this.axiosInstance.request(error.config);
     } catch (err) {
@@ -85,12 +103,15 @@ export default class ConfigureAxios {
   };
 
   public refreshToken = (config: any) => {
-    const interceptor = this.axiosInstance.interceptors.response.use(undefined, (error: AxiosError) => {
-      if (!config.setRefreshCondition(error)) {
-        return Promise.reject(error);
+    const interceptor = this.axiosInstance.interceptors.response.use(
+      undefined,
+      (error: AxiosError) => {
+        if (!config.setRefreshCondition(error)) {
+          return Promise.reject(error);
+        }
+        this.axiosInstance.interceptors.response.eject(interceptor);
+        return this.handleRefreshTokenAsync(config, error);
       }
-      this.axiosInstance.interceptors.response.eject(interceptor);
-      return this.handleRefreshTokenAsync(config, error);
-    });
+    );
   };
 }
