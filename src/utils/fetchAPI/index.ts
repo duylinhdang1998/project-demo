@@ -1,4 +1,5 @@
 import qs from "qs";
+import { RootState } from "store/configureStore";
 import ConfigureAxios from "./fetchApi";
 
 const axiosConfig = new ConfigureAxios({
@@ -9,7 +10,10 @@ const axiosConfig = new ConfigureAxios({
     paramsSerializer: qs.stringify,
   },
   setAccessToken() {
-    return "";
+    // @ts-ignore
+    const { store } = require("store/configureStore");
+    const authState = store.getState() as RootState;
+    return authState.auth.token;
   },
   setRefreshToken() {
     return "";

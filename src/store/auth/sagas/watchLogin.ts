@@ -13,7 +13,7 @@ function* handleLogin({ payload }: ReturnType<typeof authActions.loginRequest>) 
       authActions.loginSuccess({
         // FIXME: ENUM chưa có
         role: data.rbacCompany.role === "COMPANY_ADMIN" ? "admin" : "agent",
-        token: `${data.payload.type} ${data.payload.accessToken}`,
+        token: `${data.payload.type} ${data.payload.rbacToken}`,
       })
     );
     onSuccess();

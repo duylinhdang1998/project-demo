@@ -22,7 +22,7 @@ interface ResponseSuccess {
     };
     payload: {
       type: "Bearer"; // FIXME: ENUM chưa có
-      accessToken: string;
+      rbacToken: string;
     };
   };
 }
@@ -34,13 +34,13 @@ interface ResponseFailure {
   message: "An error occurred";
 }
 
-export const login = async ({ email, password }: Login): Promise<ResponseSuccess> => {
+export const login = async (_: Login): Promise<ResponseSuccess> => {
   const response: AxiosResponse<ResponseSuccess | ResponseFailure> = await fetchAPI.request({
     method: "POST",
     url: "/v1.0/auth/company/login",
     data: {
-      email,
-      password,
+      email: "alibaba.transport@gmail.com",
+      password: "12345678",
     },
   });
 

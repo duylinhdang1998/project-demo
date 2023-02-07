@@ -1,5 +1,5 @@
 import { LoadingButton } from "@mui/lab";
-import { Alert, Button, Grid, Snackbar } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import logoTbus from "assets/images/logo-blue.png";
 import MessageIcon from "assets/images/message.svg";
@@ -8,8 +8,8 @@ import InputAuth from "components/InputAuth/InputAuth";
 import TextWithLink from "components/TextWithLink/TextWithLink";
 import { useAppDispatch } from "hooks/useAppDispatch";
 import { useAppSelector } from "hooks/useAppSelector";
+import { useNotificationAfterActionFailure } from "hooks/useNotificationAfterActionFailure";
 import { get } from "lodash";
-import { useState } from "react";
 import Highlighter from "react-highlight-words";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,6 @@ function LoginPage() {
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [isOpenMessageFailure, setIsOpenMessageFailure] = useState(false);
   const {
     control,
     handleSubmit,
@@ -41,15 +40,10 @@ function LoginPage() {
     },
     mode: "all",
   });
+  const { open, Notification } = useNotificationAfterActionFailure({ message: t("login_failure") });
+
   const handleNavigate = () => {
     navigate("/sign-up");
-  };
-
-  const handleOpenMessageFailure = () => {
-    setIsOpenMessageFailure(true);
-  };
-  const handleCloseMessageFailure = () => {
-    setIsOpenMessageFailure(false);
   };
 
   const onSubmit = (values: Values) => {
@@ -58,7 +52,7 @@ function LoginPage() {
         password: values.password,
         email: values.email,
         onSuccess: () => {},
-        onFailure: handleOpenMessageFailure,
+        onFailure: open,
       })
     );
   };
@@ -120,16 +114,7 @@ function LoginPage() {
         </LoadingButton>
         <TextWithLink text={t("notHaveAccount")} highlight={t("register_link")} onClick={handleNavigate} />
       </Box>
-      <Snackbar
-        open={isOpenMessageFailure}
-        autoHideDuration={3000}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        onClose={handleCloseMessageFailure}
-      >
-        <Alert severity="error" sx={{ width: "100%" }}>
-          {t("login_failure")}
-        </Alert>
-      </Snackbar>
+      {Notification}
     </form>
   );
 }
