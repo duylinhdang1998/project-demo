@@ -11,7 +11,6 @@ function* handleLogin({ payload }: ReturnType<typeof authActions.loginRequest>) 
     });
     yield put(
       authActions.loginSuccess({
-        // FIXME: ENUM chưa có
         role: data.rbacCompany.role === "COMPANY_ADMIN" ? "admin" : "agent",
         token: `${data.payload.type} ${data.payload.rbacToken}`,
       })

@@ -16,13 +16,13 @@ interface ResponseSuccess {
       companyCode: string;
       email: string;
       role: Role;
-      status: string; // FIXME: ENUM chưa có
+      status: string;
       createdAt: string;
       updatedAt: string;
       __v: number;
     };
     payload: {
-      type: "Bearer"; // FIXME: ENUM chưa có
+      type: "Bearer";
       rbacToken: string;
     };
   };
