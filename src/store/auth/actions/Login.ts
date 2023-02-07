@@ -1,4 +1,4 @@
-import { UserInfo } from "models/UserInfo";
+import { UserInfo } from 'models/UserInfo';
 
 export interface LoginRequest {
   email: string;
@@ -9,7 +9,7 @@ export interface LoginRequest {
 
 export interface LoginSuccess {
   token: string;
-  role: UserInfo["role"];
+  role: UserInfo['role'];
 }
 
 export interface LoginFailure {}
