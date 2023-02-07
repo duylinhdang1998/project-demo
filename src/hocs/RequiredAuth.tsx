@@ -1,17 +1,20 @@
-import useAuthStore from 'pages/LoginPage/store/auth';
-import React, { useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useAppSelector } from "hooks/useAppSelector";
+import { FC, ReactElement } from "react";
+import { Navigate } from "react-router-dom";
+import { selectAuth } from "store/auth/selectors";
 
-export default function RequiredAuth({ children }) {
-  const { token, userInfo } = useAuthStore();
-  const location = useLocation();
+interface RequiredAuthProps {
+  role?: string;
+  children: ReactElement;
+}
 
-  useEffect(() => {
-    console.log({ userInfo, token });
-  }, [userInfo, token]);
+const RequiredAuth: FC<RequiredAuthProps> = ({ children, role }) => {
+  const { token, userInfo } = useAppSelector(selectAuth);
 
-  if (!token || !userInfo?.role) {
-    return <Navigate to="/auth/login" replace={true} />;
+  if (!token || !userInfo?.role || (role && userInfo.role !== role)) {
+    return <Navigate to="/login" replace={true} />;
   }
   return children;
-}
+};
+
+export default RequiredAuth;

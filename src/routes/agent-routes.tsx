@@ -1,156 +1,156 @@
-import RequiredAuth from 'hocs/RequiredAuth';
-import * as Page from 'pages';
-import { RouteObject } from 'react-router-dom';
+import RequiredAuth from "hocs/RequiredAuth";
+import * as Page from "pages";
+import { RouteObject } from "react-router-dom";
 
 const AgentRoutes: RouteObject[] = [
   {
     index: true,
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.Agent.Dashboard />
       </RequiredAuth>
     ),
   },
   {
-    path: 'ticket-sales',
+    path: "ticket-sales",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.TicketSales />
       </RequiredAuth>
     ),
   },
   {
-    path: 'ticket-sales/:id',
+    path: "ticket-sales/:id",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.DetailTicketPage />
       </RequiredAuth>
     ),
   },
   {
-    path: 'create-ticket-order',
+    path: "create-ticket-order",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.Agent.CreateTicketOrder />
       </RequiredAuth>
     ),
   },
   {
-    path: 'traveller-contact-details',
+    path: "traveller-contact-details",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.Agent.TravellerDetails />
       </RequiredAuth>
     ),
   },
   {
-    path: 'package-sales',
+    path: "package-sales",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.PackageSales />
       </RequiredAuth>
     ),
   },
   {
-    path: 'create-package-orders',
+    path: "create-package-orders",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.Agent.CreatePackageOrders />
       </RequiredAuth>
     ),
   },
   {
-    path: 'create-package-orders/add-merchandise',
+    path: "create-package-orders/add-merchandise",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.Agent.AddMerchandise />
       </RequiredAuth>
     ),
   },
   {
-    path: 'create-package-orders/client-info',
+    path: "create-package-orders/client-info",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.Agent.ClientInfo />
       </RequiredAuth>
     ),
   },
   {
-    path: 'create-package-orders/order-confirm',
+    path: "create-package-orders/order-confirm",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.Agent.OrderConfirm />
       </RequiredAuth>
     ),
   },
   {
-    path: 'vehicles',
+    path: "vehicles",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.Vehicles />
       </RequiredAuth>
     ),
   },
   {
-    path: 'add-new-event',
+    path: "add-new-event",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.AddNewEvent />
       </RequiredAuth>
     ),
   },
   {
-    path: 'list-events',
+    path: "list-events",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.ListEvents />
       </RequiredAuth>
     ),
   },
   {
-    path: 'passengers',
+    path: "passengers",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.Passengers />
       </RequiredAuth>
     ),
   },
   {
-    path: 'passengers/:id',
+    path: "passengers/:id",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.PassengerDetail />
       </RequiredAuth>
     ),
   },
   {
-    path: 'control-ticket',
+    path: "control-ticket",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.Agent.ControlTicket />
       </RequiredAuth>
     ),
   },
   {
-    path: 'control-merchandise-delivery',
+    path: "control-merchandise-delivery",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.Agent.ControlMerchandise />
       </RequiredAuth>
     ),
   },
   {
-    path: 'control-merchandise-details',
+    path: "control-merchandise-details",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.Agent.ControlMerchandiseDetail />
       </RequiredAuth>
     ),
   },
   {
-    path: 'routers',
+    path: "routers",
     element: (
-      <RequiredAuth>
+      <RequiredAuth role="agent">
         <Page.Routers />
       </RequiredAuth>
     ),
