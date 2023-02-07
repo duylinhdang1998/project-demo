@@ -22,6 +22,6 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "./src"
   },
-  "include": ["src", "config-overrides.js"],
+  "include": ["src", "config-overrides.js", "./src/types.d.ts"],
   "exclude": ["node_modules", "build", "**/*.js"]
 }
