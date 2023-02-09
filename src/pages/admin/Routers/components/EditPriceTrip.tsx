@@ -1,6 +1,5 @@
 import { InputBase, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 

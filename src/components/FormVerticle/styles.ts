@@ -13,6 +13,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
     '&:focus-visible': {
       outline: 'none',
     },
+    '&.Mui-error': {
+      border: '1px solid' + theme.palette.error.main,
+      transition: 'all 0.2s ease',
+    },
   },
   label: {
     color: theme.palette.grey[200] + '!important',
@@ -55,5 +59,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     height: '40px',
     border: '1px solid #f7f7f7 !important',
+  },
+  error: {
+    marginTop: '4px !important',
+    color: theme.palette.error.main,
   },
 }));

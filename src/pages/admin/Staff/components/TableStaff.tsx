@@ -6,9 +6,8 @@ import AntTable from 'components/AntTable/AntTable';
 import CalendarIcon from 'components/SvgIcon/CalendarIcon';
 import DeleteIcon from 'components/SvgIcon/DeleteIcon';
 import EditIcon from 'components/SvgIcon/EditIcon';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 
 const dataSource: StaffTableType[] = [];
@@ -26,7 +25,6 @@ for (let i = 0; i < 10; i++) {
 
 function TableStaff() {
   const { t } = useTranslation(['staff', 'translation']);
-  const navigate = useNavigate();
 
   const actions = [
     { id: uuid(), label: 'edit', icon: <EditIcon />, onClick: () => {} },

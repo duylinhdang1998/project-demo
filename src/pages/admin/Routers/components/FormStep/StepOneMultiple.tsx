@@ -1,16 +1,16 @@
+import TrashSvg from 'assets/images/trash.svg';
 import AddIcon from '@mui/icons-material/Add';
 import { Button, Grid, InputLabel, Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
-import TrashSvg from 'assets/images/trash.svg';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { Option } from 'models/Field';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default function StepOneMultiple({ onNextStep, onCancel, isEdit, defaultValue }: StepCountProps) {
+export default function StepOneMultiple({ onCancel, isEdit }: StepCountProps) {
   const classes = useStyles();
   const { t } = useTranslation(['routers', 'translation']);
   const { control, handleSubmit } = useForm<FieldArrayValues>({

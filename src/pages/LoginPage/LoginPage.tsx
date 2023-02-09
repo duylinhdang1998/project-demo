@@ -1,19 +1,19 @@
-import { LoadingButton } from '@mui/lab';
-import { Button, Grid } from '@mui/material';
-import { Box } from '@mui/system';
 import logoTbus from 'assets/images/logo-blue.png';
 import MessageIcon from 'assets/images/message.svg';
 import PasswordIcon from 'assets/images/password.svg';
+import { LoadingButton } from '@mui/lab';
+import { Button, Grid } from '@mui/material';
+import { Box } from '@mui/system';
 import InputAuth from 'components/InputAuth/InputAuth';
 import TextWithLink from 'components/TextWithLink/TextWithLink';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { useNotificationAfterActionFailure } from 'hooks/useNotificationAfterActionFailure';
 import { get } from 'lodash';
 import Highlighter from 'react-highlight-words';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { authActions } from 'store/auth/authSlice';
 import { selectAuth } from 'store/auth/selectors';
 import { useStyles } from './styles';
@@ -40,7 +40,6 @@ function LoginPage() {
     },
     mode: 'all',
   });
-  const { open, Notification } = useNotificationAfterActionFailure({ message: t('login_failure') });
 
   const handleNavigate = () => {
     navigate('/sign-up');
@@ -52,7 +51,9 @@ function LoginPage() {
         password: values.password,
         email: values.email,
         onSuccess: () => {},
-        onFailure: open,
+        onFailure: () => {
+          toast.error(t('login_failure'));
+        },
       }),
     );
   };
@@ -108,7 +109,6 @@ function LoginPage() {
         </LoadingButton>
         <TextWithLink text={t('notHaveAccount')} highlight={t('register_link')} onClick={handleNavigate} />
       </Box>
-      {Notification}
     </form>
   );
 }

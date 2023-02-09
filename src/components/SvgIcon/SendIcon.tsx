@@ -1,6 +1,4 @@
 import { SvgIcon } from '@mui/material';
-import React from 'react';
-
 interface SendIconProps {
   fillColor?: string;
 }

@@ -1,6 +1,5 @@
-import { put, retry, SagaReturnType, takeLatest, call } from 'redux-saga/effects';
+import { put, retry, SagaReturnType, takeLatest } from 'redux-saga/effects';
 import { login } from 'services/Auth/Company/login';
-import { getActionType } from 'store/configureStore';
 import { authActions } from '../authSlice';
 function* handleLogin({ payload }: ReturnType<typeof authActions.loginRequest>) {
   const { password, email, onFailure, onSuccess } = payload;
@@ -24,5 +23,5 @@ function* handleLogin({ payload }: ReturnType<typeof authActions.loginRequest>) 
 }
 
 export function* watchLogin() {
-  yield takeLatest(getActionType(authActions.loginRequest), handleLogin);
+  yield takeLatest(authActions.loginRequest, handleLogin);
 }

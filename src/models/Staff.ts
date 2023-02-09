@@ -1,4 +1,4 @@
-interface StaffTableType {
+export interface StaffTableType {
   id: string;
   type?: string;
   lastName?: string;

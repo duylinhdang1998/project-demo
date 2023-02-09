@@ -1,5 +1,5 @@
 import { CardDasboardProps } from 'components/CardDashboard/CardDasboard';
-import { DailyTicketIcon, DailyPackageIcon, DailyPassengerIcon, DailyParcelsIcon, VehiclesBusIcon } from 'assets';
+import { DailyTicketIcon, DailyPackageIcon, DailyPassengerIcon, DailyParcelsIcon } from 'assets';
 
 export const statisTics: CardDasboardProps[] = [
   {

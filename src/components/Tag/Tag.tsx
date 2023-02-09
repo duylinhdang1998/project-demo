@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import React, { memo } from 'react';
+import { memo } from 'react';
 
 interface TagProps {
   color?: string;

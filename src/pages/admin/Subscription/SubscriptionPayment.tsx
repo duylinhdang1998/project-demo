@@ -5,7 +5,7 @@ import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import CreditCard from 'components/CreditCard/CreditCard';
 import LayoutDetail from 'layout/LayoutDetail';
-import React, { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(() => ({
@@ -32,17 +32,17 @@ function SubscriptionPayment() {
   const classes = useStyles();
   const [selected, setSelected] = useState('month');
   const [method, setMethod] = useState('credit');
-  const [creaditVal, setCreditVal] = useState({
+  const [] = useState({
     cvc: '',
     expiry: '',
     focus: '',
     name: '',
     number: '',
   });
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>, newValue: string) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>, newValue: string) => {
     setSelected(newValue);
   };
-  const handleChangeMethod = (event: React.ChangeEvent<HTMLInputElement>, newValue: string) => {
+  const handleChangeMethod = (event: ChangeEvent<HTMLInputElement>, newValue: string) => {
     setMethod(newValue);
   };
   const renderPaypalValue = () => {
@@ -57,20 +57,6 @@ function SubscriptionPayment() {
         </Button>
       </Box>
     );
-  };
-
-  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    setCreditVal((prev) => ({
-      ...prev,
-      focus: e.target.name,
-    }));
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCreditVal((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }));
   };
 
   const renderCreditValue = () => {

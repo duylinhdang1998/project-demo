@@ -1,11 +1,11 @@
+import flagEn from 'assets/images/flag-en.png';
+import flagFr from 'assets/images/flag-fr.png';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Button } from '@mui/material';
 import { Dropdown, Menu } from 'antd';
-import flagEn from 'assets/images/flag-en.png';
-import flagFr from 'assets/images/flag-fr.png';
 import cx from 'classnames';
 import { useGlobalContext } from 'context/GlobalContext';
-import React, { memo, useEffect, useState } from 'react';
+import { memo, MouseEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStyles } from './styles';
 
@@ -26,7 +26,7 @@ function ChangeLanguage() {
     setAnchorEl(null);
   };
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { IndexRouteProps, LayoutRouteProps, Navigate, PathRouteProps, Route, useLocation } from 'react-router-dom';
 
 type PrivateRouteProps = PathRouteProps | LayoutRouteProps | IndexRouteProps;

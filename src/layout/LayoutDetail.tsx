@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import BackButton from 'components/BackButton/BackButton';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 interface LayoutDetailProps {
   title?: string;

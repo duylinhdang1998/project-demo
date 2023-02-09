@@ -28,6 +28,14 @@ export const AccountRoutes: RouteObject[] = [
     ),
   },
   {
+    path: 'offices-manager/:officeId',
+    element: (
+      <RequiredAuth>
+        <Page.AddOfficeManager />
+      </RequiredAuth>
+    ),
+  },
+  {
     path: 'add-office-manager',
     element: (
       <RequiredAuth>

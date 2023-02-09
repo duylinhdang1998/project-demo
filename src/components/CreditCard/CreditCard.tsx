@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 import Button from 'components/Button/Button';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { Field } from 'models/Field';
-import React, { memo, useState } from 'react';
+import { ChangeEvent, FocusEvent, memo, useState } from 'react';
 import Card, { CallbackArgument, Focused } from 'react-credit-cards';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -68,11 +68,11 @@ function CreditCard() {
     // console.log(getValues('number'));
   };
 
-  const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+  const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
     setFocused(event.target.name);
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name: inputName } = event.target;
     if (inputName === 'number') {
       event.target.value = formatCreditCardNumber(event.target.value);

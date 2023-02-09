@@ -10,10 +10,10 @@
   "my_company": "My company",
   "company_name": "Company name",
   "address": "Address",
-  "zip_code": "Zip code",
+  "zipCode": "Zip code",
   "country": "Country",
   "city": "City",
-  "phone_number": "Phone number",
+  "phone": "Phone number",
   "email": "Email",
   "transport_license": "Transport License",
   "currency": "Currency",
@@ -52,5 +52,9 @@
   "descriptions": "Descriptions",
   "free_trial": "Free trial",
   "buy_now": "Buy now",
-  "popular_choice": "POPULAR CHOICE"
+  "popular_choice": "POPULAR CHOICE",
+  "error_required": "Please enter your {{name}}",
+  "office_manager_created": "Add new office successfully!",
+  "office_manager_updated": "Update office successfully!",
+  "office_manager_deleted": "Delete office successfully!"
 }

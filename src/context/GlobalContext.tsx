@@ -1,10 +1,10 @@
-import env from "env";
-import React, { createContext, useContext, useEffect, useReducer } from "react";
+import env from 'env';
+import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
 
 interface IProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
-const defaultFnc = () => console.log("");
+const defaultFnc = () => console.log('');
 
 interface IContext {
   modeTheme: string;
@@ -31,13 +31,13 @@ const GlobalContext = createContext<IContext>(initialState);
 
 const reducer = (state: IContext, { type, payload }: IAction) => {
   switch (type) {
-    case "SET_MODE_THEME": {
+    case 'SET_MODE_THEME': {
       return {
         ...state,
         modeTheme: payload,
       };
     }
-    case "SET_LANGUAGE": {
+    case 'SET_LANGUAGE': {
       return {
         ...state,
         language: payload,
@@ -53,21 +53,21 @@ const GlobalProvider = ({ children }: IProps) => {
 
   const _handleSetModeTheme = (mode: string) => {
     dispatch({
-      type: "SET_MODE_THEME",
+      type: 'SET_MODE_THEME',
       payload: mode,
     });
   };
 
   const _handleChangeLanguage = (language: string) => {
     dispatch({
-      type: "SET_LANGUAGE",
+      type: 'SET_LANGUAGE',
       payload: language,
     });
-    localStorage.setItem("language", language);
+    localStorage.setItem('language', language);
   };
 
   useEffect(() => {
-    const language = localStorage.getItem("language");
+    const language = localStorage.getItem('language');
     _handleChangeLanguage(language ?? state.language);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

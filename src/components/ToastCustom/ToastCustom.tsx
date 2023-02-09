@@ -1,11 +1,11 @@
+import CheckCircleIcon from 'assets/images/check-circle.svg';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import { Theme, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import CheckCircleIcon from 'assets/images/check-circle.svg';
-import React, { memo } from 'react';
+import { memo } from 'react';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     justifyContent: 'flex-start',

@@ -4,7 +4,6 @@ import CardWhite from 'components/CardWhite/CardWhite';
 import Qrcode from 'components/Qrcode/Qrcode';
 import Tag from 'components/Tag/Tag';
 import LayoutDetail from 'layout/LayoutDetail';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 

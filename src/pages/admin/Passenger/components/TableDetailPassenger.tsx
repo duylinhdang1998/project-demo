@@ -3,9 +3,8 @@ import { makeStyles } from '@mui/styles';
 import { MapPinIcon } from 'assets';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import dayjs from 'dayjs';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 
 const useStyles = makeStyles(() => ({
@@ -27,7 +26,6 @@ const data = [
 
 function TableDetailPassenger() {
   const { t } = useTranslation('passenger');
-  const location = useLocation();
   const classes = useStyles();
   return (
     <Box>

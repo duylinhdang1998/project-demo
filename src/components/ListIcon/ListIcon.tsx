@@ -1,9 +1,9 @@
+import icons from 'assets/icons/icons.json';
 import { InputBase, InputLabel, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import 'assets/icons/fontawesome/css/all.min.css';
-import icons from 'assets/icons/icons.json';
-import React, { memo, useEffect, useState } from 'react';
+import { ChangeEvent, memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GridCellProps } from 'react-virtualized';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
@@ -74,7 +74,7 @@ function ListIcon() {
     setIconsList(result);
   }, []);
 
-  const handleChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeText = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
     setValueSearch(value);
   };
@@ -112,7 +112,8 @@ function ListIcon() {
               className={classes.gridContainer}
               style={{
                 width,
-              }}>
+              }}
+            >
               <Grid
                 height={400}
                 columnWidth={width / 14 - 2}

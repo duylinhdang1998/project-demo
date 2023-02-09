@@ -52,5 +52,9 @@
   "recipent": "Recipent",
   "next": "Next",
   "merchandise": "Merchandise",
-  "event": "Event"
+  "event": "Event",
+  "internal_server_error": "Something went wrong!",
+  "delete_record_title": "Are you sure to want to delete?",
+  "delete_record_message": "If you confirm the simple transaction you will not have a chance to undo it.",
+  "edit_type": "Edit {{type}}"
 }

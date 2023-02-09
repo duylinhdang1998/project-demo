@@ -2,13 +2,13 @@ import { Box, Fade, Tooltip, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Timeline } from 'antd';
 import 'antd/lib/timeline/style/css';
-import React, { memo } from 'react';
+import { Fragment, memo, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 import './styles.css';
 
 interface ToolTipAddressProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 const addresses = [
@@ -60,7 +60,7 @@ function ToolTipAddress({ children }: ToolTipAddressProps) {
       }}
       placement="bottom-end"
       title={
-        <React.Fragment>
+        <Fragment>
           <Typography component="p" fontSize="18px" fontWeight="bold" color="#333" p="10px">
             {t('stop_address')}
           </Typography>
@@ -73,9 +73,10 @@ function ToolTipAddress({ children }: ToolTipAddressProps) {
               ))}
             </Timeline>
           </Box>
-        </React.Fragment>
+        </Fragment>
       }
-      TransitionComponent={Fade}>
+      TransitionComponent={Fade}
+    >
       <Box>{children}</Box>
     </Tooltip>
   );

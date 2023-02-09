@@ -5,7 +5,7 @@ import AntTable from 'components/AntTable/AntTable';
 import Button from 'components/Button/Button';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { RoutePrograms } from 'models/RoutePrograms';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const dataSource: RoutePrograms[] = [];

@@ -3,7 +3,7 @@ import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import LayoutDetail from 'layout/LayoutDetail';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { fieldAccount1, fieldAccount2, fieldAccount3, fieldAccount4, fieldAccount5, fieldKeys } from './constants';
@@ -11,7 +11,7 @@ import { fieldAccount1, fieldAccount2, fieldAccount3, fieldAccount4, fieldAccoun
 type Values = Record<typeof fieldKeys[number], string>;
 
 export default function AccountSetting() {
-  const { control, handleSubmit } = useForm<Values>();
+  const { control } = useForm<Values>();
   const [open, setOpen] = useState(false);
   const { t } = useTranslation(['account', 'translation']);
 

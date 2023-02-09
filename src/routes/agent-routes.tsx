@@ -1,6 +1,6 @@
-import RequiredAuth from "hocs/RequiredAuth";
-import * as Page from "pages";
-import { RouteObject } from "react-router-dom";
+import RequiredAuth from 'hocs/RequiredAuth';
+import * as Page from 'pages';
+import { RouteObject } from 'react-router-dom';
 
 const AgentRoutes: RouteObject[] = [
   {
@@ -12,7 +12,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "ticket-sales",
+    path: 'ticket-sales',
     element: (
       <RequiredAuth role="agent">
         <Page.TicketSales />
@@ -20,7 +20,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "ticket-sales/:id",
+    path: 'ticket-sales/:id',
     element: (
       <RequiredAuth role="agent">
         <Page.DetailTicketPage />
@@ -28,7 +28,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "create-ticket-order",
+    path: 'create-ticket-order',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.CreateTicketOrder />
@@ -36,7 +36,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "traveller-contact-details",
+    path: 'traveller-contact-details',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.TravellerDetails />
@@ -44,7 +44,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "package-sales",
+    path: 'package-sales',
     element: (
       <RequiredAuth role="agent">
         <Page.PackageSales />
@@ -52,7 +52,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "create-package-orders",
+    path: 'create-package-orders',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.CreatePackageOrders />
@@ -60,7 +60,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "create-package-orders/add-merchandise",
+    path: 'create-package-orders/add-merchandise',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.AddMerchandise />
@@ -68,7 +68,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "create-package-orders/client-info",
+    path: 'create-package-orders/client-info',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.ClientInfo />
@@ -76,7 +76,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "create-package-orders/order-confirm",
+    path: 'create-package-orders/order-confirm',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.OrderConfirm />
@@ -84,7 +84,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "vehicles",
+    path: 'vehicles',
     element: (
       <RequiredAuth role="agent">
         <Page.Vehicles />
@@ -92,7 +92,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "add-new-event",
+    path: 'add-new-event',
     element: (
       <RequiredAuth role="agent">
         <Page.AddNewEvent />
@@ -100,7 +100,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "list-events",
+    path: 'list-events',
     element: (
       <RequiredAuth role="agent">
         <Page.ListEvents />
@@ -108,7 +108,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "passengers",
+    path: 'passengers',
     element: (
       <RequiredAuth role="agent">
         <Page.Passengers />
@@ -116,7 +116,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "passengers/:id",
+    path: 'passengers/:id',
     element: (
       <RequiredAuth role="agent">
         <Page.PassengerDetail />
@@ -124,7 +124,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "control-ticket",
+    path: 'control-ticket',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.ControlTicket />
@@ -132,7 +132,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "control-merchandise-delivery",
+    path: 'control-merchandise-delivery',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.ControlMerchandise />
@@ -140,7 +140,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "control-merchandise-details",
+    path: 'control-merchandise-details',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.ControlMerchandiseDetail />
@@ -148,7 +148,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "routers",
+    path: 'routers',
     element: (
       <RequiredAuth role="agent">
         <Page.Routers />

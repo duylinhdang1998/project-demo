@@ -1,13 +1,13 @@
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
-import { InputAdornment, InputBase, Theme, useMediaQuery } from '@mui/material';
+import { InputAdornment, InputBase, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import Button from 'components/Button/Button';
-import React, { memo } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   container: {},
   inputSearch: {
     backgroundColor: '#fff',
@@ -26,19 +26,41 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface BoxSearchProps {
+  searchValue?: string;
   addTextButton?: string;
   onAdd?: () => void;
-  onSearch?: () => void;
+  onSearch?: (value: string) => void;
 }
 
-function BoxSearch({ addTextButton, onAdd, onSearch }: BoxSearchProps) {
+function BoxSearch({ addTextButton, searchValue, onAdd, onSearch }: BoxSearchProps) {
   const { t } = useTranslation('translation');
   const classes = useStyles();
   const matches = useMediaQuery('(min-width:1366px)');
+  const [searchKey, setSearchKey] = useState(searchValue ?? '');
+  const timeoutRef = useRef<number | undefined>();
+
+  useEffect(() => {
+    clearTimeout(timeoutRef.current);
+    if (searchKey !== searchValue) {
+      timeoutRef.current = window.setTimeout(() => {
+        onSearch?.(searchKey);
+      }, 200);
+      return () => {
+        clearTimeout(timeoutRef.current);
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchKey]);
+
+  useEffect(() => {
+    setSearchKey(searchValue ?? '');
+  }, [searchValue]);
 
   return (
     <Box display="flex" justifyContent="space-between" flexDirection={{ xs: 'column', md: 'row' }} alignItems="center">
       <InputBase
+        value={searchKey}
+        onChange={(e) => setSearchKey(e.target.value)}
         placeholder={t('translation:search')}
         endAdornment={
           <InputAdornment position="end">

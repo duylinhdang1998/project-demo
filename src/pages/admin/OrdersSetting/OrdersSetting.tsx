@@ -1,13 +1,13 @@
-import { Box, Stack, Theme, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import CardWhite from 'components/CardWhite/CardWhite';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import React from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   inputNumberWrap: {
     border: '1px solid #F7F7F7',
     backgroundColor: '#fff',
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function OrdersSetting() {
   const classes = useStyles();
   const { t } = useTranslation(['account', 'translation']);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
   };

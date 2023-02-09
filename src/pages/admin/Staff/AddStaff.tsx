@@ -1,6 +1,5 @@
 import { Box, Divider, Typography } from '@mui/material';
 import LayoutDetail from 'layout/LayoutDetail';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function AddStaff() {

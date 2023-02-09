@@ -1,7 +1,7 @@
-import { useAppSelector } from "hooks/useAppSelector";
-import { FC, ReactElement } from "react";
-import { Navigate } from "react-router-dom";
-import { selectAuth } from "store/auth/selectors";
+import { useAppSelector } from 'hooks/useAppSelector';
+import { FC, ReactElement } from 'react';
+import { Navigate } from 'react-router-dom';
+import { selectAuth } from 'store/auth/selectors';
 
 interface RequiredAuthProps {
   role?: string;

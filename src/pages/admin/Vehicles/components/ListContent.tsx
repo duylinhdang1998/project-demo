@@ -1,6 +1,6 @@
 import { Box, Divider, Grid, List, ListItem, Stack, Typography } from '@mui/material';
 import FileIcon from 'components/SvgIcon/FileIcon';
-import React, { memo } from 'react';
+import { Fragment, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 
@@ -32,20 +32,20 @@ function ListContent() {
   return (
     <List>
       {dataDetail.map((item, idx) => (
-        <React.Fragment key={item.id}>
+        <Fragment key={item.id}>
           <ListItem sx={{ flexDirection: 'column', alignItems: 'flex-start' }}>
             <Grid container>
               {Object.keys(item).map(
                 (key, index) =>
                   index !== 0 && (
-                    <React.Fragment key={key}>
+                    <Fragment key={key}>
                       <Grid item xs={3} sx={{ padding: '10px 0' }}>
                         <Typography variant="body2">{t(`${key}`)}:</Typography>
                       </Grid>
                       <Grid item xs={9} sx={{ padding: '10px 0' }}>
                         <Typography variant="body2">{item[key]}</Typography>
                       </Grid>
-                    </React.Fragment>
+                    </Fragment>
                   ),
               )}
             </Grid>
@@ -62,7 +62,7 @@ function ListContent() {
             </Stack>
           </ListItem>
           {idx < dataDetail.length - 1 && <Divider variant="middle" sx={{ border: '1.5px dashed #AEB1C5 !important' }} />}
-        </React.Fragment>
+        </Fragment>
       ))}
     </List>
   );

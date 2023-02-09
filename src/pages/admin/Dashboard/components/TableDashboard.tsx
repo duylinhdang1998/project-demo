@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableContainer, TableRow, Theme, useTheme 
 import { makeStyles } from '@mui/styles';
 import { MapPinIcon } from 'assets';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { columnsRoutes, routes } from '../constants';
 

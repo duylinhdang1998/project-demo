@@ -1,8 +1,7 @@
+import VisaPng from 'assets/images/visa.png';
 import { Box, Divider, FormControlLabel, Grid, InputBase, InputLabel, Radio, RadioGroup, Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import VisaPng from 'assets/images/visa.png';
 import LayoutDetail from 'layout/LayoutDetail';
-import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import FormTraveller from './components/FormTraveller';

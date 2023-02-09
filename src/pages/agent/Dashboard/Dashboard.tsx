@@ -1,6 +1,5 @@
 import { Box } from '@mui/material';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import ListButton from './components/ListButton';
 import TableDashboard from './components/TableDashboard';

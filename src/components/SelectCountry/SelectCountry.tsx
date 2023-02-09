@@ -1,6 +1,6 @@
-import { Box } from '@mui/system';
 import LocationIcon from 'assets/images/location.svg';
-import React, { memo } from 'react';
+import { Box } from '@mui/system';
+import { memo } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
 import { ControllerRenderProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

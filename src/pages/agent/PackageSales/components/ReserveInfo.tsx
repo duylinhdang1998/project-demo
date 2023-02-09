@@ -1,12 +1,12 @@
-import { Box, Stack, Typography } from '@mui/material';
-import { MapPinIcon } from 'assets';
 import ClockSvg from 'assets/images/clock.svg';
 import PhoneSvg from 'assets/images/phone.svg';
 import UserSvg from 'assets/images/user.svg';
+import { MapPinIcon } from 'assets';
+import { Box, Stack, Typography } from '@mui/material';
 import Button from 'components/Button/Button';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';

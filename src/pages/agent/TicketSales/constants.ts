@@ -6,10 +6,6 @@ const departureOptions: Option[] = [
   { key: 'london', value: 'london', label: 'London' },
   { key: 'berlin', value: 'berlin', label: 'Berlin' },
 ];
-const paymentsStatus: Option[] = [
-  { key: 'paid', value: 'paid', label: 'Paid' },
-  { key: 'not_paid', value: 'not_paid', label: 'Not Paid' },
-];
 
 export const fields: Field[] = [
   { id: uuidv4(), label: 'departures_point', options: departureOptions, type: 'select' },

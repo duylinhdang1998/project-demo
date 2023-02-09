@@ -1,6 +1,6 @@
-import RequiredAuth from "hocs/RequiredAuth";
-import * as Page from "pages";
-import { RouteObject } from "react-router-dom";
+import RequiredAuth from 'hocs/RequiredAuth';
+import * as Page from 'pages';
+import { RouteObject } from 'react-router-dom';
 
 export const AdminRoutes: RouteObject[] = [
   {
@@ -12,7 +12,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "ticket-sales",
+    path: 'ticket-sales',
     element: (
       <RequiredAuth role="admin">
         <Page.TicketSales />
@@ -20,7 +20,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "ticket-sales/:id",
+    path: 'ticket-sales/:id',
     element: (
       <RequiredAuth role="admin">
         <Page.DetailTicketPage />
@@ -28,7 +28,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "package-sales",
+    path: 'package-sales',
     element: (
       <RequiredAuth role="admin">
         <Page.PackageSales />
@@ -36,7 +36,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "services-settings",
+    path: 'services-settings',
     element: (
       <RequiredAuth role="admin">
         <Page.ServicesSettings />
@@ -44,7 +44,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "add-service",
+    path: 'add-service',
     element: (
       <RequiredAuth role="admin">
         <Page.AddService />
@@ -52,7 +52,15 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "package-settings",
+    path: 'package-settings/:packageSettingId',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.AddPackageSettings />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'package-settings',
     element: (
       <RequiredAuth role="admin">
         <Page.PackageSettings />
@@ -60,15 +68,15 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "add-package-settings",
+    path: 'add-package-setting',
     element: (
       <RequiredAuth role="admin">
-        <Page.AddPacakageSettings />
+        <Page.AddPackageSettings />
       </RequiredAuth>
     ),
   },
   {
-    path: "vehicles",
+    path: 'vehicles',
     element: (
       <RequiredAuth role="admin">
         <Page.Vehicles />
@@ -76,7 +84,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "add-new-vehicles",
+    path: 'add-new-vehicles',
     element: (
       <RequiredAuth role="admin">
         <Page.AddNewVehicles />
@@ -84,7 +92,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "add-new-event",
+    path: 'add-new-event',
     element: (
       <RequiredAuth role="admin">
         <Page.AddNewEvent />
@@ -92,7 +100,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "list-events",
+    path: 'list-events',
     element: (
       <RequiredAuth role="admin">
         <Page.ListEvents />
@@ -100,7 +108,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "staff",
+    path: 'staff',
     element: (
       <RequiredAuth role="admin">
         <Page.Staff />
@@ -108,7 +116,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "add-new-staff",
+    path: 'add-new-staff',
     element: (
       <RequiredAuth role="admin">
         <Page.AddStaff />
@@ -116,7 +124,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "passengers",
+    path: 'passengers',
     element: (
       <RequiredAuth role="admin">
         <Page.Passengers />
@@ -124,7 +132,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "passengers/:id",
+    path: 'passengers/:id',
     element: (
       <RequiredAuth role="admin">
         <Page.PassengerDetail />
@@ -132,7 +140,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "destinations",
+    path: 'destinations',
     element: (
       <RequiredAuth role="admin">
         <Page.Destinations />
@@ -140,7 +148,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "add-new-destinations",
+    path: 'add-new-destinations',
     element: (
       <RequiredAuth role="admin">
         <Page.AddNewDestinations />
@@ -148,7 +156,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "/admin/routers",
+    path: '/admin/routers',
     element: (
       <RequiredAuth role="admin">
         <Page.Routers />
@@ -156,7 +164,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "/admin/routers/create-oneway",
+    path: '/admin/routers/create-oneway',
     element: (
       <RequiredAuth role="admin">
         <Page.CreateOneWay />
@@ -164,7 +172,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "/admin/routers/create-multi",
+    path: '/admin/routers/create-multi',
     element: (
       <RequiredAuth role="admin">
         <Page.CreateMultiStopWay />
@@ -172,7 +180,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: "/admin/routers/edit/:id",
+    path: '/admin/routers/edit/:id',
     element: (
       <RequiredAuth role="admin">
         <Page.EditRouter />

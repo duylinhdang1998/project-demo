@@ -2,7 +2,7 @@ import { Divider, Grid, Typography } from '@mui/material';
 import { MapPinIcon } from 'assets';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface OrderDetailViewProps {

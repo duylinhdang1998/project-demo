@@ -1,14 +1,10 @@
-import { Box, Grid, Stack, Typography } from '@mui/material';
-import { MapPinIcon } from 'assets';
+import { Box, Grid, Stack } from '@mui/material';
 import Button from 'components/Button/Button';
 import MerchandiseDetailView from 'components/MerchandiseDetailView/MerchandiseDetailView';
 import OrderDetailView from 'components/OrderDetailView/OrderDetailView';
 import PrintIcon from 'components/SvgIcon/PrintIcon';
 import SendIcon from 'components/SvgIcon/SendIcon';
-import Tag from 'components/Tag/Tag';
-import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import LayoutDetail from 'layout/LayoutDetail';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 
@@ -33,17 +29,6 @@ const merchandises = [
 
 export default function OrderConfirm() {
   const { t } = useTranslation(['packageSales', 'translation', 'ticketSales']);
-
-  const renderInfo = (key: string) => {
-    switch (key) {
-      case 'departures_point':
-        return <TextWithIcon text={dataDetails[key]} icon={MapPinIcon} color="#1AA6EE" />;
-      case 'payment_status':
-        return <Tag text={dataDetails[key]} variant={'success'} />;
-      default:
-        return <Typography variant="body2">{dataDetails[key]}</Typography>;
-    }
-  };
 
   return (
     <LayoutDetail title={t('create_package_orders')} subTitle={t('package_sales')}>
@@ -70,7 +55,8 @@ export default function OrderConfirm() {
                   color: '#1AA6EE',
                 },
               }}
-              startIcon={<SendIcon fillColor="#1AA6EE" />}>
+              startIcon={<SendIcon fillColor="#1AA6EE" />}
+            >
               {t('ticketSales:email_ticket')}
             </Button>
             <Button variant="contained" backgroundButton="#1AA6EE" sx={{ padding: '12px 16px' }} startIcon={<PrintIcon />}>

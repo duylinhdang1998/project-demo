@@ -1,6 +1,6 @@
 import { Box, Checkbox, Chip, FormControlLabel, Stack, Typography } from '@mui/material';
 import NumberCount from 'components/NumberCount/NumberCount';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 function FilterBy() {

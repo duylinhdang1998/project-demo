@@ -1,7 +1,6 @@
 import { Divider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import LayoutDetail from 'layout/LayoutDetail';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import ListContent from './components/ListContent';
 

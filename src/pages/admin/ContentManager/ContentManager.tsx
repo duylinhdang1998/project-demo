@@ -1,6 +1,6 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { Box, Divider, InputLabel, TextareaAutosize, Theme, Typography } from '@mui/material';
+import { Box, Divider, InputLabel, TextareaAutosize, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import CardWhite from 'components/CardWhite/CardWhite';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
@@ -8,7 +8,7 @@ import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { Field } from 'models/Field';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
@@ -21,7 +21,7 @@ const fields: Field[] = [
   { id: uuid(), type: 'text', label: 'email' },
 ];
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   label: {
     fontSize: '14px !important',
     color: '#45485E',

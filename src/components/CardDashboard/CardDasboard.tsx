@@ -1,7 +1,7 @@
 import { Card, Theme, Typography, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import React, { memo } from 'react';
+import { memo } from 'react';
 
 export interface CardDasboardProps {
   icon?: string;
@@ -51,7 +51,8 @@ function CardDasboard({ icon, text, unit, value }: CardDasboardProps) {
           }}
           fontSize={{ mobile: 14, desktop: 24 }}
           fontWeight={700}
-          color={theme.palette.grey[100]}>
+          color={theme.palette.grey[100]}
+        >
           {value} {unit}
         </Typography>
       </Card>

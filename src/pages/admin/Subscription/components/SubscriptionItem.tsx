@@ -1,7 +1,6 @@
 import CheckIcon from '@mui/icons-material/Check';
 import { Box, Stack, Typography } from '@mui/material';
 import Button from 'components/Button/Button';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,7 +28,8 @@ export default function SubscriptionItem({ name, cash, benefits, popular }: Subs
       border={`2px solid ${popular ? '#1AA6EE' : '#D7DADC'}`}
       padding="50px 24px"
       position="relative"
-      height="460px">
+      height="460px"
+    >
       {popular && (
         <Box bgcolor="#1AA6EE" padding="10px 8px" position="absolute" width="100%" top={0} left={0} textAlign="center" color="#fff">
           {t('popular_choice')}

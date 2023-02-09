@@ -1,6 +1,6 @@
 import { Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface NumberCountProps {
   value?: number;

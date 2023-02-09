@@ -5,7 +5,6 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import enUS from 'date-fns/locale/en-US';
-import React, { useCallback, useState } from 'react';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { StepCountProps } from './StepOne';
@@ -36,11 +35,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function StepThird({ onCancel, onNextStep }: StepCountProps) {
+export default function StepThird(_: StepCountProps) {
   const classes = useStyles();
-  const [date, setDate] = useState(new Date());
-
-  const handleNavigate = useCallback((newDate) => setDate(newDate), [setDate]);
 
   return (
     <Box my="24px">
@@ -92,7 +88,8 @@ export default function StepThird({ onCancel, onNextStep }: StepCountProps) {
                     backgroundColor: 'primary.main',
                     color: '#fff',
                   },
-                }}>
+                }}
+              >
                 {children}
               </Box>
             );

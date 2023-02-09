@@ -1,5 +1,5 @@
 import ClearIcon from '@mui/icons-material/Clear';
-import { CircularProgress, Theme } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { Image, Upload } from 'antd';
@@ -10,11 +10,11 @@ import { UploadFile } from 'antd/lib/upload/interface';
 import 'antd/lib/upload/style/css';
 import clxs from 'classnames';
 import TextWithLink from 'components/TextWithLink/TextWithLink';
-import React, { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import './styles.css';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   upload: {},
   img: {
     width: '100%',
@@ -50,8 +50,8 @@ function getBase64(file: any) {
 export default function UploadImage() {
   const classes = useStyles();
   const [imageUrl, setImg] = useState('');
-  const [isValid, setValid] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [_, setValid] = useState(false);
+  const [loading] = useState(false);
   const [fileList, setFileList] = useState<UploadProps['fileList']>([]);
 
   async function beforeUpload(file: RcFile) {
@@ -92,7 +92,8 @@ export default function UploadImage() {
             setImg('');
             setFileList([]);
             actions.remove();
-          }}>
+          }}
+        >
           <ClearIcon sx={{ color: '#fff' }} />
         </Box>
       </Box>
@@ -115,7 +116,8 @@ export default function UploadImage() {
         fileList={fileList}
         onChange={handleChange}
         itemRender={renderImage}
-        beforeUpload={beforeUpload}>
+        beforeUpload={beforeUpload}
+      >
         {!!imageUrl ? null : uploadButton}
       </Upload.Dragger>
     </div>

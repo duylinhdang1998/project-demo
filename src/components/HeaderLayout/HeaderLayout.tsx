@@ -58,11 +58,13 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
           boxShadow: 'none',
           position: 'relative',
           zIndex: 99,
-        }}>
+        }}
+      >
         <Toolbar
           sx={{
             justifyContent: 'space-between',
-          }}>
+          }}
+        >
           <Box>
             <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleClick} sx={{ mr: 2, display: { laptop: 'none' } }}>
               <MenuIcon />
@@ -74,7 +76,8 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
               display={{
                 mobile: 'none',
                 laptop: 'block',
-              }}>
+              }}
+            >
               {subTitleHeader}
             </Typography>
             <Typography
@@ -86,7 +89,8 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
               display={{
                 mobile: 'none',
                 laptop: 'block',
-              }}>
+              }}
+            >
               {activeSideBarHeader}
             </Typography>
           </Box>
@@ -99,7 +103,8 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
                 display={{
                   mobile: 'none',
                   tablet: 'block',
-                }}>
+                }}
+              >
                 {t('your_website')}:
               </Typography>
               <a href="##" className={classes.weblink}>

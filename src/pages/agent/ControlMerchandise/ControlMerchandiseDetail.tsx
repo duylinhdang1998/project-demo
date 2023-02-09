@@ -4,7 +4,7 @@ import MerchandiseDetailView from 'components/MerchandiseDetailView/MerchandiseD
 import OrderDetailView from 'components/OrderDetailView/OrderDetailView';
 import CheckCircle from 'components/SvgIcon/CheckCircle';
 import LayoutDetail from 'layout/LayoutDetail';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 

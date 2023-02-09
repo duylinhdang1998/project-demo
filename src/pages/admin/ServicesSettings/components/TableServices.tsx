@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
 import AntTable from 'components/AntTable/AntTable';
 import { Service } from 'models/Services';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 import ActionService from './ActionService';

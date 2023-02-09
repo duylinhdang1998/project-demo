@@ -6,7 +6,6 @@ import SendIcon from 'components/SvgIcon/SendIcon';
 import LayoutDetail from 'layout/LayoutDetail';
 import { get } from 'lodash';
 import { Ticket } from 'models/Ticket';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import OrderDetails from './components/OrderDetails';
@@ -38,7 +37,8 @@ export default function DetailTicketPage() {
                       color: '#1AA6EE',
                     },
                   }}
-                  startIcon={<SendIcon fillColor="#1AA6EE" />}>
+                  startIcon={<SendIcon fillColor="#1AA6EE" />}
+                >
                   {t('email_ticket')}
                 </Button>
                 <Button variant="contained" backgroundButton="#1AA6EE" sx={{ padding: '12px 16px' }} startIcon={<PrintIcon />}>

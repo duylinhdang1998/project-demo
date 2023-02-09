@@ -2,7 +2,7 @@ import { Box, Divider, Typography } from '@mui/material';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import LayoutDetail from 'layout/LayoutDetail';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FormAddEvent from './components/FormAddEvent';
 

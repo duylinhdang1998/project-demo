@@ -1,7 +1,6 @@
 import { Box, Divider, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 import StepOne from './FormStep/StepOne';
 import StepOneMultiple from './FormStep/StepOneMultiple';
 import StepThird from './FormStep/StepThird';
@@ -20,10 +19,9 @@ interface StepFormProps {
 }
 
 export default function StepForm({ isMulti }: StepFormProps) {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
 
   const classes = useStyles();
-  const { t } = useTranslation(['routers', 'translation']);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -72,7 +70,8 @@ export default function StepForm({ isMulti }: StepFormProps) {
                   <Typography variant="caption" color={activeStep === index ? '#1AA6EE' : 'inherit'}>
                     {label}
                   </Typography>
-                }></StepLabel>
+                }
+              ></StepLabel>
             </Step>
           );
         })}

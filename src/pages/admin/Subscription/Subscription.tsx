@@ -6,7 +6,6 @@ import 'antd/lib/progress/style/css';
 import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';

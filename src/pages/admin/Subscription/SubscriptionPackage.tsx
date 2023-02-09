@@ -1,7 +1,6 @@
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import Button from 'components/Button/Button';
 import LayoutDetail from 'layout/LayoutDetail';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 import SubscriptionItem from './components/SubscriptionItem';

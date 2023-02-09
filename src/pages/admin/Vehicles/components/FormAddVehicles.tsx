@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import Button from 'components/Button/Button';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
-import React, { memo } from 'react';
+import { memo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { fieldsAdd, fieldsAddRight } from '../constants';
@@ -21,7 +21,7 @@ interface Values {
 function FormAddVehicles() {
   const { control, handleSubmit } = useForm<Values>();
   const { t } = useTranslation(['vehicles', 'translation']);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
   };
@@ -49,7 +49,8 @@ function FormAddVehicles() {
             color: '#1AA6EE',
             width: 120,
           }}
-          onClick={handleCancel}>
+          onClick={handleCancel}
+        >
           {t('translation:cancel')}
         </Button>
         <Button
@@ -59,7 +60,8 @@ function FormAddVehicles() {
           }}
           onClick={handleSubmit(onSubmit)}
           variant="contained"
-          backgroundButton="#1aa6ee">
+          backgroundButton="#1aa6ee"
+        >
           {t('translation:save')}
         </Button>
       </Stack>

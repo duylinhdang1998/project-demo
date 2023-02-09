@@ -1,38 +1,26 @@
-import { InputAdornment, InputBase, InputBaseProps, InputLabel, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import EyeNonIcon from "assets/images/eye-non.svg";
-import EyeIcon from "assets/images/eye.svg";
-import React, { useState } from "react";
-import { Controller, FieldValues, UseControllerProps } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { useStyles } from "./styles";
+import EyeNonIcon from 'assets/images/eye-non.svg';
+import EyeIcon from 'assets/images/eye.svg';
+import { InputAdornment, InputBase, InputBaseProps, InputLabel, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import { useState } from 'react';
+import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useStyles } from './styles';
 
 export interface InputAuthProps<T extends FieldValues> extends InputBaseProps {
   iconStart?: string;
   iconEnd?: string;
   labelText?: string;
-  nameInput: UseControllerProps<T>["name"];
-  control: UseControllerProps<T>["control"];
-  rules?: UseControllerProps<T>["rules"];
+  nameInput: UseControllerProps<T>['name'];
+  control: UseControllerProps<T>['control'];
+  rules?: UseControllerProps<T>['rules'];
   messageErr?: string;
 }
 
-function InputAuth<T extends FieldValues>({
-  id,
-  type,
-  iconStart,
-  labelText,
-  iconEnd,
-  control,
-  nameInput,
-  rules,
-  error,
-  messageErr,
-  ...rest
-}: InputAuthProps<T>) {
+function InputAuth<T extends FieldValues>({ id, type, iconStart, labelText, iconEnd, control, nameInput, rules, error, messageErr, ...rest }: InputAuthProps<T>) {
   const classes = useStyles();
   const [show, setShow] = useState(false);
-  const { t } = useTranslation(["translation"]);
+  const { t } = useTranslation(['translation']);
   const startAdor = !!iconStart && (
     <InputAdornment position="start">
       <img src={iconStart} className={classes.iconStartAdor} alt="start-ador" />
@@ -45,9 +33,9 @@ function InputAuth<T extends FieldValues>({
   };
 
   const endAdor =
-    type === "password" ? (
-      <InputAdornment position="end" onClick={handleShowPass} sx={{ cursor: "pointer" }}>
-        <img src={type === "password" ? renderIconEye : iconEnd} className={classes.iconStartAdor} alt="start-ador" />
+    type === 'password' ? (
+      <InputAdornment position="end" onClick={handleShowPass} sx={{ cursor: 'pointer' }}>
+        <img src={type === 'password' ? renderIconEye : iconEnd} className={classes.iconStartAdor} alt="start-ador" />
       </InputAdornment>
     ) : null;
   return (
@@ -57,13 +45,13 @@ function InputAuth<T extends FieldValues>({
       rules={{
         required: {
           value: true,
-          message: t("error_required", { name: nameInput }),
+          message: t('error_required', { name: nameInput }),
         },
-        ...(type === "email"
+        ...(type === 'email'
           ? {
               pattern: {
                 value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                message: t("error_email"),
+                message: t('error_email'),
               },
             }
           : {}),
@@ -78,7 +66,7 @@ function InputAuth<T extends FieldValues>({
             <InputBase
               {...rest}
               {...field}
-              type={type === "password" ? (show ? "text" : "password") : "text"}
+              type={type === 'password' ? (show ? 'text' : 'password') : 'text'}
               id={id}
               className={classes.input}
               startAdornment={startAdor}

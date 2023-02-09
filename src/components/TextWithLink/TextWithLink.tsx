@@ -1,6 +1,6 @@
 import { Box, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { memo, useCallback } from 'react';
+import { memo, useCallback } from 'react';
 
 interface TextWithLinkProps {
   text: string;

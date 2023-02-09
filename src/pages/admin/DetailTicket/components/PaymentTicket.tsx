@@ -1,7 +1,7 @@
 import { Divider, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Theme, Typography, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const columnsPassengers = [

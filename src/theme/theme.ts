@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles';
+import { CSSProperties } from 'react';
 
 declare module '@mui/material/styles' {
   interface BreakpointOverrides {
@@ -16,16 +17,16 @@ declare module '@mui/material/styles' {
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
-    headerTable?: React.CSSProperties;
-    textBold?: React.CSSProperties;
-    price?: React.CSSProperties;
+    headerTable?: CSSProperties;
+    textBold?: CSSProperties;
+    price?: CSSProperties;
   }
 
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions {
-    headerTable?: React.CSSProperties;
-    textBold?: React.CSSProperties;
-    price?: React.CSSProperties;
+    headerTable?: CSSProperties;
+    textBold?: CSSProperties;
+    price?: CSSProperties;
   }
 }
 
