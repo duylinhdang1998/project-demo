@@ -11,7 +11,7 @@ export const fieldsAddPackageSetting: Field[] = [
   {
     id: uuidv4(),
     label: 'description',
-    type: 'text',
+    type: 'textarea',
     required: true,
   },
 ];

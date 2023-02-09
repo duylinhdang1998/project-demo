@@ -7,7 +7,7 @@ export interface Option {
 export interface Field {
   id?: string;
   label?: string;
-  type?: 'email' | 'text' | 'select' | 'datetime' | 'number' | 'file' | 'image' | 'checkbox';
+  type?: 'email' | 'text' | 'select' | 'datetime' | 'number' | 'file' | 'image' | 'checkbox' | 'textarea';
   placeholder?: string;
   options?: Option[];
   prefix?: string;

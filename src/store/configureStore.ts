@@ -29,7 +29,7 @@ if (env.isDevMode) {
 const store = configureStore({
   reducer: reducers,
   middleware(getDefaultMiddleware) {
-    return getDefaultMiddleware().concat(...middlewares);
+    return getDefaultMiddleware({ serializableCheck: false }).concat(...middlewares);
   },
 });
 sagaMiddleware.run(rootSaga);

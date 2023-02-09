@@ -64,4 +64,15 @@ export const useStyles = makeStyles((theme: Theme) => ({
     marginTop: '4px !important',
     color: theme.palette.error.main,
   },
+  inputArea: {
+    border: '1px solid #f7f7f7',
+    borderRadius: '4px !important',
+    backgroundColor: '#fff',
+    fontSize: '14px !important',
+    width: '100%',
+    padding: '12px 14px',
+    '&:focus-visible': {
+      outline: 'none !important',
+    },
+  },
 }));

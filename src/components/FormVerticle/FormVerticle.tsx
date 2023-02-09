@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, Grid, InputBase, InputBaseProps, InputLabel, Stack, Typography } from '@mui/material';
+import { Checkbox, FormControlLabel, Grid, InputBase, InputBaseProps, InputLabel, Stack, TextareaAutosize, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
@@ -190,6 +190,34 @@ export default function FormVerticle<T extends FieldValues>({
               required: {
                 value: i.required ?? false,
                 message: t('error_required', { name: i.label }),
+              },
+            }}
+          />
+        );
+      case 'textarea':
+        return (
+          <Controller
+            name={i.label as Path<T>}
+            control={control}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel htmlFor={i.label} className={classes.label}>
+                    {t(`${i.label}`)}
+                  </InputLabel>
+                  <TextareaAutosize minRows={10} maxRows={10} id={i.label} {...field} placeholder={t(`${i.label}`)} className={classes.inputArea}  />
+                  {!!error && (
+                    <Typography component="p" className={classes.error} fontSize={12}>
+                      {messageErr}
+                    </Typography>
+                  )}
+                </Box>
+              );
+            }}
+            rules={{
+              required: {
+                value: i.required ?? false,
+                message: messageErr,
               },
             }}
           />
