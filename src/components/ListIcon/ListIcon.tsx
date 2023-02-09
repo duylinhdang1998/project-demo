@@ -3,9 +3,8 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import 'assets/icons/fontawesome/css/all.min.css';
 import icons from 'assets/icons/icons.json';
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMount } from 'react-use';
 import { GridCellProps } from 'react-virtualized';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import Grid from 'react-virtualized/dist/commonjs/Grid';
@@ -70,11 +69,10 @@ function ListIcon() {
     });
   };
 
-  useMount(() => {
+  useEffect(() => {
     const result = getIconsType();
-    console.log({ result });
     setIconsList(result);
-  });
+  }, []);
 
   const handleChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
