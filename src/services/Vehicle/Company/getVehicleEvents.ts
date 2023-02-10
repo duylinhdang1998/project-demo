@@ -1,20 +1,20 @@
 import { AxiosResponse } from 'axios';
 import { Pagination, Searcher, Sorter } from 'services/@types/SearchParams';
-import { PackageSetting } from 'services/models/PackageSetting';
+import { VehicleEvent } from 'services/models/Vehicle';
 import { getSearchParams } from 'services/utils/getSearchParams';
 import { getSortParams } from 'services/utils/getSortParams';
 import fetchAPI from 'utils/fetchAPI';
 
-export interface GetPackageSettings {
+export interface GetVehicleEvents {
   page: Pagination;
-  sorter: Sorter<PackageSetting>;
-  searcher: Searcher<PackageSetting>;
+  sorter: Sorter<VehicleEvent>;
+  searcher: Searcher<VehicleEvent>;
 }
 
 interface ResponseSuccess {
   code: number;
   data: {
-    hits: PackageSetting[];
+    hits: VehicleEvent[];
     pagination: {
       totalRows: number;
       totalPages: number;
@@ -23,9 +23,9 @@ interface ResponseSuccess {
 }
 
 export const RECORDS_PER_PAGE = 8;
-export const getPackageSettings = async ({ page, sorter, searcher }: GetPackageSettings): Promise<ResponseSuccess> => {
+export const getVehicleEvents = async ({ page, sorter, searcher }: GetVehicleEvents): Promise<ResponseSuccess> => {
   const response: AxiosResponse<ResponseSuccess> = await fetchAPI.request({
-    url: '/v1.0/company/package-setting',
+    url: '/v1.0/company/vehicle-events',
     params: {
       limit: RECORDS_PER_PAGE,
       offset: page * RECORDS_PER_PAGE,

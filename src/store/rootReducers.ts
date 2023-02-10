@@ -3,6 +3,8 @@ import { contentManagerReducer } from './contentManager/contentManagerSlice';
 import { officesManagerReducer } from './officesManager/officesManagerSlice';
 import { packageSettingsReducer } from './packageSettings/packageSettingsSlice';
 import { subscriptionsReducer } from './subscriptions/subscriptionsSlice';
+import { vehicleEventsReducer } from './vehicles/vehicleEventsSlice';
+import { vehiclesReducer } from './vehicles/vehiclesSlice';
 
 const reducers = {
   auth: authReducer,
@@ -10,6 +12,8 @@ const reducers = {
   packageSettings: packageSettingsReducer,
   subscriptions: subscriptionsReducer,
   contentManager: contentManagerReducer,
+  vehicles: vehiclesReducer,
+  vehicleEvents: vehicleEventsReducer,
 };
 
 export default reducers;

@@ -51,7 +51,7 @@ export default function Vehicles() {
 
   return (
     <Box>
-      <HeaderLayout activeSideBarHeader={t('vehicles')} />
+      <HeaderLayout activeSideBarHeader={t('vehicles:vehicles')} />
       <Box padding="24px">
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
@@ -77,7 +77,7 @@ export default function Vehicles() {
           {!isAgent && (
             <Grid item xs={12} md={4} sx={{ justifyContent: 'flex-end', display: 'flex' }}>
               <Button backgroundButton="#33CC7F" startIcon={<AddIcon />} sx={{ alignSelf: 'flex-end' }} className={classes.btnAdd} onClick={handleAdd}>
-                {t('translation:add_new', { type: t('vehicle').toLowerCase() })}
+                {t('translation:add_new', { type: t('vehicles:vehicle').toLowerCase() })}
               </Button>
             </Grid>
           )}

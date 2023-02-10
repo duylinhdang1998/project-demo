@@ -4,8 +4,9 @@ import { contentManagerSagas } from './contentManager/sagas';
 import { officesManagerSagas } from './officesManager/sagas';
 import { packageSettingsSagas } from './packageSettings/sagas';
 import { subscriptionsSagas } from './subscriptions/sagas';
+import { vehicleEventsSagas, vehiclesSagas } from './vehicles/sagas';
 
-const sagas = [...authSagas, ...officesManagerSagas, ...packageSettingsSagas, ...subscriptionsSagas, ...contentManagerSagas];
+const sagas = [...authSagas, ...officesManagerSagas, ...packageSettingsSagas, ...subscriptionsSagas, ...contentManagerSagas, ...vehiclesSagas, ...vehicleEventsSagas];
 
 // https://github.com/redux-saga/redux-saga/issues/760#issuecomment-273737022
 const makeRestartable = (saga: any) => {
