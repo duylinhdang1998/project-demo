@@ -2,8 +2,9 @@ import { all, call, spawn, delay } from 'redux-saga/effects';
 import { authSagas } from './auth/sagas';
 import { officesManagerSagas } from './officesManager/sagas';
 import { packageSettingsSagas } from './packageSettings/sagas';
+import { subscriptionsSagas } from './subscriptions/sagas';
 
-const sagas = [...authSagas, ...officesManagerSagas, ...packageSettingsSagas];
+const sagas = [...authSagas, ...officesManagerSagas, ...packageSettingsSagas, ...subscriptionsSagas];
 
 // https://github.com/redux-saga/redux-saga/issues/760#issuecomment-273737022
 const makeRestartable = (saga: any) => {

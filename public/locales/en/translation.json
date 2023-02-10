@@ -56,5 +56,7 @@
   "internal_server_error": "Something went wrong!",
   "delete_record_title": "Are you sure to want to delete?",
   "delete_record_message": "If you confirm the simple transaction you will not have a chance to undo it.",
-  "edit_type": "Edit {{type}}"
+  "edit_type": "Edit {{type}}",
+  "monthly": "month",
+  "yearly": "year"
 }

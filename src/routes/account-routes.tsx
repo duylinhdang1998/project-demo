@@ -76,7 +76,7 @@ export const AccountRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'subscription-payment',
+    path: 'subscription-payment/:subscriptionType',
     element: (
       <RequiredAuth>
         <Page.SubscriptionPayment />
