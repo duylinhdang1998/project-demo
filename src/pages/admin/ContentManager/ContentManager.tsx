@@ -1,25 +1,24 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { Box, Divider, InputLabel, TextareaAutosize, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import CardWhite from 'components/CardWhite/CardWhite';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import { Field } from 'models/Field';
-import { useState } from 'react';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { v4 as uuid } from 'uuid';
-
-const fields: Field[] = [
-  { id: uuid(), type: 'text', label: 'main_office_postal_address' },
-  { id: uuid(), type: 'text', label: 'main_office_zip_code' },
-  { id: uuid(), type: 'text', label: 'main_office_city' },
-  { id: uuid(), type: 'text', label: 'phone_number' },
-  { id: uuid(), type: 'text', label: 'email' },
-];
+import { toast } from 'react-toastify';
+import { Content } from 'services/models/Content';
+import { contentManagerActions } from 'store/contentManager/contentManagerSlice';
+import { selectContentManager } from 'store/contentManager/selectors';
+import { useToastStyle } from 'theme/toastStyles';
+import { footerFields, sidebarFields } from './constants';
 
 const useStyles = makeStyles(() => ({
   label: {
@@ -40,36 +39,82 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+type Values = Pick<Content, 'city' | 'email' | 'phone' | 'content' | 'footerText' | 'postalAddress' | 'zipCode'>;
+const fieldKeys: Array<keyof Values> = ['city', 'email', 'phone', 'content', 'footerText', 'postalAddress', 'zipCode'];
+
+// FIXME: Chưa lắp upload resource vì cần đọc docs ckeditor
 function ContentManager() {
   const { t } = useTranslation(['account', 'translation']);
-  const [open, setOpen] = useState(false);
-  const { control } = useForm();
-
+  const { control, getValues, handleSubmit, setValue } = useForm<Values>();
   const classes = useStyles();
+  const toastClass = useToastStyle();
+
+  const [open, setOpen] = useState(false);
+
+  const { statusGetContent, statusUpdateContent, content } = useAppSelector(selectContentManager);
+  const dispatch = useAppDispatch();
 
   const handleClose = () => setOpen(false);
-
   const handleCancel = () => setOpen(true);
+
+  const onSubmit = (values: Values) => {
+    dispatch(
+      contentManagerActions.updateContentRequest({
+        data: values,
+        onSuccess: () => {
+          toast(<ToastCustom type="success" text={t('account:content_manager_updated')} />, {
+            className: toastClass.toastSuccess,
+          });
+        },
+        onFailure: () => {
+          toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+            className: toastClass.toastSuccess,
+          });
+        },
+      }),
+    );
+  };
+
+  useEffect(() => {
+    dispatch(contentManagerActions.getContentRequest({}));
+  }, []);
+
+  useEffect(() => {
+    if (content) {
+      fieldKeys.forEach((key) => {
+        setValue(key, content[key]);
+      });
+    }
+  }, [content]);
+
+  // FIXME: Retry screen
+  if (statusGetContent === 'failure') {
+    return <button onClick={() => dispatch(contentManagerActions.getContentRequest({}))}>Retry</button>;
+  }
+
   return (
     <Box>
-      <HeaderLayout activeSideBarHeader={t('subcription')} />
+      <HeaderLayout activeSideBarHeader={t('account:content_manager')} />
       <Box p="24px">
-        <CardWhite title={t('content_manager')}>
+        <CardWhite title={t('account:content_manager')}>
           <Typography fontWeight={700} color="#0C1132">
-            {t('content')}
+            {t('account:content')}
           </Typography>
           <Box my="20px">
             <CKEditor
+              onReady={(editor) => {
+                // FIXME: Liệu có lỗi với trường hợp nào đấy không?
+                editor.setData(getValues().content);
+              }}
               editor={ClassicEditor}
-              data="<p>Hello from CKEditor 5!</p>"
               config={{
                 ckfinder: {
                   uploadUrl: 'https://example.com/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&responseType=json',
                 },
               }}
-              onChange={(event, editor) => {
+              onChange={(_, editor) => {
                 const data = editor.getData();
-                console.log({ event, editor, data });
+                setValue('content', data);
               }}
             />
           </Box>
@@ -78,23 +123,25 @@ function ContentManager() {
             <Typography fontWeight={700} color="#0C1132" my="10px">
               {t('translation:sideBar')}
             </Typography>
-            <FormVerticle control={control} fields={fields} grid isGridHorizon filterKey="account" />
+            <FormVerticle control={control} fields={sidebarFields} grid isGridHorizon filterKey="account" />
           </Box>
           <Divider sx={{ borderStyle: 'dashed' }} />
           <Box my="20px">
             <Typography fontWeight={700} color="#0C1132" my="10px">
               {t('translation:footer')}
             </Typography>
-            <InputLabel htmlFor="description" className={classes.label}>
-              {t(`descriptions`)}
-            </InputLabel>
-            <TextareaAutosize minRows={10} maxRows={10} placeholder={t(`descriptions`)} id="description" className={classes.inputArea} />
+            <FormVerticle control={control} fields={footerFields} filterKey="account" />
           </Box>
-          <ComboButton onCancel={handleCancel} />
+          <ComboButton onSave={handleSubmit(onSubmit)} isLoading={statusGetContent === 'loading' || statusUpdateContent === 'loading'} onCancel={handleCancel} />
         </CardWhite>
       </Box>
 
-      <DialogConfirm openDialog={open} title={t('translation:cancel_type', { type: t('content') })} subTitle={t('translation:leave_page')} onClose={handleClose} />
+      <DialogConfirm
+        openDialog={open}
+        title={t('translation:cancel_type', { type: t('account:content') })}
+        subTitle={t('translation:leave_page')}
+        onClose={handleClose}
+      />
     </Box>
   );
 }
