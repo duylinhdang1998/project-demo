@@ -9,21 +9,15 @@
     "**/.docusaurus": true,
     "**/node_modules": true
   },
-  "[typescriptreact]": {
-    "editor.formatOnSave": false
-  },
   "[markdown]": {
     "editor.formatOnSave": false
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
+    "source.fixAll.tslint": true,
     "source.fixAll": true
   },
-  "scss.scannerExclude": [
-    "**/.git"
-  ],
-  "eslint.workingDirectories": [
-    "src"
-  ],
+  "scss.scannerExclude": ["**/.git"],
+  "eslint.workingDirectories": ["src"],
   "typescript.tsdk": "node_modules\\typescript\\lib"
 }

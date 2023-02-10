@@ -1,9 +1,3 @@
 {
-  "recommendations": [
-    "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint",
-    "mrmlnc.vscode-scss",
-    "styled-components.vscode-styled-components",
-    "wayou.vscode-todo-highlight"
-  ]
+  "recommendations": ["esbenp.prettier-vscode", "dbaeumer.vscode-eslint"]
 }

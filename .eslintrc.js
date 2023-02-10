@@ -9,7 +9,11 @@ module.exports = {
     jest: true,
     node: true,
   },
-  settings: {},
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:@typescript-eslint/recommended'],
   plugins: [
     '@typescript-eslint',
