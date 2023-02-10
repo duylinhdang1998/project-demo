@@ -1,17 +1,17 @@
 import { SorterResult } from 'antd/lib/table/interface';
-import { Sorter } from 'services/@types/SearchParams';
+import { AnyObject, Sorter } from 'services/@types/SearchParams';
 
 interface GetSorterParamsFromAntdTable<T> {
   sorter: SorterResult<T> | Array<SorterResult<T>>;
 }
-export const getSorterParamsFromAntdTable = <T>({ sorter }: GetSorterParamsFromAntdTable<T>): Sorter => {
-  const sorter_: Sorter = Array.isArray(sorter)
-    ? sorter.reduce<Sorter>((res, sortComlumn) => {
+export const getSorterParamsFromAntdTable = <T extends AnyObject>({ sorter }: GetSorterParamsFromAntdTable<T>): Sorter<T> => {
+  const sorter_: Sorter<T> = Array.isArray(sorter)
+    ? sorter.reduce<Sorter<T>>((res, sortComlumn) => {
         if (sortComlumn.columnKey) {
           return {
             ...res,
             [sortComlumn.columnKey]: sortComlumn.order === 'ascend' ? 'acs' : 'desc',
-          } as Sorter;
+          } as Sorter<T>;
         }
         return res;
       }, {})

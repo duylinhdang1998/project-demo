@@ -5,7 +5,7 @@ import fetchAPI from 'utils/fetchAPI';
 
 export interface GetOffices {
   page: Pagination;
-  sorter: Sorter;
+  sorter: Sorter<Office>;
   searcher: Searcher<Office>;
 }
 
@@ -22,7 +22,7 @@ interface ResponseSuccess {
 
 export const RECORDS_PER_PAGE = 8;
 export const getOffices = async ({ page, sorter, searcher }: GetOffices): Promise<ResponseSuccess> => {
-  const sortParams = Object.keys(sorter).reduce<Sorter>((res, sorterKey) => {
+  const sortParams = Object.keys(sorter).reduce<Sorter<Office>>((res, sorterKey) => {
     const key = `${sorterKey}[sort]`;
     return {
       ...res,

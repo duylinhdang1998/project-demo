@@ -5,7 +5,7 @@ import fetchAPI from 'utils/fetchAPI';
 
 export interface GetPackageSettings {
   page: Pagination;
-  sorter: Sorter;
+  sorter: Sorter<PackageSetting>;
   searcher: Searcher<PackageSetting>;
 }
 
@@ -22,7 +22,7 @@ interface ResponseSuccess {
 
 export const RECORDS_PER_PAGE = 8;
 export const getPackageSettings = async ({ page, sorter, searcher }: GetPackageSettings): Promise<ResponseSuccess> => {
-  const sortParams = Object.keys(sorter).reduce<Sorter>((res, sorterKey) => {
+  const sortParams = Object.keys(sorter).reduce<Sorter<PackageSetting>>((res, sorterKey) => {
     const key = `${sorterKey}[sort]`;
     return {
       ...res,
