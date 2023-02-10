@@ -1,11 +1,11 @@
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import Button from 'components/Button/Button';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { get } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
 import { PlanDuration } from './@types/PlanDuration';
@@ -13,11 +13,9 @@ import SubscriptionItem from './components/SubscriptionItem';
 import { planDurations } from './constants';
 import { getPlanDurationsFromSubscription } from './utils/getPlanDurationsFromSubscription';
 
-
-
 export default function SubscriptionPackage() {
   const { t } = useTranslation(['account', 'translation']);
-  const { statusGetSubscriptions, subscriptions } = useSelector(selectSubscriptions);
+  const { statusGetSubscriptions, subscriptions } = useAppSelector(selectSubscriptions);
   const dispatch = useAppDispatch();
   const [planDurationState, setPlanDurationState] = useState<PlanDuration>('monthly');
 
@@ -72,6 +70,11 @@ export default function SubscriptionPackage() {
   // FIXME: Loading screen
   if (statusGetSubscriptions === 'loading') {
     return <h1>Loading...</h1>;
+  }
+
+  // FIXME: Retry screen
+  if (statusGetSubscriptions === 'failure') {
+    return <button onClick={() => dispatch(subscriptionsActions.getSubscriptionsRequest({}))}>Retry</button>;
   }
 
   return (

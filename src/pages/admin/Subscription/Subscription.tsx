@@ -27,11 +27,11 @@ export default function Subscription() {
   };
   return (
     <Box>
-      <HeaderLayout activeSideBarHeader={t('subcription')} />
+      <HeaderLayout activeSideBarHeader={t('account:subcription')} />
       <Box p="24px">
-        <CardWhite title={t('my_subscription')}>
+        <CardWhite title={t('account:my_subscription')}>
           <Typography fontWeight={700} color="#0C1132">
-            {t('free_trial')}
+            {t('account:free_trial')}
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
@@ -62,7 +62,7 @@ export default function Subscription() {
             </Grid>
           </Grid>
           <Typography sx={{ margin: '16px 0' }} variant="body2">
-            {t('after_trial_end')}
+            {t('account:after_trial_end')}
           </Typography>
           <Button sx={{ margin: '24px 0', alignSelf: 'flex-end', padding: '10px 14px', float: 'right' }} backgroundButton="#1AA6EE" onClick={handleClick}>
             {t('translation:upgrade_now')}

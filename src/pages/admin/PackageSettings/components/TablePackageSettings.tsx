@@ -61,7 +61,8 @@ function TablePackageSettings() {
             sx={{ cursor: 'pointer' }}
             onClick={() => {
               handleOpenDialogDetail(record);
-            }}>
+            }}
+          >
             {value}
           </Typography>
         ),
@@ -128,7 +129,8 @@ function TablePackageSettings() {
                 color: '#1AA6EE',
                 padding: '10px 40px',
               }}
-              onClick={handleCloseDialogDelete}>
+              onClick={handleCloseDialogDelete}
+            >
               {t('translation:cancel')}
             </Button>
             <Button
@@ -151,12 +153,15 @@ function TablePackageSettings() {
                         handleCloseDialogDelete();
                       },
                       onFailure: () => {
-                        toast.error(t('translation:internal_server_error'));
+                        toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+                          className: toastClass.toastSuccess,
+                        });
                       },
                     }),
                   );
                 }
-              }}>
+              }}
+            >
               {t('translation:delete')}
             </Button>
           </Stack>

@@ -5,11 +5,11 @@ import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import CreditCard from 'components/CreditCard/CreditCard';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { get } from 'lodash';
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { SubscriptionType } from 'services/models/Subscription';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
@@ -43,7 +43,7 @@ const SubscriptionPayment: FC = () => {
   const classes = useStyles();
   const [planDurationState, setPlanDurationState] = useState<PlanDuration>('monthly');
   const [method, setMethod] = useState('credit');
-  const [creaditVal, setCreditVal] = useState({
+  const [_, setCreditVal] = useState({
     cvc: '',
     expiry: '',
     focus: '',
@@ -51,13 +51,13 @@ const SubscriptionPayment: FC = () => {
     number: '',
   });
 
-  const { statusGetPlans, plans } = useSelector(selectSubscriptions);
+  const { statusGetPlans, plans } = useAppSelector(selectSubscriptions);
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
   const { subscriptionType } = useParams();
 
-  const handleChangeMethod = (event: React.ChangeEvent<HTMLInputElement>, newValue: string) => {
+  const handleChangeMethod = (_: ChangeEvent<HTMLInputElement>, newValue: string) => {
     setMethod(newValue);
   };
 
@@ -75,14 +75,7 @@ const SubscriptionPayment: FC = () => {
     );
   };
 
-  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    setCreditVal((prev) => ({
-      ...prev,
-      focus: e.target.name,
-    }));
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCreditVal((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -124,6 +117,21 @@ const SubscriptionPayment: FC = () => {
     return <h1>Loading...</h1>;
   }
 
+  // FIXME: Retry screen
+  if (statusGetPlans === 'failure') {
+    return (
+      <button
+        onClick={() => {
+          subscriptionsActions.getPlansRequest({
+            subscriptionType: subscriptionType as SubscriptionType,
+          });
+        }}
+      >
+        Retry
+      </button>
+    );
+  }
+
   // FIXME: Empty screen
   if (!plans.length) {
     return <h1>WTF</h1>;
@@ -131,11 +139,11 @@ const SubscriptionPayment: FC = () => {
 
   return (
     <LayoutDetail title={t('account:subcription')}>
-      <CardWhite title={t('subcribe_to_tbus_plan')}>
+      <CardWhite title={t('account:subcribe_to_tbus_plan')}>
         <RadioGroup row name="subscription" value={planDurationState} onChange={handleChangePlanDuration}>
           <Stack direction="row" alignItems="center" spacing={3} width="100%">
             {planDurations.map((planDuration) => {
-              const label = planDuration === 'monthly' ? t('monthly_payment') : t('yearly_payment');
+              const label = planDuration === 'monthly' ? t('account:monthly_payment') : t('account:yearly_payment');
               const price = get(getPlanDurationsFromSubscriptionPlans(plans), planDuration).price;
               return (
                 <label htmlFor={planDuration} className={classes.label}>

@@ -65,7 +65,9 @@ export default function AddPackageSettings() {
             description: values.description,
           },
           onFailure: () => {
-            toast.error(t('translation:internal_server_error'));
+            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+              className: toastClass.toastSuccess,
+            });
           },
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('packageSettings:package_settings_updated')} />, {
@@ -83,7 +85,9 @@ export default function AddPackageSettings() {
             description: values.description,
           },
           onFailure: () => {
-            toast.error(t('translation:internal_server_error'));
+            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+              className: toastClass.toastSuccess,
+            });
           },
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('packageSettings:package_settings_created')} />, {
@@ -117,6 +121,8 @@ export default function AddPackageSettings() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusGetPackageSetting, packageSetting, isEditAction]);
+
+  // FIXME: Retry screen
 
   return (
     <Box>

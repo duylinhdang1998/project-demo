@@ -2,9 +2,9 @@ import { Box } from '@mui/material';
 import BoxSearch from 'components/BoxSearch/BoxSearch';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { officesManagerActions } from 'store/officesManager/officesManagerSlice';
 import { selectOfficesManager } from 'store/officesManager/selectors';
@@ -14,7 +14,7 @@ export default function OfficeManager() {
   const { t } = useTranslation(['account', 'translation']);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { currentSearcher } = useSelector(selectOfficesManager);
+  const { currentSearcher } = useAppSelector(selectOfficesManager);
 
   const handleAdd = () => {
     navigate('/account/add-office-manager');
@@ -30,6 +30,8 @@ export default function OfficeManager() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // FIXME: Retry screen
 
   return (
     <Box>

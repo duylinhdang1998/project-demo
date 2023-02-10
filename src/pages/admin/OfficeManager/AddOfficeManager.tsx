@@ -4,11 +4,11 @@ import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { CreateOffice } from 'services/OfficesManager/Company/createOffice';
@@ -32,7 +32,7 @@ export default function AddOfficeManager() {
   } = useForm<Values>();
   const [openDialog, setOpenDialog] = useState(false);
   const dispatch = useAppDispatch();
-  const { statusCreateOffice, office, statusGetOffice, queueUpdateOffice } = useSelector(selectOfficesManager);
+  const { statusCreateOffice, office, statusGetOffice, queueUpdateOffice } = useAppSelector(selectOfficesManager);
   const { officeId } = useParams();
   const navigate = useNavigate();
 
@@ -69,7 +69,9 @@ export default function AddOfficeManager() {
           },
           // FIXME: Hiển thị lỗi giá trị đã tồn tại -> Backend đang check uniq nhưng chưa trả về thông tin lỗi
           onFailure: () => {
-            toast.error(t('translation:internal_server_error'));
+            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+              className: toastClass.toastSuccess,
+            });
           },
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('account:office_manager_updated')} />, {
@@ -93,7 +95,9 @@ export default function AddOfficeManager() {
           },
           // FIXME: Hiển thị lỗi giá trị đã tồn tại -> Backend đang check uniq nhưng chưa trả về thông tin lỗi
           onFailure: () => {
-            toast.error(t('translation:internal_server_error'));
+            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+              className: toastClass.toastSuccess,
+            });
           },
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('account:office_manager_created')} />, {
@@ -128,10 +132,13 @@ export default function AddOfficeManager() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusGetOffice, office, isEditAction]);
 
+  // FIXME: Retry screen
+
   return (
     <LayoutDetail
       subTitle={t('account:offices_manager')}
-      title={isEditAction ? t('translation:edit_type', { type: t('account:office') }) : t('translation:create_new', { type: t('account:office') })}>
+      title={isEditAction ? t('translation:edit_type', { type: t('account:office') }) : t('translation:create_new', { type: t('account:office') })}
+    >
       <Box width="100%" display="flex" justifyContent="center">
         <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
           <Typography color="#0c1132" fontWeight={700}>

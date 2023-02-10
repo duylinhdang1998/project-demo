@@ -2,9 +2,9 @@ import { Box } from '@mui/system';
 import BoxSearch from 'components/BoxSearch/BoxSearch';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { packageSettingsActions } from 'store/packageSettings/packageSettingsSlice';
 import { selectPackageSettings } from 'store/packageSettings/selectors';
@@ -14,7 +14,7 @@ export default function PackageSettings() {
   const { t } = useTranslation(['packageSettings', 'translation']);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { currentSearcher } = useSelector(selectPackageSettings);
+  const { currentSearcher } = useAppSelector(selectPackageSettings);
 
   const handleAdd = () => {
     navigate('/admin/add-package-setting');
@@ -30,6 +30,8 @@ export default function PackageSettings() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // FIXME: Retry screen
 
   return (
     <Box>
