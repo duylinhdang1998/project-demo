@@ -57,10 +57,10 @@ function TableDashboard() {
                   {row.times}
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
-                  {row.eco_seats}
+                  {row.ECOseats}
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
-                  {row.vip_seats}
+                  {row.VIPseats}
                 </TableCell>
               </TableRow>
             );

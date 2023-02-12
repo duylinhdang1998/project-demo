@@ -9,7 +9,7 @@ import { Controller, FieldError, FieldValues, Path, UseControllerProps } from 'r
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
 import { useStyles } from './styles';
-
+import cx from 'classnames';
 export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
   fields?: Field[];
   inputProps?: InputBaseProps;
@@ -87,10 +87,15 @@ export default function FormVerticle<T extends FieldValues>({
                 <InputLabel htmlFor={i.label} className={classes.label}>
                   {t(`${i.label}`)}
                 </InputLabel>
-                <Box className={classes.inputNumberWrap}>
+                <Box className={cx(classes.inputNumberWrap, !!error ? classes.inputError : '')}>
                   {!!i.prefix && <span className={classes.prefix}>{i.prefix}</span>}
-                  <input {...field} id={i.label} min={0} defaultValue={1} type="number" className={classes.inputNumber} />
+                  <input {...field} id={i.label} min={0} type="number" className={classes.inputNumber} />
                 </Box>
+                {!!error && (
+                  <Typography component="p" className={classes.error} fontSize={12}>
+                    {messageErr}
+                  </Typography>
+                )}
               </Box>
             )}
             rules={{
@@ -142,12 +147,14 @@ export default function FormVerticle<T extends FieldValues>({
           <Controller
             name={i.label as Path<T>}
             control={control}
-            render={() => (
-              <Box>
-                <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                <UploadImage />
-              </Box>
-            )}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <UploadImage />
+                </Box>
+              );
+            }}
             rules={{
               required: {
                 value: i.required ?? false,
@@ -205,7 +212,7 @@ export default function FormVerticle<T extends FieldValues>({
                   <InputLabel htmlFor={i.label} className={classes.label}>
                     {t(`${i.label}`)}
                   </InputLabel>
-                  <TextareaAutosize minRows={10} maxRows={10} id={i.label} {...field} placeholder={t(`${i.label}`)} className={classes.inputArea}  />
+                  <TextareaAutosize minRows={10} maxRows={10} id={i.label} {...field} placeholder={t(`${i.label}`)} className={classes.inputArea} />
                   {!!error && (
                     <Typography component="p" className={classes.error} fontSize={12}>
                       {messageErr}

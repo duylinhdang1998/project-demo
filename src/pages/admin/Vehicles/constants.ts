@@ -9,8 +9,8 @@ const departureOptions: Option[] = [
 
 export const fieldsSearch: Field[] = [
   { id: uuidv4(), label: 'vehicle', options: departureOptions, type: 'select' },
-  { id: uuidv4(), label: 'registration_id', type: 'text' },
-  { id: uuidv4(), label: 'route_id', type: 'text' },
+  { id: uuidv4(), label: 'registrationId', type: 'text' },
+  { id: uuidv4(), label: 'routeId', type: 'text' },
 ];
 
 export const fieldsAdd: Field[] = [
@@ -18,26 +18,31 @@ export const fieldsAdd: Field[] = [
     id: uuidv4(),
     label: 'brand',
     type: 'text',
+    required: true,
   },
   {
     id: uuidv4(),
     label: 'model',
     type: 'text',
+    required: true,
   },
   {
     id: uuidv4(),
-    label: 'registration_id',
+    label: 'registrationId',
     type: 'text',
+    required: true,
   },
   {
     id: uuidv4(),
-    label: 'eco_seats',
+    label: 'ECOseats',
     type: 'number',
+    required: true,
   },
   {
     id: uuidv4(),
-    label: 'vip_seats',
+    label: 'VIPseats',
     type: 'number',
+    required: true,
   },
 ];
 

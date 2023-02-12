@@ -138,7 +138,7 @@ const SubscriptionPayment: FC = () => {
   }
 
   return (
-    <LayoutDetail title={t('account:subcription')}>
+    <LayoutDetail title={t('account:subscription')}>
       <CardWhite title={t('account:subcribe_to_tbus_plan')}>
         <RadioGroup row name="subscription" value={planDurationState} onChange={handleChangePlanDuration}>
           <Stack direction="row" alignItems="center" spacing={3} width="100%">

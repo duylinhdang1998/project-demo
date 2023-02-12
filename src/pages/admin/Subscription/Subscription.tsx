@@ -27,7 +27,7 @@ export default function Subscription() {
   };
   return (
     <Box>
-      <HeaderLayout activeSideBarHeader={t('account:subcription')} />
+      <HeaderLayout activeSideBarHeader={t('account:subscription')} />
       <Box p="24px">
         <CardWhite title={t('account:my_subscription')}>
           <Typography fontWeight={700} color="#0C1132">

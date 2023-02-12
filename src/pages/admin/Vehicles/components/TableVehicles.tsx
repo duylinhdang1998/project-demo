@@ -1,26 +1,28 @@
-import AlertIcon from 'assets/images/alert-circle.svg';
 import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
+import AlertIcon from 'assets/images/alert-circle.svg';
 import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
 import BookmarkIcon from 'components/SvgIcon/BookmarkIcon';
 import CirclePlusIcon from 'components/SvgIcon/CirclePlusIcon';
 import DeleteIcon from 'components/SvgIcon/DeleteIcon';
 import EditIcon from 'components/SvgIcon/EditIcon';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { isEmpty } from 'lodash';
-import { VehicleColumn } from 'models/Vehicles';
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { selectAuth } from 'store/auth/selectors';
-import { v4 as uuid } from 'uuid';
 import { Vehicle } from 'services/models/Vehicle';
+import { RECORDS_PER_PAGE } from 'services/Vehicle/Company/getVehicles';
+import { selectAuth } from 'store/auth/selectors';
 import { selectVehicles } from 'store/vehicles/selectors';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
-import { useAppDispatch } from 'hooks/useAppDispatch';
+import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
+import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
+import { v4 as uuid } from 'uuid';
 
 const useStyles = makeStyles(() => ({
   iconAlert: {
@@ -29,26 +31,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const dataSource: VehicleColumn[] = [];
-
-for (let i = 0; i < 10; i++) {
-  dataSource.push({
-    id: uuid(),
-    vehicle: 'Brand - Model',
-    registration_id: 'DX727AM',
-    eco_seats: 10,
-    vip_seats: 12,
-    route_id: '12',
-  });
-}
-
 function TableVehicles() {
   const classes = useStyles();
   const { t } = useTranslation(['vehicles', 'translation']);
   const navigate = useNavigate();
 
   const { userInfo } = useAppSelector(selectAuth);
-  const { statusGetVehicles, vehicles } = useAppSelector(selectVehicles);
+  const { statusGetVehicles, vehicles, currentPage, currentSearcher, totalRows } = useAppSelector(selectVehicles);
   const dispatch = useAppDispatch();
 
   const isAgent = useMemo(() => userInfo?.role === 'agent', [userInfo]);
@@ -98,6 +87,7 @@ function TableVehicles() {
         render: (_, record) => (
           <Box display="flex" alignItems="center">
             <Box mx="5px">
+              {/* FIXME: Cái này có phải 1 trường của request k hay FE fix cứng? */}
               <img src={AlertIcon} className={classes.iconAlert} alt="" />
             </Box>
             <Box mx="5px">
@@ -109,35 +99,35 @@ function TableVehicles() {
             </Box>
           </Box>
         ),
-        sorter: (a, b) => 0,
+        sorter: () => 0,
       },
       {
-        key: 'registration_id',
-        dataIndex: 'registration_id',
-        title: () => t('vehicles:registration_id'),
+        key: 'registrationId',
+        dataIndex: 'registrationId',
+        title: () => t('vehicles:registrationId'),
         render: (_, record) => <Typography variant="body2">{record.registrationId}</Typography>,
         align: 'center',
       },
       {
-        key: 'eco_seats',
-        dataIndex: 'eco_seats',
-        title: () => t('vehicles:eco_seats'),
+        key: 'ECOseats',
+        dataIndex: 'ECOseats',
+        title: () => t('vehicles:ECOseats'),
         render: (_, record) => <Typography variant="body2">{record.ECOseats}</Typography>,
         align: 'center',
         sorter: true,
       },
       {
-        key: 'vip_seats',
-        dataIndex: 'vip_seats',
-        title: () => t('vehicles:vip_seats'),
+        key: 'VIPseats',
+        dataIndex: 'VIPseats',
+        title: () => t('vehicles:VIPseats'),
         render: (_, record) => <Typography variant="body2">{record.VIPseats}</Typography>,
         align: 'center',
         sorter: true,
       },
       {
-        key: 'route_id',
-        dataIndex: 'route_id',
-        title: () => t('vehicles:route_id'),
+        key: 'routeId',
+        dataIndex: 'routeId',
+        title: () => t('vehicles:routeId'),
         // FIXME: routeId chưa có
         render: (_, record) => <Typography variant="body2">{record._id}</Typography>,
         align: 'center',
@@ -151,38 +141,25 @@ function TableVehicles() {
     ];
   }, [t]);
 
-  useEffect(() => {
-    dispatch(
-      vehiclesActions.getVehiclesRequest({
-        page: 0,
-        searcher: {},
-        sorter: {},
-      }),
-    );
-  }, []);
-
-  // FIXME: Retry screen
-  if (statusGetVehicles === 'failure') {
-    return (
-      <button
-        onClick={() => {
+  return (
+    <Box my="24px">
+      <AntTable
+        loading={statusGetVehicles === 'loading'}
+        columns={columns}
+        dataSource={vehicles}
+        rowKey={(r) => r._id}
+        pagination={{ total: totalRows, pageSize: RECORDS_PER_PAGE, current: currentPage + 1 }}
+        onChange={(pagination, _, sorter, extra) => {
+          // FIXME: Column "Vehicle" đang chưa biết sort theo trường nào. Nó kết hợp 3 field với nhau để tạo column này
           dispatch(
             vehiclesActions.getVehiclesRequest({
-              page: 0,
-              searcher: {},
-              sorter: {},
+              page: getPaginationFromAntdTable({ pagination, extra }),
+              sorter: getSorterParamsFromAntdTable({ sorter }),
+              searcher: currentSearcher,
             }),
           );
         }}
-      >
-        Retry
-      </button>
-    );
-  }
-
-  return (
-    <Box my="24px">
-      <AntTable loading={statusGetVehicles === 'loading'} columns={columns} dataSource={vehicles} rowKey={(r) => r._id} />
+      />
     </Box>
   );
 }

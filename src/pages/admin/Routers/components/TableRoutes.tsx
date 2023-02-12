@@ -25,8 +25,8 @@ for (let i = 0; i < 6; i++) {
     departure_time: '02/27/2022 - 10H30',
     arrival_time: '02/27/2022 - 14H30',
     vehicle: 'Mercedes',
-    vip_seats: i + 1,
-    eco_seats: i + 1,
+    VIPseats: i + 1,
+    ECOseats: i + 1,
   });
 }
 
@@ -125,17 +125,17 @@ function TableRoutes() {
       width: 120,
     },
     {
-      key: 'vip_seats',
-      dataIndex: 'vip_seats',
-      title: () => <Typography variant="headerTable">{t('vip_seats')}</Typography>,
+      key: 'VIPseats',
+      dataIndex: 'VIPseats',
+      title: () => <Typography variant="headerTable">{t('VIPseats')}</Typography>,
       render: (value: number) => <Typography variant="body2">{value}</Typography>,
       width: 120,
       align: 'center',
     },
     {
-      key: 'eco_seats',
-      dataIndex: 'eco_seats',
-      title: () => <Typography variant="headerTable">{t('eco_seats')}</Typography>,
+      key: 'ECOseats',
+      dataIndex: 'ECOseats',
+      title: () => <Typography variant="headerTable">{t('ECOseats')}</Typography>,
       render: (value: number) => (
         <Typography variant="body2" color={value === 12 ? '#FF2727' : 'inherit'}>
           {value === 12 ? 'Full' : value}

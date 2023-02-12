@@ -41,7 +41,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
     height: '40px',
     width: '100%',
     display: 'flex',
-    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center',
     padding: '0 10px',
   },
   inputNumber: {
@@ -74,5 +75,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
     '&:focus-visible': {
       outline: 'none !important',
     },
+  },
+  inputError: {
+    border: `1px solid ${theme.palette.error.main}`,
   },
 }));
