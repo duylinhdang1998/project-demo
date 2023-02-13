@@ -2,7 +2,7 @@ import { Fade, Tooltip } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import Tag from 'components/Tag/Tag';
-import React, { memo } from 'react';
+import { Fragment, memo } from 'react';
 
 interface Props {
   text?: string;
@@ -42,7 +42,7 @@ function TooltipMoreStatus({ text, status }: Props) {
       }}
       placement="bottom-end"
       title={
-        <React.Fragment>
+        <Fragment>
           {status?.map(
             (s, index) =>
               index > 0 && (
@@ -51,9 +51,10 @@ function TooltipMoreStatus({ text, status }: Props) {
                 </Box>
               ),
           )}
-        </React.Fragment>
+        </Fragment>
       }
-      TransitionComponent={Fade}>
+      TransitionComponent={Fade}
+    >
       <Box className={classes.tooltipWrapper}>+{text}</Box>
     </Tooltip>
   );

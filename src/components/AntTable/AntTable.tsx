@@ -2,7 +2,6 @@ import { useMediaQuery } from '@mui/material';
 import { Table } from 'antd';
 import { TableProps } from 'antd/lib/table';
 import 'antd/lib/table/style/css';
-import React from 'react';
 import './styles.scss';
 
 export default function AntTable<T extends object = any>({ ...props }: TableProps<T>) {

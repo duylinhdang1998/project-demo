@@ -3,7 +3,7 @@ import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import LayoutDetail from 'layout/LayoutDetail';
-import React from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { fieldsDestinations } from './constants';
@@ -11,7 +11,7 @@ import { fieldsDestinations } from './constants';
 export default function AddNewDestinations() {
   const { t } = useTranslation(['destinations', 'translation']);
   const { control } = useForm();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClose = () => {
     setOpen(false);

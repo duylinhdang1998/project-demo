@@ -47,7 +47,7 @@ export const login = async (_: Login): Promise<ResponseSuccess> => {
   });
 
   if (response.data.code === 0 && ACCEPT_ROLES.includes(response.data.data.rbacCompany.role)) {
-    return response.data as ResponseSuccess;
+    return response.data;
   }
   const response_ = response as AxiosResponse<ResponseFailure>;
   throw new ServiceException(response_.data.message, { cause: response_.data });

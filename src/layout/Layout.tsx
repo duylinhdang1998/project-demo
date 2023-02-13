@@ -1,7 +1,7 @@
-import { Divider, Drawer, List, Theme, Toolbar, useTheme } from '@mui/material';
+import logoTbus from 'assets/images/logo-tbus.png';
+import { Divider, Drawer, List, Toolbar, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import logoTbus from 'assets/images/logo-tbus.png';
 import CustomLink from 'components/CustomLink/CustomLink';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { Outlet } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { sidebars, sidebarsAgent } from './sidebar';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   root: {},
   img: {
     width: 141,
@@ -40,7 +40,7 @@ export default function Layout() {
       </Toolbar>
       <Divider light variant="middle" sx={{ borderColor: '#053A55' }} />
       <List>
-        {drawerContent.map((item, index) => (
+        {drawerContent.map((item) => (
           <CustomLink item={item} key={item.name} />
         ))}
       </List>
@@ -54,7 +54,8 @@ export default function Layout() {
           flexShrink: { tablet: 0 },
           width: { laptop: `${drawerWidth}px` },
         }}
-        className="sidebar">
+        className="sidebar"
+      >
         <Drawer
           container={container}
           variant="temporary"
@@ -70,7 +71,8 @@ export default function Layout() {
               width: drawerWidth,
               backgroundColor: theme.palette.grey[600],
             },
-          }}>
+          }}
+        >
           {drawer}
         </Drawer>
         <Drawer
@@ -83,7 +85,8 @@ export default function Layout() {
               backgroundColor: theme.palette.grey[600],
             },
           }}
-          open>
+          open
+        >
           {drawer}
         </Drawer>
       </Box>
@@ -95,7 +98,8 @@ export default function Layout() {
           minHeight: '100vh',
           backgroundColor: '#F0F1F3',
           overflowX: 'hidden',
-        }}>
+        }}
+      >
         <Outlet />
       </Box>
     </Box>

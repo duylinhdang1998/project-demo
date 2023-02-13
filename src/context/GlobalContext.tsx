@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import env from 'env';
+import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
 
 interface IProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 const defaultFnc = () => console.log('');
 
@@ -18,8 +19,8 @@ interface IAction {
 }
 
 const initialState: IContext = {
-  modeTheme: process.env.REACT_APP_THEME || 'light',
-  language: process.env.REACT_APP_LANGUAGE || 'en',
+  modeTheme: env.theme,
+  language: env.appLanguage,
   setModeTheme: defaultFnc,
   setLanguage: defaultFnc,
 };
@@ -77,7 +78,8 @@ const GlobalProvider = ({ children }: IProps) => {
         ...state,
         setModeTheme: _handleSetModeTheme,
         setLanguage: _handleChangeLanguage,
-      }}>
+      }}
+    >
       {children}
     </GlobalContext.Provider>
   );

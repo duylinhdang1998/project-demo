@@ -6,7 +6,7 @@ import AntTable from 'components/AntTable/AntTable';
 import DeleteIcon from 'components/SvgIcon/DeleteIcon';
 import EditIcon from 'components/SvgIcon/EditIcon';
 import { DestinationsColumnType } from 'models/Destinations';
-import React, { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 
@@ -86,14 +86,14 @@ export default function TableDestinations() {
           <Divider variant="middle" sx={{ margin: '16px 0' }} />
           <Grid container spacing={2}>
             {Object.keys(dataDetails).map((i) => (
-              <React.Fragment key={i}>
+              <Fragment key={i}>
                 <Grid item xs={3}>
                   <Typography variant="body2">{t(`${i}`)}:</Typography>
                 </Grid>
                 <Grid item xs={9}>
                   <Typography variant="body2">{dataDetails[i]}</Typography>
                 </Grid>
-              </React.Fragment>
+              </Fragment>
             ))}
           </Grid>
         </Box>

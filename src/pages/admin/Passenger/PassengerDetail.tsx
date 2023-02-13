@@ -4,7 +4,7 @@ import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import dayjs from 'dayjs';
 import LayoutDetail from 'layout/LayoutDetail';
-import React from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
@@ -28,10 +28,10 @@ interface StateLocation {
 export default function PassengerDetail() {
   const { t } = useTranslation('passenger');
   const location = useLocation();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const { state } = location as StateLocation;
 
-  const { control, handleSubmit } = useForm<Values>({
+  const { control } = useForm<Values>({
     defaultValues: {
       lastName: '',
       firstName: '',

@@ -1,22 +1,23 @@
-import qs from "qs";
-import { RootState } from "store/configureStore";
-import ConfigureAxios from "./fetchApi";
+import env from 'env';
+import qs from 'qs';
+import { RootState } from 'store/configureStore';
+import ConfigureAxios from './fetchApi';
 
 const axiosConfig = new ConfigureAxios({
   configure: {
-    method: "GET",
-    baseURL: "http://18.142.145.111:12598",
+    method: 'GET',
+    baseURL: env.apiEndPoint,
     timeout: 10000,
     paramsSerializer: qs.stringify,
   },
   setAccessToken() {
-    // @ts-ignore
-    const { store } = require("store/configureStore");
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { store } = require('store/configureStore');
     const authState = store.getState() as RootState;
     return authState.auth.token;
   },
   setRefreshToken() {
-    return "";
+    return '';
   },
 });
 

@@ -52,8 +52,8 @@
     "vehicles_operation": "Vehicles in operation",
     "route": "Route",
     "times": "Times",
-    "eco_seats": "Eco seat",
-    "vip_seats": "Vip seat"
+    "ECOseats": "Eco seat",
+    "VIPseats": "Vip seat"
   },
   "account": {
     "settings": "Account setting",
@@ -110,8 +110,8 @@
   },
   "vehicles": {
     "vehicle": "Vehicle",
-    "registration_id": "Registration ID",
-    "route_id": "Route ID"
+    "registrationId": "Registration ID",
+    "routeId": "Route ID"
   },
   "save": "Save",
   "cancel": "Cancel",

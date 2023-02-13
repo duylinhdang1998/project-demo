@@ -1,5 +1,5 @@
 import { CardDasboardProps } from 'components/CardDashboard/CardDasboard';
-import { DailyTicketIcon, DailyPackageIcon, DailyPassengerIcon, DailyParcelsIcon, VehiclesBusIcon } from 'assets';
+import { DailyTicketIcon, DailyPackageIcon, DailyPassengerIcon, DailyParcelsIcon } from 'assets';
 
 export const statisTics: CardDasboardProps[] = [
   {
@@ -40,15 +40,15 @@ export const vehiclesOperations = [
 export const columnsRoutes = [
   { field: 'route', width: 120 },
   { field: 'times', width: 60 },
-  { field: 'eco_seats', width: 60 },
-  { field: 'vip_seats', width: 60 },
+  { field: 'ECOseats', width: 60 },
+  { field: 'VIPseats', width: 60 },
 ];
 
 export const routes = [
-  { id: 1, routes: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], times: '10h30', eco_seats: 44, vip_seats: 38 },
-  { id: 2, routes: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], times: '10h30', eco_seats: 44, vip_seats: 38 },
-  { id: 3, routes: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], times: '10h30', eco_seats: 44, vip_seats: 38 },
-  { id: 4, routes: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], times: '10h30', eco_seats: 44, vip_seats: 38 },
-  { id: 5, routes: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], times: '10h30', eco_seats: 44, vip_seats: 38 },
-  { id: 6, routes: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], times: '10h30', eco_seats: 44, vip_seats: 38 },
+  { id: 1, routes: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], times: '10h30', ECOseats: 44, VIPseats: 38 },
+  { id: 2, routes: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], times: '10h30', ECOseats: 44, VIPseats: 38 },
+  { id: 3, routes: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], times: '10h30', ECOseats: 44, VIPseats: 38 },
+  { id: 4, routes: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], times: '10h30', ECOseats: 44, VIPseats: 38 },
+  { id: 5, routes: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], times: '10h30', ECOseats: 44, VIPseats: 38 },
+  { id: 6, routes: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], times: '10h30', ECOseats: 44, VIPseats: 38 },
 ];

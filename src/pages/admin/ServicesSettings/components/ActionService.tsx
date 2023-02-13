@@ -1,17 +1,17 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton, ListItemIcon, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
-import React, { memo } from 'react';
+import { memo, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useToastStyle } from 'theme/toastStyles';
 
 function ActionService() {
   const { t } = useTranslation('translation');
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const toastClass = useToastStyle();
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -33,7 +33,8 @@ function ActionService() {
         aria-controls={open ? 'long-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={handleClick}>
+        onClick={handleClick}
+      >
         <MoreVertIcon />
       </IconButton>
       <Menu
@@ -46,7 +47,8 @@ function ActionService() {
         onClose={handleClose}
         PaperProps={{
           style: {},
-        }}>
+        }}
+      >
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <SvgIcon>

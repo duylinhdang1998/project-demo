@@ -2,7 +2,7 @@ import { ListItem, ListItemIcon, ListItemText, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import cx from 'classnames';
 import { RouteSideBar } from 'models/Route';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useMatch, useResolvedPath } from 'react-router-dom';
 
@@ -57,7 +57,8 @@ function CustomLink({ item }: CustomLinkProps) {
         to={item.path}
         className={cx(classes.link, {
           [classes.active]: !!match,
-        })}>
+        })}
+      >
         <ListItem button key={item.name} color="#fff">
           <ListItemIcon>
             <img

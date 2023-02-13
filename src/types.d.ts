@@ -1,1 +1,1 @@
-type Status = "idle" | "loading" | "success" | "failure";
+type Status = 'idle' | 'loading' | 'success' | 'failure';

@@ -1,14 +1,13 @@
-import { Box, Stack, Theme, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Timeline } from 'antd';
 import 'antd/lib/timeline/style/css';
-import BusPng from 'assets/images/bus.png';
 import Button from 'components/Button/Button';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import './styles.css';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.1)',
     borderRadius: '4px',

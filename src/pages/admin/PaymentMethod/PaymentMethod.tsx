@@ -4,7 +4,7 @@ import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import Radio from 'components/Radio/Radio';
-import React from 'react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
@@ -18,7 +18,7 @@ export default function PaymentMethod() {
     },
   });
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
   };

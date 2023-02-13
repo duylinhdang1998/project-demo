@@ -1,15 +1,14 @@
-import { Grid, Stack, Theme, Typography, useTheme } from '@mui/material';
+import { Grid, Stack, Typography, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { VehiclesBusIcon } from 'assets';
 import CardDasboard from 'components/CardDashboard/CardDasboard';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import TableDashboard from './components/TableDashboard';
 import { statisTics, vehiclesOperations } from './constants';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   iconBus: {
     width: 48,
     height: 48,

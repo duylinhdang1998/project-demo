@@ -4,13 +4,12 @@ import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
 import { Field } from 'models/Field';
-import React from 'react';
-import { Control, Controller, Path } from 'react-hook-form';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
 import { customStyles } from './customStyles';
 
-interface FilterTicketProps<T> {
+interface FilterTicketProps<T extends FieldValues> {
   fields?: Field[];
   inputProps?: InputBaseProps;
   selectProps?: SelectProps;
@@ -58,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default function FilterTicket<T>({ fields, inputProps, selectProps, filterKey, control, numberColumns = 2 }: FilterTicketProps<T>) {
+export default function FilterTicket<T extends FieldValues>({ fields, inputProps, selectProps, filterKey, control, numberColumns = 2 }: FilterTicketProps<T>) {
   const classes = useStyles();
   const { t } = useTranslation(filterKey);
   const renderUIFields = (i: Field) => {

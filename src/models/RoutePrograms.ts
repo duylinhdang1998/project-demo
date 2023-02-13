@@ -4,6 +4,6 @@ export interface RoutePrograms {
   departure_time?: string;
   arrival_time?: string;
   vehicle?: string;
-  vip_seats?: number;
-  eco_seats?: number;
+  VIPseats?: number;
+  ECOseats?: number;
 }

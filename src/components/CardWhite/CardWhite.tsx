@@ -1,6 +1,6 @@
 import { Divider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { memo, ReactNode } from 'react';
+import { memo, ReactNode } from 'react';
 
 interface CardWhiteProps {
   children: ReactNode;

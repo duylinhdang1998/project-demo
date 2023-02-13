@@ -13,6 +13,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
     '&:focus-visible': {
       outline: 'none',
     },
+    '&.Mui-error': {
+      border: '1px solid' + theme.palette.error.main,
+      transition: 'all 0.2s ease',
+    },
   },
   label: {
     color: theme.palette.grey[200] + '!important',
@@ -37,7 +41,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
     height: '40px',
     width: '100%',
     display: 'flex',
-    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center',
     padding: '0 10px',
   },
   inputNumber: {
@@ -55,5 +60,23 @@ export const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     height: '40px',
     border: '1px solid #f7f7f7 !important',
+  },
+  error: {
+    marginTop: '4px !important',
+    color: theme.palette.error.main,
+  },
+  inputArea: {
+    border: '1px solid #f7f7f7',
+    borderRadius: '4px !important',
+    backgroundColor: '#fff',
+    fontSize: '14px !important',
+    width: '100%',
+    padding: '12px 14px',
+    '&:focus-visible': {
+      outline: 'none !important',
+    },
+  },
+  inputError: {
+    border: `1px solid ${theme.palette.error.main}`,
   },
 }));

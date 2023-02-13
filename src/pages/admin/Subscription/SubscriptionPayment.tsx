@@ -1,12 +1,22 @@
-import { Box, FormControlLabel, Radio, RadioGroup, Stack, Typography } from '@mui/material';
+import { Box, FormControlLabel, Radio, RadioGroup, RadioGroupProps, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import clxs from 'classnames';
 import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import CreditCard from 'components/CreditCard/CreditCard';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
-import React, { useState } from 'react';
+import { get } from 'lodash';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router';
+import { SubscriptionType } from 'services/models/Subscription';
+import { selectSubscriptions } from 'store/subscriptions/selectors';
+import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
+import { PlanDuration } from './@types/PlanDuration';
+import { planDurations } from './constants';
+import { getPlanDurationsFromSubscriptionPlans } from './utils/getPlanDurationsFromSubscriptionPlans';
 
 const useStyles = makeStyles(() => ({
   item: {
@@ -27,24 +37,30 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function SubscriptionPayment() {
+// FIXME: Có những phương thức thanh toán nào?
+const SubscriptionPayment: FC = () => {
   const { t } = useTranslation(['account', 'translation']);
   const classes = useStyles();
-  const [selected, setSelected] = useState('month');
+  const [planDurationState, setPlanDurationState] = useState<PlanDuration>('monthly');
   const [method, setMethod] = useState('credit');
-  const [creaditVal, setCreditVal] = useState({
+  const [_, setCreditVal] = useState({
     cvc: '',
     expiry: '',
     focus: '',
     name: '',
     number: '',
   });
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>, newValue: string) => {
-    setSelected(newValue);
-  };
-  const handleChangeMethod = (event: React.ChangeEvent<HTMLInputElement>, newValue: string) => {
+
+  const { statusGetPlans, plans } = useAppSelector(selectSubscriptions);
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+  const { subscriptionType } = useParams();
+
+  const handleChangeMethod = (_: ChangeEvent<HTMLInputElement>, newValue: string) => {
     setMethod(newValue);
   };
+
   const renderPaypalValue = () => {
     return (
       <Box my="10px">
@@ -59,14 +75,7 @@ function SubscriptionPayment() {
     );
   };
 
-  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    setCreditVal((prev) => ({
-      ...prev,
-      focus: e.target.name,
-    }));
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCreditVal((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -80,37 +89,79 @@ function SubscriptionPayment() {
       </Box>
     );
   };
+
+  const handleChangePlanDuration: RadioGroupProps['onChange'] = (_, value) => {
+    setPlanDurationState(value as PlanDuration);
+  };
+
+  useEffect(() => {
+    if (!subscriptionType) {
+      navigate('/account/subscription-package', { replace: true });
+    } else {
+      dispatch(
+        subscriptionsActions.getPlansRequest({
+          subscriptionType: subscriptionType as SubscriptionType,
+        }),
+      );
+    }
+  }, [subscriptionType]);
+
+  useEffect(() => {
+    if (statusGetPlans === 'success' && !plans.length) {
+      navigate('/notfound', { replace: true });
+    }
+  }, [statusGetPlans]);
+
+  // FIXME: Loading screen
+  if (statusGetPlans === 'loading') {
+    return <h1>Loading...</h1>;
+  }
+
+  // FIXME: Retry screen
+  if (statusGetPlans === 'failure') {
+    return (
+      <button
+        onClick={() => {
+          subscriptionsActions.getPlansRequest({
+            subscriptionType: subscriptionType as SubscriptionType,
+          });
+        }}
+      >
+        Retry
+      </button>
+    );
+  }
+
+  // FIXME: Empty screen
+  if (!plans.length) {
+    return <h1>WTF</h1>;
+  }
+
   return (
-    <LayoutDetail title={t('subcription')}>
-      <CardWhite title={t('subcribe_to_tbus_plan')}>
-        <RadioGroup row name="subscription" defaultValue="month" onChange={handleChange}>
+    <LayoutDetail title={t('account:subscription')}>
+      <CardWhite title={t('account:subcribe_to_tbus_plan')}>
+        <RadioGroup row name="subscription" value={planDurationState} onChange={handleChangePlanDuration}>
           <Stack direction="row" alignItems="center" spacing={3} width="100%">
-            <label htmlFor="month" className={classes.label}>
-              <Box className={clxs(classes.item, { [classes.selected]: selected === 'month' })}>
-                <Box>
-                  <Typography fontSize={14} color="#858C93">
-                    {t('monthly_payment')}
-                  </Typography>
-                  <Typography fontSize="18px" fontWeight={700} color="#0C1132">
-                    $12/month
-                  </Typography>
-                </Box>
-                <Radio value="month" id="month" />
-              </Box>
-            </label>
-            <label htmlFor="year" className={classes.label}>
-              <Box className={clxs(classes.item, { [classes.selected]: selected === 'year' })}>
-                <Box>
-                  <Typography fontSize={14} color="#858C93">
-                    {t('yearly_payment')}
-                  </Typography>
-                  <Typography fontSize="18px" fontWeight={700} color="#0C1132">
-                    $12/month
-                  </Typography>
-                </Box>
-                <Radio value="year" id="year" />
-              </Box>
-            </label>
+            {planDurations.map((planDuration) => {
+              const label = planDuration === 'monthly' ? t('account:monthly_payment') : t('account:yearly_payment');
+              const price = get(getPlanDurationsFromSubscriptionPlans(plans), planDuration).price;
+              return (
+                <label htmlFor={planDuration} className={classes.label}>
+                  <Box className={clxs(classes.item, { [classes.selected]: planDurationState === planDuration })}>
+                    <Box>
+                      <Typography fontSize={14} color="#858C93">
+                        {label}
+                      </Typography>
+                      <Typography fontSize="18px" fontWeight={700} color="#0C1132">
+                        {/* FIXME: Thiếu currency symbol */}
+                        {price}/{t(`translation:${planDuration}`)}
+                      </Typography>
+                    </Box>
+                    <Radio value={planDuration} id={planDuration} />
+                  </Box>
+                </label>
+              );
+            })}
           </Stack>
         </RadioGroup>
         <RadioGroup defaultValue="credit" name="method" onChange={handleChangeMethod} sx={{ marginTop: '24px' }}>
@@ -123,6 +174,6 @@ function SubscriptionPayment() {
       </CardWhite>
     </LayoutDetail>
   );
-}
+};
 
 export default SubscriptionPayment;

@@ -1,20 +1,19 @@
-import AddIcon from "@mui/icons-material/Add";
-import { Box, Button, Grid, Stack, Theme } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import { Menu } from "antd";
-import MyButton from "components/Button/Button";
-import DropdownCustom from "components/DropdownCustom/DropdownCustom";
-import FilterTicket from "components/FilterTicket/FilterTicket";
-import HeaderLayout from "components/HeaderLayout/HeaderLayout";
-import { useAppSelector } from "hooks/useAppSelector";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { selectAuth } from "store/auth/selectors";
-import { v4 as uuidv4 } from "uuid";
-import TableRoutes from "./components/TableRoutes";
-import { fieldsSearch } from "./constants";
+import AddIcon from '@mui/icons-material/Add';
+import { Box, Button, Grid, Stack } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { Menu } from 'antd';
+import MyButton from 'components/Button/Button';
+import DropdownCustom from 'components/DropdownCustom/DropdownCustom';
+import FilterTicket from 'components/FilterTicket/FilterTicket';
+import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { selectAuth } from 'store/auth/selectors';
+import { v4 as uuidv4 } from 'uuid';
+import TableRoutes from './components/TableRoutes';
+import { fieldsSearch } from './constants';
 
 interface Values {
   vehicles_name: string;
@@ -23,47 +22,41 @@ interface Values {
   departure_time: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   menuList: {
     width: 180,
-    borderRadius: "8px",
+    borderRadius: '8px',
   },
   menuItem: {
-    textAlign: "center",
-    padding: "8px 0",
+    textAlign: 'center',
+    padding: '8px 0',
   },
 }));
 
 export default function Routers() {
-  const { t } = useTranslation(["routers", "translation"]);
+  const { t } = useTranslation(['routers', 'translation']);
   const { userInfo } = useAppSelector(selectAuth);
   const navigate = useNavigate();
   const classes = useStyles();
   const { control, handleSubmit } = useForm<Values>({
     defaultValues: {
-      arrival_points: "",
-      departures_point: "",
-      vehicles_name: "",
-      departure_time: "",
+      arrival_points: '',
+      departures_point: '',
+      vehicles_name: '',
+      departure_time: '',
     },
   });
   const handleAddNewTrip = (path: string) => () => {
-    navigate("/admin/routers/" + path);
+    navigate('/admin/routers/' + path);
   };
 
   const menuChildren = (
     <>
-      <Menu.Item
-        className={classes.menuItem}
-        onClick={handleAddNewTrip("create-oneway")}
-      >
-        {t("one_way_trip")}
+      <Menu.Item className={classes.menuItem} onClick={handleAddNewTrip('create-oneway')}>
+        {t('one_way_trip')}
       </Menu.Item>
-      <Menu.Item
-        className={classes.menuItem}
-        onClick={handleAddNewTrip("create-multi")}
-      >
-        {t("multi_stops_trip")}
+      <Menu.Item className={classes.menuItem} onClick={handleAddNewTrip('create-multi')}>
+        {t('multi_stops_trip')}
       </Menu.Item>
     </>
   );
@@ -74,59 +67,33 @@ export default function Routers() {
 
   return (
     <Box>
-      <HeaderLayout activeSideBarHeader={t("routers")} />
+      <HeaderLayout activeSideBarHeader={t('routers')} />
       <Box p="24px">
         <Grid container spacing={2}>
-          <Grid item xs={12} md={userInfo?.role === "admin" ? 8 : 10}>
+          <Grid item xs={12} md={userInfo?.role === 'admin' ? 8 : 10}>
             <FilterTicket
               control={control}
-              fields={
-                userInfo?.role === "admin"
-                  ? fieldsSearch
-                  : [
-                      ...fieldsSearch,
-                      { id: uuidv4(), label: "registration_id", type: "text" },
-                    ]
-              }
+              fields={userInfo?.role === 'admin' ? fieldsSearch : [...fieldsSearch, { id: uuidv4(), label: 'registrationId', type: 'text' }]}
               filterKey="routers"
-              numberColumns={userInfo?.role === "admin" ? 2.5 : 2}
+              numberColumns={userInfo?.role === 'admin' ? 2.5 : 2}
             />
           </Grid>
           <Grid
             item
             xs={12}
-            md={userInfo?.role === "admin" ? 4 : 2}
+            md={userInfo?.role === 'admin' ? 4 : 2}
             sx={{
-              alignSelf: "flex-end",
+              alignSelf: 'flex-end',
             }}
           >
-            <Stack
-              direction={{ xs: "column", md: "row" }}
-              alignItems="center"
-              justifyContent="center"
-              spacing={2}
-            >
-              <Button
-                variant="contained"
-                fullWidth
-                onClick={handleSubmit(onSubmit)}
-              >
-                {t("translation:search")}
+            <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" justifyContent="center" spacing={2}>
+              <Button variant="contained" fullWidth onClick={handleSubmit(onSubmit)}>
+                {t('translation:search')}
               </Button>
-              {userInfo?.role === "admin" && (
-                <DropdownCustom
-                  menuChildren={menuChildren}
-                  trigger={["click"]}
-                  placement="bottomLeft"
-                  menuClassName={classes.menuList}
-                >
-                  <MyButton
-                    variant="contained"
-                    fullWidth
-                    backgroundButton="#33CC7F"
-                    startIcon={<AddIcon />}
-                  >
-                    {t("add_new_trip")}
+              {userInfo?.role === 'admin' && (
+                <DropdownCustom menuChildren={menuChildren} trigger={['click']} placement="bottomLeft" menuClassName={classes.menuList}>
+                  <MyButton variant="contained" fullWidth backgroundButton="#33CC7F" startIcon={<AddIcon />}>
+                    {t('add_new_trip')}
                   </MyButton>
                 </DropdownCustom>
               )}

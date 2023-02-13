@@ -6,10 +6,9 @@ import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import SendIcon from 'components/SvgIcon/SendIcon';
 import { isEmpty } from 'lodash';
 import { PassengerTypeColumn } from 'models/Passenger';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import TablePassenger from './components/TablePassenger';
 import { fieldsSearch } from './constants';
 
@@ -29,7 +28,6 @@ interface Values {
 export default function Passengers() {
   const { t } = useTranslation(['passenger', 'translation']);
   const theme = useTheme();
-  const navigate = useNavigate();
   const classes = useStyles();
   const [disabled, setDisabled] = useState(true);
   const matches = useMediaQuery('(min-width:1200px)');
@@ -77,7 +75,8 @@ export default function Passengers() {
               disabled={disabled}
               startIcon={<SendIcon />}
               className={classes.btnAdd}
-              onClick={handleBatch}>
+              onClick={handleBatch}
+            >
               {t('translation:batch_email')}
             </Button>
           </Grid>

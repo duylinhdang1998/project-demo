@@ -28,6 +28,14 @@ export const AccountRoutes: RouteObject[] = [
     ),
   },
   {
+    path: 'offices-manager/:officeId',
+    element: (
+      <RequiredAuth>
+        <Page.AddOfficeManager />
+      </RequiredAuth>
+    ),
+  },
+  {
     path: 'add-office-manager',
     element: (
       <RequiredAuth>
@@ -68,7 +76,7 @@ export const AccountRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'subscription-payment',
+    path: 'subscription-payment/:subscriptionType',
     element: (
       <RequiredAuth>
         <Page.SubscriptionPayment />

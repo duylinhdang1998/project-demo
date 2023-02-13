@@ -1,8 +1,7 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, InputAdornment, InputBase, Theme, Typography } from '@mui/material';
+import { Box, InputAdornment, InputBase, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import cx from 'classnames';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import QRCode from 'react-qr-code';
 
@@ -10,7 +9,7 @@ interface QrcodeProps {
   code: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   inputSearch: {
     backgroundColor: '#fff',
     border: '1px solid #F7F7F7',

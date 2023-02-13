@@ -10,7 +10,7 @@ import AddOfficeManager from './OfficeManager/AddOfficeManager';
 import OfficeManager from './OfficeManager/OfficeManager';
 import OrdersSetting from './OrdersSetting/OrdersSetting';
 import PackageSales from './PackageSales/PackageSales';
-import AddPacakageSettings from './PackageSettings/AddPacakageSettings';
+import AddPackageSettings from './PackageSettings/AddPackageSettings';
 import PackageSettings from './PackageSettings/PackageSettings';
 import PassengerDetail from './Passenger/PassengerDetail';
 import Passengers from './Passenger/Passengers';
@@ -43,7 +43,7 @@ export {
   ServicesSettings,
   AddService,
   PackageSettings,
-  AddPacakageSettings,
+  AddPackageSettings,
   Vehicles,
   AddNewVehicles,
   AddNewEvent,

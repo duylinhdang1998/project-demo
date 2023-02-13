@@ -1,6 +1,6 @@
 import { FormControlLabel, Radio as MuiRadio, RadioGroup } from '@mui/material';
 import { Option } from 'models/Field';
-import React, { memo } from 'react';
+import { ChangeEvent, memo } from 'react';
 
 interface RadioProps {
   options: Option[];
@@ -10,7 +10,7 @@ interface RadioProps {
 }
 
 function Radio({ options, onChange, radioName, value }: RadioProps) {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value: valueRadio } = event.target;
     onChange?.(valueRadio);
   };

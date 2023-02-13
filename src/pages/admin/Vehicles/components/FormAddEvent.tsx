@@ -8,7 +8,7 @@ import 'antd/lib/upload/style/css';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import FileIcon from 'components/SvgIcon/FileIcon';
 import dayjs from 'dayjs';
-import React, { memo, ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { fieldsAddEvent } from '../constants';
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 function FormAddEvent() {
   const { t } = useTranslation(['vehicles', 'translation']);
   const classes = useStyles();
-  const { control, handleSubmit } = useForm<Values>();
+  const { control } = useForm<Values>();
 
   const renderAttachment = (originNode: ReactElement, file: UploadFile, fileList: any, actions: any) => {
     return (
@@ -102,7 +102,8 @@ function FormAddEvent() {
           showUploadList={{
             removeIcon: <ClearIcon />,
             showRemoveIcon: true,
-          }}>
+          }}
+        >
           <Button variant="outlined" startIcon={<UploadFileOutlined />} sx={{ color: '#1AA6EE' }}>
             {t(`attach_document`)}
           </Button>

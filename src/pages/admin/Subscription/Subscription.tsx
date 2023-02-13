@@ -6,7 +6,6 @@ import 'antd/lib/progress/style/css';
 import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
@@ -28,11 +27,11 @@ export default function Subscription() {
   };
   return (
     <Box>
-      <HeaderLayout activeSideBarHeader={t('subcription')} />
+      <HeaderLayout activeSideBarHeader={t('account:subscription')} />
       <Box p="24px">
-        <CardWhite title={t('my_subscription')}>
+        <CardWhite title={t('account:my_subscription')}>
           <Typography fontWeight={700} color="#0C1132">
-            {t('free_trial')}
+            {t('account:free_trial')}
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
@@ -63,7 +62,7 @@ export default function Subscription() {
             </Grid>
           </Grid>
           <Typography sx={{ margin: '16px 0' }} variant="body2">
-            {t('after_trial_end')}
+            {t('account:after_trial_end')}
           </Typography>
           <Button sx={{ margin: '24px 0', alignSelf: 'flex-end', padding: '10px 14px', float: 'right' }} backgroundButton="#1AA6EE" onClick={handleClick}>
             {t('translation:upgrade_now')}

@@ -1,11 +1,11 @@
-import { Box, Checkbox, FormControlLabel, Stack, Typography } from '@mui/material';
-import { MapPinIcon } from 'assets';
 import ClockSvg from 'assets/images/clock.svg';
 import SnowSvg from 'assets/images/snow.svg';
+import { Box, Checkbox, FormControlLabel, Stack, Typography } from '@mui/material';
+import { MapPinIcon } from 'assets';
 import Button from 'components/Button/Button';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';

@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserInfo } from "models/UserInfo";
-import { LoginFailure, LoginRequest, LoginSuccess } from "./actions/Login";
-import { Logout } from "./actions/Logout";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { UserInfo } from 'models/UserInfo';
+import { LoginFailure, LoginRequest, LoginSuccess } from './actions/Login';
+import { Logout } from './actions/Logout';
 
 interface AuthState {
   statusLogin: Status;
@@ -11,20 +11,20 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  statusLogin: "idle",
-  token: "",
+  statusLogin: 'idle',
+  token: '',
   isLoggedIn: false,
   userInfo: {},
 };
 
 const authSlice = createSlice({
-  name: "@Auth",
+  name: '@Auth',
   initialState,
   reducers: {
     loginRequest: (state, _action: PayloadAction<LoginRequest>) => {
       return {
         ...state,
-        statusLogin: "loading",
+        statusLogin: 'loading',
       };
     },
     loginSuccess: (state, action: PayloadAction<LoginSuccess>) => {
@@ -34,13 +34,13 @@ const authSlice = createSlice({
         isLoggedIn: true,
         token,
         userInfo: { role },
-        statusLogin: "success",
+        statusLogin: 'success',
       };
     },
     loginFailure: (state, _action: PayloadAction<LoginFailure>) => {
       return {
         ...state,
-        statusLogin: "failure",
+        statusLogin: 'failure',
       };
     },
     logout: (_state, _action: PayloadAction<Logout>) => {

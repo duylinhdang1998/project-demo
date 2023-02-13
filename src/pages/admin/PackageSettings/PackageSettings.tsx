@@ -1,23 +1,56 @@
 import { Box } from '@mui/system';
 import BoxSearch from 'components/BoxSearch/BoxSearch';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import React from 'react';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { packageSettingsActions } from 'store/packageSettings/packageSettingsSlice';
+import { selectPackageSettings } from 'store/packageSettings/selectors';
 import TablePackageSettings from './components/TablePackageSettings';
 
 export default function PackageSettings() {
   const { t } = useTranslation(['packageSettings', 'translation']);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { currentSearcher } = useAppSelector(selectPackageSettings);
 
   const handleAdd = () => {
-    navigate('/admin/add-package-settings');
+    navigate('/admin/add-package-setting');
   };
+
+  useEffect(() => {
+    dispatch(
+      packageSettingsActions.getPackageSettingsRequest({
+        page: 0,
+        sorter: {},
+        searcher: {},
+      }),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // FIXME: Retry screen
+
   return (
     <Box>
-      <HeaderLayout activeSideBarHeader={t('package_settings')} />
+      <HeaderLayout activeSideBarHeader={t('packageSettings:package_settings')} />
       <Box padding="24px">
-        <BoxSearch onAdd={handleAdd} addTextButton={t('translation:add_type', { type: t('translation:package') })} />
+        <BoxSearch
+          searchValue={currentSearcher.title}
+          onSearch={(value) => {
+            dispatch(
+              packageSettingsActions.getPackageSettingsRequest({
+                page: 0,
+                sorter: {},
+                searcher: { title: value },
+              }),
+            );
+          }}
+          onAdd={handleAdd}
+          addTextButton={t('translation:create_new', { type: t('packageSettings:package_settings_lowercase') })}
+        />
         <TablePackageSettings />
       </Box>
     </Box>

@@ -2,11 +2,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Box, IconButton, Stack, Typography } from '@mui/material';
 import { Menu } from 'antd';
 import DropdownCustom from 'components/DropdownCustom/DropdownCustom';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
-import React, { ReactNode } from 'react';
+import { MouseEvent, ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { useToastStyle } from 'theme/toastStyles';
 
 export interface ActionItem<T> {
   id?: string;
@@ -23,21 +20,13 @@ export interface ActionTableProps<T> {
 
 function ActionTable<T>({ actions, row }: ActionTableProps<T>) {
   const { t } = useTranslation();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const toastClass = useToastStyle();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleDelete = () => {
-    toast(<ToastCustom type="success" text="Delete the service successfully!" />, {
-      className: toastClass.toastSuccess,
-    });
-    handleClose();
   };
 
   const handleClickAction = (act: ActionItem<T>) => () => {
@@ -69,7 +58,8 @@ function ActionTable<T>({ actions, row }: ActionTableProps<T>) {
           aria-controls={open ? 'long-menu' : undefined}
           aria-expanded={open ? 'true' : undefined}
           aria-haspopup="true"
-          onClick={handleClick}>
+          onClick={handleClick}
+        >
           <MoreVertIcon />
         </IconButton>
       </DropdownCustom>

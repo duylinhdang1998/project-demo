@@ -1,17 +1,16 @@
-import { Checkbox, FormControlLabel, Grid, InputBase, InputBaseProps, InputLabel, Stack } from '@mui/material';
+import { Checkbox, FormControlLabel, Grid, InputBase, InputBaseProps, InputLabel, Stack, TextareaAutosize, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import UploadImage from 'components/UploadImage/UploadImage';
 import { Field } from 'models/Field';
-import React from 'react';
-import { Controller, FieldValues, Path, UseControllerProps } from 'react-hook-form';
+import { Controller, FieldError, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
 import { useStyles } from './styles';
-
-export interface FormVerticleProps<T> extends Partial<UseControllerProps<T>> {
+import cx from 'classnames';
+export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
   fields?: Field[];
   inputProps?: InputBaseProps;
   filterKey?: string;
@@ -19,6 +18,8 @@ export interface FormVerticleProps<T> extends Partial<UseControllerProps<T>> {
   selectProps?: SelectProps;
   isGridHorizon?: boolean;
   indexGridHorizon?: number;
+  errors?: Record<string, FieldError | undefined>;
+  messages?: Record<string, string>;
 }
 
 export default function FormVerticle<T extends FieldValues>({
@@ -30,24 +31,50 @@ export default function FormVerticle<T extends FieldValues>({
   selectProps,
   isGridHorizon,
   indexGridHorizon = 0,
+  errors,
+  messages,
 }: FormVerticleProps<T>) {
   const classes = useStyles();
   const { t } = useTranslation(filterKey);
   const renderField = (i: Field) => {
+    const error = errors && i.label ? errors[i.label] : false;
+    const messageErr = messages && i.label ? messages[i.label] : '';
     switch (i.type) {
       case 'text':
+      case 'email':
         return (
           <Controller
             name={i.label as Path<T>}
             control={control}
-            render={({ field }) => (
-              <Box>
-                <InputLabel htmlFor={i.label} className={classes.label}>
-                  {t(`${i.label}`)}
-                </InputLabel>
-                <InputBase fullWidth id={i.label} {...inputProps} {...field} placeholder={t(`${i.label}`)} className={classes.input} />
-              </Box>
-            )}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel htmlFor={i.label} className={classes.label}>
+                    {t(`${i.label}`)}
+                  </InputLabel>
+                  <InputBase fullWidth id={i.label} {...inputProps} {...field} placeholder={t(`${i.label}`)} className={classes.input} error={!!error} />
+                  {!!error && (
+                    <Typography component="p" className={classes.error} fontSize={12}>
+                      {messageErr}
+                    </Typography>
+                  )}
+                </Box>
+              );
+            }}
+            rules={{
+              required: {
+                value: i.required ?? false,
+                message: messageErr,
+              },
+              ...(i.type === 'email'
+                ? {
+                    pattern: {
+                      value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                      message: t('error_email'),
+                    },
+                  }
+                : {}),
+            }}
           />
         );
       case 'number': {
@@ -60,12 +87,23 @@ export default function FormVerticle<T extends FieldValues>({
                 <InputLabel htmlFor={i.label} className={classes.label}>
                   {t(`${i.label}`)}
                 </InputLabel>
-                <Box className={classes.inputNumberWrap}>
+                <Box className={cx(classes.inputNumberWrap, !!error ? classes.inputError : '')}>
                   {!!i.prefix && <span className={classes.prefix}>{i.prefix}</span>}
-                  <input {...field} id={i.label} min={0} defaultValue={1} type="number" className={classes.inputNumber} />
+                  <input {...field} id={i.label} min={0} type="number" className={classes.inputNumber} />
                 </Box>
+                {!!error && (
+                  <Typography component="p" className={classes.error} fontSize={12}>
+                    {messageErr}
+                  </Typography>
+                )}
               </Box>
             )}
+            rules={{
+              required: {
+                value: i.required ?? false,
+                message: t('error_required', { name: i.label }),
+              },
+            }}
           />
         );
       }
@@ -92,6 +130,12 @@ export default function FormVerticle<T extends FieldValues>({
                       }}
                     />
                   )}
+                  rules={{
+                    required: {
+                      value: i.required ?? false,
+                      message: t('error_required', { name: i.label }),
+                    },
+                  }}
                 />
               ))}
             </Stack>
@@ -103,12 +147,20 @@ export default function FormVerticle<T extends FieldValues>({
           <Controller
             name={i.label as Path<T>}
             control={control}
-            render={({ field }) => (
-              <Box>
-                <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                <UploadImage />
-              </Box>
-            )}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <UploadImage />
+                </Box>
+              );
+            }}
+            rules={{
+              required: {
+                value: i.required ?? false,
+                message: t('error_required', { name: i.label }),
+              },
+            }}
           />
         );
       case 'datetime':
@@ -122,6 +174,12 @@ export default function FormVerticle<T extends FieldValues>({
                 <DatePicker showTime={i.showTime} value={field.value as any} onChange={field.onChange} className={classes.datePicker} />
               </Box>
             )}
+            rules={{
+              required: {
+                value: i.required ?? false,
+                message: t('error_required', { name: i.label }),
+              },
+            }}
           />
         );
       case 'select':
@@ -135,6 +193,40 @@ export default function FormVerticle<T extends FieldValues>({
                 <Select {...selectProps} {...field} options={i.options} styles={customStyles} placeholder={t(`${i.label}`)} />
               </Box>
             )}
+            rules={{
+              required: {
+                value: i.required ?? false,
+                message: t('error_required', { name: i.label }),
+              },
+            }}
+          />
+        );
+      case 'textarea':
+        return (
+          <Controller
+            name={i.label as Path<T>}
+            control={control}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel htmlFor={i.label} className={classes.label}>
+                    {t(`${i.label}`)}
+                  </InputLabel>
+                  <TextareaAutosize minRows={10} maxRows={10} id={i.label} {...field} placeholder={t(`${i.label}`)} className={classes.inputArea} />
+                  {!!error && (
+                    <Typography component="p" className={classes.error} fontSize={12}>
+                      {messageErr}
+                    </Typography>
+                  )}
+                </Box>
+              );
+            }}
+            rules={{
+              required: {
+                value: i.required ?? false,
+                message: messageErr,
+              },
+            }}
           />
         );
       default:

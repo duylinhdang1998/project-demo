@@ -1,8 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { TypographyProps } from '@mui/system';
-import React from 'react';
-
 const useStyles = makeStyles({
   root: {
     display: 'flex',

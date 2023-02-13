@@ -1,6 +1,6 @@
-import { Box } from '@mui/material';
 import FileSvg from 'assets/images/file.svg';
-import React, { memo } from 'react';
+import { Box } from '@mui/material';
+import { memo } from 'react';
 
 function FileIcon() {
   return (

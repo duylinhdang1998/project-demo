@@ -1,14 +1,14 @@
-import { Divider, InputBase, InputLabel, Theme, Typography } from '@mui/material';
+import { Divider, InputBase, InputLabel, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import Button from 'components/Button/Button';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import ListIcon from 'components/ListIcon/ListIcon';
 import LayoutDetail from 'layout/LayoutDetail';
-import React from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   label: {
     fontSize: '14px !important',
     color: '#45485E',
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default function AddService() {
   const { t } = useTranslation(['serviceSetting', 'translation']);
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false);
   };
@@ -56,7 +56,8 @@ export default function AddService() {
                 color: '#1AA6EE',
                 width: 120,
               }}
-              onClick={handleCancel}>
+              onClick={handleCancel}
+            >
               {t('translation:cancel')}
             </Button>
             <Button
@@ -65,7 +66,8 @@ export default function AddService() {
                 width: 120,
               }}
               variant="contained"
-              backgroundButton="#1aa6ee">
+              backgroundButton="#1aa6ee"
+            >
               {t('translation:save')}
             </Button>
           </Box>

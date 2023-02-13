@@ -1,6 +1,5 @@
 import { Box } from '@mui/material';
 import LayoutDetail from 'layout/LayoutDetail';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import StepForm from './components/StepForm';
 

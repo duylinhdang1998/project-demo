@@ -4,7 +4,7 @@ import Button from 'components/Button/Button';
 import DeliveryIcon from 'components/SvgIcon/DeliveryIcon';
 import MerchaindiseOrderIcon from 'components/SvgIcon/MerchaindiseOrderIcon';
 import TicketIconSvg from 'components/SvgIcon/TicketIcon';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 

@@ -1,5 +1,9 @@
 {
   "title": "Title",
-  "descriptions": "Descriptions",
-  "package_settings": "Package settings"
+  "description": "Descriptions",
+  "package_settings": "Package settings",
+  "package_settings_lowercase": "package settings",
+  "package_settings_created": "Add new type successfully!",
+  "package_settings_updated": "Update type successfully!",
+  "package_settings_deleted": "Delete type successfully!"
 }

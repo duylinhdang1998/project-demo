@@ -5,7 +5,7 @@ import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import InputAuth from 'components/InputAuth/InputAuth';
 import { get } from 'lodash';
 import { Field } from 'models/Field';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuidv4 } from 'uuid';

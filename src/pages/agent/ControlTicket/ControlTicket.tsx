@@ -5,7 +5,6 @@ import Qrcode from 'components/Qrcode/Qrcode';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import LayoutDetail from 'layout/LayoutDetail';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const dataDetails = {

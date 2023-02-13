@@ -1,5 +1,5 @@
 import { SvgIcon } from '@mui/material';
-import React, { memo } from 'react';
+import { memo } from 'react';
 
 function EditIcon() {
   return (

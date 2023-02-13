@@ -1,4 +1,4 @@
-import { Field, Option } from 'models/Field';
+import { Field } from 'models/Field';
 import { v4 as uuidv4 } from 'uuid';
 
 export const fieldsSearch: Field[] = [

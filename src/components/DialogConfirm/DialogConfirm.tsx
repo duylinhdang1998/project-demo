@@ -1,7 +1,7 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Button from 'components/Button/Button';
-import React, { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -62,7 +62,8 @@ function DialogConfirm({ openDialog, okButtonText, cancelButtonText, title, subT
       open={open}
       PaperProps={{
         className: classes.dialogContainer,
-      }}>
+      }}
+    >
       <DialogTitle className={classes.dialogTitle}>{title}</DialogTitle>
       <DialogContent className={classes.dialogContent}>{subTitle}</DialogContent>
       <DialogActions>
@@ -73,7 +74,8 @@ function DialogConfirm({ openDialog, okButtonText, cancelButtonText, title, subT
             color: '#1AA6EE',
             width: 120,
           }}
-          onClick={handleClose}>
+          onClick={handleClose}
+        >
           {cancelButtonText ?? t('no')}
         </Button>
         <Button
@@ -84,7 +86,8 @@ function DialogConfirm({ openDialog, okButtonText, cancelButtonText, title, subT
           variant="contained"
           backgroundButton="#1aa6ee"
           onClick={handleYes}
-          autoFocus>
+          autoFocus
+        >
           {okButtonText ?? t('yes')}
         </Button>
       </DialogActions>

@@ -5,7 +5,7 @@ import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { isEmpty } from 'lodash';
 import { Option } from 'models/Field';
 import { RoutePrograms } from 'models/RoutePrograms';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Control, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { fieldsStepOne } from '../../constants';
@@ -32,9 +32,9 @@ export interface StepCountProps {
   defaultValue?: RoutePrograms;
 }
 
-export default function StepOne({ onNextStep, onCancel, isEdit, defaultValue }: StepCountProps) {
+export default function StepOne({ onNextStep, isEdit, defaultValue }: StepCountProps) {
   const { t } = useTranslation(['routers', 'translation']);
-  const { control, handleSubmit, setValue } = useForm<Values>();
+  const { control, handleSubmit } = useForm<Values>();
 
   useEffect(() => {
     if (!!defaultValue && !isEmpty(defaultValue)) {

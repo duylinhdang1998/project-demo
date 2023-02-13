@@ -1,7 +1,7 @@
 import { makeStyles } from '@mui/styles';
 import { Dropdown, DropDownProps, Menu } from 'antd';
 import clxs from 'classnames';
-import React, { memo, ReactNode } from 'react';
+import { memo, ReactNode } from 'react';
 
 interface DropdownCustomProps extends Omit<DropDownProps, 'overlay'> {
   children?: ReactNode;

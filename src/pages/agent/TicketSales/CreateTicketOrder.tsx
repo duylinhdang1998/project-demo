@@ -5,7 +5,6 @@ import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import LayoutDetail from 'layout/LayoutDetail';
-import React from 'react';
 import Highlighter from 'react-highlight-words';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
