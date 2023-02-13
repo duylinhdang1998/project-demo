@@ -1,10 +1,10 @@
 import { Grid, Stack, Typography, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
+import { useTranslation } from 'react-i18next';
 import { VehiclesBusIcon } from 'assets';
 import CardDasboard from 'components/CardDashboard/CardDasboard';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import { useTranslation } from 'react-i18next';
 import TableDashboard from './components/TableDashboard';
 import { statisTics, vehiclesOperations } from './constants';
 
@@ -24,7 +24,7 @@ export default function Dashboard() {
   const renderStatisticCard = () => {
     return (
       <Grid container direction="row" spacing={{ mobile: '13px', tablet: '24px' }} alignItems="strech">
-        {statisTics.map((i) => (
+        {statisTics.map(i => (
           <Grid item xs={6} sm={3} key={i.text}>
             <CardDasboard {...i} text={t(`${i.text}`)} />
           </Grid>

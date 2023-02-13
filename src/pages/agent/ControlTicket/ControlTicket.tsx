@@ -1,11 +1,11 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { MapPinIcon } from 'assets';
 import CardWhite from 'components/CardWhite/CardWhite';
 import Qrcode from 'components/Qrcode/Qrcode';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useTranslation } from 'react-i18next';
 
 const dataDetails = {
   lastName: 'Payoun',
@@ -46,7 +46,7 @@ export default function ControlTicket() {
               <Typography variant="h5">{t('ticketSales:ticket')} #6969</Typography>
               <Divider sx={{ margin: '16px 0' }} />
               <Box>
-                {Object.keys(dataDetails).map((i) => (
+                {Object.keys(dataDetails).map(i => (
                   <Grid container spacing={2} key={i} my="2px">
                     <Grid item xs={3}>
                       <Typography variant="body2">{t(`ticketSales:${i}`)}:</Typography>

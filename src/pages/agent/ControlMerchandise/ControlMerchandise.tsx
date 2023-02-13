@@ -1,11 +1,11 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import Qrcode from 'components/Qrcode/Qrcode';
 import Tag from 'components/Tag/Tag';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 const dataDetails = {
   lastName_sender: 'Payoun',
@@ -45,7 +45,7 @@ export default function ControlMerchandise() {
               <Typography variant="h5">{t('merchandise_order')} #6969</Typography>
               <Divider sx={{ margin: '16px 0' }} />
               <Box>
-                {Object.keys(dataDetails).map((i) => (
+                {Object.keys(dataDetails).map(i => (
                   <Grid container spacing={2} key={i} my="2px">
                     <Grid item xs={3}>
                       <Typography variant="body2">{t(`${i}`)}:</Typography>

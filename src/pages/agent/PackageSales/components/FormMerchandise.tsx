@@ -1,15 +1,15 @@
-import TrashSvg from 'assets/images/trash.svg';
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Divider, Grid, InputBase, InputLabel, Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import Button from 'components/Button/Button';
-import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
-import { customStyles } from 'components/FilterTicket/customStyles';
-import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
+import TrashSvg from 'assets/images/trash.svg';
+import Button from 'components/Button/Button';
+import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
+import { customStyles } from 'components/FilterTicket/customStyles';
+import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 
 interface Values {
   title: string;

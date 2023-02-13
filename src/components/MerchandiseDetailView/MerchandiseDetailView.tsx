@@ -19,7 +19,7 @@ function MerchandiseDetailView({ merchandises }: MerchandiseDetailViewProps) {
             {t('translation:merchandise')} {index + 1}
           </Typography>
           {Object.keys(i).map(
-            (k) =>
+            k =>
               k !== 'id' && (
                 <Grid key={k} container spacing={2}>
                   <Grid item xs={4}>

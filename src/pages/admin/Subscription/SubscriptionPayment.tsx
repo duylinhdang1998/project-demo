@@ -1,16 +1,16 @@
 import { Box, FormControlLabel, Radio, RadioGroup, RadioGroupProps, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import clxs from 'classnames';
+import { get } from 'lodash';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router';
 import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import CreditCard from 'components/CreditCard/CreditCard';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
-import { get } from 'lodash';
-import { ChangeEvent, FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router';
 import { SubscriptionType } from 'services/models/Subscription';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
@@ -75,8 +75,8 @@ const SubscriptionPayment: FC = () => {
     );
   };
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCreditVal((prev) => ({
+  const _handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCreditVal(prev => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
@@ -104,12 +104,14 @@ const SubscriptionPayment: FC = () => {
         }),
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subscriptionType]);
 
   useEffect(() => {
     if (statusGetPlans === 'success' && !plans.length) {
       navigate('/notfound', { replace: true });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusGetPlans]);
 
   // FIXME: Loading screen
@@ -142,7 +144,7 @@ const SubscriptionPayment: FC = () => {
       <CardWhite title={t('account:subcribe_to_tbus_plan')}>
         <RadioGroup row name="subscription" value={planDurationState} onChange={handleChangePlanDuration}>
           <Stack direction="row" alignItems="center" spacing={3} width="100%">
-            {planDurations.map((planDuration) => {
+            {planDurations.map(planDuration => {
               const label = planDuration === 'monthly' ? t('account:monthly_payment') : t('account:yearly_payment');
               const price = get(getPlanDurationsFromSubscriptionPlans(plans), planDuration).price;
               return (

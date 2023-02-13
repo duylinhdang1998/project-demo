@@ -1,14 +1,14 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Grid, Theme, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import Button from 'components/Button/Button';
-import CardWhite from 'components/CardWhite/CardWhite';
-import FilterTicket from 'components/FilterTicket/FilterTicket';
-import LayoutDetail from 'layout/LayoutDetail';
 import Highlighter from 'react-highlight-words';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import Button from 'components/Button/Button';
+import CardWhite from 'components/CardWhite/CardWhite';
+import FilterTicket from 'components/FilterTicket/FilterTicket';
+import LayoutDetail from 'layout/LayoutDetail';
 import CardSelectTrip from './components/CardSelectTrip';
 import FilterBy from './components/FilterBy';
 import { fields } from './constants';
@@ -62,7 +62,13 @@ export default function CreateTicketOrder() {
             <FilterBy />
           </Grid>
           <Grid item xs={12} md={8}>
-            <Highlighter textToHighlight={`5 trips found`} highlightClassName={classes.highlightText} searchWords={['5']} autoEscape={true} className={classes.title} />
+            <Highlighter
+              textToHighlight={`5 trips found`}
+              highlightClassName={classes.highlightText}
+              searchWords={['5']}
+              autoEscape={true}
+              className={classes.title}
+            />
             <CardSelectTrip
               timeStart="08:30"
               timeEnd="10:30"

@@ -3,6 +3,10 @@ import { Button, Grid, Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
+import dayjs from 'dayjs';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { MapPinIcon } from 'assets';
 import AntTable from 'components/AntTable/AntTable';
 import MyButton from 'components/Button/Button';
@@ -10,12 +14,8 @@ import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import dayjs from 'dayjs';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { Ticket } from 'models/Ticket';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
 import { dataTicketDemo, fieldsSearch, fieldsSearch2, keysFieldsSearch } from './constants';
 
@@ -149,7 +149,12 @@ export default function TicketSales() {
       <Box p="24px">
         <Grid container spacing={2}>
           <Grid item xs={12} md={isAgent ? 8 : 11}>
-            <FilterTicket control={control} fields={isAgent ? fieldsSearch2 : fieldsSearch} filterKey="ticketSales" numberColumns={isAgent ? 2.5 : 2} />
+            <FilterTicket
+              control={control}
+              fields={isAgent ? fieldsSearch2 : fieldsSearch}
+              filterKey="ticketSales"
+              numberColumns={isAgent ? 2.5 : 2}
+            />
           </Grid>
           <Grid
             item
@@ -175,8 +180,8 @@ export default function TicketSales() {
           <AntTable
             columns={columnsTicket}
             dataSource={dataTicketDemo()}
-            rowKey={(record) => record.id}
-            onRow={(record) => {
+            rowKey={record => record.id}
+            onRow={record => {
               return {
                 onClick: handleClickRow(record),
               };

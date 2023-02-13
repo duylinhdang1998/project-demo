@@ -1,13 +1,13 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
-import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
-import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
-import FormVerticle from 'components/FormVerticle/FormVerticle';
 import dayjs from 'dayjs';
-import LayoutDetail from 'layout/LayoutDetail';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
+import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
+import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import FormVerticle from 'components/FormVerticle/FormVerticle';
+import LayoutDetail from 'layout/LayoutDetail';
 import TableDetailPassenger from './components/TableDetailPassenger';
 import { fieldDetails } from './constants';
 

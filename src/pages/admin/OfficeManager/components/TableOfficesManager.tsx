@@ -1,6 +1,11 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Dialog, DialogTitle, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
 import { ColumnsType } from 'antd/es/table';
+import { Fragment, memo, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { v4 as uuid } from 'uuid';
 import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
 import Button from 'components/Button/Button';
@@ -9,10 +14,6 @@ import EditIcon from 'components/SvgIcon/EditIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { Fragment, memo, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { Office } from 'services/models/Office';
 import { RECORDS_PER_PAGE } from 'services/OfficesManager/Company/getOffices';
 import { officesManagerActions } from 'store/officesManager/officesManagerSlice';
@@ -20,7 +21,6 @@ import { selectOfficesManager } from 'store/officesManager/selectors';
 import { useToastStyle } from 'theme/toastStyles';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
-import { v4 as uuid } from 'uuid';
 
 const PROPERTIES_IN_DIALOG: Array<keyof Pick<Office, 'address' | 'zipCode' | 'city' | 'country'>> = ['address', 'zipCode', 'city', 'country'];
 
@@ -186,7 +186,7 @@ function TableOfficesManager() {
           <Divider variant="middle" sx={{ margin: '16px 0' }} />
           <Grid container spacing={2}>
             {openOfficeDetail &&
-              PROPERTIES_IN_DIALOG.map((property) => (
+              PROPERTIES_IN_DIALOG.map(property => (
                 <Fragment key={property}>
                   <Grid item xs={3}>
                     <Typography variant="body2">{t(`destinations:${property}`)}:</Typography>
@@ -208,7 +208,7 @@ function TableOfficesManager() {
         loading={statusGetOffices === 'loading'}
         columns={columns}
         dataSource={offices}
-        rowKey={(r) => r._id}
+        rowKey={r => r._id}
         pagination={{ total: totalRows, pageSize: RECORDS_PER_PAGE, current: currentPage + 1 }}
         onChange={(pagination, _, sorter, extra) => {
           dispatch(

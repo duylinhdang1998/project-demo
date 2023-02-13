@@ -1,10 +1,10 @@
 import { ListItem, ListItemIcon, ListItemText, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import cx from 'classnames';
-import { RouteSideBar } from 'models/Route';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useMatch, useResolvedPath } from 'react-router-dom';
+import { RouteSideBar } from 'models/Route';
 
 const useStyles = makeStyles((theme: Theme) => ({
   active: {

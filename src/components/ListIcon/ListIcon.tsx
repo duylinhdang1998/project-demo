@@ -1,13 +1,13 @@
-import icons from 'assets/icons/icons.json';
 import { InputBase, InputLabel, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import 'assets/icons/fontawesome/css/all.min.css';
-import { ChangeEvent, memo, useState } from 'react';
+import { ChangeEvent, memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GridCellProps } from 'react-virtualized';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import Grid from 'react-virtualized/dist/commonjs/Grid';
+import icons from 'assets/icons/icons.json';
 
 interface Icon {
   icon: string;
@@ -61,7 +61,7 @@ function ListIcon() {
   const [valueSearch, setValueSearch] = useState('');
 
   const getIconsType = () => {
-    return Object.keys(icons).map((iconName) => {
+    return Object.keys(icons).map(iconName => {
       return {
         icon: iconName,
         type: icons[iconName].free[0] as string,
@@ -91,7 +91,7 @@ function ListIcon() {
   const _renderCell =
     (width: number) =>
     ({ columnIndex, key, rowIndex, style }: GridCellProps) => {
-      const iconListRender = iconList?.filter((i) => i.icon.indexOf(valueSearch) > -1);
+      const iconListRender = iconList?.filter(i => i.icon.indexOf(valueSearch) > -1);
       return (
         <div key={key} className={classes.cell} style={{ ...style, height: width / 14 - 2 }}>
           <i className={getClassName(iconListRender?.[14 * rowIndex + columnIndex])} />
@@ -104,7 +104,14 @@ function ListIcon() {
       <InputLabel htmlFor="title" className={classes.label}>
         {t('icon')}
       </InputLabel>
-      <InputBase value={valueSearch} onChange={handleChangeText} placeholder={t('search_icon')} id="title" className={classes.inputSearch} fullWidth />
+      <InputBase
+        value={valueSearch}
+        onChange={handleChangeText}
+        placeholder={t('search_icon')}
+        id="title"
+        className={classes.inputSearch}
+        fullWidth
+      />
       <AutoSizer disableHeight>
         {({ width }) => {
           return (

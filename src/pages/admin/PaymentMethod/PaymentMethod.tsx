@@ -1,13 +1,13 @@
 import { Divider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
-import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
-import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import Radio from 'components/Radio/Radio';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
+import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
+import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
+import Radio from 'components/Radio/Radio';
 
 export default function PaymentMethod() {
   const { t } = useTranslation(['account', 'translation']);

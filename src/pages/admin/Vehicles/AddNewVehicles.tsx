@@ -1,6 +1,6 @@
 import { Box, Divider, Typography } from '@mui/material';
-import LayoutDetail from 'layout/LayoutDetail';
 import { useTranslation } from 'react-i18next';
+import LayoutDetail from 'layout/LayoutDetail';
 import FormAddVehicles from './components/FormAddVehicles';
 
 export default function AddNewVehicles() {

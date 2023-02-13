@@ -3,9 +3,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment, InputBase, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import Button from 'components/Button/Button';
 import { memo, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Button from 'components/Button/Button';
 
 const useStyles = makeStyles(() => ({
   container: {},
@@ -60,7 +60,7 @@ function BoxSearch({ addTextButton, searchValue, onAdd, onSearch }: BoxSearchPro
     <Box display="flex" justifyContent="space-between" flexDirection={{ xs: 'column', md: 'row' }} alignItems="center">
       <InputBase
         value={searchKey}
-        onChange={(e) => setSearchKey(e.target.value)}
+        onChange={e => setSearchKey(e.target.value)}
         placeholder={t('translation:search')}
         endAdornment={
           <InputAdornment position="end">

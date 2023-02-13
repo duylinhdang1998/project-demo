@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import CardWhite from 'components/CardWhite/CardWhite';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useTranslation } from 'react-i18next';
 import FormClientInfo from './components/FormClientInfo';
 import ReserveInfo from './components/ReserveInfo';
 

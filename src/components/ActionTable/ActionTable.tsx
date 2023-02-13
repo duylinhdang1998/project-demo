@@ -1,9 +1,9 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Box, IconButton, Stack, Typography } from '@mui/material';
 import { Menu } from 'antd';
-import DropdownCustom from 'components/DropdownCustom/DropdownCustom';
 import { MouseEvent, ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import DropdownCustom from 'components/DropdownCustom/DropdownCustom';
 
 export interface ActionItem<T> {
   id?: string;
@@ -36,7 +36,7 @@ function ActionTable<T>({ actions, row }: ActionTableProps<T>) {
 
   const menu = (
     <>
-      {actions?.map((act) => (
+      {actions?.map(act => (
         <Menu.Item onClick={handleClickAction(act)} key={act.id}>
           <Stack direction="row" justifyContent="flex-start" spacing={1} paddingX="8px">
             <Box>{act.icon}</Box>

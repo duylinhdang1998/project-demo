@@ -1,11 +1,11 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
 import { fieldAccount1, fieldAccount2, fieldAccount3, fieldAccount4, fieldAccount5, fieldKeys } from './constants';
 
 type Values = Record<typeof fieldKeys[number], string>;

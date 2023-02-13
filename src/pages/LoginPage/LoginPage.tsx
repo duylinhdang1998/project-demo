@@ -1,24 +1,24 @@
-import logoTbus from 'assets/images/logo-blue.png';
-import MessageIcon from 'assets/images/message.svg';
-import PasswordIcon from 'assets/images/password.svg';
 import { LoadingButton } from '@mui/lab';
 import { Button, Grid } from '@mui/material';
 import { Box } from '@mui/system';
-import InputAuth from 'components/InputAuth/InputAuth';
-import TextWithLink from 'components/TextWithLink/TextWithLink';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { useAppSelector } from 'hooks/useAppSelector';
 import { get } from 'lodash';
 import Highlighter from 'react-highlight-words';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import logoTbus from 'assets/images/logo-blue.png';
+import MessageIcon from 'assets/images/message.svg';
+import PasswordIcon from 'assets/images/password.svg';
+import InputAuth from 'components/InputAuth/InputAuth';
+import TextWithLink from 'components/TextWithLink/TextWithLink';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { authActions } from 'store/auth/authSlice';
 import { selectAuth } from 'store/auth/selectors';
-import { useStyles } from './styles';
 import { useToastStyle } from 'theme/toastStyles';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { useStyles } from './styles';
 
 interface Values {
   email: string;

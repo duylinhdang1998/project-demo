@@ -1,5 +1,10 @@
 import { Divider, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import BackButton from 'components/BackButton/BackButton';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
@@ -8,11 +13,6 @@ import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { CreatePackageSetting } from 'services/PackageSettings/Company/createPackageSetting';
 import { packageSettingsActions } from 'store/packageSettings/packageSettingsSlice';
 import { selectPackageSettings } from 'store/packageSettings/selectors';
@@ -109,7 +109,7 @@ export default function AddPackageSettings() {
 
   useEffect(() => {
     if (isEditAction && packageSetting && statusGetPackageSetting === 'success') {
-      Object.keys(packageSetting).forEach((key) => {
+      Object.keys(packageSetting).forEach(key => {
         const key_ = key as keyof CreatePackageSetting;
         if (fieldKeys.includes(key_)) {
           setValue(key_, packageSetting[key_]);

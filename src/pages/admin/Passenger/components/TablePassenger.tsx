@@ -2,17 +2,17 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
+import { Key, memo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 import ActionTable, { ActionItem } from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import EditIcon from 'components/SvgIcon/EditIcon';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { PassengerTypeColumn } from 'models/Passenger';
-import { Key, memo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
-import { v4 as uuid } from 'uuid';
 
 const dataSource: PassengerTypeColumn[] = [];
 
@@ -123,7 +123,7 @@ function TablePassenger({ onSelect }: TablePassengerProps) {
         }}
         columns={columns}
         dataSource={dataSource}
-        rowKey={(record) => record.id}
+        rowKey={record => record.id}
       />
       <DialogConfirm openDialog={open} title={t('passengers.block')} subTitle={t('passengers.block_message')} onClose={handleClose} />
     </Box>

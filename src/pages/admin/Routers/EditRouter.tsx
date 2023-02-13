@@ -1,8 +1,8 @@
-import CardWhite from 'components/CardWhite/CardWhite';
-import LayoutDetail from 'layout/LayoutDetail';
 import { get } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
+import CardWhite from 'components/CardWhite/CardWhite';
+import LayoutDetail from 'layout/LayoutDetail';
 import StepOne from './components/FormStep/StepOne';
 import StepOneMultiple from './components/FormStep/StepOneMultiple';
 

@@ -1,13 +1,13 @@
 import { Box, Typography } from '@mui/material';
-import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
-import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
-import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { isEmpty } from 'lodash';
-import { Option } from 'models/Field';
-import { RoutePrograms } from 'models/RoutePrograms';
 import { useEffect, useState } from 'react';
 import { Control, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
+import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import FormVerticle from 'components/FormVerticle/FormVerticle';
+import { Option } from 'models/Field';
+import { RoutePrograms } from 'models/RoutePrograms';
 import { fieldsStepOne } from '../../constants';
 import EditPriceTrip from '../EditPriceTrip';
 

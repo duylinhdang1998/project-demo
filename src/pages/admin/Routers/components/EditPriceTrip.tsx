@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
 export default function EditPriceTrip({ control, isMulti, index }: EditPriceTripProps) {
   const { t } = useTranslation(['routers', 'translation']);
   const classes = useStyles();
-  const getNameInput = (defaultName) => {
+  const getNameInput = defaultName => {
     if (isMulti) {
       return `stops.${index}.${defaultName}`;
     }
@@ -50,10 +50,18 @@ export default function EditPriceTrip({ control, isMulti, index }: EditPriceTrip
               {t('adult')}
             </TableCell>
             <TableCell className={classes.cell}>
-              <Controller control={control} name={getNameInput('eco_adult')} render={({ field }) => <InputBase {...field} type="number" className={classes.input} />} />
+              <Controller
+                control={control}
+                name={getNameInput('eco_adult')}
+                render={({ field }) => <InputBase {...field} type="number" className={classes.input} />}
+              />
             </TableCell>
             <TableCell className={classes.cell}>
-              <Controller control={control} name={getNameInput('vip_adult')} render={({ field }) => <InputBase {...field} type="number" className={classes.input} />} />
+              <Controller
+                control={control}
+                name={getNameInput('vip_adult')}
+                render={({ field }) => <InputBase {...field} type="number" className={classes.input} />}
+              />
             </TableCell>
           </TableRow>
           <TableRow>
@@ -61,10 +69,18 @@ export default function EditPriceTrip({ control, isMulti, index }: EditPriceTrip
               {t('student')}
             </TableCell>
             <TableCell className={classes.cell}>
-              <Controller control={control} name={getNameInput('eco_student')} render={({ field }) => <InputBase {...field} type="number" className={classes.input} />} />
+              <Controller
+                control={control}
+                name={getNameInput('eco_student')}
+                render={({ field }) => <InputBase {...field} type="number" className={classes.input} />}
+              />
             </TableCell>
             <TableCell className={classes.cell}>
-              <Controller control={control} name={getNameInput('vip_student')} render={({ field }) => <InputBase {...field} type="number" className={classes.input} />} />
+              <Controller
+                control={control}
+                name={getNameInput('vip_student')}
+                render={({ field }) => <InputBase {...field} type="number" className={classes.input} />}
+              />
             </TableCell>
           </TableRow>
           <TableRow>

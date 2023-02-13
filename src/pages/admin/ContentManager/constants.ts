@@ -1,5 +1,5 @@
-import { Field } from 'models/Field';
 import { v4 as uuid } from 'uuid';
+import { Field } from 'models/Field';
 
 export const sidebarFields: Field[] = [
   { id: uuid(), type: 'text', label: 'postalAddress' },

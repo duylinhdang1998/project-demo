@@ -1,11 +1,11 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CardWhite from 'components/CardWhite/CardWhite';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(() => ({
   inputNumberWrap: {
@@ -58,7 +58,12 @@ export default function OrdersSetting() {
           <ComboButton onCancel={handleCancel} />
         </CardWhite>
       </Box>
-      <DialogConfirm openDialog={open} title={t('translation:cancel_type', { type: t('orders_setting') })} subTitle={t('translation:leave_page')} onClose={handleClose} />
+      <DialogConfirm
+        openDialog={open}
+        title={t('translation:cancel_type', { type: t('orders_setting') })}
+        subTitle={t('translation:leave_page')}
+        onClose={handleClose}
+      />
     </Box>
   );
 }

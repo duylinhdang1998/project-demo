@@ -1,11 +1,11 @@
 import { Box } from '@mui/system';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import BoxSearch from 'components/BoxSearch/BoxSearch';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { packageSettingsActions } from 'store/packageSettings/packageSettingsSlice';
 import { selectPackageSettings } from 'store/packageSettings/selectors';
 import TablePackageSettings from './components/TablePackageSettings';
@@ -39,7 +39,7 @@ export default function PackageSettings() {
       <Box padding="24px">
         <BoxSearch
           searchValue={currentSearcher.title}
-          onSearch={(value) => {
+          onSearch={value => {
             dispatch(
               packageSettingsActions.getPackageSettingsRequest({
                 page: 0,

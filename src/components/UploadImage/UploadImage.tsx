@@ -9,9 +9,9 @@ import { UploadChangeParam } from 'antd/lib/upload';
 import { UploadFile } from 'antd/lib/upload/interface';
 import 'antd/lib/upload/style/css';
 import clxs from 'classnames';
-import TextWithLink from 'components/TextWithLink/TextWithLink';
 import { ReactElement, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import TextWithLink from 'components/TextWithLink/TextWithLink';
 import './styles.css';
 
 const useStyles = makeStyles(() => ({
@@ -43,7 +43,7 @@ function getBase64(file: any) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
+    reader.onerror = error => reject(error);
   });
 }
 
@@ -81,7 +81,9 @@ export default function UploadImage() {
     }
   };
 
-  const uploadButton = <Box className={classes.upload}>{loading ? <CircularProgress /> : <TextWithLink text="Drag & drop or" highlight="browse" />}</Box>;
+  const uploadButton = (
+    <Box className={classes.upload}>{loading ? <CircularProgress /> : <TextWithLink text="Drag & drop or" highlight="browse" />}</Box>
+  );
   const renderImage = (originNode: ReactElement, file: UploadFile, filesLists: any, actions: any) => {
     return (
       <Box width="100%" height="170px" position="relative">

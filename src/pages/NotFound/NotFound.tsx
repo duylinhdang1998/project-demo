@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
-import Button from 'components/Button/Button';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import Button from 'components/Button/Button';
 import './style.css';
 
 export default function NotFound() {

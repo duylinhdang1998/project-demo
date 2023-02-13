@@ -2,14 +2,14 @@ import { Checkbox, FormControlLabel, Grid, InputBase, InputBaseProps, InputLabel
 import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
-import { customStyles } from 'components/FilterTicket/customStyles';
-import UploadImage from 'components/UploadImage/UploadImage';
-import { Field } from 'models/Field';
+import cx from 'classnames';
 import { Controller, FieldError, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
+import { customStyles } from 'components/FilterTicket/customStyles';
+import UploadImage from 'components/UploadImage/UploadImage';
+import { Field } from 'models/Field';
 import { useStyles } from './styles';
-import cx from 'classnames';
 export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
   fields?: Field[];
   inputProps?: InputBaseProps;
@@ -52,7 +52,15 @@ export default function FormVerticle<T extends FieldValues>({
                   <InputLabel htmlFor={i.label} className={classes.label}>
                     {t(`${i.label}`)}
                   </InputLabel>
-                  <InputBase fullWidth id={i.label} {...inputProps} {...field} placeholder={t(`${i.label}`)} className={classes.input} error={!!error} />
+                  <InputBase
+                    fullWidth
+                    id={i.label}
+                    {...inputProps}
+                    {...field}
+                    placeholder={t(`${i.label}`)}
+                    className={classes.input}
+                    error={!!error}
+                  />
                   {!!error && (
                     <Typography component="p" className={classes.error} fontSize={12}>
                       {messageErr}
@@ -69,7 +77,7 @@ export default function FormVerticle<T extends FieldValues>({
               ...(i.type === 'email'
                 ? {
                     pattern: {
-                      value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                      value: /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/,
                       message: t('error_email'),
                     },
                   }
@@ -112,7 +120,7 @@ export default function FormVerticle<T extends FieldValues>({
           <>
             <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
             <Stack direction="row" justifyContent="space-between" spacing={2}>
-              {i.options?.map((c) => (
+              {i.options?.map(c => (
                 <Controller
                   key={c.key}
                   name={i.label as Path<T>}
@@ -147,7 +155,7 @@ export default function FormVerticle<T extends FieldValues>({
           <Controller
             name={i.label as Path<T>}
             control={control}
-            render={({ field }) => {
+            render={() => {
               return (
                 <Box>
                   <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
@@ -246,7 +254,7 @@ export default function FormVerticle<T extends FieldValues>({
   }
   return (
     <div>
-      {fields?.map((item) => (
+      {fields?.map(item => (
         <Box my="16px" key={item.id} border="1px solid transparent">
           {renderField(item)}
         </Box>

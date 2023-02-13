@@ -1,13 +1,13 @@
 import { Box, Typography } from '@mui/material';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import CardWhite from 'components/CardWhite/CardWhite';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { fields1, fields2, fields3, KeyFields } from './constant';
 
 type Values = Record<typeof KeyFields[number], string>;
@@ -46,7 +46,12 @@ export default function CreatePackageOrders() {
         </Box>
         <ComboButton onCancel={handleCancel} textOk={t('translation:next')} onSave={handleNext} />
       </CardWhite>
-      <DialogConfirm openDialog={open} title={t('translation:cancel_type', { type: t('package_order') })} subTitle={t('translation:leave_page')} onClose={handleClose} />
+      <DialogConfirm
+        openDialog={open}
+        title={t('translation:cancel_type', { type: t('package_order') })}
+        subTitle={t('translation:leave_page')}
+        onClose={handleClose}
+      />
     </LayoutDetail>
   );
 }

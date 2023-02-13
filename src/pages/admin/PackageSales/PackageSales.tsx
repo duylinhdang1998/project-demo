@@ -1,14 +1,14 @@
 import AddIcon from '@mui/icons-material/Add';
 import { Grid, Stack, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import AntTable from 'components/AntTable/AntTable';
 import Button from 'components/Button/Button';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
 import { columnsPackage, dataPackageSales } from './columnsPackage';
 import { agentFieldSearch, fieldsSearch, keysFieldsSearch } from './constants';
@@ -46,7 +46,12 @@ export default function PackageSales() {
       <Box p="24px">
         <Grid container spacing={2}>
           <Grid item xs={12} md={isAgent ? 8 : 11}>
-            <FilterTicket control={control} fields={isAgent ? agentFieldSearch : fieldsSearch} numberColumns={isAgent ? 2.5 : 2} filterKey="packageSales" />
+            <FilterTicket
+              control={control}
+              fields={isAgent ? agentFieldSearch : fieldsSearch}
+              numberColumns={isAgent ? 2.5 : 2}
+              filterKey="packageSales"
+            />
           </Grid>
           <Grid
             item
@@ -61,7 +66,14 @@ export default function PackageSales() {
                 {t('translation:search')}
               </Button>
               {isAgent && (
-                <Button variant="contained" fullWidth backgroundButton="#33CC7F" onClick={handleAdd} startIcon={<AddIcon />} sx={{ padding: '12px 16px !important' }}>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  backgroundButton="#33CC7F"
+                  onClick={handleAdd}
+                  startIcon={<AddIcon />}
+                  sx={{ padding: '12px 16px !important' }}
+                >
                   {t('add_merchandise')}
                 </Button>
               )}
@@ -69,7 +81,7 @@ export default function PackageSales() {
           </Grid>
         </Grid>
         <Box my="30px">
-          <AntTable columns={columnsPackage} dataSource={dataPackageSales()} rowKey={(record) => record.orderId ?? ''} />
+          <AntTable columns={columnsPackage} dataSource={dataPackageSales()} rowKey={record => record.orderId ?? ''} />
         </Box>
       </Box>
     </Box>

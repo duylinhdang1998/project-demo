@@ -1,6 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import CardWhite from 'components/CardWhite/CardWhite';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useTranslation } from 'react-i18next';
 import FormMerchandise from './components/FormMerchandise';
 
 export default function AddMerchandise() {

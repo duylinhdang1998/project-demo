@@ -3,10 +3,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, IconButton, Stack, Theme, Toolbar, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import AccountDropdown from 'components/AccountDropdown/AccountDropdown';
-import ChangeLanguage from 'components/ChangeLanguage/ChangeLanguage';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import AccountDropdown from 'components/AccountDropdown/AccountDropdown';
+import ChangeLanguage from 'components/ChangeLanguage/ChangeLanguage';
 
 interface HeaderLayoutProps {
   onToggleDrawer?: () => void;

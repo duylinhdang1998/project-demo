@@ -1,6 +1,6 @@
+import { RouteObject } from 'react-router-dom';
 import RequiredAuth from 'hocs/RequiredAuth';
 import * as Page from 'pages';
-import { RouteObject } from 'react-router-dom';
 
 export const AdminRoutes: RouteObject[] = [
   {

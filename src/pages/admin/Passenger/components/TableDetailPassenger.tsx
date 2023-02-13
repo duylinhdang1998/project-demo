@@ -1,11 +1,11 @@
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { MapPinIcon } from 'assets';
-import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import dayjs from 'dayjs';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
+import { MapPinIcon } from 'assets';
+import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 
 const useStyles = makeStyles(() => ({
   tableCell: {
@@ -45,7 +45,7 @@ function TableDetailPassenger() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row) => (
+            {data.map(row => (
               <TableRow key={row.id}>
                 <TableCell align="left" className={classes.tableCell}>
                   {row.trip.map((val, index) => (

@@ -1,5 +1,5 @@
-import env from 'env';
 import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
+import env from 'env';
 
 interface IProps {
   children: ReactNode;

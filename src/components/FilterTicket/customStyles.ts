@@ -1,7 +1,7 @@
 import { StylesConfig } from 'react-select';
 
 export const customStyles: StylesConfig = {
-  control: (provided) => {
+  control: provided => {
     return {
       ...provided,
       height: '40px',
@@ -9,7 +9,7 @@ export const customStyles: StylesConfig = {
       fontSize: '14px',
     };
   },
-  singleValue: (provided) => {
+  singleValue: provided => {
     const color = '#333';
     return {
       ...provided,
@@ -30,7 +30,7 @@ export const customStyles: StylesConfig = {
       display: 'none',
     };
   },
-  menu: (provided) => {
+  menu: provided => {
     return {
       ...provided,
       zIndex: 9,

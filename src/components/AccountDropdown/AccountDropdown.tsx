@@ -4,10 +4,10 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { Dropdown, Menu } from 'antd';
 import cx from 'classnames';
-import { useAppDispatch } from 'hooks/useAppDispatch';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import { authActions } from 'store/auth/authSlice';
 import { accountSettings } from './accountSettings';
 
@@ -97,7 +97,7 @@ function AccountDropdown({ avatar, role, fullname }: AccountDropdownProps) {
           <span className={classes.name}>{fullname}</span>
         </Box>
       </Stack>
-      {accountSettings.map((i) => (
+      {accountSettings.map(i => (
         <Menu.Item
           key={i.name}
           onClick={handleItem(i)}

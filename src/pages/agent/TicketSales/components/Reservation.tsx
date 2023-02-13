@@ -1,14 +1,14 @@
-import ClockSvg from 'assets/images/clock.svg';
-import SnowSvg from 'assets/images/snow.svg';
 import { Box, Checkbox, FormControlLabel, Stack, Typography } from '@mui/material';
-import { MapPinIcon } from 'assets';
-import Button from 'components/Button/Button';
-import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { MapPinIcon } from 'assets';
+import ClockSvg from 'assets/images/clock.svg';
+import SnowSvg from 'assets/images/snow.svg';
+import Button from 'components/Button/Button';
+import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useToastStyle } from 'theme/toastStyles';
 
 const dataDetails = {
@@ -67,7 +67,7 @@ function Reservation() {
         <Typography variant="body2" component="p" marginBottom="16px">
           {t('service')}
         </Typography>
-        {dataDetails.services.map((i) => (
+        {dataDetails.services.map(i => (
           <TextWithIcon icon={SnowSvg} text={i} color="#45485E" />
         ))}
       </Box>

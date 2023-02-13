@@ -2,11 +2,11 @@ import TvIcon from '@mui/icons-material/Tv';
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
-import AntTable from 'components/AntTable/AntTable';
-import { Service } from 'models/Services';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
+import AntTable from 'components/AntTable/AntTable';
+import { Service } from 'models/Services';
 import ActionService from './ActionService';
 
 const dataSource: Service[] = [
@@ -45,7 +45,7 @@ function TableServices() {
   ];
   return (
     <Box my="24px">
-      <AntTable columns={columns} dataSource={dataSource} rowKey={(r) => r.id} />
+      <AntTable columns={columns} dataSource={dataSource} rowKey={r => r.id} />
     </Box>
   );
 }

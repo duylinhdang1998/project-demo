@@ -1,16 +1,16 @@
-import MessageIcon from 'assets/images/message.svg';
-import PasswordIcon from 'assets/images/password.svg';
 import { Button, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import InputAuth from 'components/InputAuth/InputAuth';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { get } from 'lodash';
 import { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import MessageIcon from 'assets/images/message.svg';
+import PasswordIcon from 'assets/images/password.svg';
+import InputAuth from 'components/InputAuth/InputAuth';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useToastStyle } from 'theme/toastStyles';
 
 interface Values {
@@ -110,7 +110,7 @@ export default function ForgetPassword() {
           error={!!errors.repassword}
           rules={{
             validate: {
-              isEqual: (v) => getValues('password') === v || `${t('error_password')}`,
+              isEqual: v => getValues('password') === v || `${t('error_password')}`,
             },
           }}
           messageErr={get(errors, 'repassword.message', '')}

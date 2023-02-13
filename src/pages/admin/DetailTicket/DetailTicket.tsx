@@ -1,13 +1,13 @@
 import { Grid, Stack } from '@mui/material';
 import { Box } from '@mui/system';
+import { get } from 'lodash';
+import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import Button from 'components/Button/Button';
 import PrintIcon from 'components/SvgIcon/PrintIcon';
 import SendIcon from 'components/SvgIcon/SendIcon';
 import LayoutDetail from 'layout/LayoutDetail';
-import { get } from 'lodash';
 import { Ticket } from 'models/Ticket';
-import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
 import OrderDetails from './components/OrderDetails';
 import PaymentTicket from './components/PaymentTicket';
 

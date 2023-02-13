@@ -66,7 +66,7 @@ function ToolTipAddress({ children }: ToolTipAddressProps) {
           </Typography>
           <Box className="custom_timeline_container_router" marginTop="20px">
             <Timeline mode="left">
-              {addresses.map((i) => (
+              {addresses.map(i => (
                 <Timeline.Item key={i.id} color="#333" label={i.time}>
                   {i.place}
                 </Timeline.Item>

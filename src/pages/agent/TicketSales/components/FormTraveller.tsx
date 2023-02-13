@@ -1,9 +1,9 @@
 import { Box, Grid, InputBase, InputLabel, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { customStyles } from 'components/FilterTicket/customStyles';
 import { Controller, Path, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
+import { customStyles } from 'components/FilterTicket/customStyles';
 
 interface Values {
   firstName: string;
@@ -103,9 +103,9 @@ export default function FormTraveller() {
   };
   return (
     <Box>
-      {fields.map((f) => (
+      {fields.map(f => (
         <Grid key={f.id} container spacing={2}>
-          {Object.keys(f).map((i) => renderElement(i as Path<Values>))}
+          {Object.keys(f).map(i => renderElement(i as Path<Values>))}
         </Grid>
       ))}
     </Box>

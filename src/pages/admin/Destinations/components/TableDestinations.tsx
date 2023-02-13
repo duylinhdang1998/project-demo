@@ -1,14 +1,14 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Dialog, DialogTitle, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
 import { ColumnsType } from 'antd/es/table';
+import { Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { v4 as uuid } from 'uuid';
 import ActionTable, { ActionItem } from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
 import DeleteIcon from 'components/SvgIcon/DeleteIcon';
 import EditIcon from 'components/SvgIcon/EditIcon';
 import { DestinationsColumnType } from 'models/Destinations';
-import { Fragment, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { v4 as uuid } from 'uuid';
 
 const dataSource: DestinationsColumnType[] = [];
 for (let i = 0; i < 15; i++) {
@@ -74,7 +74,7 @@ export default function TableDestinations() {
 
   return (
     <Box my="24px">
-      <AntTable columns={columns} dataSource={dataSource} rowKey={(r) => r.id} />
+      <AntTable columns={columns} dataSource={dataSource} rowKey={r => r.id} />
       <Dialog open={open} onClose={handleClose}>
         <Box padding="24px">
           <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -85,7 +85,7 @@ export default function TableDestinations() {
           </Stack>
           <Divider variant="middle" sx={{ margin: '16px 0' }} />
           <Grid container spacing={2}>
-            {Object.keys(dataDetails).map((i) => (
+            {Object.keys(dataDetails).map(i => (
               <Fragment key={i}>
                 <Grid item xs={3}>
                   <Typography variant="body2">{t(`${i}`)}:</Typography>

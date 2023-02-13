@@ -53,7 +53,7 @@ export default class ConfigureAxios {
   };
 
   public accessToken = ({ setCondition }: AccessTokenParams) => {
-    this.axiosInstance.interceptors.request.use((config) => {
+    this.axiosInstance.interceptors.request.use(config => {
       if (!config?.url) {
         return config;
       }

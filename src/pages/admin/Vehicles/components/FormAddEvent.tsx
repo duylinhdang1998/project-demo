@@ -5,12 +5,12 @@ import { makeStyles } from '@mui/styles';
 import { Upload } from 'antd';
 import { UploadFile, UploadFileStatus } from 'antd/es/upload/interface';
 import 'antd/lib/upload/style/css';
-import FormVerticle from 'components/FormVerticle/FormVerticle';
-import FileIcon from 'components/SvgIcon/FileIcon';
 import dayjs from 'dayjs';
 import { memo, ReactElement } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import FormVerticle from 'components/FormVerticle/FormVerticle';
+import FileIcon from 'components/SvgIcon/FileIcon';
 import { fieldsAddEvent } from '../constants';
 
 interface Values {
@@ -88,7 +88,9 @@ function FormAddEvent() {
         <Controller
           name="descriptions"
           control={control}
-          render={({ field }) => <TextareaAutosize {...field} minRows={10} maxRows={10} placeholder={t(`descriptions`)} id="description" className={classes.inputArea} />}
+          render={({ field }) => (
+            <TextareaAutosize {...field} minRows={10} maxRows={10} placeholder={t(`descriptions`)} id="description" className={classes.inputArea} />
+          )}
         />
       </Box>
       <Box my="16px">

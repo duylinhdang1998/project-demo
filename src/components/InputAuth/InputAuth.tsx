@@ -1,10 +1,10 @@
-import EyeNonIcon from 'assets/images/eye-non.svg';
-import EyeIcon from 'assets/images/eye.svg';
 import { InputAdornment, InputBase, InputBaseProps, InputLabel, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import EyeNonIcon from 'assets/images/eye-non.svg';
+import EyeIcon from 'assets/images/eye.svg';
 import { useStyles } from './styles';
 
 export interface InputAuthProps<T extends FieldValues> extends InputBaseProps {
@@ -17,7 +17,19 @@ export interface InputAuthProps<T extends FieldValues> extends InputBaseProps {
   messageErr?: string;
 }
 
-function InputAuth<T extends FieldValues>({ id, type, iconStart, labelText, iconEnd, control, nameInput, rules, error, messageErr, ...rest }: InputAuthProps<T>) {
+function InputAuth<T extends FieldValues>({
+  id,
+  type,
+  iconStart,
+  labelText,
+  iconEnd,
+  control,
+  nameInput,
+  rules,
+  error,
+  messageErr,
+  ...rest
+}: InputAuthProps<T>) {
   const classes = useStyles();
   const [show, setShow] = useState(false);
   const { t } = useTranslation(['translation']);
@@ -29,7 +41,7 @@ function InputAuth<T extends FieldValues>({ id, type, iconStart, labelText, icon
   const renderIconEye = show ? EyeNonIcon : EyeIcon;
 
   const handleShowPass = () => {
-    setShow((prev) => !prev);
+    setShow(prev => !prev);
   };
 
   const endAdor =
@@ -50,7 +62,7 @@ function InputAuth<T extends FieldValues>({ id, type, iconStart, labelText, icon
         ...(type === 'email'
           ? {
               pattern: {
-                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                value: /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/,
                 message: t('error_email'),
               },
             }

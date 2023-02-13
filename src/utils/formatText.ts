@@ -51,5 +51,5 @@ export function formatExpirationDate(value: string) {
 }
 
 export function formatFormData(data: any) {
-  return Object.keys(data).map((d) => `${d}: ${data[d]}`);
+  return Object.keys(data).map(d => `${d}: ${data[d]}`);
 }

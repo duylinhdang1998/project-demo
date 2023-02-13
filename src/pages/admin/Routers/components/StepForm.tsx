@@ -24,11 +24,11 @@ export default function StepForm({ isMulti }: StepFormProps) {
   const classes = useStyles();
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep(prevActiveStep => prevActiveStep + 1);
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
   const handleCancel = () => {
     if (activeStep === 0) {

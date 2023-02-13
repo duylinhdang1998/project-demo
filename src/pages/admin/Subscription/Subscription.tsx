@@ -3,12 +3,12 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import { Progress } from 'antd';
 import 'antd/lib/progress/style/css';
-import Button from 'components/Button/Button';
-import CardWhite from 'components/CardWhite/CardWhite';
-import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
+import Button from 'components/Button/Button';
+import CardWhite from 'components/CardWhite/CardWhite';
+import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 
 const subcriptionsInfo = [
   { id: uuid(), label: 'Valid for 15 days after create account', value: true },
@@ -35,7 +35,7 @@ export default function Subscription() {
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
-              {subcriptionsInfo.map((i) => (
+              {subcriptionsInfo.map(i => (
                 <Stack direction="row" alignItems="center" spacing={3} key={i.id} my="10px">
                   {i.value ? <CheckIcon sx={{ color: '#33CC7F', fontSize: '12px' }} /> : <ClearIcon sx={{ color: '#FF2727', fontSize: '12px' }} />}
                   <Typography variant="body2">{i.label}</Typography>
@@ -46,7 +46,7 @@ export default function Subscription() {
               <Progress
                 type="circle"
                 percent={10}
-                format={(percent) => (
+                format={percent => (
                   <Box>
                     <Typography fontSize={12} color="#858C93">
                       left
@@ -64,7 +64,11 @@ export default function Subscription() {
           <Typography sx={{ margin: '16px 0' }} variant="body2">
             {t('account:after_trial_end')}
           </Typography>
-          <Button sx={{ margin: '24px 0', alignSelf: 'flex-end', padding: '10px 14px', float: 'right' }} backgroundButton="#1AA6EE" onClick={handleClick}>
+          <Button
+            sx={{ margin: '24px 0', alignSelf: 'flex-end', padding: '10px 14px', float: 'right' }}
+            backgroundButton="#1AA6EE"
+            onClick={handleClick}
+          >
             {t('translation:upgrade_now')}
           </Button>
         </CardWhite>
