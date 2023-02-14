@@ -18,6 +18,7 @@ import { contentManagerActions } from 'store/contentManager/contentManagerSlice'
 import { selectContentManager } from 'store/contentManager/selectors';
 import { useToastStyle } from 'theme/toastStyles';
 import { footerFields, sidebarFields } from './constants';
+import { uploadPlugin } from './utils/ckeditorPlugins';
 
 type Values = Pick<Content, 'city' | 'email' | 'phone' | 'content' | 'footerText' | 'postalAddress' | 'zipCode'>;
 const fieldKeys: Array<keyof Values> = ['city', 'email', 'phone', 'content', 'footerText', 'postalAddress', 'zipCode'];
@@ -83,16 +84,24 @@ function ContentManager() {
           </Typography>
           <Box my="20px">
             <CKEditor
+              config={{
+                extraPlugins: [
+                  // @ts-ignore
+                  uploadPlugin({
+                    onSuccess: () => {},
+                    onFailure: () => {
+                      toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+                        className: toastClass.toastSuccess,
+                      });
+                    },
+                  }),
+                ],
+              }}
               onReady={editor => {
                 // FIXME: Liệu có lỗi với trường hợp nào đấy không?
                 editor.setData(getValues().content);
               }}
               editor={ClassicEditor}
-              config={{
-                ckfinder: {
-                  uploadUrl: 'https://example.com/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&responseType=json',
-                },
-              }}
               onChange={(_, editor) => {
                 const data = editor.getData();
                 setValue('content', data);

@@ -226,6 +226,8 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'no-useless-escape': 'off',
+    'no-async-promise-executor': 'off',
+    '@typescript-eslint/space-before-function-paren': 'off',
   },
   overrides: [
     {

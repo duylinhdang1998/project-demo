@@ -10,7 +10,7 @@ import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 
-const subcriptionsInfo = [
+const subscriptionsInfo = [
   { id: uuid(), label: 'Valid for 15 days after create account', value: true },
   { id: uuid(), label: 'Reporting & dashboard.', value: true },
   { id: uuid(), label: 'Online support', value: false },
@@ -35,7 +35,7 @@ export default function Subscription() {
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
-              {subcriptionsInfo.map(i => (
+              {subscriptionsInfo.map(i => (
                 <Stack direction="row" alignItems="center" spacing={3} key={i.id} my="10px">
                   {i.value ? <CheckIcon sx={{ color: '#33CC7F', fontSize: '12px' }} /> : <ClearIcon sx={{ color: '#FF2727', fontSize: '12px' }} />}
                   <Typography variant="body2">{i.label}</Typography>
