@@ -1,9 +1,9 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import Button from 'components/Button/Button';
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import Button from 'components/Button/Button';
 
 export interface DialogConfirmProps {
   openDialog: boolean;
@@ -46,6 +46,7 @@ function DialogConfirm({ openDialog, okButtonText, cancelButtonText, title, subT
     if (!open) {
       onClose?.();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const handleClose = () => {

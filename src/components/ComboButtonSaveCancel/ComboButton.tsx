@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
-import Button from 'components/Button/Button';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import Button from 'components/Button/Button';
 
 interface ComboButtonProps {
   onCancel?: () => void;

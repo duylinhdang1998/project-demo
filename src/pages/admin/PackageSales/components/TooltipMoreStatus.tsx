@@ -1,8 +1,8 @@
 import { Fade, Tooltip } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import Tag from 'components/Tag/Tag';
 import { Fragment, memo } from 'react';
+import Tag from 'components/Tag/Tag';
 
 interface Props {
   text?: string;

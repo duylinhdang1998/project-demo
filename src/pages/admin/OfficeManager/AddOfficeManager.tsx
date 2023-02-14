@@ -1,4 +1,9 @@
 import { Box, Divider, Typography } from '@mui/material';
+import { useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
@@ -6,11 +11,6 @@ import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { CreateOffice } from 'services/OfficesManager/Company/createOffice';
 import { officesManagerActions } from 'store/officesManager/officesManagerSlice';
 import { selectOfficesManager } from 'store/officesManager/selectors';
@@ -119,7 +119,7 @@ export default function AddOfficeManager() {
 
   useEffect(() => {
     if (isEditAction && office && statusGetOffice === 'success') {
-      Object.keys(office).forEach((key) => {
+      Object.keys(office).forEach(key => {
         const key_ = key as keyof CreateOffice;
         if (fieldKeys.includes(key_)) {
           setValue(key_, office[key_]);
@@ -150,7 +150,9 @@ export default function AddOfficeManager() {
             <FormVerticle errors={errors} messages={messages} fields={fieldsAddOffice2} control={control} grid filterKey="account" />
             <FormVerticle errors={errors} messages={messages} fields={fieldsAddOffice3} control={control} filterKey="account" />
             <ComboButton
-              isLoading={isEditAction && officeId ? queueUpdateOffice.includes(officeId) || statusGetOffice === 'loading' : statusCreateOffice === 'loading'}
+              isLoading={
+                isEditAction && officeId ? queueUpdateOffice.includes(officeId) || statusGetOffice === 'loading' : statusCreateOffice === 'loading'
+              }
               onCancel={handleCancel}
               onSave={handleSubmit(onSubmit)}
             />

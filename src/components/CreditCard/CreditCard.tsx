@@ -1,16 +1,16 @@
 import { Box, Checkbox, Divider, FormControlLabel, Grid, InputBase, InputLabel, Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import Button from 'components/Button/Button';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
-import { Field } from 'models/Field';
 import { ChangeEvent, FocusEvent, memo, useState } from 'react';
 import Card, { CallbackArgument, Focused } from 'react-credit-cards';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { v4 as uuid } from 'uuid';
+import Button from 'components/Button/Button';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { Field } from 'models/Field';
 import { useToastStyle } from 'theme/toastStyles';
 import { formatCreditCardNumber, formatCVC, formatExpirationDate } from 'utils/formatText';
-import { v4 as uuid } from 'uuid';
 import './styles.css';
 
 interface Values {
@@ -81,7 +81,7 @@ function CreditCard() {
     } else if (inputName === 'cvc') {
       event.target.value = formatCVC(event.target.value);
     }
-    setCreditValue((prev) => ({
+    setCreditValue(prev => ({
       ...prev,
       [inputName]: event.target.value,
     }));
@@ -121,7 +121,7 @@ function CreditCard() {
       />
       <Box my="20px">
         <Grid container spacing={2}>
-          {fields.map((i) => (
+          {fields.map(i => (
             <Grid item xs={12} md={6} key={i.id}>
               <InputLabel htmlFor={i.placeholder} className={classes.label}>
                 {t(`${i.label}`)}
@@ -159,8 +159,8 @@ function CreditCard() {
         <Typography fontWeight="bold">$69</Typography>
       </Stack>
       <Typography fontSize="12px" color="#868c93" mt="15px">
-        All sales are charged in USD and all sales are final. You will be charged $69.00 USD immediately. You will be charged $69.00 USD every yearly thereafter while the
-        subscription is active. Cancel any time.
+        All sales are charged in USD and all sales are final. You will be charged $69.00 USD immediately. You will be charged $69.00 USD every yearly
+        thereafter while the subscription is active. Cancel any time.
       </Typography>
       <FormControlLabel
         control={<Checkbox defaultChecked />}

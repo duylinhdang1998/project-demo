@@ -1,12 +1,12 @@
 import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { v4 as uuid } from 'uuid';
 import Button from 'components/Button/Button';
 import MerchandiseDetailView from 'components/MerchandiseDetailView/MerchandiseDetailView';
 import OrderDetailView from 'components/OrderDetailView/OrderDetailView';
 import CheckCircle from 'components/SvgIcon/CheckCircle';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { v4 as uuid } from 'uuid';
 
 const dataDetails = {
   order_id: '023232-0023',

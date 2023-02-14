@@ -1,5 +1,5 @@
-import env from 'env';
 import qs from 'qs';
+import env from 'env';
 import { RootState } from 'store/configureStore';
 import ConfigureAxios from './fetchApi';
 

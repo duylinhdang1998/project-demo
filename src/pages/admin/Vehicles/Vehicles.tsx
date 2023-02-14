@@ -2,15 +2,15 @@ import AddIcon from '@mui/icons-material/Add';
 import { Grid, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import Button from 'components/Button/Button';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
 import { selectVehicles } from 'store/vehicles/selectors';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
@@ -75,6 +75,7 @@ export default function Vehicles() {
         sorter: {},
       }),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // FIXME: Retry screen
@@ -115,7 +116,12 @@ export default function Vehicles() {
                   marginLeft: matches ? '-48px' : '0px',
                 }}
               >
-                <Button variant="contained" sx={{ width: matches ? '170px' : '100%' }} backgroundButton={theme.palette.primary.main} onClick={handleSubmit(onSubmit)}>
+                <Button
+                  variant="contained"
+                  sx={{ width: matches ? '170px' : '100%' }}
+                  backgroundButton={theme.palette.primary.main}
+                  onClick={handleSubmit(onSubmit)}
+                >
                   {t('translation:search')}
                 </Button>
               </Grid>
@@ -123,7 +129,13 @@ export default function Vehicles() {
           </Grid>
           {!isAgent && (
             <Grid item xs={12} md={4} sx={{ justifyContent: 'flex-end', display: 'flex' }}>
-              <Button backgroundButton="#33CC7F" startIcon={<AddIcon />} sx={{ alignSelf: 'flex-end' }} className={classes.btnAdd} onClick={handleAdd}>
+              <Button
+                backgroundButton="#33CC7F"
+                startIcon={<AddIcon />}
+                sx={{ alignSelf: 'flex-end' }}
+                className={classes.btnAdd}
+                onClick={handleAdd}
+              >
                 {t('translation:add_new', { type: t('vehicles:vehicle').toLowerCase() })}
               </Button>
             </Grid>

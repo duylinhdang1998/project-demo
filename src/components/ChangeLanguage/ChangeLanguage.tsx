@@ -1,12 +1,12 @@
-import flagEn from 'assets/images/flag-en.png';
-import flagFr from 'assets/images/flag-fr.png';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Button } from '@mui/material';
 import { Dropdown, Menu } from 'antd';
 import cx from 'classnames';
-import { useGlobalContext } from 'context/GlobalContext';
 import { memo, MouseEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import flagEn from 'assets/images/flag-en.png';
+import flagFr from 'assets/images/flag-fr.png';
+import { useGlobalContext } from 'context/GlobalContext';
 import { useStyles } from './styles';
 
 function ChangeLanguage() {
@@ -69,7 +69,13 @@ function ChangeLanguage() {
   return (
     <div>
       <Dropdown overlay={menu} trigger={['click']}>
-        <Button id="basic-button" aria-controls={open ? 'basic-menu' : undefined} aria-haspopup="true" aria-expanded={open ? 'true' : undefined} onClick={handleClick}>
+        <Button
+          id="basic-button"
+          aria-controls={open ? 'basic-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleClick}
+        >
           <img src={getFlag()} alt="flag" className={classes.imgFlag} />
           <span className={cx(classes.lngText, classes.hiddenText)}>{getLangText()}</span>
           <KeyboardArrowDownIcon sx={{ fontSize: '18px', color: '#B9B9B9', display: { mobile: 'none', tablet: 'block' } }} />

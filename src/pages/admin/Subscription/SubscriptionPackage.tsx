@@ -1,11 +1,11 @@
 import { Box, Grid, Stack, Typography } from '@mui/material';
+import { get } from 'lodash';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from 'components/Button/Button';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
-import { get } from 'lodash';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
 import { PlanDuration } from './@types/PlanDuration';
@@ -21,12 +21,13 @@ export default function SubscriptionPackage() {
 
   useEffect(() => {
     dispatch(subscriptionsActions.getSubscriptionsRequest({}));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderTab = () => {
     return (
       <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} my="24px">
-        {planDurations.map((planDuration) => {
+        {planDurations.map(planDuration => {
           const isActive = planDurationState === planDuration;
           return (
             <Button

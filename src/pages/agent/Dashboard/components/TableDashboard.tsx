@@ -1,12 +1,12 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { ColumnsType } from 'antd/es/table';
+import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MapPinIcon, StopCircleSvg } from 'assets';
 import AntTable from 'components/AntTable/AntTable';
 import Button from 'components/Button/Button';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { RoutePrograms } from 'models/RoutePrograms';
-import { memo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 const dataSource: RoutePrograms[] = [];
 
@@ -104,7 +104,7 @@ function TableDashboard() {
       <AntTable
         dataSource={dataSource}
         columns={columns}
-        rowKey={(r) => r.id}
+        rowKey={r => r.id}
         title={() => (
           <Stack direction="row" alignItems="center" justifyContent="space-between">
             <Typography variant="h6">{t('route_program')}</Typography>

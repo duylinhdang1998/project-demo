@@ -1,7 +1,10 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { Box, Divider, Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import CardWhite from 'components/CardWhite/CardWhite';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
@@ -10,34 +13,12 @@ import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import { Content } from 'services/models/Content';
 import { contentManagerActions } from 'store/contentManager/contentManagerSlice';
 import { selectContentManager } from 'store/contentManager/selectors';
 import { useToastStyle } from 'theme/toastStyles';
 import { footerFields, sidebarFields } from './constants';
-
-const useStyles = makeStyles(() => ({
-  label: {
-    fontSize: '14px !important',
-    color: '#45485E',
-    marginBottom: '4px',
-  },
-  inputArea: {
-    border: '1px solid #f7f7f7',
-    borderRadius: '4px !important',
-    backgroundColor: '#fff',
-    fontSize: '14px !important',
-    width: '100%',
-    padding: '12px 14px',
-    '&:focus-visible': {
-      outline: 'none !important',
-    },
-  },
-}));
+import { uploadPlugin } from './utils/ckeditorPlugins';
 
 type Values = Pick<Content, 'city' | 'email' | 'phone' | 'content' | 'footerText' | 'postalAddress' | 'zipCode'>;
 const fieldKeys: Array<keyof Values> = ['city', 'email', 'phone', 'content', 'footerText', 'postalAddress', 'zipCode'];
@@ -46,7 +27,6 @@ const fieldKeys: Array<keyof Values> = ['city', 'email', 'phone', 'content', 'fo
 function ContentManager() {
   const { t } = useTranslation(['account', 'translation']);
   const { control, getValues, handleSubmit, setValue } = useForm<Values>();
-  const classes = useStyles();
   const toastClass = useToastStyle();
 
   const [open, setOpen] = useState(false);
@@ -77,14 +57,16 @@ function ContentManager() {
 
   useEffect(() => {
     dispatch(contentManagerActions.getContentRequest({}));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (content) {
-      fieldKeys.forEach((key) => {
+      fieldKeys.forEach(key => {
         setValue(key, content[key]);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content]);
 
   // FIXME: Retry screen
@@ -102,16 +84,24 @@ function ContentManager() {
           </Typography>
           <Box my="20px">
             <CKEditor
-              onReady={(editor) => {
+              config={{
+                extraPlugins: [
+                  // @ts-ignore
+                  uploadPlugin({
+                    onSuccess: () => {},
+                    onFailure: () => {
+                      toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+                        className: toastClass.toastSuccess,
+                      });
+                    },
+                  }),
+                ],
+              }}
+              onReady={editor => {
                 // FIXME: Liệu có lỗi với trường hợp nào đấy không?
                 editor.setData(getValues().content);
               }}
               editor={ClassicEditor}
-              config={{
-                ckfinder: {
-                  uploadUrl: 'https://example.com/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&responseType=json',
-                },
-              }}
               onChange={(_, editor) => {
                 const data = editor.getData();
                 setValue('content', data);
@@ -132,7 +122,11 @@ function ContentManager() {
             </Typography>
             <FormVerticle control={control} fields={footerFields} filterKey="account" />
           </Box>
-          <ComboButton onSave={handleSubmit(onSubmit)} isLoading={statusGetContent === 'loading' || statusUpdateContent === 'loading'} onCancel={handleCancel} />
+          <ComboButton
+            onSave={handleSubmit(onSubmit)}
+            isLoading={statusGetContent === 'loading' || statusUpdateContent === 'loading'}
+            onCancel={handleCancel}
+          />
         </CardWhite>
       </Box>
 

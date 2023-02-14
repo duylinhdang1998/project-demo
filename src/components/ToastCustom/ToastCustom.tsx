@@ -1,9 +1,9 @@
-import CheckCircleIcon from 'assets/images/check-circle.svg';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { memo } from 'react';
+import CheckCircleIcon from 'assets/images/check-circle.svg';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -28,7 +28,11 @@ function ToastCustom({ type, text }: ToastCustomProps) {
   const classes = useStyles();
   return (
     <Box className={classes.root}>
-      {type === 'success' ? <img src={CheckCircleIcon} style={{ width: 22, height: 22 }} /> : <CancelOutlinedIcon sx={{ color: '#fff', fontSize: '18px' }} />}
+      {type === 'success' ? (
+        <img src={CheckCircleIcon} style={{ width: 22, height: 22 }} />
+      ) : (
+        <CancelOutlinedIcon sx={{ color: '#fff', fontSize: '18px' }} />
+      )}
       <Typography component="span" className={classes.text}>
         {text}
       </Typography>

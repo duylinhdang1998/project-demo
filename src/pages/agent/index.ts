@@ -1,14 +1,14 @@
+import ControlMerchandise from './ControlMerchandise/ControlMerchandise';
+import ControlMerchandiseDetail from './ControlMerchandise/ControlMerchandiseDetail';
+import ControlTicket from './ControlTicket/ControlTicket';
 import Dashboard from './Dashboard/Dashboard';
-import CreateTicketOrder from './TicketSales/CreateTicketOrder';
-import TravellerDetails from './TicketSales/TravellerDetails';
-import CreatePackageOrders from './PackageSales/CreatePackageOrders';
 
 import AddMerchandise from './PackageSales/AddMerchandise';
 import ClientInfo from './PackageSales/ClientInfo';
+import CreatePackageOrders from './PackageSales/CreatePackageOrders';
 import OrderConfirm from './PackageSales/OrderConfirm';
-import ControlTicket from './ControlTicket/ControlTicket';
-import ControlMerchandise from './ControlMerchandise/ControlMerchandise';
-import ControlMerchandiseDetail from './ControlMerchandise/ControlMerchandiseDetail';
+import CreateTicketOrder from './TicketSales/CreateTicketOrder';
+import TravellerDetails from './TicketSales/TravellerDetails';
 
 export {
   Dashboard,

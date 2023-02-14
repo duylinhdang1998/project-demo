@@ -1,12 +1,12 @@
 import { Box, Grid, Stack } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { v4 as uuid } from 'uuid';
 import Button from 'components/Button/Button';
 import MerchandiseDetailView from 'components/MerchandiseDetailView/MerchandiseDetailView';
 import OrderDetailView from 'components/OrderDetailView/OrderDetailView';
 import PrintIcon from 'components/SvgIcon/PrintIcon';
 import SendIcon from 'components/SvgIcon/SendIcon';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useTranslation } from 'react-i18next';
-import { v4 as uuid } from 'uuid';
 
 const dataDetails = {
   order_id: '023232-0023',

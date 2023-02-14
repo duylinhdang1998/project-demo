@@ -1,12 +1,12 @@
 import AddIcon from '@mui/icons-material/Add';
 import { Grid, useTheme } from '@mui/material';
+import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import Button from 'components/Button/Button';
 import DeliveryIcon from 'components/SvgIcon/DeliveryIcon';
 import MerchaindiseOrderIcon from 'components/SvgIcon/MerchaindiseOrderIcon';
 import TicketIconSvg from 'components/SvgIcon/TicketIcon';
-import { memo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 function ListButton() {
   const theme = useTheme();
@@ -34,12 +34,24 @@ function ListButton() {
         </Button>
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
-        <Button fullWidth backgroundButton={theme.palette.success.main} startIcon={<TicketIconSvg />} sx={{ height: '40px' }} onClick={handleControlTicket}>
+        <Button
+          fullWidth
+          backgroundButton={theme.palette.success.main}
+          startIcon={<TicketIconSvg />}
+          sx={{ height: '40px' }}
+          onClick={handleControlTicket}
+        >
           {t('control_ticket')}
         </Button>
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
-        <Button fullWidth backgroundButton={theme.palette.success.main} startIcon={<DeliveryIcon />} sx={{ height: '40px' }} onClick={handleControlMerchandise}>
+        <Button
+          fullWidth
+          backgroundButton={theme.palette.success.main}
+          startIcon={<DeliveryIcon />}
+          sx={{ height: '40px' }}
+          onClick={handleControlMerchandise}
+        >
           {t('control_merchandise_deliver')}
         </Button>
       </Grid>

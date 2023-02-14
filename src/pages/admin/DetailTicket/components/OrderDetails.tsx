@@ -1,12 +1,12 @@
 import { Divider, Grid, Typography, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
+import dayjs from 'dayjs';
+import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MapPinIcon } from 'assets';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import dayjs from 'dayjs';
 import { Ticket } from 'models/Ticket';
-import { memo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface OrderDetailsProps {
   record: Ticket;
@@ -36,7 +36,9 @@ function OrderDetails({ record }: OrderDetailsProps) {
           </Typography>
         );
       case 'payment_status':
-        return <Tag color={record[i] === 'Paid' ? '#33CC7F' : '#FF2727'} backgroundColor={record[i] === 'Paid' ? '#F1FFF4' : '#FFEDED'} text={record[i]} />;
+        return (
+          <Tag color={record[i] === 'Paid' ? '#33CC7F' : '#FF2727'} backgroundColor={record[i] === 'Paid' ? '#F1FFF4' : '#FFEDED'} text={record[i]} />
+        );
       default:
         return (
           <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
@@ -53,7 +55,7 @@ function OrderDetails({ record }: OrderDetailsProps) {
       <Divider sx={{ borderColor: '#D7DADC' }} />
       <Box py="24px">
         {Object.keys(record).map(
-          (i) =>
+          i =>
             i !== 'id' && (
               <Grid container key={i}>
                 <Grid item xs={4}>

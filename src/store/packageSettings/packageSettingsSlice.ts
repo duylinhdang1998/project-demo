@@ -123,8 +123,8 @@ export const packageSettingsSlice = createSlice({
       const { data } = action.payload;
       return {
         ...state,
-        queueUpdatePackageSetting: state.queueUpdatePackageSetting.filter((id) => id !== data._id),
-        packageSettings: state.packageSettings.map((packageSetting) => {
+        queueUpdatePackageSetting: state.queueUpdatePackageSetting.filter(id => id !== data._id),
+        packageSettings: state.packageSettings.map(packageSetting => {
           if (packageSetting._id === data._id) {
             return data;
           }
@@ -136,7 +136,7 @@ export const packageSettingsSlice = createSlice({
       const { id } = action.payload;
       return {
         ...state,
-        queueUpdatePackageSetting: state.queueUpdatePackageSetting.filter((item) => id !== item),
+        queueUpdatePackageSetting: state.queueUpdatePackageSetting.filter(item => id !== item),
       };
     },
     deletePackageSettingRequest: (state, action: PayloadAction<DeletePackageSettingRequest>) => {
@@ -150,15 +150,15 @@ export const packageSettingsSlice = createSlice({
       const { id } = action.payload;
       return {
         ...state,
-        packageSettings: state.packageSettings.filter((packageSetting) => packageSetting._id !== id),
-        queueDeletePackageSetting: state.queueDeletePackageSetting.filter((item) => item !== id),
+        packageSettings: state.packageSettings.filter(packageSetting => packageSetting._id !== id),
+        queueDeletePackageSetting: state.queueDeletePackageSetting.filter(item => item !== id),
       };
     },
     deletePackageSettingFailure: (state, action: PayloadAction<DeletePackageSettingFailure>) => {
       const { id } = action.payload;
       return {
         ...state,
-        queueDeletePackageSetting: state.queueDeletePackageSetting.filter((item) => item !== id),
+        queueDeletePackageSetting: state.queueDeletePackageSetting.filter(item => item !== id),
       };
     },
   },

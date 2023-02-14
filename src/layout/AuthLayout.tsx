@@ -1,10 +1,10 @@
-import logoTbus from 'assets/images/logo-tbus.png';
 import { Box, Grid, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import ChangeLanguage from 'components/ChangeLanguage/ChangeLanguage';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { selectAuth } from 'store/auth/selectors';
+import logoTbus from 'assets/images/logo-tbus.png';
+import ChangeLanguage from 'components/ChangeLanguage/ChangeLanguage';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { selectAuth } from 'store/auth/selectors';
 
 export const useStyles = makeStyles((theme: Theme) => {
   return {

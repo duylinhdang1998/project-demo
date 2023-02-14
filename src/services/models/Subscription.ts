@@ -1,9 +1,9 @@
 export type SubscriptionType = 'TRIAL' | 'STANDARD' | 'PRO' | 'ENTERPRISE';
 
-export type SubscriptionFeature = {
+export interface SubscriptionFeature {
   name: 'Create 1 vehicle.';
   type: SubscriptionType;
-};
+}
 
 export interface SubscriptionPlan {
   planId: string;

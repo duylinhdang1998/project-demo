@@ -1,11 +1,11 @@
 import { Grid, Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import Button from 'components/Button/Button';
-import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
-import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { memo, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import Button from 'components/Button/Button';
+import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { CreateVehicle } from 'services/Vehicle/Company/createVehicle';
 import { fieldsAdd, fieldsAddRight } from '../constants';
 

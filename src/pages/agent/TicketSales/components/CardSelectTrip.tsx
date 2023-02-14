@@ -2,9 +2,9 @@ import { Box, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Timeline } from 'antd';
 import 'antd/lib/timeline/style/css';
-import Button from 'components/Button/Button';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import Button from 'components/Button/Button';
 import './styles.css';
 
 const useStyles = makeStyles(() => ({
@@ -42,7 +42,12 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, pri
   const { t } = useTranslation(['translation']);
   return (
     <Box className={classes.root} padding="24px 16px">
-      <Stack direction={{ mobile: 'column', desktop: 'row' }} justifyContent="space-between" spacing={2} alignItems={{ xs: 'flex-start', md: 'center' }}>
+      <Stack
+        direction={{ mobile: 'column', desktop: 'row' }}
+        justifyContent="space-between"
+        spacing={2}
+        alignItems={{ xs: 'flex-start', md: 'center' }}
+      >
         <Box className="custom_timeline_container">
           <Timeline mode="left" className={classes.timeline}>
             <Timeline.Item color="#333" label={timeStart}>

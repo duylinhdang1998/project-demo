@@ -1,6 +1,10 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { Box, Typography } from '@mui/material';
 import { ColumnsType } from 'antd/lib/table';
+import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 import { MapPinIcon, StopCircleSvg } from 'assets';
 import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
@@ -9,11 +13,7 @@ import EditIcon from 'components/SvgIcon/EditIcon';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { RoutePrograms } from 'models/RoutePrograms';
-import { memo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
-import { v4 as uuid } from 'uuid';
 import ToolTipAddress from './ToolTipAddress';
 
 const dataSource: RoutePrograms[] = [];
@@ -152,7 +152,7 @@ function TableRoutes() {
   ];
   return (
     <Box my="24px">
-      <AntTable columns={userInfo?.role === 'admin' ? columns : columns.slice(0, -1)} dataSource={dataSource} rowKey={(r) => r.id} />
+      <AntTable columns={userInfo?.role === 'admin' ? columns : columns.slice(0, -1)} dataSource={dataSource} rowKey={r => r.id} />
     </Box>
   );
 }

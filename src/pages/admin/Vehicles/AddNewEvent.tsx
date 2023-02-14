@@ -1,9 +1,9 @@
 import { Box, Divider, Typography } from '@mui/material';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import FormAddEvent from './components/FormAddEvent';
 
 export default function AddNewEvent() {

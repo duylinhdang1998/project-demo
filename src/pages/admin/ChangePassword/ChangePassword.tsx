@@ -1,14 +1,14 @@
 import { Box, Divider, Typography } from '@mui/material';
-import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
-import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
-import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import InputAuth from 'components/InputAuth/InputAuth';
 import { get } from 'lodash';
-import { Field } from 'models/Field';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuidv4 } from 'uuid';
+import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
+import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
+import InputAuth from 'components/InputAuth/InputAuth';
+import { Field } from 'models/Field';
 
 const fieldChanges: Field[] = [
   {
@@ -71,7 +71,7 @@ export default function ChangePassword() {
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
             <Box>
-              {fieldChanges.map((i) => (
+              {fieldChanges.map(i => (
                 <InputAuth
                   control={control}
                   nameInput={i.label as typeof keys[number]}

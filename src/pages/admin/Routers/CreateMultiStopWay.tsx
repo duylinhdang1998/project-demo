@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
-import LayoutDetail from 'layout/LayoutDetail';
 import { useTranslation } from 'react-i18next';
+import LayoutDetail from 'layout/LayoutDetail';
 import StepForm from './components/StepForm';
 
 export default function CreateMultiStopWay() {

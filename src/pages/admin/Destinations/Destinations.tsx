@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
-import BoxSearch from 'components/BoxSearch/BoxSearch';
-import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import BoxSearch from 'components/BoxSearch/BoxSearch';
+import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import TableDestinations from './components/TableDestinations';
 
 export default function Destinations() {

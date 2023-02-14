@@ -1,14 +1,14 @@
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
+import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { v4 as uuid } from 'uuid';
 import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
 import CalendarIcon from 'components/SvgIcon/CalendarIcon';
 import DeleteIcon from 'components/SvgIcon/DeleteIcon';
 import EditIcon from 'components/SvgIcon/EditIcon';
-import { memo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { v4 as uuid } from 'uuid';
 
 const dataSource: StaffTableType[] = [];
 
@@ -87,7 +87,7 @@ function TableStaff() {
   ];
   return (
     <Box my="24px">
-      <AntTable columns={columns} dataSource={dataSource} rowKey={(record) => record.id} />
+      <AntTable columns={columns} dataSource={dataSource} rowKey={record => record.id} />
     </Box>
   );
 }

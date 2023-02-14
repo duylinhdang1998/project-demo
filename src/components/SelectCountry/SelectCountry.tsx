@@ -1,9 +1,9 @@
-import LocationIcon from 'assets/images/location.svg';
 import { Box } from '@mui/system';
 import { memo } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
 import { ControllerRenderProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import LocationIcon from 'assets/images/location.svg';
 import { useStyles } from './styles';
 
 interface Values {
@@ -33,7 +33,15 @@ function SelectCountry({ value, onChange }: SelectCountryProps) {
   return (
     <div>
       <p className={classes.label}>{t('auth.select_country')}</p>
-      <ReactFlagsSelect selectButtonClassName={classes.selectBtn} selected={value} onSelect={onChange} showOptionLabel fullWidth placeholder={placeholder} searchable />
+      <ReactFlagsSelect
+        selectButtonClassName={classes.selectBtn}
+        selected={value}
+        onSelect={onChange}
+        showOptionLabel
+        fullWidth
+        placeholder={placeholder}
+        searchable
+      />
     </div>
   );
 }

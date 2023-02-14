@@ -67,13 +67,18 @@ function PaymentTicket() {
         <Divider sx={{ borderColor: '#D7DADC' }} />
         <TableContainer sx={{ paddingTop: '24px' }}>
           <Table>
-            {columnsPassengers.map((c) => (
-              <TableCell key={`columns_${c.field}`} sx={{ minWidth: c.width }} className={classes.headerText} align={c.field === 'ticket_type' ? 'center' : 'left'}>
+            {columnsPassengers.map(c => (
+              <TableCell
+                key={`columns_${c.field}`}
+                sx={{ minWidth: c.width }}
+                className={classes.headerText}
+                align={c.field === 'ticket_type' ? 'center' : 'left'}
+              >
                 {t(`${c.field}`)}
               </TableCell>
             ))}
             <TableBody>
-              {data.map((row) => (
+              {data.map(row => (
                 <TableRow key={row.id} sx={{ py: '8px' }}>
                   <TableCell align="left" className={classes.cell}>
                     {row.lastName}

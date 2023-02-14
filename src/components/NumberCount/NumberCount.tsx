@@ -31,17 +31,20 @@ export default function NumberCount({ value, onChangeValue }: NumberCountProps) 
 
   useEffect(() => {
     onChangeValue?.(counter);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [counter]);
 
   const handleDecrease = () => {
-    setCounter((prev) => {
-      if (prev === 0) return 0;
+    setCounter(prev => {
+      if (prev === 0) {
+        return 0;
+      }
       return prev - 1;
     });
   };
 
   const handleIncrease = () => {
-    setCounter((prev) => prev + 1);
+    setCounter(prev => prev + 1);
   };
 
   return (

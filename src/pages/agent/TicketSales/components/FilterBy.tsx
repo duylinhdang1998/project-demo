@@ -1,7 +1,7 @@
 import { Box, Checkbox, Chip, FormControlLabel, Stack, Typography } from '@mui/material';
-import NumberCount from 'components/NumberCount/NumberCount';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import NumberCount from 'components/NumberCount/NumberCount';
 
 function FilterBy() {
   const { t } = useTranslation(['ticketSales']);

@@ -1,7 +1,7 @@
 import { Divider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import LayoutDetail from 'layout/LayoutDetail';
 import { useTranslation } from 'react-i18next';
+import LayoutDetail from 'layout/LayoutDetail';
 import ListContent from './components/ListContent';
 
 export default function ListEvents() {

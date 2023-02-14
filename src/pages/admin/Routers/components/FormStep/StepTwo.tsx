@@ -2,12 +2,12 @@ import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { Checkbox } from 'antd';
 import 'antd/lib/checkbox/style/css';
-import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
-import FormVerticle from 'components/FormVerticle/FormVerticle';
-import { Field } from 'models/Field';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuidv4 } from 'uuid';
+import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
+import FormVerticle from 'components/FormVerticle/FormVerticle';
+import { Field } from 'models/Field';
 import { StepCountProps } from './StepOne';
 
 const options = [
@@ -51,7 +51,7 @@ export default function StepTwo({ onCancel, onNextStep }: StepCountProps) {
         render={({ field }) => (
           <Checkbox.Group {...field}>
             <Grid container spacing={2}>
-              {options.map((i) => (
+              {options.map(i => (
                 <Grid item xs={4} md={3} key={i.value}>
                   <Checkbox value={i.value}>{i.label}</Checkbox>
                 </Grid>

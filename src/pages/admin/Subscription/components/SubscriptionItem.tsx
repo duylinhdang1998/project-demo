@@ -1,8 +1,8 @@
 import CheckIcon from '@mui/icons-material/Check';
 import { Box, Stack, Typography } from '@mui/material';
-import Button from 'components/Button/Button';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import Button from 'components/Button/Button';
 import { SubscriptionFeature, SubscriptionType } from 'services/models/Subscription';
 import { PlanDuration } from '../@types/PlanDuration';
 import { currencySymbols } from '../constants';
@@ -16,7 +16,15 @@ interface SubscriptionItemProps {
   subscriptionType: SubscriptionType;
   popular: boolean;
 }
-export default function SubscriptionItem({ name, currency, price, planDuration, subscriptionFeatures, subscriptionType, popular }: SubscriptionItemProps) {
+export default function SubscriptionItem({
+  name,
+  currency,
+  price,
+  planDuration,
+  subscriptionFeatures,
+  subscriptionType,
+  popular,
+}: SubscriptionItemProps) {
   const { t } = useTranslation(['account', 'translation']);
   const navigate = useNavigate();
 
@@ -57,7 +65,7 @@ export default function SubscriptionItem({ name, currency, price, planDuration, 
         </Typography>
       </Box>
       <Box my="16px">
-        {subscriptionFeatures.map((b) => (
+        {subscriptionFeatures.map(b => (
           <Stack direction="row" alignItems="center" spacing={3} key={b.name} my="10px">
             <CheckIcon sx={{ color: '#33CC7F', fontSize: '12px' }} />
             <Typography variant="body2">{b.name}</Typography>

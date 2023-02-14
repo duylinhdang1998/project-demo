@@ -1,8 +1,8 @@
 import { Box, Divider, Grid, List, ListItem, Stack, Typography } from '@mui/material';
-import FileIcon from 'components/SvgIcon/FileIcon';
 import { Fragment, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
+import FileIcon from 'components/SvgIcon/FileIcon';
 
 const dataDetail = [
   {

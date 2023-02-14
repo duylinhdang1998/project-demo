@@ -95,7 +95,7 @@ export default function StepThird(_: StepCountProps) {
             );
           },
         }}
-        onSelectSlot={(event) => {
+        onSelectSlot={event => {
           console.log('select lot', event);
         }}
       />

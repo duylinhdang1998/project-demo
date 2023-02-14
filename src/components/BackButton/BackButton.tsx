@@ -1,9 +1,9 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import Button from 'components/Button/Button';
 import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Button from 'components/Button/Button';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {

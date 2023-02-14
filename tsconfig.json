@@ -3,7 +3,6 @@
   "compilerOptions": {
     "target": "es6",
     "module": "esnext",
-    "outDir": "dist/",
     "jsx": "react-jsx",
     "sourceMap": false,
     "experimentalDecorators": true,
@@ -22,6 +21,6 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "./src"
   },
-  "include": ["src", "config-overrides.js", "./src/types.d.ts"],
+  "include": ["src"],
   "exclude": ["node_modules", "build", "**/*.js"]
 }

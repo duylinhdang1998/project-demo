@@ -2,6 +2,11 @@ import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
+import { isEmpty } from 'lodash';
+import { memo, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 import AlertIcon from 'assets/images/alert-circle.svg';
 import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
@@ -11,10 +16,6 @@ import DeleteIcon from 'components/SvgIcon/DeleteIcon';
 import EditIcon from 'components/SvgIcon/EditIcon';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { isEmpty } from 'lodash';
-import { memo, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { Vehicle } from 'services/models/Vehicle';
 import { RECORDS_PER_PAGE } from 'services/Vehicle/Company/getVehicles';
 import { selectAuth } from 'store/auth/selectors';
@@ -22,7 +23,6 @@ import { selectVehicles } from 'store/vehicles/selectors';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
-import { v4 as uuid } from 'uuid';
 
 const useStyles = makeStyles(() => ({
   iconAlert: {
@@ -74,7 +74,8 @@ function TableVehicles() {
             }
           : {}),
       },
-    ].filter((i) => !isEmpty(i));
+    ].filter(i => !isEmpty(i));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columns: ColumnsType<Vehicle> = useMemo(() => {
@@ -139,7 +140,8 @@ function TableVehicles() {
         align: 'center',
       },
     ];
-  }, [t]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box my="24px">
@@ -147,7 +149,7 @@ function TableVehicles() {
         loading={statusGetVehicles === 'loading'}
         columns={columns}
         dataSource={vehicles}
-        rowKey={(r) => r._id}
+        rowKey={r => r._id}
         pagination={{ total: totalRows, pageSize: RECORDS_PER_PAGE, current: currentPage + 1 }}
         onChange={(pagination, _, sorter, extra) => {
           // FIXME: Column "Vehicle" đang chưa biết sort theo trường nào. Nó kết hợp 3 field với nhau để tạo column này

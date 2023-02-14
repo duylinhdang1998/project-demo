@@ -1,12 +1,12 @@
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import Button from 'components/Button/Button';
-import FilterTicket from 'components/FilterTicket/FilterTicket';
-import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import Button from 'components/Button/Button';
+import FilterTicket from 'components/FilterTicket/FilterTicket';
+import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import TableStaff from './components/TableStaff';
 import { fieldsSearch } from './constants';
 
@@ -55,7 +55,12 @@ export default function Staff() {
                 <FilterTicket control={control} fields={fieldsSearch} filterKey="staff" numberColumns={matches ? 3 : 10} />
               </Grid>
               <Grid item xs={8} md={1} sx={{ alignSelf: 'flex-end', marginLeft: matches ? '-48px' : '0px' }}>
-                <Button variant="contained" sx={{ width: matches ? '170px' : '100%' }} backgroundButton={theme.palette.primary.main} onClick={handleSubmit(onSubmit)}>
+                <Button
+                  variant="contained"
+                  sx={{ width: matches ? '170px' : '100%' }}
+                  backgroundButton={theme.palette.primary.main}
+                  onClick={handleSubmit(onSubmit)}
+                >
                   {t('translation:search')}
                 </Button>
               </Grid>

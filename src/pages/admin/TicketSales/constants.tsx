@@ -1,6 +1,6 @@
+import { v4 as uuidv4 } from 'uuid';
 import { Field, Option } from 'models/Field';
 import { Ticket } from 'models/Ticket';
-import { v4 as uuidv4 } from 'uuid';
 
 const departureOptions: Option[] = [
   { key: 'paris', value: 'paris', label: 'Paris' },

@@ -1,13 +1,13 @@
-import VisaPng from 'assets/images/visa.png';
 import { Box, Divider, FormControlLabel, Grid, InputBase, InputLabel, Radio, RadioGroup, Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { customStyles } from 'components/FilterTicket/customStyles';
-import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { get } from 'lodash';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import Select from 'react-select';
+import VisaPng from 'assets/images/visa.png';
+import { customStyles } from 'components/FilterTicket/customStyles';
+import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { fields4 } from '../constant';
 
 interface StateLocation {

@@ -123,8 +123,8 @@ const vehicleEventsSlice = createSlice({
       const { data } = action.payload;
       return {
         ...state,
-        queueUpdateVehicleEvent: state.queueUpdateVehicleEvent.filter((id) => id !== data._id),
-        vehicleEvents: state.vehicleEvents.map((vehicleEvent) => {
+        queueUpdateVehicleEvent: state.queueUpdateVehicleEvent.filter(id => id !== data._id),
+        vehicleEvents: state.vehicleEvents.map(vehicleEvent => {
           if (vehicleEvent._id === data._id) {
             return data;
           }
@@ -136,7 +136,7 @@ const vehicleEventsSlice = createSlice({
       const { id } = action.payload;
       return {
         ...state,
-        queueUpdateVehicleEvent: state.queueUpdateVehicleEvent.filter((item) => id !== item),
+        queueUpdateVehicleEvent: state.queueUpdateVehicleEvent.filter(item => id !== item),
       };
     },
     deleteVehicleEventRequest: (state, action: PayloadAction<DeleteVehicleEventRequest>) => {
@@ -150,15 +150,15 @@ const vehicleEventsSlice = createSlice({
       const { id } = action.payload;
       return {
         ...state,
-        vehicleEvents: state.vehicleEvents.filter((vehicleEvent) => vehicleEvent._id !== id),
-        queueDeleteVehicleEvent: state.queueDeleteVehicleEvent.filter((item) => item !== id),
+        vehicleEvents: state.vehicleEvents.filter(vehicleEvent => vehicleEvent._id !== id),
+        queueDeleteVehicleEvent: state.queueDeleteVehicleEvent.filter(item => item !== id),
       };
     },
     deleteVehicleEventFailure: (state, action: PayloadAction<DeleteVehicleEventFailure>) => {
       const { id } = action.payload;
       return {
         ...state,
-        queueDeleteVehicleEvent: state.queueDeleteVehicleEvent.filter((item) => item !== id),
+        queueDeleteVehicleEvent: state.queueDeleteVehicleEvent.filter(item => item !== id),
       };
     },
   },

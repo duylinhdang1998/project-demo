@@ -123,8 +123,8 @@ export const officesManagerSlice = createSlice({
       const { data } = action.payload;
       return {
         ...state,
-        queueUpdateOffice: state.queueUpdateOffice.filter((id) => id !== data._id),
-        offices: state.offices.map((office) => {
+        queueUpdateOffice: state.queueUpdateOffice.filter(id => id !== data._id),
+        offices: state.offices.map(office => {
           if (office._id === data._id) {
             return data;
           }
@@ -136,7 +136,7 @@ export const officesManagerSlice = createSlice({
       const { id } = action.payload;
       return {
         ...state,
-        queueUpdateOffice: state.queueUpdateOffice.filter((item) => id !== item),
+        queueUpdateOffice: state.queueUpdateOffice.filter(item => id !== item),
       };
     },
     deleteOfficeRequest: (state, action: PayloadAction<DeleteOfficeRequest>) => {
@@ -150,15 +150,15 @@ export const officesManagerSlice = createSlice({
       const { id } = action.payload;
       return {
         ...state,
-        offices: state.offices.filter((office) => office._id !== id),
-        queueDeleteOffice: state.queueDeleteOffice.filter((item) => item !== id),
+        offices: state.offices.filter(office => office._id !== id),
+        queueDeleteOffice: state.queueDeleteOffice.filter(item => item !== id),
       };
     },
     deleteOfficeFailure: (state, action: PayloadAction<DeleteOfficeFailure>) => {
       const { id } = action.payload;
       return {
         ...state,
-        queueDeleteOffice: state.queueDeleteOffice.filter((item) => item !== id),
+        queueDeleteOffice: state.queueDeleteOffice.filter(item => item !== id),
       };
     },
   },

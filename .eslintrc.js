@@ -10,6 +10,12 @@ module.exports = {
     node: true,
   },
   settings: {
+    'import/resolver': {
+      node: {
+        moduleDirectory: ['node_modules', 'src/'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
     react: {
       version: 'detect',
     },
@@ -24,10 +30,6 @@ module.exports = {
     'react',
     'react-hooks',
   ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: 'tsconfig.json',
-  },
   rules: {
     'import/order': [
       'error',
@@ -223,6 +225,9 @@ module.exports = {
     ],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'no-useless-escape': 'off',
+    'no-async-promise-executor': 'off',
+    '@typescript-eslint/space-before-function-paren': 'off',
   },
   overrides: [
     {
@@ -230,6 +235,12 @@ module.exports = {
       rules: {
         '@typescript-eslint/promise-function-async': 'off',
       },
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        project: 'tsconfig.json',
+        tsconfigRootDir: __dirname,
+      },
     },
   ],
+  ignorePatterns: ['**/*.css', '**/*.scss', '**/*.md', '**/*.js', '**/*.svg', '**/*.html'],
 };
