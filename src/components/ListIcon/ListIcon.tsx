@@ -1,18 +1,9 @@
-import { InputBase, InputLabel, Theme } from '@mui/material';
+import { InputLabel, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import 'assets/icons/fontawesome/css/all.min.css';
-import { ChangeEvent, memo, useEffect, useState } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GridCellProps } from 'react-virtualized';
-import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
-import Grid from 'react-virtualized/dist/commonjs/Grid';
-import icons from 'assets/icons/icons.json';
-
-interface Icon {
-  icon: string;
-  type: string;
-}
 
 const useStyles = makeStyles((theme: Theme) => ({
   gridContainer: {
@@ -57,84 +48,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 function ListIcon() {
   const classes = useStyles();
   const { t } = useTranslation('serviceSetting');
-  const [iconList, setIconsList] = useState<Icon[]>();
-  const [valueSearch, setValueSearch] = useState('');
-
-  const getIconsType = () => {
-    return Object.keys(icons).map(iconName => {
-      return {
-        icon: iconName,
-        type: icons[iconName].free[0] as string,
-      };
-    });
-  };
-
-  useEffect(() => {
-    const result = getIconsType();
-    setIconsList(result);
-  }, []);
-
-  const handleChangeText = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
-    setValueSearch(value);
-  };
-
-  const getClassName = (data?: Icon) => {
-    switch (data?.type) {
-      case 'solid':
-        return `${classes.icon} fas fa-${data?.icon}`;
-      default:
-        return `${classes.icon} fab fa-${data?.icon}`;
-    }
-  };
-
-  const _renderCell =
-    (width: number) =>
-    ({ columnIndex, key, rowIndex, style }: GridCellProps) => {
-      const iconListRender = iconList?.filter(i => i.icon.indexOf(valueSearch) > -1);
-      return (
-        <div key={key} className={classes.cell} style={{ ...style, height: width / 14 - 2 }}>
-          <i className={getClassName(iconListRender?.[14 * rowIndex + columnIndex])} />
-        </div>
-      );
-    };
-
   return (
     <Box my="24px">
       <InputLabel htmlFor="title" className={classes.label}>
         {t('icon')}
       </InputLabel>
-      <InputBase
-        value={valueSearch}
-        onChange={handleChangeText}
-        placeholder={t('search_icon')}
-        id="title"
-        className={classes.inputSearch}
-        fullWidth
-      />
-      <AutoSizer disableHeight>
-        {({ width }) => {
-          return (
-            <div
-              className={classes.gridContainer}
-              style={{
-                width,
-              }}
-            >
-              <Grid
-                height={400}
-                columnWidth={width / 14 - 2}
-                columnCount={14}
-                cellRenderer={_renderCell(width)}
-                rowHeight={50}
-                rowCount={132}
-                width={width}
-                overscanRowCount={10}
-              />
-            </div>
-          );
-        }}
-      </AutoSizer>
     </Box>
   );
 }

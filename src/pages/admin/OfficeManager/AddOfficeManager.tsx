@@ -19,7 +19,7 @@ import { fieldsAddOffice1, fieldsAddOffice2, fieldsAddOffice3 } from './constant
 
 const fieldKeys: Array<keyof CreateOffice> = ['title', 'address', 'zipCode', 'country', 'city', 'phone', 'email'];
 
-type Values = Record<typeof fieldKeys[number], string>;
+type Values = Record<(typeof fieldKeys)[number], string>;
 
 export default function AddOfficeManager() {
   const toastClass = useToastStyle();

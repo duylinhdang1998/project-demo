@@ -1,5 +1,6 @@
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box, Dialog, DialogTitle, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
+import { Dialog, DialogTitle, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/lib/table';
 import { memo, useMemo, useState, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';

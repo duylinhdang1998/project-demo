@@ -2,9 +2,10 @@ import { Box, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Timeline } from 'antd';
 import 'antd/lib/timeline/style/css';
+import BusPng from 'assets/images/bus.png';
+import Button from 'components/Button/Button';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import Button from 'components/Button/Button';
 import './styles.css';
 
 const useStyles = makeStyles(() => ({

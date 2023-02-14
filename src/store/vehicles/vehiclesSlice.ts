@@ -19,6 +19,7 @@ interface VehiclesManagerState {
   totalRows: number;
   currentSearcher: Searcher<Vehicle>;
   vehicle: Vehicle | null;
+  office?: any;
 }
 
 const initialState: VehiclesManagerState = {
@@ -123,8 +124,8 @@ const vehiclesSlice = createSlice({
       const { data } = action.payload;
       return {
         ...state,
-        queueUpdateVehicle: state.queueUpdateVehicle.filter(id => id !== data._id),
-        vehicles: state.vehicles.map(vehicle => {
+        queueUpdateVehicle: state.queueUpdateVehicle.filter((id) => id !== data._id),
+        vehicles: state.vehicles.map((vehicle) => {
           if (vehicle._id === data._id) {
             return data;
           }
@@ -136,7 +137,7 @@ const vehiclesSlice = createSlice({
       const { id } = action.payload;
       return {
         ...state,
-        queueUpdateVehicle: state.queueUpdateVehicle.filter(item => id !== item),
+        queueUpdateVehicle: state.queueUpdateVehicle.filter((item) => id !== item),
       };
     },
     deleteVehicleRequest: (state, action: PayloadAction<DeleteVehicleRequest>) => {
@@ -150,15 +151,15 @@ const vehiclesSlice = createSlice({
       const { id } = action.payload;
       return {
         ...state,
-        vehicles: state.vehicles.filter(vehicle => vehicle._id !== id),
-        queueDeleteVehicle: state.queueDeleteVehicle.filter(item => item !== id),
+        vehicles: state.vehicles.filter((vehicle) => vehicle._id !== id),
+        queueDeleteVehicle: state.queueDeleteVehicle.filter((item) => item !== id),
       };
     },
     deleteVehicleFailure: (state, action: PayloadAction<DeleteVehicleFailure>) => {
       const { id } = action.payload;
       return {
         ...state,
-        queueDeleteVehicle: state.queueDeleteVehicle.filter(item => item !== id),
+        queueDeleteVehicle: state.queueDeleteVehicle.filter((item) => item !== id),
       };
     },
   },

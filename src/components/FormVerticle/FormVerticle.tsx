@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
 import cx from 'classnames';
-import { Controller, FieldError, FieldValues, Path, UseControllerProps } from 'react-hook-form';
+import { Controller, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
 import { customStyles } from 'components/FilterTicket/customStyles';
@@ -18,7 +18,7 @@ export interface FormVerticleProps<T extends FieldValues> extends Partial<UseCon
   selectProps?: SelectProps;
   isGridHorizon?: boolean;
   indexGridHorizon?: number;
-  errors?: Record<string, FieldError | undefined>;
+  errors?: any;
   messages?: Record<string, string>;
 }
 
