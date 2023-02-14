@@ -19,5 +19,7 @@
   "reminder_date": "Reminder date",
   "total_kilometer": "Total kilometers",
   "attach_document": "Attach a document",
-  "event_lists": "Event list"
+  "event_lists": "Event list",
+  "vehicle_updated": "Vehicle Updated",
+  "vehicle_created": "Vehicle Created"
 }

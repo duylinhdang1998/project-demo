@@ -7,12 +7,12 @@ function* handleUpdateVehicle({ payload }: ReturnType<typeof vehiclesActions.upd
   const { id, data, onFailure, onSuccess } = payload;
   const vehiclesStates: SagaReturnType<typeof selectVehicles> = yield select(selectVehicles);
   try {
-    if (vehiclesStates.office) {
+    if (vehiclesStates.vehicle) {
       yield retry(3, 1000, updateVehicle, payload);
       yield put(
         vehiclesActions.updateVehicleSuccess({
           data: {
-            ...vehiclesStates.office,
+            ...vehiclesStates.vehicle,
             ...data,
           },
         }),

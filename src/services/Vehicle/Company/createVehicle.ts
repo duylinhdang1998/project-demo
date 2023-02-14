@@ -21,7 +21,14 @@ export const createVehicle = async (data: CreateVehicle): Promise<ResponseSucces
   const response: AxiosResponse<ResponseSuccess | ResponseFailure> = await fetchAPI.request({
     method: 'POST',
     url: '/v1.0/company/vehicles',
-    data,
+    data: {
+      ...data,
+      ECOseats: Number(data.ECOseats),
+      VIPseats: Number(data.VIPseats),
+      services: [],
+      merchandises: [],
+      attach: data.attach?._id,
+    },
   });
   if (response.data.code === 0) {
     return response.data as ResponseSuccess;

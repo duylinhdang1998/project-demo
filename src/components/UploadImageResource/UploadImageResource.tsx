@@ -165,21 +165,19 @@ export const UploadImageResource = ({ resources = [], multiple = false, onChange
 
   const renderImage: ItemRender<FileItem> = (_originNode, antdFile) => {
     const file = antdFile as FileItem;
-    if (file.status === 'success') {
-      return (
-        <Box width="100%" height="170px" position="relative">
-          <Image src={file.url} className={classes.img} />
-          <Box
-            className={classes.imgWrapper}
-            onClick={() => {
-              setFileListState([]);
-            }}
-          >
-            <ClearIcon sx={{ color: '#fff' }} />
-          </Box>
+    return (
+      <Box width="100%" height="170px" position="relative">
+        <Image src={file.url} className={classes.img} />
+        <Box
+          className={classes.imgWrapper}
+          onClick={() => {
+            setFileListState([]);
+          }}
+        >
+          <ClearIcon sx={{ color: '#fff' }} />
         </Box>
-      );
-    }
+      </Box>
+    );
   };
 
   return (

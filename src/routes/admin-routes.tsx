@@ -76,6 +76,14 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
+    path: 'vehicles/:vehicleId',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.AddNewVehicles />
+      </RequiredAuth>
+    ),
+  },
+  {
     path: 'vehicles',
     element: (
       <RequiredAuth role="admin">
