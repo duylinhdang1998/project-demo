@@ -1,4 +1,4 @@
-import { Grid, Stack } from '@mui/material';
+import { Grid, InputLabel, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import { memo, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -6,22 +6,37 @@ import { useTranslation } from 'react-i18next';
 import Button from 'components/Button/Button';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
+import { useStyles } from 'components/FormVerticle/styles';
+import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
+import { Vehicle } from 'services/models/Vehicle';
 import { CreateVehicle } from 'services/Vehicle/Company/createVehicle';
 import { fieldsAdd, fieldsAddRight } from '../constants';
 
 const fieldKeys: Array<keyof CreateVehicle> = ['ECOseats', 'VIPseats', 'attach', 'brand', 'merchandises', 'model', 'registrationId', 'services'];
 
-type Values = Record<typeof fieldKeys[number], string>;
+interface Values {
+  ECOseats: Vehicle['ECOseats'];
+  VIPseats: Vehicle['VIPseats'];
+  attach?: Vehicle['attach'];
+  brand: Vehicle['brand'];
+  merchandises: Vehicle['merchandises'];
+  model: Vehicle['model'];
+  registrationId: Vehicle['registrationId'];
+  services: Vehicle['services'];
+}
 
 function FormAddVehicles() {
+  const classes = useStyles();
   const {
     control,
     formState: { errors },
     handleSubmit,
+    getValues,
+    setValue,
   } = useForm<Values>({
     defaultValues: {
-      ECOseats: '1',
-      VIPseats: '1',
+      ECOseats: 1,
+      VIPseats: 1,
     },
   });
   const { t } = useTranslation(['vehicles', 'translation']);
@@ -44,6 +59,8 @@ function FormAddVehicles() {
     console.log({ value });
   };
 
+  const attach = getValues().attach;
+
   return (
     <Box>
       <Grid container spacing={2}>
@@ -52,6 +69,16 @@ function FormAddVehicles() {
         </Grid>
         <Grid item xs={12} md={6}>
           <FormVerticle errors={errors} messages={messages} fields={fieldsAddRight} control={control} filterKey="vehicles" />
+          <Box>
+            <InputLabel className={classes.label}>{t('vehicles:attach_photo')}</InputLabel>
+            <UploadImageResource
+              multiple={false}
+              resources={attach ? [attach] : []}
+              onChange={resources => {
+                setValue('attach', resources[resources.length - 1]);
+              }}
+            />
+          </Box>
         </Grid>
       </Grid>
       <Stack direction="row" justifyContent="flex-end" alignItems="center" sx={{ marginTop: '30px' }}>

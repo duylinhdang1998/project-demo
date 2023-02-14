@@ -7,7 +7,7 @@ import { Controller, FieldValues, Path, UseControllerProps } from 'react-hook-fo
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
 import { customStyles } from 'components/FilterTicket/customStyles';
-import UploadImage from 'components/UploadImage/UploadImage';
+import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
 import { Field } from 'models/Field';
 import { useStyles } from './styles';
 export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
@@ -18,7 +18,7 @@ export interface FormVerticleProps<T extends FieldValues> extends Partial<UseCon
   selectProps?: SelectProps;
   isGridHorizon?: boolean;
   indexGridHorizon?: number;
-  errors?: any;
+  errors?: Record<string, any | undefined>;
   messages?: Record<string, string>;
 }
 
@@ -155,11 +155,11 @@ export default function FormVerticle<T extends FieldValues>({
           <Controller
             name={i.label as Path<T>}
             control={control}
-            render={() => {
+            render={({ field }) => {
               return (
                 <Box>
                   <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                  <UploadImage />
+                  <UploadImageResource multiple={false} resources={[]} onChange={field.onChange} />
                 </Box>
               );
             }}
