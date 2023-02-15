@@ -99,10 +99,8 @@ function FormAddVehicles() {
           data: value as Required<Values>,
           id: vehicleId,
           onSuccess: () => {
-            // FIXME: Chưa hiểu sao mất style
             toast(<ToastCustom type="success" text={t('vehicles:vehicle_updated')} />, {
               className: toastClass.toastSuccess,
-              autoClose: false,
             });
             navigate('/admin/vehicles', { replace: true });
           },
@@ -118,7 +116,6 @@ function FormAddVehicles() {
         vehiclesActions.createVehicleRequest({
           data: value as Required<Values>,
           onSuccess: () => {
-            // FIXME: Chưa hiểu sao mất style
             toast(<ToastCustom type="success" text={t('vehicles:vehicle_created')} />, {
               className: toastClass.toastSuccess,
             });

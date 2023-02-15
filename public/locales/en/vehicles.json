@@ -21,5 +21,6 @@
   "attach_document": "Attach a document",
   "event_lists": "Event list",
   "vehicle_updated": "Vehicle Updated",
-  "vehicle_created": "Vehicle Created"
+  "vehicle_created": "Vehicle Created",
+  "vehicle_deleted": "Vehicle Deleted"
 }

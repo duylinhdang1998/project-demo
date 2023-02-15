@@ -1,19 +1,22 @@
-import { Typography } from '@mui/material';
+import { Dialog, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
 import { isEmpty } from 'lodash';
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { v4 as uuid } from 'uuid';
 import AlertIcon from 'assets/images/alert-circle.svg';
 import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
+import Button from 'components/Button/Button';
 import BookmarkIcon from 'components/SvgIcon/BookmarkIcon';
 import CirclePlusIcon from 'components/SvgIcon/CirclePlusIcon';
 import DeleteIcon from 'components/SvgIcon/DeleteIcon';
 import EditIcon from 'components/SvgIcon/EditIcon';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { Vehicle } from 'services/models/Vehicle';
@@ -21,6 +24,7 @@ import { RECORDS_PER_PAGE } from 'services/Vehicle/Company/getVehicles';
 import { selectAuth } from 'store/auth/selectors';
 import { selectVehicles } from 'store/vehicles/selectors';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
+import { useToastStyle } from 'theme/toastStyles';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 
@@ -32,15 +36,25 @@ const useStyles = makeStyles(() => ({
 }));
 
 function TableVehicles() {
+  const toastClass = useToastStyle();
   const classes = useStyles();
   const { t } = useTranslation(['vehicles', 'translation']);
   const navigate = useNavigate();
 
+  const [openDeleteVehicle, setOpenDeleteVehicle] = useState<Vehicle | null>(null);
+
   const { userInfo } = useAppSelector(selectAuth);
-  const { statusGetVehicles, vehicles, currentPage, currentSearcher, totalRows } = useAppSelector(selectVehicles);
+  const { statusGetVehicles, queueDeleteVehicle, vehicles, currentPage, currentSearcher, totalRows } = useAppSelector(selectVehicles);
   const dispatch = useAppDispatch();
 
   const isAgent = useMemo(() => userInfo?.role === 'agent', [userInfo]);
+
+  const handleOpenDialogDelete = (record: Vehicle) => {
+    setOpenDeleteVehicle(record);
+  };
+  const handleCloseDialogDelete = () => {
+    setOpenDeleteVehicle(null);
+  };
 
   const columns: ColumnsType<Vehicle> = useMemo(() => {
     return [
@@ -137,7 +151,9 @@ function TableVehicles() {
                       id: uuid(),
                       label: 'delete',
                       icon: <DeleteIcon />,
-                      onClick: () => {},
+                      onClick: () => {
+                        handleOpenDialogDelete(row);
+                      },
                       color: '#FF2727',
                     }
                   : {}),
@@ -151,6 +167,68 @@ function TableVehicles() {
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const renderDialogDelete = () => {
+    if (openDeleteVehicle === null) {
+      return null;
+    }
+    return (
+      <Dialog open onClose={handleCloseDialogDelete}>
+        <Box padding="24px" style={{ maxWidth: 311, textAlign: 'center' }}>
+          <Typography marginBottom="24px" fontSize="16px" fontWeight={700}>
+            {t('translation:delete_record_title')}
+          </Typography>
+          <Typography marginBottom="30px" fontSize="14px" fontWeight={400}>
+            {t('translation:delete_record_message')}
+          </Typography>
+          <Stack direction="row" alignItems="center">
+            <Button
+              variant="outlined"
+              sx={{
+                margin: '0 6px',
+                color: '#1AA6EE',
+                padding: '10px 40px',
+              }}
+              onClick={handleCloseDialogDelete}
+            >
+              {t('translation:cancel')}
+            </Button>
+            <Button
+              loading={queueDeleteVehicle.includes(openDeleteVehicle?._id)}
+              sx={{
+                margin: '0 8px',
+                color: '#FFFFFF',
+                padding: '10px 40px',
+              }}
+              backgroundButton="rgba(255, 39, 39, 1)"
+              onClick={() => {
+                if (openDeleteVehicle) {
+                  dispatch(
+                    vehiclesActions.deleteVehicleRequest({
+                      id: openDeleteVehicle._id,
+                      onSuccess: () => {
+                        toast(<ToastCustom type="success" text={t('vehicles:vehicle_deleted')} />, {
+                          className: toastClass.toastSuccess,
+                        });
+                        handleCloseDialogDelete();
+                      },
+                      onFailure: () => {
+                        toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+                          className: toastClass.toastError,
+                        });
+                      },
+                    }),
+                  );
+                }
+              }}
+            >
+              {t('translation:delete')}
+            </Button>
+          </Stack>
+        </Box>
+      </Dialog>
+    );
+  };
 
   return (
     <Box my="24px">
@@ -171,6 +249,7 @@ function TableVehicles() {
           );
         }}
       />
+      {renderDialogDelete()}
     </Box>
   );
 }
