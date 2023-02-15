@@ -25,8 +25,6 @@ export const createVehicle = async (data: CreateVehicle): Promise<ResponseSucces
       ...data,
       ECOseats: Number(data.ECOseats),
       VIPseats: Number(data.VIPseats),
-      services: [],
-      merchandises: [],
       attach: data.attach?._id,
     },
   });

@@ -8,9 +8,9 @@ export interface Vehicle {
   registrationId: string;
   ECOseats: number;
   VIPseats: number;
-  services?: string; // FIXME: Chưa có model "Service"
-  merchandises?: string; // FIXME: Chưa có model "Merchandise"
-  attach?: ImageResource;
+  services: string[]; // FIXME: Chưa có model "Service"
+  merchandises: string[]; // FIXME: Chưa có model "Merchandise"
+  attach: ImageResource;
   createdAt: string;
   updatedAt: string;
   __v: number;

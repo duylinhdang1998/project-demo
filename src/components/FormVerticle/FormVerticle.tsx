@@ -6,6 +6,7 @@ import cx from 'classnames';
 import { Controller, FieldErrors, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
+import { CheckboxGroup } from 'components/CheckboxGroup/CheckboxGroup';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
 import { Field } from 'models/Field';
@@ -202,7 +203,32 @@ export default function FormVerticle<T extends FieldValues>({
             }}
           />
         );
-
+      case 'checkbox2':
+        return (
+          <Controller
+            name={i.label as Path<T>}
+            control={control}
+            render={() => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <CheckboxGroup options={i.options ?? []} onChange={i.onChange} values={i.values} />
+                  {!!error && (
+                    <Typography component="p" className={classes.error} fontSize={12}>
+                      {messageErr}
+                    </Typography>
+                  )}
+                </Box>
+              );
+            }}
+            rules={{
+              required: {
+                value: i.required ?? false,
+                message: t('error_required', { name: i.label }),
+              },
+            }}
+          />
+        );
       case 'datetime':
         return (
           <Controller

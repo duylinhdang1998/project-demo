@@ -34,8 +34,6 @@ export const updateVehicle = async ({ data, id }: UpdateVehicle): Promise<Respon
       ...data,
       ECOseats: Number(data.ECOseats),
       VIPseats: Number(data.VIPseats),
-      services: [],
-      merchandises: [],
       attach: data.attach?._id,
     },
   });
