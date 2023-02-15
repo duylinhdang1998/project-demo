@@ -1,4 +1,5 @@
 import { UploadImageResourceProps } from 'components/UploadImageResource/UploadImageResource';
+import { UploadPDFResourceProps } from 'components/UploadImageResource/UploadPDFResource';
 
 export interface Option {
   key: string;
@@ -44,4 +45,17 @@ export interface UploadImageResourceField {
   multiple: UploadImageResourceProps['multiple'];
 }
 
-export type Field = SimpleField | UploadImageResourceField | CheckboxField;
+export interface UploadPDFResourceField {
+  type: 'pdf_resource';
+  prefix?: string;
+  required?: boolean;
+  showTime?: boolean;
+  messageErr?: string;
+  id?: string;
+  label: string;
+  onChange: UploadPDFResourceProps['onChange'];
+  resources: UploadPDFResourceProps['resources'];
+  multiple: UploadPDFResourceProps['multiple'];
+  buttonText: string;
+}
+export type Field = SimpleField | UploadPDFResourceField | UploadImageResourceField | CheckboxField;

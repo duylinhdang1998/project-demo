@@ -19,10 +19,12 @@ interface UploadPDFResource {
   file: File;
 }
 export const uploadPDFResource = async ({ file }: UploadPDFResource) => {
+  const formData = new FormData();
+  formData.append('file', file);
   const response: AxiosResponse<ResponseSuccess | ResponseFailure> = await fetchAPI.request({
     method: 'POST',
     url: '/v1.0/resources/document',
-    data: { file },
+    data: formData,
     headers: {
       'Content-Type': 'multipart/form-data',
     },

@@ -37,7 +37,7 @@ export interface Values {
 
 function FormAddVehicles() {
   const toastClass = useToastStyle();
-  console.log(toastClass);
+
   const {
     control,
     formState: { errors },

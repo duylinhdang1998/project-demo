@@ -1,4 +1,4 @@
-import { ImageResource } from './Resource';
+import { ImageResource, PDFResource } from './Resource';
 
 export interface Vehicle {
   _id: string;
@@ -24,7 +24,7 @@ export interface VehicleEvent {
   extraFees: number;
   totalKilometers: number;
   description: string;
-  attach: string; // FIXME: Chưa có model "Attach"
+  attach: PDFResource;
   createdAt: string;
   updatedAt: string;
   __v: number;

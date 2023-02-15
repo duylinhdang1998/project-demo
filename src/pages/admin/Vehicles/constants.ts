@@ -49,24 +49,28 @@ export const fieldsAdd: Field[] = [
 export const fieldsAddEvent: Field[] = [
   {
     id: uuidv4(),
-    label: 'reminder_date',
+    label: 'reminderDate',
     type: 'datetime',
+    required: true,
   },
   {
     id: uuidv4(),
-    label: 'total_kilometer',
+    label: 'totalKilometers',
     type: 'number',
+    required: true,
   },
   {
     id: uuidv4(),
-    label: 'fuel_fees',
-    type: 'number',
-    prefix: '$',
-  },
-  {
-    id: uuidv4(),
-    label: 'extra_fees',
+    label: 'fuelFees',
     type: 'number',
     prefix: '$',
+    required: true,
+  },
+  {
+    id: uuidv4(),
+    label: 'extraFees',
+    type: 'number',
+    prefix: '$',
+    required: true,
   },
 ];
