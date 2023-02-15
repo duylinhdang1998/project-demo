@@ -1,6 +1,6 @@
 import { Grid, Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import { memo, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -18,11 +18,13 @@ import { CreateVehicle } from 'services/Vehicle/Company/createVehicle';
 import { selectVehicles } from 'store/vehicles/selectors';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 import { useToastStyle } from 'theme/toastStyles';
-import { fieldsAdd, fieldsAddRight } from '../constants';
+import { fieldsAdd } from '../constants';
+import { Merchandises } from './Merchandises';
+import { ServiceSettings } from './ServiceSettings';
 
 const fieldKeys: Array<keyof CreateVehicle> = ['ECOseats', 'VIPseats', 'attach', 'brand', 'merchandises', 'model', 'registrationId', 'services'];
 
-interface Values {
+export interface Values {
   ECOseats: Vehicle['ECOseats'];
   VIPseats: Vehicle['VIPseats'];
   attach?: Vehicle['attach'];
@@ -82,11 +84,19 @@ function FormAddVehicles() {
     return attach ? [attach] : [];
   };
 
+  const getServices = (): string[] => {
+    return getValues().services ?? [];
+  };
+
+  const getMerchandises = (): string[] => {
+    return getValues().merchandises ?? [];
+  };
+
   const onSubmit = (value: Values) => {
     if (isEditAction && vehicleId) {
       dispatch(
         vehiclesActions.updateVehicleRequest({
-          data: value,
+          data: value as Required<Values>,
           id: vehicleId,
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('vehicles:vehicle_updated')} />, {
@@ -104,7 +114,7 @@ function FormAddVehicles() {
     } else {
       dispatch(
         vehiclesActions.createVehicleRequest({
-          data: value,
+          data: value as Required<Values>,
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('vehicles:vehicle_created')} />, {
               className: toastClass.toastSuccess,
@@ -153,11 +163,32 @@ function FormAddVehicles() {
           <FormVerticle errors={errors} messages={messages} fields={fieldsAdd} control={control} filterKey="vehicles" />
         </Grid>
         <Grid item xs={12} md={6}>
+          <ServiceSettings
+            control={control}
+            services={getServices()}
+            errors={errors}
+            messages={messages}
+            onChange={values => {
+              resetField('services', {
+                defaultValue: values,
+              });
+            }}
+          />
+          <Merchandises
+            control={control}
+            merchandises={getMerchandises()}
+            errors={errors}
+            messages={messages}
+            onChange={values => {
+              resetField('merchandises', {
+                defaultValue: values,
+              });
+            }}
+          />
           <FormVerticle
             errors={errors}
             messages={messages}
             fields={[
-              ...fieldsAddRight,
               {
                 id: v4(),
                 type: 'image_resource',
@@ -213,4 +244,4 @@ function FormAddVehicles() {
   );
 }
 
-export default memo(FormAddVehicles);
+export default FormAddVehicles;

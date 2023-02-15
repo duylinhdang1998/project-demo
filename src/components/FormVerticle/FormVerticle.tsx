@@ -6,8 +6,10 @@ import cx from 'classnames';
 import { Controller, FieldErrors, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
+import { CheckboxGroup } from 'components/CheckboxGroup/CheckboxGroup';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
+import { UploadPDFResource } from 'components/UploadImageResource/UploadPDFResource';
 import { Field } from 'models/Field';
 import { useStyles } from './styles';
 export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
@@ -202,7 +204,64 @@ export default function FormVerticle<T extends FieldValues>({
             }}
           />
         );
-
+      case 'pdf_resource':
+        return (
+          <Controller
+            name={i.label as Path<T>}
+            control={control}
+            render={() => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <UploadPDFResource
+                    className={!!error ? classes.inputError : ''}
+                    multiple={i.multiple}
+                    resources={i.resources}
+                    onChange={i.onChange}
+                    buttonText={i.buttonText}
+                  />
+                  {!!error && (
+                    <Typography component="p" className={classes.error} fontSize={12}>
+                      {messageErr}
+                    </Typography>
+                  )}
+                </Box>
+              );
+            }}
+            rules={{
+              required: {
+                value: i.required ?? false,
+                message: t('error_required', { name: i.label }),
+              },
+            }}
+          />
+        );
+      case 'checkbox2':
+        return (
+          <Controller
+            name={i.label as Path<T>}
+            control={control}
+            render={() => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <CheckboxGroup options={i.options ?? []} onChange={i.onChange} values={i.values} />
+                  {!!error && (
+                    <Typography component="p" className={classes.error} fontSize={12}>
+                      {messageErr}
+                    </Typography>
+                  )}
+                </Box>
+              );
+            }}
+            rules={{
+              required: {
+                value: i.required ?? false,
+                message: t('error_required', { name: i.label }),
+              },
+            }}
+          />
+        );
       case 'datetime':
         return (
           <Controller

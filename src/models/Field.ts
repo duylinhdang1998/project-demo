@@ -1,9 +1,10 @@
 import { UploadImageResourceProps } from 'components/UploadImageResource/UploadImageResource';
+import { UploadPDFResourceProps } from 'components/UploadImageResource/UploadPDFResource';
 
 export interface Option {
-  key?: string;
-  value?: string;
-  [key: string]: any;
+  key: string;
+  value: string;
+  label: string;
 }
 
 export interface SimpleField {
@@ -18,9 +19,21 @@ export interface SimpleField {
   messageErr?: string;
 }
 
+export interface CheckboxField {
+  type: 'checkbox2';
+  prefix?: string;
+  required?: boolean;
+  showTime?: boolean;
+  messageErr?: string;
+  id?: string;
+  options: Option[];
+  label: string;
+  onChange: (values: string[]) => void;
+  values: string[];
+}
+
 export interface UploadImageResourceField {
   type: 'image_resource';
-  options?: Option[];
   prefix?: string;
   required?: boolean;
   showTime?: boolean;
@@ -32,4 +45,17 @@ export interface UploadImageResourceField {
   multiple: UploadImageResourceProps['multiple'];
 }
 
-export type Field = SimpleField | UploadImageResourceField;
+export interface UploadPDFResourceField {
+  type: 'pdf_resource';
+  prefix?: string;
+  required?: boolean;
+  showTime?: boolean;
+  messageErr?: string;
+  id?: string;
+  label: string;
+  onChange: UploadPDFResourceProps['onChange'];
+  resources: UploadPDFResourceProps['resources'];
+  multiple: UploadPDFResourceProps['multiple'];
+  buttonText: string;
+}
+export type Field = SimpleField | UploadPDFResourceField | UploadImageResourceField | CheckboxField;

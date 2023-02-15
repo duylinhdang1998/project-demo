@@ -11,6 +11,7 @@ export default function ListEvents() {
       <Box display="flex" justifyContent="center" width="100%">
         <Box padding="24px" sx={{ backgroundColor: '#fff' }} borderRadius="4px" width={{ xs: '100%', md: '80%' }}>
           <Typography fontSize={16} fontWeight="700">
+            {/* FIXME: Có lẽ là truyền qua history state vì k có edit */}
             Events list for vehicle DX727AM
           </Typography>
           <Divider sx={{ margin: '16px 0' }} />

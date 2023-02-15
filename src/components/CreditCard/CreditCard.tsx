@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { v4 as uuid } from 'uuid';
 import Button from 'components/Button/Button';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
-import { Field } from 'models/Field';
+import { SimpleField } from 'models/Field';
 import { useToastStyle } from 'theme/toastStyles';
 import { formatCreditCardNumber, formatCVC, formatExpirationDate } from 'utils/formatText';
 import './styles.css';
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const fields: Field[] = [
+const fields: SimpleField[] = [
   { id: uuid(), label: 'card_number', type: 'text', placeholder: 'number' },
   { id: uuid(), label: 'card_name', type: 'text', placeholder: 'name' },
   { id: uuid(), label: 'card_valid', type: 'text', placeholder: 'expiry' },
@@ -87,7 +87,7 @@ function CreditCard() {
     }));
   };
 
-  const getPattern = (i: Field) => {
+  const getPattern = (i: SimpleField) => {
     switch (i.placeholder) {
       case 'number':
         return `[\d| ]{16,22}`;

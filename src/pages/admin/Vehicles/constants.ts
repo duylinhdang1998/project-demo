@@ -46,50 +46,31 @@ export const fieldsAdd: Field[] = [
   },
 ];
 
-export const fieldsAddRight: Field[] = [
-  {
-    id: uuidv4(),
-    label: 'services',
-    type: 'checkbox',
-    options: [
-      { key: 'wifi', value: 'wifi', label: 'Wifi' },
-      { key: 'tv', value: 'tv', label: 'TV' },
-      { key: 'wc', value: 'wc', label: 'WC' },
-    ],
-  },
-  {
-    id: uuidv4(),
-    label: 'merchandises',
-    type: 'checkbox',
-    options: [
-      { key: 'colis', value: 'colis', label: 'Colis' },
-      { key: 'velo', value: 'velo', label: 'Vélo' },
-      { key: 'animal', value: 'animal', label: 'Animal' },
-    ],
-  },
-];
-
 export const fieldsAddEvent: Field[] = [
   {
     id: uuidv4(),
-    label: 'reminder_date',
+    label: 'reminderDate',
     type: 'datetime',
+    required: true,
   },
   {
     id: uuidv4(),
-    label: 'total_kilometer',
+    label: 'totalKilometers',
     type: 'number',
+    required: true,
   },
   {
     id: uuidv4(),
-    label: 'fuel_fees',
-    type: 'number',
-    prefix: '$',
-  },
-  {
-    id: uuidv4(),
-    label: 'extra_fees',
+    label: 'fuelFees',
     type: 'number',
     prefix: '$',
+    required: true,
+  },
+  {
+    id: uuidv4(),
+    label: 'extraFees',
+    type: 'number',
+    prefix: '$',
+    required: true,
   },
 ];
