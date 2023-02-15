@@ -30,7 +30,14 @@ export const updateVehicle = async ({ data, id }: UpdateVehicle): Promise<Respon
   const response: AxiosResponse<ResponseSuccess | ResponseFailure> = await fetchAPI.request({
     method: 'PUT',
     url: `/v1.0/company/vehicles/${id}`,
-    data,
+    data: {
+      ...data,
+      ECOseats: Number(data.ECOseats),
+      VIPseats: Number(data.VIPseats),
+      services: [],
+      merchandises: [],
+      attach: data.attach?._id,
+    },
   });
   if (response.data.code === 0) {
     return response.data as ResponseSuccess;

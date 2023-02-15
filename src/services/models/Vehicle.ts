@@ -1,3 +1,5 @@
+import { ImageResource } from './Resource';
+
 export interface Vehicle {
   _id: string;
   company: string;
@@ -6,9 +8,9 @@ export interface Vehicle {
   registrationId: string;
   ECOseats: number;
   VIPseats: number;
-  services: string; // FIXME: Chưa có model "Service"
-  merchandises: string; // FIXME: Chưa có model "Merchandise"
-  attach: string; // Chưa có model "Attach"
+  services?: string; // FIXME: Chưa có model "Service"
+  merchandises?: string; // FIXME: Chưa có model "Merchandise"
+  attach?: ImageResource;
   createdAt: string;
   updatedAt: string;
   __v: number;

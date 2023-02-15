@@ -19,7 +19,7 @@ import { fieldsAddOffice1, fieldsAddOffice2, fieldsAddOffice3 } from './constant
 
 const fieldKeys: Array<keyof CreateOffice> = ['title', 'address', 'zipCode', 'country', 'city', 'phone', 'email'];
 
-type Values = Record<(typeof fieldKeys)[number], string>;
+type Values = Record<typeof fieldKeys[number], string>;
 
 export default function AddOfficeManager() {
   const toastClass = useToastStyle();
@@ -70,7 +70,7 @@ export default function AddOfficeManager() {
           // FIXME: Hiển thị lỗi giá trị đã tồn tại -> Backend đang check uniq nhưng chưa trả về thông tin lỗi
           onFailure: () => {
             toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
-              className: toastClass.toastSuccess,
+              className: toastClass.toastError,
             });
           },
           onSuccess: () => {
@@ -96,7 +96,7 @@ export default function AddOfficeManager() {
           // FIXME: Hiển thị lỗi giá trị đã tồn tại -> Backend đang check uniq nhưng chưa trả về thông tin lỗi
           onFailure: () => {
             toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
-              className: toastClass.toastSuccess,
+              className: toastClass.toastError,
             });
           },
           onSuccess: () => {

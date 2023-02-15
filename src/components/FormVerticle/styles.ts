@@ -77,6 +77,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   inputError: {
-    border: `1px solid ${theme.palette.error.main}`,
+    border: `1px solid ${theme.palette.error.main} !important`,
   },
 }));

@@ -66,7 +66,7 @@ export default function AddPackageSettings() {
           },
           onFailure: () => {
             toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
-              className: toastClass.toastSuccess,
+              className: toastClass.toastError,
             });
           },
           onSuccess: () => {
@@ -86,7 +86,7 @@ export default function AddPackageSettings() {
           },
           onFailure: () => {
             toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
-              className: toastClass.toastSuccess,
+              className: toastClass.toastError,
             });
           },
           onSuccess: () => {

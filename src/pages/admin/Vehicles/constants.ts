@@ -67,11 +67,6 @@ export const fieldsAddRight: Field[] = [
       { key: 'animal', value: 'animal', label: 'Animal' },
     ],
   },
-  {
-    id: uuidv4(),
-    label: 'attach_photo',
-    type: 'image',
-  },
 ];
 
 export const fieldsAddEvent: Field[] = [

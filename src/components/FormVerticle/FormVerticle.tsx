@@ -3,11 +3,11 @@ import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
 import cx from 'classnames';
-import { Controller, FieldValues, Path, UseControllerProps } from 'react-hook-form';
+import { Controller, FieldErrors, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
 import { customStyles } from 'components/FilterTicket/customStyles';
-import UploadImage from 'components/UploadImage/UploadImage';
+import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
 import { Field } from 'models/Field';
 import { useStyles } from './styles';
 export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
@@ -18,7 +18,7 @@ export interface FormVerticleProps<T extends FieldValues> extends Partial<UseCon
   selectProps?: SelectProps;
   isGridHorizon?: boolean;
   indexGridHorizon?: number;
-  errors?: any;
+  errors?: FieldErrors<T>;
   messages?: Record<string, string>;
 }
 
@@ -155,11 +155,11 @@ export default function FormVerticle<T extends FieldValues>({
           <Controller
             name={i.label as Path<T>}
             control={control}
-            render={() => {
+            render={({ field }) => {
               return (
                 <Box>
                   <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                  <UploadImage />
+                  <UploadImageResource multiple={false} resources={[]} onChange={field.onChange} />
                 </Box>
               );
             }}
@@ -171,6 +171,38 @@ export default function FormVerticle<T extends FieldValues>({
             }}
           />
         );
+      case 'image_resource':
+        return (
+          <Controller
+            name={i.label as Path<T>}
+            control={control}
+            render={() => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <UploadImageResource
+                    className={!!error ? classes.inputError : ''}
+                    multiple={i.multiple}
+                    resources={i.resources}
+                    onChange={i.onChange}
+                  />
+                  {!!error && (
+                    <Typography component="p" className={classes.error} fontSize={12}>
+                      {messageErr}
+                    </Typography>
+                  )}
+                </Box>
+              );
+            }}
+            rules={{
+              required: {
+                value: i.required ?? false,
+                message: t('error_required', { name: i.label }),
+              },
+            }}
+          />
+        );
+
       case 'datetime':
         return (
           <Controller

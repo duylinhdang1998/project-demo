@@ -9,7 +9,7 @@
   "model": "Model",
   "services": "Services",
   "merchandises": "Merchandises",
-  "attach_photo": "Attach a photo of the vehicle",
+  "attach": "Attach a photo of the vehicle",
   "date": "Date",
   "descriptions": "Descriptions",
   "driver_name": "Driver name",
@@ -19,5 +19,7 @@
   "reminder_date": "Reminder date",
   "total_kilometer": "Total kilometers",
   "attach_document": "Attach a document",
-  "event_lists": "Event list"
+  "event_lists": "Event list",
+  "vehicle_updated": "Vehicle Updated",
+  "vehicle_created": "Vehicle Created"
 }

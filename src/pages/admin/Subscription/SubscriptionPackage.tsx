@@ -47,11 +47,10 @@ export default function SubscriptionPackage() {
   const renderPackages = () => {
     return (
       <Grid container spacing="24px">
-        {subscriptions.map((subscription, index) => {
+        {subscriptions.map(subscription => {
           const price = get(getPlanDurationsFromSubscription(subscription), planDurationState).price;
           return (
             <Grid item xs={12} md={4} key={subscription.name}>
-              {/* FIXME: "popular" lấy đâu ra? */}
               <SubscriptionItem
                 name={subscription.name}
                 planDuration={planDurationState}
@@ -59,7 +58,7 @@ export default function SubscriptionPackage() {
                 subscriptionType={subscription.subscriptionType}
                 currency={subscription.currency}
                 price={price}
-                popular={index === 1}
+                popular={subscription.active}
               />
             </Grid>
           );

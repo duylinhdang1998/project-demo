@@ -56,7 +56,7 @@ function LoginPage() {
         onSuccess: () => {},
         onFailure: () => {
           toast(<ToastCustom type="error" text={t('login_failure')} />, {
-            className: toastClass.toastSuccess,
+            className: toastClass.toastError,
           });
         },
       }),

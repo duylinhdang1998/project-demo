@@ -42,42 +42,6 @@ function TableVehicles() {
 
   const isAgent = useMemo(() => userInfo?.role === 'agent', [userInfo]);
 
-  const actions = useMemo(() => {
-    return [
-      {
-        ...(!isAgent ? { id: uuid(), label: 'edit', icon: <EditIcon />, onClick: () => {} } : {}),
-      },
-      {
-        id: uuid(),
-        label: 'add_new_event',
-        icon: <CirclePlusIcon />,
-        onClick: () => {
-          navigate(isAgent ? '/agent/add-new-event' : '/admin/add-new-event');
-        },
-      },
-      {
-        id: uuid(),
-        label: 'show_event_lists',
-        icon: <BookmarkIcon />,
-        onClick: () => {
-          navigate(isAgent ? '/agent/list-events' : '/admin/list-events');
-        },
-      },
-      {
-        ...(!isAgent
-          ? {
-              id: uuid(),
-              label: 'delete',
-              icon: <DeleteIcon />,
-              onClick: () => {},
-              color: '#FF2727',
-            }
-          : {}),
-      },
-    ].filter(i => !isEmpty(i));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const columns: ColumnsType<Vehicle> = useMemo(() => {
     return [
       {
@@ -130,13 +94,58 @@ function TableVehicles() {
         dataIndex: 'routeId',
         title: () => t('vehicles:routeId'),
         // FIXME: routeId chưa có
-        render: (_, record) => <Typography variant="body2">{record._id}</Typography>,
+        render: _ => <Typography variant="body2">Route ID</Typography>,
         align: 'center',
       },
       {
         key: 'action',
         title: () => t('translation:action'),
-        render: (_, row) => <ActionTable actions={actions} row={row} />,
+        render: (_, row) => (
+          <ActionTable
+            actions={[
+              {
+                ...(!isAgent
+                  ? {
+                      id: uuid(),
+                      label: 'edit',
+                      icon: <EditIcon />,
+                      onClick: () => {
+                        navigate(`/admin/vehicles/${row._id}`);
+                      },
+                    }
+                  : {}),
+              },
+              {
+                id: uuid(),
+                label: 'add_new_event',
+                icon: <CirclePlusIcon />,
+                onClick: () => {
+                  navigate(isAgent ? '/agent/add-new-event' : '/admin/add-new-event');
+                },
+              },
+              {
+                id: uuid(),
+                label: 'show_event_lists',
+                icon: <BookmarkIcon />,
+                onClick: () => {
+                  navigate(isAgent ? '/agent/list-events' : '/admin/list-events');
+                },
+              },
+              {
+                ...(!isAgent
+                  ? {
+                      id: uuid(),
+                      label: 'delete',
+                      icon: <DeleteIcon />,
+                      onClick: () => {},
+                      color: '#FF2727',
+                    }
+                  : {}),
+              },
+            ].filter(i => !isEmpty(i))}
+            row={row}
+          />
+        ),
         align: 'center',
       },
     ];
