@@ -1,7 +1,12 @@
 import { Stack, Checkbox, CheckboxProps, FormControlLabel } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import { Option } from 'models/Field';
 import { useStyles } from './styles';
+
+export interface Option {
+  key: string;
+  value: string;
+  label: string;
+}
 
 interface CheckboxGroupProps {
   options: Option[];
@@ -43,6 +48,9 @@ export const CheckboxGroup = ({ options, values, onChange }: CheckboxGroupProps)
   return (
     <Stack direction="row" justifyContent="space-between" spacing={2}>
       {options.map(option => {
+        if (!option.value) {
+          return null;
+        }
         return (
           <FormControlLabel
             key={option.key}

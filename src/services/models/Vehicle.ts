@@ -27,5 +27,6 @@ export interface VehicleEvent {
   attach: PDFResource;
   createdAt: string;
   updatedAt: string;
+  vehicle: string;
   __v: number;
 }

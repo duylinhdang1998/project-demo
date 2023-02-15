@@ -22,5 +22,6 @@
   "event_lists": "Event list",
   "vehicle_updated": "Vehicle Updated",
   "vehicle_created": "Vehicle Created",
-  "vehicle_deleted": "Vehicle Deleted"
+  "vehicle_deleted": "Vehicle Deleted",
+  "vehicle_event_created": "Vehicle Event Created"
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Control, FieldErrors } from 'react-hook-form';
+import { Option } from 'components/CheckboxGroup/CheckboxGroup';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
-import { Option } from 'models/Field';
 import { Vehicle } from 'services/models/Vehicle';
 import { Values } from './FormAddVehicles';
 

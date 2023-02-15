@@ -1,10 +1,11 @@
+import { Option as CheckboxGroupOption } from 'components/CheckboxGroup/CheckboxGroup';
 import { UploadImageResourceProps } from 'components/UploadImageResource/UploadImageResource';
 import { UploadPDFResourceProps } from 'components/UploadImageResource/UploadPDFResource';
 
 export interface Option {
-  key: string;
-  value: string;
-  label: string;
+  key?: string;
+  value?: string;
+  [key: string]: any;
 }
 
 export interface SimpleField {
@@ -26,7 +27,7 @@ export interface CheckboxField {
   showTime?: boolean;
   messageErr?: string;
   id?: string;
-  options: Option[];
+  options: CheckboxGroupOption[];
   label: string;
   onChange: (values: string[]) => void;
   values: string[];
