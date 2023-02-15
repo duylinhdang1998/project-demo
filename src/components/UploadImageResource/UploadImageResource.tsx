@@ -47,6 +47,7 @@ export interface UploadImageResourceProps {
   resources: ImageResource[];
   onChange?: (resources: ImageResource[]) => void;
   multiple?: boolean;
+  className?: string;
 }
 
 const useStyles = makeStyles(() => ({
@@ -69,7 +70,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const UploadImageResource = ({ resources = [], multiple = false, onChange }: UploadImageResourceProps) => {
+export const UploadImageResource = ({ resources = [], multiple = false, className, onChange }: UploadImageResourceProps) => {
   const classes = useStyles();
 
   const [loading, setLoading] = useState(false);
@@ -165,6 +166,9 @@ export const UploadImageResource = ({ resources = [], multiple = false, onChange
 
   const renderImage: ItemRender<FileItem> = (_originNode, antdFile) => {
     const file = antdFile as FileItem;
+    if (file.status === 'uploading') {
+      return null;
+    }
     return (
       <Box width="100%" height="170px" position="relative">
         <Image src={file.url} className={classes.img} />
@@ -184,16 +188,20 @@ export const UploadImageResource = ({ resources = [], multiple = false, onChange
     <div className="upload-wrapper">
       <Dragger
         listType="picture"
-        className={clxs('picture-uploader', {
-          ['hidden']: !!fileListState.length,
-        })}
+        className={clxs(
+          'picture-uploader',
+          {
+            ['hidden']: !!fileListState.length,
+          },
+          className,
+        )}
         multiple={multiple}
         accept="image/*"
         fileList={fileListState}
         beforeUpload={beforeUpload}
         itemRender={renderImage}
       >
-        {!!fileListState.length ? null : <UploadButton loading={loading} />}
+        {!!fileListState.length && !loading ? null : <UploadButton loading={loading} />}
       </Dragger>
     </div>
   );

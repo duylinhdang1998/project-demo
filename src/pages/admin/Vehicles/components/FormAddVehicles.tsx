@@ -1,4 +1,4 @@
-import { Grid, InputLabel, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -6,12 +6,11 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { v4 } from 'uuid';
 import Button from 'components/Button/Button';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
-import { useStyles } from 'components/FormVerticle/styles';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
-import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { ImageResource } from 'services/models/Resource';
 import { Vehicle } from 'services/models/Vehicle';
@@ -35,7 +34,6 @@ interface Values {
 }
 
 function FormAddVehicles() {
-  const classes = useStyles();
   const toastClass = useToastStyle();
 
   const {
@@ -44,6 +42,8 @@ function FormAddVehicles() {
     handleSubmit,
     getValues,
     setValue,
+    resetField,
+    reset,
   } = useForm<Values>({
     defaultValues: {
       ECOseats: 1,
@@ -69,6 +69,7 @@ function FormAddVehicles() {
     }, {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const isEditAction = useMemo(() => {
     return !!vehicleId;
   }, [vehicleId]);
@@ -77,14 +78,6 @@ function FormAddVehicles() {
   const handleCancel = () => setOpen(true);
 
   const getAttach = (): ImageResource[] => {
-    // getValues().attach return undefined mặc dù đã setValue ở useEffect
-    if (isEditAction && (statusGetVehicle !== 'success' || !vehicle)) {
-      return [];
-    }
-    if (isEditAction && vehicle && vehicle._id === vehicleId) {
-      const attach = getValues().attach;
-      return attach ? [attach] : vehicle.attach ? [vehicle.attach] : [];
-    }
     const attach = getValues().attach;
     return attach ? [attach] : [];
   };
@@ -103,7 +96,7 @@ function FormAddVehicles() {
           },
           onFailure: () => {
             toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
-              className: toastClass.toastSuccess,
+              className: toastClass.toastError,
             });
           },
         }),
@@ -120,7 +113,7 @@ function FormAddVehicles() {
           },
           onFailure: () => {
             toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
-              className: toastClass.toastSuccess,
+              className: toastClass.toastError,
             });
           },
         }),
@@ -130,6 +123,7 @@ function FormAddVehicles() {
 
   useEffect(() => {
     if (isEditAction && vehicleId) {
+      reset({ ECOseats: 1, VIPseats: 1 });
       dispatch(vehiclesActions.getVehicleRequest({ id: vehicleId }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -140,7 +134,9 @@ function FormAddVehicles() {
       Object.keys(vehicle).forEach(key => {
         const key_ = key as keyof CreateVehicle;
         if (fieldKeys.includes(key_)) {
-          setValue(key_, vehicle[key_], { shouldDirty: true });
+          resetField(key_, {
+            defaultValue: vehicle[key_],
+          });
         }
       });
     }
@@ -157,18 +153,27 @@ function FormAddVehicles() {
           <FormVerticle errors={errors} messages={messages} fields={fieldsAdd} control={control} filterKey="vehicles" />
         </Grid>
         <Grid item xs={12} md={6}>
-          <FormVerticle errors={errors} messages={messages} fields={fieldsAddRight} control={control} filterKey="vehicles" />
-          <Box>
-            <InputLabel className={classes.label}>{t('vehicles:attach_photo')}</InputLabel>
-            <UploadImageResource
-              multiple={false}
-              resources={getAttach()}
-              onChange={resources => {
-                const lastResource = resources[resources.length - 1];
-                setValue('attach', lastResource ? lastResource : undefined);
-              }}
-            />
-          </Box>
+          <FormVerticle
+            errors={errors}
+            messages={messages}
+            fields={[
+              ...fieldsAddRight,
+              {
+                id: v4(),
+                type: 'image_resource',
+                label: 'attach',
+                required: true,
+                multiple: false,
+                resources: getAttach(),
+                onChange: resources => {
+                  const lastResource = resources[resources.length - 1];
+                  setValue('attach', lastResource ? lastResource : undefined);
+                },
+              },
+            ]}
+            control={control}
+            filterKey="vehicles"
+          />
         </Grid>
       </Grid>
       <Stack direction="row" justifyContent="flex-end" alignItems="center" sx={{ marginTop: '30px' }}>

@@ -171,6 +171,38 @@ export default function FormVerticle<T extends FieldValues>({
             }}
           />
         );
+      case 'image_resource':
+        return (
+          <Controller
+            name={i.label as Path<T>}
+            control={control}
+            render={() => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <UploadImageResource
+                    className={!!error ? classes.inputError : ''}
+                    multiple={i.multiple}
+                    resources={i.resources}
+                    onChange={i.onChange}
+                  />
+                  {!!error && (
+                    <Typography component="p" className={classes.error} fontSize={12}>
+                      {messageErr}
+                    </Typography>
+                  )}
+                </Box>
+              );
+            }}
+            rules={{
+              required: {
+                value: i.required ?? false,
+                message: t('error_required', { name: i.label }),
+              },
+            }}
+          />
+        );
+
       case 'datetime':
         return (
           <Controller
