@@ -8,8 +8,10 @@ import { toast } from 'react-toastify';
 import BackButton from 'components/BackButton/BackButton';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import { FadeIn } from 'components/FadeIn/FadeIn';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -21,7 +23,7 @@ import { fieldsAddPackageSetting } from './constant';
 
 const fieldKeys: Array<keyof CreatePackageSetting> = ['title', 'description'];
 
-type Values = Record<typeof fieldKeys[number], string>;
+type Values = Record<keyof CreatePackageSetting, string>;
 
 export default function AddPackageSettings() {
   const toastClass = useToastStyle();
@@ -109,11 +111,8 @@ export default function AddPackageSettings() {
 
   useEffect(() => {
     if (isEditAction && packageSetting && statusGetPackageSetting === 'success') {
-      Object.keys(packageSetting).forEach(key => {
-        const key_ = key as keyof CreatePackageSetting;
-        if (fieldKeys.includes(key_)) {
-          setValue(key_, packageSetting[key_]);
-        }
+      fieldKeys.forEach(key => {
+        setValue(key, packageSetting[key]);
       });
     }
     if (isEditAction && !packageSetting && statusGetPackageSetting === 'success') {
@@ -122,50 +121,50 @@ export default function AddPackageSettings() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusGetPackageSetting, packageSetting, isEditAction]);
 
-  // FIXME: Retry screen
+  if (statusGetPackageSetting === 'loading') {
+    return <LoadingScreen />;
+  }
 
   return (
-    <Box>
-      <HeaderLayout
-        subTitleHeader={t('packageSettings:package_settings')}
-        activeSideBarHeader={
-          isEditAction
-            ? t('translation:edit_type', { type: t('packageSettings:package_settings_lowercase') })
-            : t('translation:create_new', { type: t('packageSettings:package_settings_lowercase') })
-        }
-      />
-      <Box padding="24px">
-        <Stack direction={{ mobile: 'column', laptop: 'row' }} spacing={{ xs: '30px', lg: '60px' }}>
-          <BackButton />
-          <Box width="100%" display="flex" justifyContent="center">
-            <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
-              <Typography color="#0c1132" fontWeight={700}>
-                {t('translation:create_new', { type: t('packageSettings:package_settings_lowercase') })}
-              </Typography>
-              <Divider sx={{ margin: '16px 0' }} />
-              <form onSubmitCapture={handleSubmit(onSubmit)}>
-                <FormVerticle errors={errors} messages={messages} fields={fieldsAddPackageSetting} control={control} filterKey="packageSettings" />
-                <ComboButton
-                  isLoading={
-                    packageSettingId
-                      ? queueUpdatePackageSetting.includes(packageSettingId) || statusGetPackageSetting === 'loading'
-                      : statusCreatePackageSetting === 'loading'
-                  }
-                  onCancel={handleCancel}
-                  onSave={handleSubmit(onSubmit)}
-                />
-              </form>
+    <FadeIn>
+      <Box>
+        <HeaderLayout
+          subTitleHeader={t('packageSettings:package_settings')}
+          activeSideBarHeader={
+            isEditAction
+              ? t('translation:edit_type', { type: t('packageSettings:package_settings_lowercase') })
+              : t('translation:create_new', { type: t('packageSettings:package_settings_lowercase') })
+          }
+        />
+        <Box padding="24px">
+          <Stack direction={{ mobile: 'column', laptop: 'row' }} spacing={{ xs: '30px', lg: '60px' }}>
+            <BackButton />
+            <Box width="100%" display="flex" justifyContent="center">
+              <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
+                <Typography color="#0c1132" fontWeight={700}>
+                  {t('translation:create_new', { type: t('packageSettings:package_settings_lowercase') })}
+                </Typography>
+                <Divider sx={{ margin: '16px 0' }} />
+                <form onSubmitCapture={handleSubmit(onSubmit)}>
+                  <FormVerticle errors={errors} messages={messages} fields={fieldsAddPackageSetting} control={control} filterKey="packageSettings" />
+                  <ComboButton
+                    isLoading={packageSettingId ? queueUpdatePackageSetting.includes(packageSettingId) : statusCreatePackageSetting === 'loading'}
+                    onCancel={handleCancel}
+                    onSave={handleSubmit(onSubmit)}
+                  />
+                </form>
+              </Box>
             </Box>
-          </Box>
-        </Stack>
+          </Stack>
+        </Box>
+        <DialogConfirm
+          openDialog={openDialog}
+          title={t('translation:cancel_type', { type: t('packageSettings:package_settings_lowercase') })}
+          subTitle={t('translation:leave_page')}
+          onClose={handleClose}
+        />
+        {Notification}
       </Box>
-      <DialogConfirm
-        openDialog={openDialog}
-        title={t('translation:cancel_type', { type: t('packageSettings:package_settings_lowercase') })}
-        subTitle={t('translation:leave_page')}
-        onClose={handleClose}
-      />
-      {Notification}
-    </Box>
+    </FadeIn>
   );
 }

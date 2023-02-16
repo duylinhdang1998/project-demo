@@ -31,8 +31,6 @@ export default function PackageSettings() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // FIXME: Retry screen
-
   return (
     <Box>
       <HeaderLayout activeSideBarHeader={t('packageSettings:package_settings')} />

@@ -100,7 +100,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'add-new-event',
+    path: ':vehicleId/update-event/:vehicleEventId',
     element: (
       <RequiredAuth role="admin">
         <Page.AddNewEvent />
@@ -108,7 +108,15 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'list-events',
+    path: ':vehicleId/add-new-event',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.AddNewEvent />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: ':vehicleId/list-events',
     element: (
       <RequiredAuth role="admin">
         <Page.ListEvents />

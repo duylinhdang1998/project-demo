@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'components/Button/Button';
 import { SubscriptionFeature, SubscriptionType } from 'services/models/Subscription';
 import { PlanDuration } from '../@types/PlanDuration';
-import { currencySymbols } from '../constants';
 
 interface SubscriptionItemProps {
   name: string;
@@ -55,7 +54,7 @@ export default function SubscriptionItem({
 
       <Box display="flex" justifyContent="center" alignItems="center">
         <Typography component="span" fontSize={16} fontWeight="bold">
-          {currencySymbols[currency]}
+          {currency}
         </Typography>
         <Typography component="span" fontSize={48} fontWeight="bold">
           {price}

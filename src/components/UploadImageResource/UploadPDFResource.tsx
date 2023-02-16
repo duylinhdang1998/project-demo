@@ -1,11 +1,12 @@
 import { UploadFileOutlined } from '@mui/icons-material';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box, IconButton, Stack, Typography } from '@mui/material';
+import { Box, CircularProgress, IconButton, Stack, Typography } from '@mui/material';
 import Dragger from 'antd/lib/upload/Dragger';
 import { ItemRender, UploadFile, UploadFileStatus, UploadProps } from 'antd/lib/upload/interface';
 import 'antd/lib/upload/style/css';
 import clxs from 'classnames';
 import dayjs from 'dayjs';
+import { filesize } from 'filesize';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { v4 } from 'uuid';
@@ -14,7 +15,6 @@ import FileIcon from 'components/SvgIcon/FileIcon';
 import { PDFResource } from 'services/models/Resource';
 import { uploadPDFResource } from 'services/Resource/uploadPDFResource';
 import './styles.css';
-
 interface FileBase {
   uid: UploadFile['uid'];
   name: UploadFile['name'];
@@ -139,7 +139,20 @@ export const UploadPDFResource = ({ resources = [], multiple = false, className,
   const renderImage: ItemRender<FileItem> = (_originNode, antdFile) => {
     const file = antdFile as FileItem;
     if (file.status === 'uploading') {
-      return null;
+      return (
+        <Stack direction="row" spacing={2} alignItems="center" py="10px" justifyContent="space-between">
+          <Stack direction="row" spacing={2} alignItems="center">
+            <FileIcon />
+            <Typography fontSize={14} color="#45485E">
+              {/* FIXME: Attach đang k có "name" */}
+              {file.name.toUpperCase()}
+            </Typography>
+          </Stack>
+          <IconButton>
+            <CircularProgress />
+          </IconButton>
+        </Stack>
+      );
     }
     return (
       <Stack direction="row" spacing={2} alignItems="center" py="10px" justifyContent="space-between">
@@ -148,11 +161,10 @@ export const UploadPDFResource = ({ resources = [], multiple = false, className,
           <Box>
             <Typography fontSize={14} color="#45485E">
               {/* FIXME: Attach đang k có "name" */}
-              {file.name.toUpperCase()}
+              {file.response._id}
             </Typography>
             <Typography component="span" color="#858C93" fontSize={12}>
-              {/* FIXME: Format */}
-              {dayjs(file.response.createdAt).format('DD, MMM YYYY hh:mm a')} <span>{file.response.size} KB</span>
+              {dayjs(file.response.createdAt).format('DD/MM/YYYY')} <span>{filesize(file.response.size)}</span>
             </Typography>
           </Box>
         </Stack>
@@ -167,6 +179,7 @@ export const UploadPDFResource = ({ resources = [], multiple = false, className,
     );
   };
 
+  // FIXME: Style chưa giống design
   return (
     <div className="upload-wrapper">
       <Dragger

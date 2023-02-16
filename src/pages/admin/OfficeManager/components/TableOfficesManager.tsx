@@ -31,6 +31,7 @@ function TableOfficesManager() {
   const [openDeleteOffice, setOpenDeleteOffice] = useState<Office | null>(null);
   const { statusGetOffices, offices, currentPage, totalRows, queueDeleteOffice, currentSearcher } = useAppSelector(selectOfficesManager);
   const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
 
   const handleOpenDialogDetail = (record: Office) => {

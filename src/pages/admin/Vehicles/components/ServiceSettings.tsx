@@ -4,7 +4,7 @@ import { Option } from 'components/CheckboxGroup/CheckboxGroup';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { Vehicle } from 'services/models/Vehicle';
 import { getServiceSettings } from 'services/ServiceSetting/Company/getServiceSettings';
-import { Values } from './FormAddVehicles';
+import { Values } from './FormAddVehicle';
 
 const getOptions = () => {
   return getServiceSettings({
@@ -32,6 +32,8 @@ export const ServiceSettings = ({ errors, messages, control, services, onChange 
   useEffect(() => {
     handleGetOptions();
   }, []);
+
+  // FIXME: Loading component
 
   return (
     <FormVerticle

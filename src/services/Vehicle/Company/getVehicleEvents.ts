@@ -9,6 +9,7 @@ export interface GetVehicleEvents {
   page: Pagination;
   sorter: Sorter<VehicleEvent>;
   searcher: Searcher<VehicleEvent>;
+  vehicleId: VehicleEvent['vehicle'];
 }
 
 interface ResponseSuccess {
@@ -23,7 +24,7 @@ interface ResponseSuccess {
 }
 
 export const RECORDS_PER_PAGE = 8;
-export const getVehicleEvents = async ({ page, sorter, searcher }: GetVehicleEvents): Promise<ResponseSuccess> => {
+export const getVehicleEvents = async ({ page, sorter, searcher, vehicleId }: GetVehicleEvents): Promise<ResponseSuccess> => {
   const response: AxiosResponse<ResponseSuccess> = await fetchAPI.request({
     url: '/v1.0/company/vehicle-events',
     params: {
@@ -31,6 +32,7 @@ export const getVehicleEvents = async ({ page, sorter, searcher }: GetVehicleEve
       offset: page * RECORDS_PER_PAGE,
       ...getSortParams(sorter),
       ...getSearchParams(searcher),
+      'vehicle[eq]': vehicleId,
     },
   });
   return response.data;

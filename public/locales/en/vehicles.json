@@ -19,9 +19,15 @@
   "totalKilometers": "Kilometers",
   "attach_document": "Attach a document",
   "date": "Date",
+  "attach_files": "Attach files",
   "event_lists": "Event list",
   "vehicle_updated": "Vehicle Updated",
   "vehicle_created": "Vehicle Created",
   "vehicle_deleted": "Vehicle Deleted",
-  "vehicle_event_created": "Vehicle Event Created"
+  "vehicle_event_created": "Vehicle Event Created",
+  "vehicle_event_updated": "Vehicle Event Updated",
+  "vehicle_event_deleted": "Vehicle Event Deleted",
+  "add_event_for": "Add event for vehicle",
+  "event": "Event",
+  "order": "STT"
 }

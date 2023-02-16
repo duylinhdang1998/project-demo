@@ -4,7 +4,7 @@ import { GetVehicleEvent } from 'services/Vehicle/Company/getVehicleEvent';
 export type GetVehicleEventRequest = GetVehicleEvent;
 
 export interface GetVehicleEventSuccess {
-  data: VehicleEvent;
+  vehicleEvent: VehicleEvent;
 }
 
 export interface GetVehicleEventFailure {}

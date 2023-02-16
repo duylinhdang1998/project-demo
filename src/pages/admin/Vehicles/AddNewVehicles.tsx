@@ -1,7 +1,7 @@
 import { Box, Divider, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import LayoutDetail from 'layout/LayoutDetail';
-import FormAddVehicles from './components/FormAddVehicles';
+import FormAddVehicle from './components/FormAddVehicle';
 
 export default function AddNewVehicles() {
   const { t } = useTranslation(['vehicles', 'translation']);
@@ -14,7 +14,7 @@ export default function AddNewVehicles() {
             {t(`translation:add_new`, { type: t('vehicles:vehicle').toLowerCase() })}
           </Typography>
           <Divider sx={{ margin: '16px 0' }} />
-          <FormAddVehicles />
+          <FormAddVehicle />
         </Box>
       </Box>
     </LayoutDetail>
