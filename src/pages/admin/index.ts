@@ -17,7 +17,6 @@ import Passengers from './Passenger/Passengers';
 import PaymentMethod from './PaymentMethod/PaymentMethod';
 import CreateMultiStopWay from './Routers/CreateMultiStopWay';
 import CreateOneWay from './Routers/CreateOneWay';
-import EditRouter from './Routers/EditRouter';
 import Routers from './Routers/Routers';
 import AddService from './ServicesSettings/AddService';
 import ServicesSettings from './ServicesSettings/ServicesSettings';
@@ -65,5 +64,4 @@ export {
   SubscriptionPayment,
   ContentManager,
   Routers,
-  EditRouter,
 };

@@ -3,11 +3,14 @@ import { get } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from 'components/Button/Button';
+import { FadeIn } from 'components/FadeIn/FadeIn';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
+import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { PlanDuration } from './@types/PlanDuration';
 import SubscriptionItem from './components/SubscriptionItem';
 import { planDurations } from './constants';
@@ -56,7 +59,7 @@ export default function SubscriptionPackage() {
                 planDuration={planDurationState}
                 subscriptionFeatures={subscription.subscriptionFeatures}
                 subscriptionType={subscription.subscriptionType}
-                currency={subscription.currency}
+                currency={getAppCurrencySymbol()}
                 price={price}
                 popular={subscription.active}
               />
@@ -67,27 +70,23 @@ export default function SubscriptionPackage() {
     );
   };
 
-  // FIXME: Loading screen
   if (statusGetSubscriptions === 'loading') {
-    return <h1>Loading...</h1>;
-  }
-
-  // FIXME: Retry screen
-  if (statusGetSubscriptions === 'failure') {
-    return <button onClick={() => dispatch(subscriptionsActions.getSubscriptionsRequest({}))}>Retry</button>;
+    return <LoadingScreen />;
   }
 
   return (
-    <LayoutDetail title={t('account:subscription')}>
-      <Box width="100%" display="flex" justifyContent="center">
-        <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
-          <Typography fontSize={20} fontWeight={700} textAlign="center">
-            {t('account:get_more_out_tbus')}
-          </Typography>
-          {renderTab()}
-          {renderPackages()}
+    <FadeIn>
+      <LayoutDetail title={t('account:subscription')}>
+        <Box width="100%" display="flex" justifyContent="center">
+          <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
+            <Typography fontSize={20} fontWeight={700} textAlign="center">
+              {t('account:get_more_out_tbus')}
+            </Typography>
+            {renderTab()}
+            {renderPackages()}
+          </Box>
         </Box>
-      </Box>
-    </LayoutDetail>
+      </LayoutDetail>
+    </FadeIn>
   );
 }

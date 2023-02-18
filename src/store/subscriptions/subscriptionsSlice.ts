@@ -18,7 +18,7 @@ const initialState: SubscriptionsState = {
 };
 
 const subscriptionsSlice = createSlice({
-  name: '@Subscription',
+  name: '@Subscriptions',
   initialState,
   reducers: {
     getSubscriptionsRequest: (state, _action: PayloadAction<GetSubscriptionsRequest>) => {

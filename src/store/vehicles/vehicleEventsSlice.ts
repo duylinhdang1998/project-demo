@@ -13,12 +13,12 @@ interface VehicleEventsManagerState {
   statusCreateVehicleEvent: Status;
   queueUpdateVehicleEvent: VehicleEvent['_id'][];
   queueDeleteVehicleEvent: VehicleEvent['_id'][];
-  vehicleEvents: VehicleEvent[];
   currentPage: number;
   totalPages: number;
   totalRows: number;
   currentSearcher: Searcher<VehicleEvent>;
   vehicleEvent: VehicleEvent | null;
+  vehicleEvents: VehicleEvent[];
 }
 
 const initialState: VehicleEventsManagerState = {
@@ -27,12 +27,12 @@ const initialState: VehicleEventsManagerState = {
   statusCreateVehicleEvent: 'idle',
   queueDeleteVehicleEvent: [],
   queueUpdateVehicleEvent: [],
-  vehicleEvents: [],
   currentPage: 0,
   totalPages: 0,
   totalRows: 0,
   currentSearcher: {},
   vehicleEvent: null,
+  vehicleEvents: [],
 };
 
 const vehicleEventsSlice = createSlice({
@@ -47,13 +47,14 @@ const vehicleEventsSlice = createSlice({
         statusGetVehicleEvents: 'loading',
         currentPage: page,
         currentSearcher: searcher,
+        vehicleEvents: [],
       };
     },
     getVehicleEventsSuccess: (state, action: PayloadAction<GetVehicleEventsSuccess>) => {
-      const { data, totalPages, totalRows, page, searcher } = action.payload;
+      const { vehicleEvents, totalPages, totalRows, page, searcher } = action.payload;
       return {
         ...state,
-        vehicleEvents: data,
+        vehicleEvents,
         totalPages,
         totalRows,
         statusGetVehicleEvents: 'success',
@@ -76,11 +77,11 @@ const vehicleEventsSlice = createSlice({
       };
     },
     getVehicleEventSuccess: (state, action: PayloadAction<GetVehicleEventSuccess>) => {
-      const { data } = action.payload;
+      const { vehicleEvent } = action.payload;
       return {
         ...state,
         statusGetVehicleEvent: 'success',
-        vehicleEvent: data,
+        vehicleEvent,
       };
     },
     getVehicleEventFailure: (state, _action: PayloadAction<GetVehicleEventFailure>) => {

@@ -108,7 +108,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'add-new-event',
+    path: ':vehicleId/update-event/:vehicleEventId',
     element: (
       <RequiredAuth role="admin">
         <Page.AddNewEvent />
@@ -116,7 +116,15 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'list-events',
+    path: ':vehicleId/add-new-event',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.AddNewEvent />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: ':vehicleId/list-events',
     element: (
       <RequiredAuth role="admin">
         <Page.ListEvents />
@@ -172,6 +180,22 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
+    path: '/admin/routers/update-oneway/:routerId',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.CreateOneWay />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: '/admin/routers/update-multi/:routerId',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.CreateMultiStopWay />
+      </RequiredAuth>
+    ),
+  },
+  {
     path: '/admin/routers',
     element: (
       <RequiredAuth role="admin">
@@ -192,14 +216,6 @@ export const AdminRoutes: RouteObject[] = [
     element: (
       <RequiredAuth role="admin">
         <Page.CreateMultiStopWay />
-      </RequiredAuth>
-    ),
-  },
-  {
-    path: '/admin/routers/edit/:id',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.EditRouter />
       </RequiredAuth>
     ),
   },

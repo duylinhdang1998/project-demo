@@ -6,7 +6,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import { FadeIn } from 'components/FadeIn/FadeIn';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -19,7 +21,7 @@ import { fieldsAddOffice1, fieldsAddOffice2, fieldsAddOffice3 } from './constant
 
 const fieldKeys: Array<keyof CreateOffice> = ['title', 'address', 'zipCode', 'country', 'city', 'phone', 'email'];
 
-type Values = Record<typeof fieldKeys[number], string>;
+type Values = Record<keyof CreateOffice, string>;
 
 export default function AddOfficeManager() {
   const toastClass = useToastStyle();
@@ -28,7 +30,7 @@ export default function AddOfficeManager() {
     control,
     formState: { errors },
     handleSubmit,
-    setValue,
+    resetField,
   } = useForm<Values>();
   const [openDialog, setOpenDialog] = useState(false);
   const dispatch = useAppDispatch();
@@ -43,8 +45,7 @@ export default function AddOfficeManager() {
         [key]: t('translation:error_required', { name: key }),
       };
     }, {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [t]);
 
   const isEditAction = useMemo(() => {
     return !!officeId;
@@ -119,11 +120,10 @@ export default function AddOfficeManager() {
 
   useEffect(() => {
     if (isEditAction && office && statusGetOffice === 'success') {
-      Object.keys(office).forEach(key => {
-        const key_ = key as keyof CreateOffice;
-        if (fieldKeys.includes(key_)) {
-          setValue(key_, office[key_]);
-        }
+      fieldKeys.forEach(key => {
+        resetField(key, {
+          defaultValue: office[key],
+        });
       });
     }
     if (isEditAction && !office && statusGetOffice === 'success') {
@@ -132,39 +132,41 @@ export default function AddOfficeManager() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusGetOffice, office, isEditAction]);
 
-  // FIXME: Retry screen
+  if (statusGetOffice === 'loading') {
+    return <LoadingScreen />;
+  }
 
   return (
-    <LayoutDetail
-      subTitle={t('account:offices_manager')}
-      title={isEditAction ? t('translation:edit_type', { type: t('account:office') }) : t('translation:create_new', { type: t('account:office') })}
-    >
-      <Box width="100%" display="flex" justifyContent="center">
-        <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
-          <Typography color="#0c1132" fontWeight={700}>
-            {isEditAction ? t('translation:edit_type', { type: t('account:office') }) : t('translation:create_new', { type: t('account:office') })}
-          </Typography>
-          <Divider sx={{ margin: '16px 0' }} />
-          <form onSubmitCapture={handleSubmit(onSubmit)}>
-            <FormVerticle errors={errors} messages={messages} fields={fieldsAddOffice1} control={control} filterKey="account" />
-            <FormVerticle errors={errors} messages={messages} fields={fieldsAddOffice2} control={control} grid filterKey="account" />
-            <FormVerticle errors={errors} messages={messages} fields={fieldsAddOffice3} control={control} filterKey="account" />
-            <ComboButton
-              isLoading={
-                isEditAction && officeId ? queueUpdateOffice.includes(officeId) || statusGetOffice === 'loading' : statusCreateOffice === 'loading'
-              }
-              onCancel={handleCancel}
-              onSave={handleSubmit(onSubmit)}
-            />
-          </form>
+    <FadeIn>
+      <LayoutDetail
+        subTitle={t('account:offices_manager')}
+        title={isEditAction ? t('translation:edit_type', { type: t('account:office') }) : t('translation:create_new', { type: t('account:office') })}
+      >
+        <Box width="100%" display="flex" justifyContent="center">
+          <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
+            <Typography color="#0c1132" fontWeight={700}>
+              {isEditAction ? t('translation:edit_type', { type: t('account:office') }) : t('translation:create_new', { type: t('account:office') })}
+            </Typography>
+            <Divider sx={{ margin: '16px 0' }} />
+            <form onSubmitCapture={handleSubmit(onSubmit)}>
+              <FormVerticle errors={errors} messages={messages} fields={fieldsAddOffice1} control={control} filterKey="account" />
+              <FormVerticle errors={errors} messages={messages} fields={fieldsAddOffice2} control={control} grid filterKey="account" />
+              <FormVerticle errors={errors} messages={messages} fields={fieldsAddOffice3} control={control} filterKey="account" />
+              <ComboButton
+                isLoading={isEditAction && officeId ? queueUpdateOffice.includes(officeId) : statusCreateOffice === 'loading'}
+                onCancel={handleCancel}
+                onSave={handleSubmit(onSubmit)}
+              />
+            </form>
+          </Box>
         </Box>
-      </Box>
-      <DialogConfirm
-        openDialog={openDialog}
-        title={t('translation:cancel_type', { type: t('account:office') })}
-        subTitle={t('translation:leave_page')}
-        onClose={handleClose}
-      />
-    </LayoutDetail>
+        <DialogConfirm
+          openDialog={openDialog}
+          title={t('translation:cancel_type', { type: t('account:office') })}
+          subTitle={t('translation:leave_page')}
+          onClose={handleClose}
+        />
+      </LayoutDetail>
+    </FadeIn>
   );
 }

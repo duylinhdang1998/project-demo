@@ -1,10 +1,11 @@
+import { Option as CheckboxGroupOption } from 'components/CheckboxGroup/CheckboxGroup';
 import { UploadImageResourceProps } from 'components/UploadImageResource/UploadImageResource';
 import { UploadPDFResourceProps } from 'components/UploadImageResource/UploadPDFResource';
 
 export interface Option {
   key?: string;
-  value: string;
-  label: string;
+  value?: string;
+  [key: string]: any;
 }
 
 export interface SimpleField {
@@ -26,12 +27,26 @@ export interface CheckboxField {
   showTime?: boolean;
   messageErr?: string;
   id?: string;
-  options: Option[];
+  options: CheckboxGroupOption[];
   label: string;
   onChange: (values: string[]) => void;
   values: string[];
 }
 
+export interface SelectField {
+  type: 'select2';
+  prefix?: string;
+  required?: boolean;
+  showTime?: boolean;
+  messageErr?: string;
+  id?: string;
+  options: CheckboxGroupOption[];
+  label: string;
+  onChange: (value: string) => void;
+  value: string;
+  onScrollEnd: () => void;
+  isLoading?: boolean;
+}
 export interface UploadImageResourceField {
   type: 'image_resource';
   prefix?: string;
@@ -58,4 +73,4 @@ export interface UploadPDFResourceField {
   multiple: UploadPDFResourceProps['multiple'];
   buttonText: string;
 }
-export type Field = SimpleField | UploadPDFResourceField | UploadImageResourceField | CheckboxField;
+export type Field = SimpleField | UploadPDFResourceField | UploadImageResourceField | CheckboxField | SelectField;

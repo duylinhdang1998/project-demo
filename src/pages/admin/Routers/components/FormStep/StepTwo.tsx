@@ -2,13 +2,15 @@ import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { Checkbox } from 'antd';
 import 'antd/lib/checkbox/style/css';
+import { isEmpty } from 'lodash';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuidv4 } from 'uuid';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { Field } from 'models/Field';
-import { StepCountProps } from './StepOne';
+import { anyToMoment } from 'utils/anyToMoment';
 
 const options = [
   { label: 'All days', value: 'all_days' },
@@ -22,28 +24,44 @@ const options = [
 ];
 
 const fields: Field[] = [
-  { id: uuidv4(), label: 'from_date', type: 'datetime' },
-  { id: uuidv4(), label: 'to_date', type: 'datetime' },
+  { id: uuidv4(), label: 'fromDate', type: 'datetime' },
+  { id: uuidv4(), label: 'toDate', type: 'datetime' },
 ];
 
-interface Values {
+export interface StepTwoValues {
   days: string[];
-  fromDate: string;
-  toDate: string;
+  fromDate: any; // moment
+  toDate: any; // moment
 }
 
-export default function StepTwo({ onCancel, onNextStep }: StepCountProps) {
-  const { control, handleSubmit } = useForm<Values>();
+interface StepTwoProps {
+  onCancel?: (values: StepTwoValues) => void;
+  onNextStep?: (values: StepTwoValues) => void;
+  values?: StepTwoValues;
+}
+export default function StepTwo({ onCancel, onNextStep, values }: StepTwoProps) {
+  const { control, handleSubmit, getValues, reset } = useForm<StepTwoValues>();
   const { t } = useTranslation(['routers', 'translation']);
 
-  const onSubmit = (values: Values) => {
-    console.log({ values });
-    onNextStep?.();
+  const onSubmit = (values: StepTwoValues) => {
+    onNextStep?.(values);
   };
+
+  useEffect(() => {
+    if (!!values && !isEmpty(values)) {
+      reset({
+        ...values,
+        fromDate: anyToMoment(values.fromDate),
+        toDate: anyToMoment(values.toDate),
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
+
   return (
     <Box my="24px">
       <Typography color="#0C1132" fontWeight={700} fontSize={14} mb="10px">
-        {t('days_of_the_week')}
+        {t('routers:days_of_the_week')}
       </Typography>
       <Controller
         control={control}
@@ -61,10 +79,15 @@ export default function StepTwo({ onCancel, onNextStep }: StepCountProps) {
         )}
       />
       <Typography color="#0C1132" fontWeight={700} fontSize={14} my="10px">
-        {t('active_period')}
+        {t('routers:active_period')}
       </Typography>
       <FormVerticle grid control={control} filterKey="routers" fields={fields} />
-      <ComboButton textOk={t('translation:next')} textCancel={t('translation:back')} onCancel={onCancel} onSave={handleSubmit(onSubmit)} />
+      <ComboButton
+        textOk={t('translation:next')}
+        textCancel={t('translation:back')}
+        onCancel={() => onCancel?.(getValues())}
+        onSave={handleSubmit(onSubmit)}
+      />
     </Box>
   );
 }

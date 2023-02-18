@@ -59,8 +59,8 @@ function TableVehicles() {
   const columns: ColumnsType<Vehicle> = useMemo(() => {
     return [
       {
-        key: 'vehicle',
-        dataIndex: 'vehicle',
+        key: 'brand', // Cột này sort theo key "brand"
+        dataIndex: 'brand',
         title: () => t('vehicles:vehicle'),
         align: 'center',
         render: (_, record) => (
@@ -134,7 +134,7 @@ function TableVehicles() {
                 label: 'add_new_event',
                 icon: <CirclePlusIcon />,
                 onClick: () => {
-                  navigate(isAgent ? '/agent/add-new-event' : '/admin/add-new-event');
+                  navigate(isAgent ? `/agent/${row._id}/add-new-event` : `/admin/${row._id}/add-new-event`);
                 },
               },
               {
@@ -142,7 +142,7 @@ function TableVehicles() {
                 label: 'show_event_lists',
                 icon: <BookmarkIcon />,
                 onClick: () => {
-                  navigate(isAgent ? '/agent/list-events' : '/admin/list-events');
+                  navigate(isAgent ? `/agent/${row._id}/list-events` : `/admin/${row._id}/list-events`);
                 },
               },
               {
@@ -165,8 +165,7 @@ function TableVehicles() {
         align: 'center',
       },
     ];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [classes.iconAlert, isAgent, navigate, t]);
 
   const renderDialogDelete = () => {
     if (openDeleteVehicle === null) {
@@ -237,9 +236,14 @@ function TableVehicles() {
         columns={columns}
         dataSource={vehicles}
         rowKey={r => r._id}
-        pagination={{ total: totalRows, pageSize: RECORDS_PER_PAGE, current: currentPage + 1 }}
+        pagination={{
+          total: totalRows,
+          showLessItems: true,
+          showSizeChanger: false,
+          pageSize: RECORDS_PER_PAGE,
+          current: currentPage + 1,
+        }}
         onChange={(pagination, _, sorter, extra) => {
-          // FIXME: Column "Vehicle" đang chưa biết sort theo trường nào. Nó kết hợp 3 field với nhau để tạo column này
           dispatch(
             vehiclesActions.getVehiclesRequest({
               page: getPaginationFromAntdTable({ pagination, extra }),

@@ -3,7 +3,6 @@ import { Box } from '@mui/system';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { v4 } from 'uuid';
@@ -12,6 +11,7 @@ import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { ImageResource } from 'services/models/Resource';
 import { Vehicle } from 'services/models/Vehicle';
 import { CreateVehicle } from 'services/Vehicle/Company/createVehicle';
@@ -35,7 +35,7 @@ export interface Values {
   services: Vehicle['services'];
 }
 
-function FormAddVehicles() {
+function FormAddVehicle() {
   const toastClass = useToastStyle();
 
   const {
@@ -43,7 +43,6 @@ function FormAddVehicles() {
     formState: { errors },
     handleSubmit,
     getValues,
-    setValue,
     resetField,
     reset,
   } = useForm<Values>({
@@ -59,7 +58,7 @@ function FormAddVehicles() {
 
   const [open, setOpen] = useState(false);
 
-  const { statusCreateVehicle, statusGetVehicle, queueUpdateVehicle, vehicle } = useSelector(selectVehicles);
+  const { statusCreateVehicle, statusGetVehicle, queueUpdateVehicle, vehicle } = useAppSelector(selectVehicles);
   const dispatch = useAppDispatch();
 
   const messages = useMemo(() => {
@@ -69,8 +68,7 @@ function FormAddVehicles() {
         [key]: t('translation:error_required', { name: key }),
       };
     }, {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [t]);
 
   const isEditAction = useMemo(() => {
     return !!vehicleId;
@@ -141,13 +139,10 @@ function FormAddVehicles() {
 
   useEffect(() => {
     if (isEditAction && vehicle && statusGetVehicle === 'success') {
-      Object.keys(vehicle).forEach(key => {
-        const key_ = key as keyof CreateVehicle;
-        if (fieldKeys.includes(key_)) {
-          resetField(key_, {
-            defaultValue: vehicle[key_],
-          });
-        }
+      fieldKeys.forEach(key => {
+        resetField(key, {
+          defaultValue: vehicle[key],
+        });
       });
     }
     if (isEditAction && !vehicle && statusGetVehicle === 'success') {
@@ -198,7 +193,9 @@ function FormAddVehicles() {
                 resources: getAttach(),
                 onChange: resources => {
                   const lastResource = resources[resources.length - 1];
-                  setValue('attach', lastResource ? lastResource : undefined);
+                  resetField('attach', {
+                    defaultValue: lastResource ? lastResource : undefined,
+                  });
                 },
               },
             ]}
@@ -244,4 +241,4 @@ function FormAddVehicles() {
   );
 }
 
-export default FormAddVehicles;
+export default FormAddVehicle;

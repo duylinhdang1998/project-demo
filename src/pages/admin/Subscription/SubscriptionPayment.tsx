@@ -8,12 +8,15 @@ import { useNavigate, useParams } from 'react-router';
 import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import CreditCard from 'components/CreditCard/CreditCard';
+import { FadeIn } from 'components/FadeIn/FadeIn';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { SubscriptionType } from 'services/models/Subscription';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
+import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { PlanDuration } from './@types/PlanDuration';
 import { planDurations } from './constants';
 import { getPlanDurationsFromSubscriptionPlans } from './utils/getPlanDurationsFromSubscriptionPlans';
@@ -114,67 +117,48 @@ const SubscriptionPayment: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusGetPlans]);
 
-  // FIXME: Loading screen
   if (statusGetPlans === 'loading') {
-    return <h1>Loading...</h1>;
-  }
-
-  // FIXME: Retry screen
-  if (statusGetPlans === 'failure') {
-    return (
-      <button
-        onClick={() => {
-          subscriptionsActions.getPlansRequest({
-            subscriptionType: subscriptionType as SubscriptionType,
-          });
-        }}
-      >
-        Retry
-      </button>
-    );
-  }
-
-  // FIXME: Empty screen
-  if (!plans.length) {
-    return <h1>WTF</h1>;
+    return <LoadingScreen />;
   }
 
   return (
-    <LayoutDetail title={t('account:subscription')}>
-      <CardWhite title={t('account:subcribe_to_tbus_plan')}>
-        <RadioGroup row name="subscription" value={planDurationState} onChange={handleChangePlanDuration}>
-          <Stack direction="row" alignItems="center" spacing={3} width="100%">
-            {planDurations.map(planDuration => {
-              const label = planDuration === 'monthly' ? t('account:monthly_payment') : t('account:yearly_payment');
-              const price = get(getPlanDurationsFromSubscriptionPlans(plans), planDuration).price;
-              return (
-                <label htmlFor={planDuration} className={classes.label}>
-                  <Box className={clxs(classes.item, { [classes.selected]: planDurationState === planDuration })}>
-                    <Box>
-                      <Typography fontSize={14} color="#858C93">
-                        {label}
-                      </Typography>
-                      <Typography fontSize="18px" fontWeight={700} color="#0C1132">
-                        {/* FIXME: Thiếu currency symbol */}
-                        {price}/{t(`translation:${planDuration}`)}
-                      </Typography>
+    <FadeIn>
+      <LayoutDetail title={t('account:subscription')}>
+        <CardWhite title={t('account:subcribe_to_tbus_plan')}>
+          <RadioGroup row name="subscription" value={planDurationState} onChange={handleChangePlanDuration}>
+            <Stack direction="row" alignItems="center" spacing={3} width="100%">
+              {planDurations.map(planDuration => {
+                const label = planDuration === 'monthly' ? t('account:monthly_payment') : t('account:yearly_payment');
+                const price = get(getPlanDurationsFromSubscriptionPlans(plans), planDuration).price;
+                return (
+                  <label htmlFor={planDuration} className={classes.label}>
+                    <Box className={clxs(classes.item, { [classes.selected]: planDurationState === planDuration })}>
+                      <Box>
+                        <Typography fontSize={14} color="#858C93">
+                          {label}
+                        </Typography>
+                        <Typography fontSize="18px" fontWeight={700} color="#0C1132">
+                          {price}
+                          {getAppCurrencySymbol}/{t(`translation:${planDuration}`)}
+                        </Typography>
+                      </Box>
+                      <Radio value={planDuration} id={planDuration} />
                     </Box>
-                    <Radio value={planDuration} id={planDuration} />
-                  </Box>
-                </label>
-              );
-            })}
-          </Stack>
-        </RadioGroup>
-        <RadioGroup defaultValue="credit" name="method" onChange={handleChangeMethod} sx={{ marginTop: '24px' }}>
-          <FormControlLabel value="paypal" control={<Radio />} label="Paypal" sx={{ width: '140px' }} />
-          {method === 'paypal' && renderPaypalValue()}
-          <FormControlLabel value="credit" control={<Radio />} label="Credit Card" sx={{ width: '140px' }} />
-          {renderCreditValue()}
-          <FormControlLabel value="stripe" control={<Radio />} label="Stripe" sx={{ width: '140px' }} />
-        </RadioGroup>
-      </CardWhite>
-    </LayoutDetail>
+                  </label>
+                );
+              })}
+            </Stack>
+          </RadioGroup>
+          <RadioGroup defaultValue="credit" name="method" onChange={handleChangeMethod} sx={{ marginTop: '24px' }}>
+            <FormControlLabel value="paypal" control={<Radio />} label="Paypal" sx={{ width: '140px' }} />
+            {method === 'paypal' && renderPaypalValue()}
+            <FormControlLabel value="credit" control={<Radio />} label="Credit Card" sx={{ width: '140px' }} />
+            {renderCreditValue()}
+            <FormControlLabel value="stripe" control={<Radio />} label="Stripe" sx={{ width: '140px' }} />
+          </RadioGroup>
+        </CardWhite>
+      </LayoutDetail>
+    </FadeIn>
   );
 };
 

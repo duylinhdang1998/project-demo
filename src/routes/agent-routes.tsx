@@ -92,7 +92,15 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'add-new-event',
+    path: ':vehicleId/update-event/:vehicleEventId',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.AddNewEvent />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: ':vehicleId/add-new-event',
     element: (
       <RequiredAuth role="agent">
         <Page.AddNewEvent />
@@ -100,7 +108,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'list-events',
+    path: ':vehicleId/list-events',
     element: (
       <RequiredAuth role="agent">
         <Page.ListEvents />

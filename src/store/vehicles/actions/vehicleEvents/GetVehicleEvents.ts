@@ -1,10 +1,10 @@
-import { VehicleEvent } from 'services/models/Vehicle';
+import { Vehicle, VehicleEvent } from 'services/models/Vehicle';
 import { GetVehicleEvents } from 'services/Vehicle/Company/getVehicleEvents';
 
 export type GetVehicleEventsRequest = GetVehicleEvents & {};
 
 export interface GetVehicleEventsSuccess {
-  data: VehicleEvent[];
+  vehicleEvents: VehicleEvent[];
   totalPages: number;
   totalRows: number;
   page: GetVehicleEvents['page'];

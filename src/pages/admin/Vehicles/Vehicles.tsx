@@ -12,7 +12,6 @@ import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { selectAuth } from 'store/auth/selectors';
-import { selectVehicles } from 'store/vehicles/selectors';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 import TableVehicles from './components/TableVehicles';
 import { fieldsSearch } from './constants';
@@ -25,7 +24,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface Values {
-  vehicles: string;
+  vehicle: string;
   registrationId: string;
   routeId: string;
 }
@@ -37,14 +36,13 @@ export default function Vehicles() {
   const matches = useMediaQuery('(min-width:1200px)');
 
   const { userInfo } = useAppSelector(selectAuth);
-  const { statusGetVehicles } = useAppSelector(selectVehicles);
   const dispatch = useAppDispatch();
 
   const isAgent = userInfo?.role === 'agent';
 
   const { control, handleSubmit } = useForm<Values>({
     defaultValues: {
-      vehicles: '',
+      vehicle: '',
       registrationId: '',
       routeId: '',
     },
@@ -62,6 +60,7 @@ export default function Vehicles() {
         sorter: {},
         searcher: {
           registrationId: values.registrationId,
+          brand: values.vehicle,
         },
       }),
     );
@@ -77,25 +76,6 @@ export default function Vehicles() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // FIXME: Retry screen
-  if (statusGetVehicles === 'failure') {
-    return (
-      <button
-        onClick={() => {
-          dispatch(
-            vehiclesActions.getVehiclesRequest({
-              page: 0,
-              searcher: {},
-              sorter: {},
-            }),
-          );
-        }}
-      >
-        Retry
-      </button>
-    );
-  }
 
   return (
     <Box>
