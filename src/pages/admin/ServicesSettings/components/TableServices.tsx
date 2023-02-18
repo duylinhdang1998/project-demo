@@ -1,23 +1,61 @@
-import TvIcon from '@mui/icons-material/Tv';
 import { Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
+import AntTable from 'components/AntTable/AntTable';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { v4 as uuid } from 'uuid';
-import AntTable from 'components/AntTable/AntTable';
-import { Service } from 'models/Services';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { ImageResource } from 'services/models/Resource';
+import { ServiceSetting } from 'services/models/ServiceSetting';
+import { useDeleteService } from 'services/ServiceSetting/Company/getServiceSettings';
+import { useToastStyle } from 'theme/toastStyles';
+import { getUrlOfResource } from 'utils/getUrlOfResource';
 import ActionService from './ActionService';
 
-const dataSource: Service[] = [
-  { id: uuid(), icon: 'wifi', title: 'Wifi' },
-  { id: uuid(), icon: 'wifi', title: 'Waters' },
-  { id: uuid(), icon: 'wifi', title: 'Televisions' },
-];
+const useStyles = makeStyles(() => ({
+  icon: {
+    width: 30,
+    height: 30,
+    objectFit: 'contain',
+  },
+}));
+interface Props {
+  dataSource: ServiceSetting[];
+  onRefresh?: () => void;
+  loading?: boolean;
+}
 
-function TableServices() {
+function TableServices({ dataSource, onRefresh, loading }: Props) {
   const { t } = useTranslation('serviceSetting');
-  const columns: ColumnsType<Service> = [
+  const toastClass = useToastStyle();
+  const classes = useStyles();
+  const navigate = useNavigate();
+  const { run: deleteService } = useDeleteService({
+    onSuccess: data => {
+      if (data.code === 0) {
+        toast(<ToastCustom type="success" text={t('delete_service_success')} />, {
+          className: toastClass.toastSuccess,
+        });
+        onRefresh?.();
+      } else {
+        toast(<ToastCustom type="error" text={t('delete_service_error)')} />, {
+          className: toastClass.toastError,
+        });
+      }
+    },
+  });
+
+  const handleDelete = (item: ServiceSetting) => () => {
+    deleteService(item._id);
+  };
+
+  const handleEdit = (item: ServiceSetting) => () => {
+    navigate('/admin/services-settings/' + item._id);
+  };
+  const columns: ColumnsType<ServiceSetting> = [
     {
       key: 'title',
       dataIndex: 'title',
@@ -33,19 +71,27 @@ function TableServices() {
       key: 'icon',
       dataIndex: 'icon',
       title: () => t('service_icon'),
-      render: () => <TvIcon />,
+      render: (value: ImageResource) => <img src={getUrlOfResource(value)} className={classes.icon} />,
       align: 'center',
     },
     {
       key: 'action',
       title: () => t('service_action'),
-      render: () => <ActionService />,
+      render: (_, item) => <ActionService onDelete={handleDelete(item)} onEdit={handleEdit(item)} />,
       align: 'center',
     },
   ];
   return (
     <Box my="24px">
-      <AntTable columns={columns} dataSource={dataSource} rowKey={r => r.id} />
+      <AntTable
+        columns={columns}
+        dataSource={dataSource}
+        rowKey={row => row._id}
+        loading={loading}
+        pagination={{
+          pageSize: 10,
+        }}
+      />
     </Box>
   );
 }

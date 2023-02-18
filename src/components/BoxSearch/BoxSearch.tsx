@@ -3,9 +3,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment, InputBase, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import { memo, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useDebounce, useUpdateEffect } from 'ahooks';
 import Button from 'components/Button/Button';
+import { memo, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(() => ({
   container: {},
@@ -37,20 +38,11 @@ function BoxSearch({ addTextButton, searchValue, onAdd, onSearch }: BoxSearchPro
   const classes = useStyles();
   const matches = useMediaQuery('(min-width:1366px)');
   const [searchKey, setSearchKey] = useState(searchValue ?? '');
-  const timeoutRef = useRef<number | undefined>();
+  const debouncedValue = useDebounce(searchKey, { wait: 500 });
 
-  useEffect(() => {
-    clearTimeout(timeoutRef.current);
-    if (searchKey !== searchValue) {
-      timeoutRef.current = window.setTimeout(() => {
-        onSearch?.(searchKey);
-      }, 200);
-      return () => {
-        clearTimeout(timeoutRef.current);
-      };
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchKey]);
+  useUpdateEffect(() => {
+    onSearch?.(debouncedValue);
+  }, [debouncedValue]);
 
   useEffect(() => {
     setSearchKey(searchValue ?? '');

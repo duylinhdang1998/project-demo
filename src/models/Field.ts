@@ -2,7 +2,7 @@ import { UploadImageResourceProps } from 'components/UploadImageResource/UploadI
 import { UploadPDFResourceProps } from 'components/UploadImageResource/UploadPDFResource';
 
 export interface Option {
-  key: string;
+  key?: string;
   value: string;
   label: string;
 }

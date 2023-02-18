@@ -1,6 +1,6 @@
-import { RouteObject } from 'react-router-dom';
 import RequiredAuth from 'hocs/RequiredAuth';
 import * as Page from 'pages';
+import { RouteObject } from 'react-router-dom';
 
 export const AdminRoutes: RouteObject[] = [
   {
@@ -40,6 +40,14 @@ export const AdminRoutes: RouteObject[] = [
     element: (
       <RequiredAuth role="admin">
         <Page.ServicesSettings />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'services-settings/:id',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.AddService />
       </RequiredAuth>
     ),
   },

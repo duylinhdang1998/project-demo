@@ -1,11 +1,11 @@
 import { Box } from '@mui/material';
-import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import BoxSearch from 'components/BoxSearch/BoxSearch';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { officesManagerActions } from 'store/officesManager/officesManagerSlice';
 import { selectOfficesManager } from 'store/officesManager/selectors';
 import TableOfficesManager from './components/TableOfficesManager';

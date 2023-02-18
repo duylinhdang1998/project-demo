@@ -2,14 +2,15 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton, ListItemIcon, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
 import { memo, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
-import { useToastStyle } from 'theme/toastStyles';
 
-function ActionService() {
+interface Props {
+  onDelete?: () => void;
+  onEdit?: () => void;
+}
+
+function ActionService({ onDelete, onEdit }: Props) {
   const { t } = useTranslation('translation');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const toastClass = useToastStyle();
   const open = Boolean(anchorEl);
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -19,9 +20,7 @@ function ActionService() {
   };
 
   const handleDelete = () => {
-    toast(<ToastCustom type="success" text="Delete the service successfully!" />, {
-      className: toastClass.toastSuccess,
-    });
+    onDelete?.();
     handleClose();
   };
 
@@ -49,7 +48,7 @@ function ActionService() {
           style: {},
         }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={onEdit}>
           <ListItemIcon>
             <SvgIcon>
               <path

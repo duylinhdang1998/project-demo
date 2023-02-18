@@ -31,16 +31,7 @@ module.exports = {
     'react-hooks',
   ],
   rules: {
-    'import/order': [
-      'error',
-      {
-        alphabetize: {
-          order: 'asc',
-          caseInsensitive: true,
-        },
-        groups: ['external', 'builtin', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
-      },
-    ],
+    'import/order': 'off',
     '@typescript-eslint/no-unnecessary-type-assertion': 'off',
     '@typescript-eslint/prefer-reduce-type-parameter': 'off',
     '@typescript-eslint/lines-between-class-members': 'off',
