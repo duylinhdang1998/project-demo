@@ -8,8 +8,10 @@ import { toast } from 'react-toastify';
 import CardWhite from 'components/CardWhite/CardWhite';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import { FadeIn } from 'components/FadeIn/FadeIn';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -23,10 +25,9 @@ import { uploadPlugin } from './utils/ckeditorPlugins';
 type Values = Pick<Content, 'city' | 'email' | 'phone' | 'content' | 'footerText' | 'postalAddress' | 'zipCode'>;
 const fieldKeys: Array<keyof Values> = ['city', 'email', 'phone', 'content', 'footerText', 'postalAddress', 'zipCode'];
 
-// FIXME: Chưa lắp upload resource vì cần đọc docs ckeditor
 function ContentManager() {
   const { t } = useTranslation(['account', 'translation']);
-  const { control, getValues, handleSubmit, setValue } = useForm<Values>();
+  const { control, getValues, handleSubmit, resetField } = useForm<Values>();
   const toastClass = useToastStyle();
 
   const [open, setOpen] = useState(false);
@@ -63,80 +64,80 @@ function ContentManager() {
   useEffect(() => {
     if (content) {
       fieldKeys.forEach(key => {
-        setValue(key, content[key]);
+        resetField(key, {
+          defaultValue: content[key],
+        });
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content]);
 
-  // FIXME: Retry screen
-  if (statusGetContent === 'failure') {
-    return <button onClick={() => dispatch(contentManagerActions.getContentRequest({}))}>Retry</button>;
+  if (statusGetContent === 'loading') {
+    return <LoadingScreen />;
   }
 
   return (
-    <Box>
-      <HeaderLayout activeSideBarHeader={t('account:content_manager')} />
-      <Box p="24px">
-        <CardWhite title={t('account:content_manager')}>
-          <Typography fontWeight={700} color="#0C1132">
-            {t('account:content')}
-          </Typography>
-          <Box my="20px">
-            <CKEditor
-              config={{
-                extraPlugins: [
-                  // @ts-ignore
-                  uploadPlugin({
-                    onSuccess: () => {},
-                    onFailure: () => {
-                      toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
-                        className: toastClass.toastError,
-                      });
-                    },
-                  }),
-                ],
-              }}
-              onReady={editor => {
-                // FIXME: Liệu có lỗi với trường hợp nào đấy không?
-                editor.setData(getValues().content);
-              }}
-              editor={ClassicEditor}
-              onChange={(_, editor) => {
-                const data = editor.getData();
-                setValue('content', data);
-              }}
-            />
-          </Box>
-          <Divider sx={{ borderStyle: 'dashed' }} />
-          <Box my="20px">
-            <Typography fontWeight={700} color="#0C1132" my="10px">
-              {t('translation:sideBar')}
+    <FadeIn>
+      <Box>
+        <HeaderLayout activeSideBarHeader={t('account:content_manager')} />
+        <Box p="24px">
+          <CardWhite title={t('account:content_manager')}>
+            <Typography fontWeight={700} color="#0C1132">
+              {t('account:content')}
             </Typography>
-            <FormVerticle control={control} fields={sidebarFields} grid isGridHorizon filterKey="account" />
-          </Box>
-          <Divider sx={{ borderStyle: 'dashed' }} />
-          <Box my="20px">
-            <Typography fontWeight={700} color="#0C1132" my="10px">
-              {t('translation:footer')}
-            </Typography>
-            <FormVerticle control={control} fields={footerFields} filterKey="account" />
-          </Box>
-          <ComboButton
-            onSave={handleSubmit(onSubmit)}
-            isLoading={statusGetContent === 'loading' || statusUpdateContent === 'loading'}
-            onCancel={handleCancel}
-          />
-        </CardWhite>
-      </Box>
+            <Box my="20px">
+              <CKEditor
+                config={{
+                  extraPlugins: [
+                    // @ts-ignore
+                    uploadPlugin({
+                      onSuccess: () => {},
+                      onFailure: () => {
+                        toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+                          className: toastClass.toastError,
+                        });
+                      },
+                    }),
+                  ],
+                }}
+                onReady={editor => {
+                  editor.setData(getValues().content);
+                }}
+                editor={ClassicEditor}
+                onChange={(_, editor) => {
+                  const data = editor.getData();
+                  resetField('content', {
+                    defaultValue: data,
+                  });
+                }}
+              />
+            </Box>
+            <Divider sx={{ borderStyle: 'dashed' }} />
+            <Box my="20px">
+              <Typography fontWeight={700} color="#0C1132" my="10px">
+                {t('translation:sideBar')}
+              </Typography>
+              <FormVerticle control={control} fields={sidebarFields} grid isGridHorizon filterKey="account" />
+            </Box>
+            <Divider sx={{ borderStyle: 'dashed' }} />
+            <Box my="20px">
+              <Typography fontWeight={700} color="#0C1132" my="10px">
+                {t('translation:footer')}
+              </Typography>
+              <FormVerticle control={control} fields={footerFields} filterKey="account" />
+            </Box>
+            <ComboButton onSave={handleSubmit(onSubmit)} isLoading={statusUpdateContent === 'loading'} onCancel={handleCancel} />
+          </CardWhite>
+        </Box>
 
-      <DialogConfirm
-        openDialog={open}
-        title={t('translation:cancel_type', { type: t('account:content') })}
-        subTitle={t('translation:leave_page')}
-        onClose={handleClose}
-      />
-    </Box>
+        <DialogConfirm
+          openDialog={open}
+          title={t('translation:cancel_type', { type: t('account:content') })}
+          subTitle={t('translation:leave_page')}
+          onClose={handleClose}
+        />
+      </Box>
+    </FadeIn>
   );
 }
 

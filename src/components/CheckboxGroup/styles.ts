@@ -5,7 +5,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   label: {
     color: theme.palette.grey[200] + '!important',
     fontSize: '14px !important',
-    marginBottom: '4px',
+    margin: '4px !important',
     fontWeight: '400 !important',
     '&.MuiFormControlLabel-label': {
       fontSize: '14px !important',

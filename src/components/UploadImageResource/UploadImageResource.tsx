@@ -1,5 +1,5 @@
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Image } from 'antd';
 import Dragger from 'antd/lib/upload/Dragger';
@@ -167,7 +167,7 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
   const renderImage: ItemRender<FileItem> = (_originNode, antdFile) => {
     const file = antdFile as FileItem;
     if (file.status === 'uploading') {
-      return null;
+      return <CircularProgress />;
     }
     return (
       <Box width="100%" height="170px" position="relative">

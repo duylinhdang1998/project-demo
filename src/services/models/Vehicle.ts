@@ -1,4 +1,5 @@
 import { ImageResource, PDFResource } from './Resource';
+import { ServiceSetting } from './ServiceSetting';
 
 export interface Vehicle {
   _id: string;
@@ -8,7 +9,7 @@ export interface Vehicle {
   registrationId: string;
   ECOseats: number;
   VIPseats: number;
-  services: string[]; // FIXME: Chưa có model "Service"
+  services: Array<ServiceSetting['_id']>;
   merchandises: string[]; // FIXME: Chưa có model "Merchandise"
   attach: ImageResource;
   createdAt: string;
@@ -27,5 +28,6 @@ export interface VehicleEvent {
   attach: PDFResource;
   createdAt: string;
   updatedAt: string;
+  vehicle: Vehicle['_id'];
   __v: number;
 }

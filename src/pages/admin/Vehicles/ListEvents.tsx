@@ -1,23 +1,70 @@
-import { Divider, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { FadeIn } from 'components/FadeIn/FadeIn';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
-import ListContent from './components/ListContent';
+import { selectVehicleEvents, selectVehicles } from 'store/vehicles/selectors';
+import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
+import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
+import TableEvents from './components/TableEvents';
 
 export default function ListEvents() {
   const { t } = useTranslation(['vehicles', 'translation']);
+
+  const navigate = useNavigate();
+  const { vehicleId } = useParams();
+
+  const { statusGetVehicleEvents } = useAppSelector(selectVehicleEvents);
+  const { vehicle, statusGetVehicle } = useAppSelector(selectVehicles);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (vehicleId) {
+      dispatch(
+        vehicleEventsActions.getVehicleEventsRequest({
+          page: 0,
+          searcher: {},
+          sorter: {},
+          vehicleId,
+        }),
+      );
+      dispatch(
+        vehiclesActions.getVehicleRequest({
+          id: vehicleId,
+        }),
+      );
+    } else {
+      navigate('/404');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (statusGetVehicleEvents === 'loading' || statusGetVehicle === 'loading') {
+    return <LoadingScreen />;
+  }
+
+  if (statusGetVehicle === 'success' && !vehicle) {
+    return <Navigate to="/404" />;
+  }
+
   return (
-    <LayoutDetail subTitle={t('vehicles')} title={t('event_lists')}>
-      <Box display="flex" justifyContent="center" width="100%">
-        <Box padding="24px" sx={{ backgroundColor: '#fff' }} borderRadius="4px" width={{ xs: '100%', md: '80%' }}>
-          <Typography fontSize={16} fontWeight="700">
-            {/* FIXME: Có lẽ là truyền qua history state vì k có edit */}
-            Events list for vehicle DX727AM
-          </Typography>
-          <Divider sx={{ margin: '16px 0' }} />
-          <ListContent />
-        </Box>
-      </Box>
-    </LayoutDetail>
+    <FadeIn>
+      <LayoutDetail
+        variant="withTable"
+        subTitle={t('vehicles')}
+        title={t('event_lists')}
+        addNewItemButtonProps={{
+          onClick: () => {
+            navigate(`/admin/${vehicleId}/add-new-event`);
+          },
+          children: t('translation:create_new', { type: t('vehicles:event') }),
+        }}
+      >
+        <TableEvents />
+      </LayoutDetail>
+    </FadeIn>
   );
 }

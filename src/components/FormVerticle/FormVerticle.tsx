@@ -10,7 +10,7 @@ import { CheckboxGroup } from 'components/CheckboxGroup/CheckboxGroup';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
 import { UploadPDFResource } from 'components/UploadImageResource/UploadPDFResource';
-import { Field } from 'models/Field';
+import { Field, SelectField } from 'models/Field';
 import { useStyles } from './styles';
 export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
   fields?: Field[];
@@ -262,6 +262,43 @@ export default function FormVerticle<T extends FieldValues>({
             }}
           />
         );
+      case 'select2':
+        return (
+          <Controller
+            control={control}
+            name={i.label as Path<T>}
+            render={() => (
+              <Box>
+                <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                <Select
+                  className={!!error ? classes.inputError : ''}
+                  onChange={selected => {
+                    const selected_ = selected as SelectField['options'][number];
+                    i.onChange(selected_.value);
+                  }}
+                  onMenuScrollToTop={i.onScrollEnd}
+                  options={i.options}
+                  styles={customStyles}
+                  placeholder={t(`${i.label}`)}
+                  value={i.options.find(option => option.value === i.value)}
+                  isLoading={i.isLoading}
+                />
+                {!!error && (
+                  <Typography component="p" className={classes.error} fontSize={12}>
+                    {messageErr}
+                  </Typography>
+                )}
+              </Box>
+            )}
+            rules={{
+              required: {
+                value: i.required ?? false,
+                message: t('error_required', { name: i.label }),
+              },
+            }}
+          />
+        );
+
       case 'datetime':
         return (
           <Controller
@@ -270,7 +307,17 @@ export default function FormVerticle<T extends FieldValues>({
             render={({ field }) => (
               <Box>
                 <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                <DatePicker showTime={i.showTime} value={field.value as any} onChange={field.onChange} className={classes.datePicker} />
+                <DatePicker
+                  showTime={i.showTime}
+                  value={field.value as any}
+                  onChange={field.onChange}
+                  className={cx(classes.datePicker, !!error ? classes.inputError : '')}
+                />
+                {!!error && (
+                  <Typography component="p" className={classes.error} fontSize={12}>
+                    {messageErr}
+                  </Typography>
+                )}
               </Box>
             )}
             rules={{
@@ -289,7 +336,19 @@ export default function FormVerticle<T extends FieldValues>({
             render={({ field }) => (
               <Box>
                 <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                <Select {...selectProps} {...field} options={i.options} styles={customStyles} placeholder={t(`${i.label}`)} />
+                <Select
+                  {...selectProps}
+                  {...field}
+                  options={i.options}
+                  styles={customStyles}
+                  placeholder={t(`${i.label}`)}
+                  className={cx(classes.datePicker, selectProps?.className ?? '', !!error ? classes.inputError : '')}
+                />
+                {!!error && (
+                  <Typography component="p" className={classes.error} fontSize={12}>
+                    {messageErr}
+                  </Typography>
+                )}
               </Box>
             )}
             rules={{
@@ -311,7 +370,14 @@ export default function FormVerticle<T extends FieldValues>({
                   <InputLabel htmlFor={i.label} className={classes.label}>
                     {t(`${i.label}`)}
                   </InputLabel>
-                  <TextareaAutosize minRows={10} maxRows={10} id={i.label} {...field} placeholder={t(`${i.label}`)} className={classes.inputArea} />
+                  <TextareaAutosize
+                    minRows={10}
+                    maxRows={10}
+                    id={i.label}
+                    {...field}
+                    placeholder={t(`${i.label}`)}
+                    className={cx(classes.inputArea, !!error ? classes.inputError : '')}
+                  />
                   {!!error && (
                     <Typography component="p" className={classes.error} fontSize={12}>
                       {messageErr}

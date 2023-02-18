@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 import { VehicleEvent } from 'services/models/Vehicle';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
+import { momentToNumber } from 'utils/momentToNumber';
 
 interface ResponseSuccess {
   code: number;
@@ -15,13 +16,23 @@ interface ResponseFailure {
   message: string;
 }
 
-export type CreateVehicleEvent = Pick<VehicleEvent, 'attach' | 'description' | 'extraFees' | 'fuelFees' | 'reminderDate' | 'totalKilometers'>;
+export type CreateVehicleEvent = Pick<
+  VehicleEvent,
+  'attach' | 'description' | 'extraFees' | 'fuelFees' | 'reminderDate' | 'totalKilometers' | 'vehicle'
+>;
 
 export const createVehicleEvent = async (data: CreateVehicleEvent) => {
   const response: AxiosResponse<ResponseSuccess | ResponseFailure> = await fetchAPI.request({
     method: 'POST',
     url: '/v1.0/company/vehicle-events',
-    data,
+    data: {
+      ...data,
+      reminderDate: momentToNumber(data.reminderDate),
+      extraFees: Number(data.extraFees),
+      fuelFees: Number(data.fuelFees),
+      totalKilometers: Number(data.totalKilometers),
+      attach: data.attach?._id,
+    },
   });
   if (response.data.code === 0) {
     return response.data as ResponseSuccess;

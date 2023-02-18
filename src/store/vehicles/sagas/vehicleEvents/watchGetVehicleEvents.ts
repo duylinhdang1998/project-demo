@@ -3,14 +3,20 @@ import { getVehicleEvents } from 'services/Vehicle/Company/getVehicleEvents';
 import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
 
 function* handleGetVehicleEvents({ payload }: ReturnType<typeof vehicleEventsActions.getVehicleEventsRequest>) {
-  const { page, sorter, searcher } = payload;
+  const { page, sorter, searcher, vehicleId } = payload;
   try {
-    const { data }: SagaReturnType<typeof getVehicleEvents> = yield retry(3, 1000, getVehicleEvents, { page, sorter, searcher });
+    const getVehicleEventsResponse: SagaReturnType<typeof getVehicleEvents> = yield retry(3, 1000, getVehicleEvents, {
+      page,
+      sorter,
+      searcher,
+      vehicleId,
+    });
+
     yield put(
       vehicleEventsActions.getVehicleEventsSuccess({
-        data: data.hits,
-        totalRows: data.pagination.totalRows,
-        totalPages: data.pagination.totalPages,
+        vehicleEvents: getVehicleEventsResponse.data.hits,
+        totalRows: getVehicleEventsResponse.data.pagination.totalRows,
+        totalPages: getVehicleEventsResponse.data.pagination.totalPages,
         page,
         searcher,
       }),

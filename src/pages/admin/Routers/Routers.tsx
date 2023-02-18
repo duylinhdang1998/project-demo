@@ -16,7 +16,7 @@ import TableRoutes from './components/TableRoutes';
 import { fieldsSearch } from './constants';
 
 interface Values {
-  vehicles_name: string;
+  vehicle: string;
   departures_point: string;
   arrival_points: string;
   departure_time: string;
@@ -42,7 +42,7 @@ export default function Routers() {
     defaultValues: {
       arrival_points: '',
       departures_point: '',
-      vehicles_name: '',
+      vehicle: '',
       departure_time: '',
     },
   });

@@ -11,13 +11,13 @@ export const getSorterParamsFromAntdTable = <T extends AnyObject>({ sorter }: Ge
         if (sortComlumn.columnKey) {
           return {
             ...res,
-            [sortComlumn.columnKey]: sortComlumn.order === 'ascend' ? 'acs' : 'desc',
+            [sortComlumn.columnKey]: sortComlumn.order === 'ascend' ? 'asc' : 'desc',
           } as Sorter<T>;
         }
         return res;
       }, {})
     : sorter.columnKey
-    ? ({ [sorter.columnKey]: sorter.order === 'ascend' ? 'acs' : 'desc' } as Sorter<T>)
+    ? ({ [sorter.columnKey]: sorter.order === 'ascend' ? 'asc' : 'desc' } as Sorter<T>)
     : {};
   return sorter_;
 };
