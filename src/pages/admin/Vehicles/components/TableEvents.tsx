@@ -144,8 +144,7 @@ function TableEvents() {
         width: 150,
       },
     ];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [classes.downloadButton, navigate, t, vehicleId]);
 
   const renderDialogDelete = () => {
     if (openDeleteVehicleEvent === null) {
@@ -220,7 +219,13 @@ function TableEvents() {
         columns={columns}
         dataSource={vehicleEvents}
         rowKey={r => r._id}
-        pagination={{ total: totalRows, pageSize: RECORDS_PER_PAGE, current: currentPage + 1 }}
+        pagination={{
+          total: totalRows,
+          showLessItems: true,
+          showSizeChanger: false,
+          pageSize: RECORDS_PER_PAGE,
+          current: currentPage + 1,
+        }}
         onChange={(pagination, _, sorter, extra) => {
           dispatch(
             vehicleEventsActions.getVehicleEventsRequest({

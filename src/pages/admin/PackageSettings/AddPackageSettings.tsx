@@ -32,7 +32,7 @@ export default function AddPackageSettings() {
     control,
     formState: { errors },
     handleSubmit,
-    setValue,
+    resetField,
   } = useForm<Values>();
   const [openDialog, setOpenDialog] = useState(false);
   const dispatch = useAppDispatch();
@@ -47,8 +47,7 @@ export default function AddPackageSettings() {
         [key]: t('translation:error_required', { name: key }),
       };
     }, {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [t]);
 
   const isEditAction = useMemo(() => {
     return !!packageSettingId;
@@ -112,7 +111,9 @@ export default function AddPackageSettings() {
   useEffect(() => {
     if (isEditAction && packageSetting && statusGetPackageSetting === 'success') {
       fieldKeys.forEach(key => {
-        setValue(key, packageSetting[key]);
+        resetField(key, {
+          defaultValue: packageSetting[key],
+        });
       });
     }
     if (isEditAction && !packageSetting && statusGetPackageSetting === 'success') {

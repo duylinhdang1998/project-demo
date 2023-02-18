@@ -27,7 +27,7 @@ const fieldKeys: Array<keyof Values> = ['city', 'email', 'phone', 'content', 'fo
 
 function ContentManager() {
   const { t } = useTranslation(['account', 'translation']);
-  const { control, getValues, handleSubmit, setValue } = useForm<Values>();
+  const { control, getValues, handleSubmit, resetField } = useForm<Values>();
   const toastClass = useToastStyle();
 
   const [open, setOpen] = useState(false);
@@ -64,7 +64,9 @@ function ContentManager() {
   useEffect(() => {
     if (content) {
       fieldKeys.forEach(key => {
-        setValue(key, content[key]);
+        resetField(key, {
+          defaultValue: content[key],
+        });
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -104,7 +106,9 @@ function ContentManager() {
                 editor={ClassicEditor}
                 onChange={(_, editor) => {
                   const data = editor.getData();
-                  setValue('content', data);
+                  resetField('content', {
+                    defaultValue: data,
+                  });
                 }}
               />
             </Box>

@@ -25,12 +25,14 @@ export interface Route {
   vehicle: Vehicle['_id'];
   departurePoint: string;
   departureTime: string;
-  dayActives: string[]; // FIXME: Liệu có là ENUM
+  dayActives: string[]; // FIXME: Liệu có phải là ENUM
+  startPeriod: null | string;
+  endPeriod: null | string;
   stopPoints: [StopPoint] | StopPoint[];
-  particularDays: []; // FIXME: Chưa có type
-  dayoffs: []; // FIXME: Chưa có type
+  particularDays: [];
+  dayoffs: number[];
   routeType: RouteType;
   createdAt: string;
   updatedAt: string;
-  __v: 0;
+  __v: number;
 }

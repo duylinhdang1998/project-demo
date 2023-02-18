@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios';
-import { isMoment } from 'moment';
 import { VehicleEvent } from 'services/models/Vehicle';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
+import { momentToNumber } from 'utils/momentToNumber';
 
 interface ResponseSuccess {
   code: number;
@@ -22,13 +22,12 @@ export type CreateVehicleEvent = Pick<
 >;
 
 export const createVehicleEvent = async (data: CreateVehicleEvent) => {
-  const reminderDate = isMoment(data.reminderDate) ? data.reminderDate.valueOf() : data.reminderDate;
   const response: AxiosResponse<ResponseSuccess | ResponseFailure> = await fetchAPI.request({
     method: 'POST',
     url: '/v1.0/company/vehicle-events',
     data: {
       ...data,
-      reminderDate,
+      reminderDate: momentToNumber(data.reminderDate),
       extraFees: Number(data.extraFees),
       fuelFees: Number(data.fuelFees),
       totalKilometers: Number(data.totalKilometers),

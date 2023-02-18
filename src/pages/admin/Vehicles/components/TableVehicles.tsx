@@ -165,8 +165,7 @@ function TableVehicles() {
         align: 'center',
       },
     ];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [classes.iconAlert, isAgent, navigate, t]);
 
   const renderDialogDelete = () => {
     if (openDeleteVehicle === null) {
@@ -237,7 +236,13 @@ function TableVehicles() {
         columns={columns}
         dataSource={vehicles}
         rowKey={r => r._id}
-        pagination={{ total: totalRows, pageSize: RECORDS_PER_PAGE, current: currentPage + 1 }}
+        pagination={{
+          total: totalRows,
+          showLessItems: true,
+          showSizeChanger: false,
+          pageSize: RECORDS_PER_PAGE,
+          current: currentPage + 1,
+        }}
         onChange={(pagination, _, sorter, extra) => {
           dispatch(
             vehiclesActions.getVehiclesRequest({

@@ -48,7 +48,6 @@ export default function EditPriceTrip({ control, errors, isMulti, index }: EditP
       { title: t('routers:student'), value: 'Student' },
       { title: t('routers:children'), value: 'Children' },
     ];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t]);
 
   const inputs = useMemo(() => {
@@ -56,7 +55,6 @@ export default function EditPriceTrip({ control, errors, isMulti, index }: EditP
       { title: t('routers:eco'), value: 'eco' },
       { title: t('routers:vip'), value: 'vip' },
     ];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t]);
 
   // "errors" k đổi nên k đc recreate => K useMemo
@@ -90,7 +88,12 @@ export default function EditPriceTrip({ control, errors, isMulti, index }: EditP
                         control={control}
                         name={getNameInput(`${input.value}${row.value}`)}
                         render={({ field }) => (
-                          <InputBase {...field} type="number" className={cx(classes.input, !!error ? classes.inputError : '')} />
+                          <InputBase
+                            {...field}
+                            type="number"
+                            placeholder={t('routers:input_price')}
+                            className={cx(classes.input, !!error ? classes.inputError : '')}
+                          />
                         )}
                         rules={{
                           required: {

@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface Values {
-  vehicles: string;
+  vehicle: string;
   registrationId: string;
   routeId: string;
 }
@@ -42,7 +42,7 @@ export default function Vehicles() {
 
   const { control, handleSubmit } = useForm<Values>({
     defaultValues: {
-      vehicles: '',
+      vehicle: '',
       registrationId: '',
       routeId: '',
     },
@@ -60,6 +60,7 @@ export default function Vehicles() {
         sorter: {},
         searcher: {
           registrationId: values.registrationId,
+          brand: values.vehicle,
         },
       }),
     );

@@ -8,8 +8,7 @@ const departureOptions: Option[] = [
 ];
 
 export const fieldsSearch: Field[] = [
-  // FIXME: BE trả về select hay fix cứng?
-  { id: uuidv4(), label: 'vehicle', options: departureOptions, type: 'select' },
+  { id: uuidv4(), label: 'vehicle', type: 'text' },
   { id: uuidv4(), label: 'registrationId', type: 'text' },
   { id: uuidv4(), label: 'routeId', type: 'text' },
 ];

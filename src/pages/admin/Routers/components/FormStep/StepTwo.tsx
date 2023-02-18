@@ -3,7 +3,6 @@ import { Box } from '@mui/system';
 import { Checkbox } from 'antd';
 import 'antd/lib/checkbox/style/css';
 import { isEmpty } from 'lodash';
-import moment, { isMoment } from 'moment';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { Field } from 'models/Field';
+import { anyToMoment } from 'utils/anyToMoment';
 
 const options = [
   { label: 'All days', value: 'all_days' },
@@ -51,8 +51,8 @@ export default function StepTwo({ onCancel, onNextStep, values }: StepTwoProps) 
     if (!!values && !isEmpty(values)) {
       reset({
         ...values,
-        fromDate: isMoment(values.fromDate) ? values.fromDate : moment(values.fromDate),
-        toDate: isMoment(values.toDate) ? values.fromDate : moment(values.fromDate),
+        fromDate: anyToMoment(values.fromDate),
+        toDate: anyToMoment(values.toDate),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

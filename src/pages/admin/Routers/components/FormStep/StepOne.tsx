@@ -1,6 +1,5 @@
 import { Box, Typography } from '@mui/material';
 import { isEmpty } from 'lodash';
-import moment, { isMoment } from 'moment';
 import { useEffect, useMemo, useState } from 'react';
 import { Control, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +8,7 @@ import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { Option } from 'models/Field';
 import { Route } from 'services/models/Route';
+import { anyToMoment } from 'utils/anyToMoment';
 import { fieldsStepOne } from '../../constants';
 import EditPriceTrip from '../EditPriceTrip';
 import { SelectVehicle } from './components/SelectVehicle';
@@ -76,8 +76,8 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values }: StepOn
     if (!!values && !isEmpty(values)) {
       reset({
         ...values,
-        arrivalTime: isMoment(values.arrivalTime) ? values.arrivalTime : moment(values.arrivalTime),
-        departureTime: isMoment(values.departureTime) ? values.departureTime : moment(values.departureTime),
+        arrivalTime: anyToMoment(values.arrivalTime),
+        departureTime: anyToMoment(values.departureTime),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

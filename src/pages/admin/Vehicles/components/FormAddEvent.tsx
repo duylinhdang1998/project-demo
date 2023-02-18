@@ -20,6 +20,7 @@ import { selectAuth } from 'store/auth/selectors';
 import { selectVehicleEvents } from 'store/vehicles/selectors';
 import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
 import { useToastStyle } from 'theme/toastStyles';
+import { anyToMoment } from 'utils/anyToMoment';
 import { fieldsAddEvent } from '../constants';
 
 const fieldKeys: Array<keyof Omit<CreateVehicleEvent, 'vehicle'>> = [
@@ -53,7 +54,6 @@ function FormAddEvent() {
     formState: { errors },
     handleSubmit,
     getValues,
-    setValue,
     resetField,
   } = useForm<Values>();
 
@@ -70,8 +70,7 @@ function FormAddEvent() {
         [key]: t('translation:error_required', { name: key }),
       };
     }, {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [t]);
 
   const isEditAction = useMemo(() => {
     return !!vehicleEventId;
@@ -151,7 +150,7 @@ function FormAddEvent() {
       fieldKeys.forEach(key => {
         const key_ = key;
         resetField(key_ === 'attach' ? 'attach_document' : key_, {
-          defaultValue: key_ === 'reminderDate' ? moment(vehicleEvent[key_]) : vehicleEvent[key_],
+          defaultValue: key_ === 'reminderDate' ? anyToMoment(vehicleEvent[key_]) : vehicleEvent[key_],
         });
       });
     }
@@ -186,7 +185,9 @@ function FormAddEvent() {
               resources: getAttach(),
               onChange: resources => {
                 const lastResource = resources[resources.length - 1];
-                setValue('attach_document', lastResource ? lastResource : undefined);
+                resetField('attach_document', {
+                  defaultValue: lastResource ? lastResource : undefined,
+                });
               },
               buttonText: t('vehicles:attach_document'),
             },

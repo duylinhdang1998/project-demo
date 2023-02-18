@@ -43,7 +43,6 @@ function FormAddVehicle() {
     formState: { errors },
     handleSubmit,
     getValues,
-    setValue,
     resetField,
     reset,
   } = useForm<Values>({
@@ -69,8 +68,7 @@ function FormAddVehicle() {
         [key]: t('translation:error_required', { name: key }),
       };
     }, {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [t]);
 
   const isEditAction = useMemo(() => {
     return !!vehicleId;
@@ -195,7 +193,9 @@ function FormAddVehicle() {
                 resources: getAttach(),
                 onChange: resources => {
                   const lastResource = resources[resources.length - 1];
-                  setValue('attach', lastResource ? lastResource : undefined);
+                  resetField('attach', {
+                    defaultValue: lastResource ? lastResource : undefined,
+                  });
                 },
               },
             ]}

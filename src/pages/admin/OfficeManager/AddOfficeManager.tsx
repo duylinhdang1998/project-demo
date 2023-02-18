@@ -30,7 +30,7 @@ export default function AddOfficeManager() {
     control,
     formState: { errors },
     handleSubmit,
-    setValue,
+    resetField,
   } = useForm<Values>();
   const [openDialog, setOpenDialog] = useState(false);
   const dispatch = useAppDispatch();
@@ -45,8 +45,7 @@ export default function AddOfficeManager() {
         [key]: t('translation:error_required', { name: key }),
       };
     }, {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [t]);
 
   const isEditAction = useMemo(() => {
     return !!officeId;
@@ -122,7 +121,9 @@ export default function AddOfficeManager() {
   useEffect(() => {
     if (isEditAction && office && statusGetOffice === 'success') {
       fieldKeys.forEach(key => {
-        setValue(key, office[key]);
+        resetField(key, {
+          defaultValue: office[key],
+        });
       });
     }
     if (isEditAction && !office && statusGetOffice === 'success') {

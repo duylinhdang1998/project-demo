@@ -4,7 +4,6 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import { isEmpty } from 'lodash';
-import moment, { isMoment } from 'moment';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +17,7 @@ import FormVerticle from 'components/FormVerticle/FormVerticle';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { Option } from 'models/Field';
 import { Route } from 'services/models/Route';
+import { anyToMoment } from 'utils/anyToMoment';
 import { departureOptions, fieldsStepMulti } from '../../constants';
 import EditPriceTrip from '../EditPriceTrip';
 import { SelectVehicle } from './components/SelectVehicle';
@@ -143,10 +143,10 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values }
     if (!!values && !isEmpty(values)) {
       reset({
         ...values,
-        departureTime: isMoment(values.departureTime) ? values.departureTime : moment(values.departureTime),
+        departureTime: anyToMoment(values.departureTime),
         stops: values.stops.map(stop => ({
           ...stop,
-          stop_time: isMoment(stop.stop_time) ? stop.stop_time : moment(stop.stop_time),
+          stop_time: anyToMoment(stop.stop_time),
         })),
       });
     }

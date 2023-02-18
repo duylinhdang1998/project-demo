@@ -181,8 +181,7 @@ function TableRoutes() {
         width: 80,
       },
     ];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [navigate, t]);
 
   useEffect(() => {
     dispatch(

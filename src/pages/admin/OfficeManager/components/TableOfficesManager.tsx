@@ -210,7 +210,13 @@ function TableOfficesManager() {
         columns={columns}
         dataSource={offices}
         rowKey={r => r._id}
-        pagination={{ total: totalRows, pageSize: RECORDS_PER_PAGE, current: currentPage + 1 }}
+        pagination={{
+          total: totalRows,
+          showLessItems: true,
+          showSizeChanger: false,
+          pageSize: RECORDS_PER_PAGE,
+          current: currentPage + 1,
+        }}
         onChange={(pagination, _, sorter, extra) => {
           dispatch(
             officesManagerActions.getOfficesRequest({

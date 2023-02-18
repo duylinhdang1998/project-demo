@@ -82,8 +82,8 @@ export default function StepForm({ isMulti, route, isEditAction }: StepFormProps
       }
       setStepTwoValues({
         days: route.dayActives,
-        fromDate: Date.now(),
-        toDate: Date.now(),
+        fromDate: route.startPeriod,
+        toDate: route.endPeriod,
       });
       setStepThreeValues({});
     }

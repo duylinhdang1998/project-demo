@@ -33,5 +33,6 @@
   "prices": "prices",
   "route_created": "Add new route successfully!",
   "route_updated": "Update route successfully!",
-  "route_deleted": "Delete route successfully!"
+  "route_deleted": "Delete route successfully!",
+  "input_price": "Input price"
 }
