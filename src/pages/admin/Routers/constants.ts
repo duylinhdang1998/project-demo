@@ -8,22 +8,20 @@ export const departureOptions: Option[] = [
 ];
 
 export const fieldsSearch: Field[] = [
-  { id: uuidv4(), label: 'departures_point', options: departureOptions, type: 'select' },
-  { id: uuidv4(), label: 'arrival_points', options: departureOptions, type: 'select' },
-  { id: uuidv4(), label: 'departure_time', type: 'datetime' },
-  { id: uuidv4(), label: 'vehicles_name', type: 'select', placeholder: 'vehicles_name', options: departureOptions },
+  { id: uuidv4(), label: 'departurePoint', options: departureOptions, type: 'select' },
+  { id: uuidv4(), label: 'arrivalPoint', options: departureOptions, type: 'select' },
+  { id: uuidv4(), label: 'departureTime', type: 'datetime' },
+  { id: uuidv4(), label: 'vehicle', type: 'select', placeholder: 'vehicle', options: departureOptions },
 ];
 
 export const fieldsStepOne: Field[] = [
-  { id: uuidv4(), label: 'vehicles_name', type: 'select', placeholder: 'vehicles_name', options: departureOptions },
-  { id: uuidv4(), label: 'departures_point', options: departureOptions, type: 'select' },
-  { id: uuidv4(), label: 'arrival_points', options: departureOptions, type: 'select' },
-  { id: uuidv4(), label: 'departure_time', type: 'datetime', showTime: true },
-  { id: uuidv4(), label: 'arrival_time', type: 'datetime', showTime: true },
+  { id: uuidv4(), label: 'departurePoint', options: departureOptions, type: 'select', required: true },
+  { id: uuidv4(), label: 'departureTime', type: 'datetime', showTime: true, required: true },
+  { id: uuidv4(), label: 'arrivalPoint', options: departureOptions, type: 'select', required: true },
+  { id: uuidv4(), label: 'arrivalTime', type: 'datetime', showTime: true, required: true },
 ];
 
 export const fieldsStepMulti: Field[] = [
-  { id: uuidv4(), label: 'vehicles_name', type: 'select', placeholder: 'vehicles_name', options: departureOptions },
-  { id: uuidv4(), label: 'departures_point', options: departureOptions, type: 'select' },
-  { id: uuidv4(), label: 'departure_time', type: 'datetime', showTime: true },
+  { id: uuidv4(), label: 'departurePoint', options: departureOptions, type: 'select', required: true },
+  { id: uuidv4(), label: 'departureTime', type: 'datetime', showTime: true, required: true },
 ];

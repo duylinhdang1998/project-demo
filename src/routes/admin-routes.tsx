@@ -172,6 +172,22 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
+    path: '/admin/routers/update-oneway/:routerId',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.CreateOneWay />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: '/admin/routers/update-multi/:routerId',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.CreateMultiStopWay />
+      </RequiredAuth>
+    ),
+  },
+  {
     path: '/admin/routers',
     element: (
       <RequiredAuth role="admin">
@@ -192,14 +208,6 @@ export const AdminRoutes: RouteObject[] = [
     element: (
       <RequiredAuth role="admin">
         <Page.CreateMultiStopWay />
-      </RequiredAuth>
-    ),
-  },
-  {
-    path: '/admin/routers/edit/:id',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.EditRouter />
       </RequiredAuth>
     ),
   },

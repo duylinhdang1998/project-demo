@@ -5,9 +5,13 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import enUS from 'date-fns/locale/en-US';
+import { isEmpty } from 'lodash';
+import { useEffect, useState } from 'react';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
+import { useTranslation } from 'react-i18next';
+import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
+import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { StepCountProps } from './StepOne';
 import './styles.scss';
 
 const locales = {
@@ -35,8 +39,35 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function StepThird(_: StepCountProps) {
+export interface StepThreeValues {}
+
+interface StepThreeProps {
+  values?: StepThreeValues;
+  onCancel?: (values: StepThreeValues) => void;
+  onSave?: (values: StepThreeValues) => void;
+  isEdit?: boolean;
+  isLoading?: boolean;
+}
+
+// FIXME: FORM này để làm gì?
+export default function StepThree({ values, onCancel, onSave, isEdit, isLoading }: StepThreeProps) {
+  const { t } = useTranslation(['routers', 'translation']);
   const classes = useStyles();
+
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => setOpen(false);
+  const handleCancel = () => {
+    setOpen(true);
+    onCancel?.({});
+  };
+
+  useEffect(() => {
+    if (!!values && !isEmpty(values)) {
+      console.log('SET FORM VALUE');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
 
   return (
     <Box my="24px">
@@ -98,6 +129,21 @@ export default function StepThird(_: StepCountProps) {
         onSelectSlot={event => {
           console.log('select lot', event);
         }}
+      />
+      <ComboButton
+        isLoading={isLoading}
+        textOk={t('translation:save')}
+        textCancel={t('translation:back')}
+        onCancel={handleCancel}
+        onSave={() => {
+          onSave?.({});
+        }}
+      />
+      <DialogConfirm
+        openDialog={open}
+        title={t('translation:cancel_type', { type: t(`routers:${isEdit ? 'edit_trip' : 'trip'}`).toLowerCase() })}
+        subTitle={t('translation:leave_page')}
+        onClose={handleClose}
       />
     </Box>
   );
