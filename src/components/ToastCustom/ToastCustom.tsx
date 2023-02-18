@@ -2,8 +2,9 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import { memo } from 'react';
 import CheckCircleIcon from 'assets/images/check-circle.svg';
+import { memo } from 'react';
+import './styles.css';
 
 const useStyles = makeStyles(() => ({
   root: {

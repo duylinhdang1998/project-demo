@@ -5,5 +5,11 @@
   "service_action": "Action",
   "icon": "Icon",
   "search_icon": "Search Icon...",
-  "service_settings": "Service settings"
+  "service_settings": "Service settings",
+  "add_new_service_success": "Add new service success",
+  "add_new_service_error": "Add new service failed",
+  "edit_service_success": "Edit service success",
+  "edit_service_error": "Edit service failed",
+  "delete_service_success": "Delete service success",
+  "delete_service_error": "Delete service failed"
 }

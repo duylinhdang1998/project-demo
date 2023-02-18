@@ -58,5 +58,7 @@
   "delete_record_message": "If you confirm the simple transaction you will not have a chance to undo it.",
   "edit_type": "Edit {{type}}",
   "monthly": "month",
-  "yearly": "year"
+  "yearly": "year",
+  "title": "Title",
+  "icon": "Icon"
 }

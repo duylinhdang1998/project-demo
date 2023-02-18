@@ -1,14 +1,19 @@
-import { Divider, InputBase, InputLabel, Typography } from '@mui/material';
+import { Divider, InputBase, InputLabel, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import Button from 'components/Button/Button';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import ListIcon from 'components/ListIcon/ListIcon';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
 import LayoutDetail from 'layout/LayoutDetail';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useAddService, useGetDetailService, useUpdateServiceSetting } from 'services/ServiceSetting/Company/getServiceSettings';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   label: {
     fontSize: '14px !important',
     color: '#45485E',
@@ -22,12 +27,100 @@ const useStyles = makeStyles(() => ({
     height: '40px !important',
     fontSize: '14px !important',
   },
+  error: {
+    marginTop: '8px !important',
+    color: theme.palette.error.main,
+  },
 }));
 
+export interface Values {
+  title: string;
+  icon: string;
+}
+
 export default function AddService() {
+  const params = useParams();
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    getValues,
+  } = useForm<Values>({
+    mode: 'all',
+  });
+
   const { t } = useTranslation(['serviceSetting', 'translation']);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const { run: addService, loading: addLoading } = useAddService({
+    onSuccess: data => {
+      if (data.code === 0) {
+        toast(<ToastCustom type="success" text={t('add_new_service_success')} />, {
+          className: 'toast-success',
+          autoClose: 2000,
+        });
+        navigate(-1);
+
+        reset({
+          title: '',
+          icon: '',
+        });
+      } else {
+        toast(<ToastCustom type="error" text={t('add_new_service_error')} />, {
+          className: 'toast-error',
+          autoClose: 2000,
+        });
+      }
+    },
+  });
+
+  const { run: getDetail, data: serviceDetails } = useGetDetailService();
+  const { run: updateService, loading: updateLoading } = useUpdateServiceSetting({
+    onSuccess: data => {
+      if (data.code === 0) {
+        toast(<ToastCustom type="success" text={t('edit_service_success')} />, {
+          className: 'toast-success',
+          autoClose: 2000,
+        });
+        navigate(-1);
+      } else {
+        toast(<ToastCustom type="error" text={t('edit_service_error')} />, {
+          className: 'toast-error',
+          autoClose: 2000,
+        });
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (!!params.id) {
+      getDetail(params.id);
+    }
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [params]);
+
+  useEffect(() => {
+    if (!!serviceDetails) {
+      reset({
+        title: serviceDetails.data.title,
+        icon: serviceDetails.data.icon._id,
+      });
+    }
+  }, [serviceDetails]);
+
+  const onSave = (values: Values) => {
+    if (!params.id) {
+      addService({
+        title: values.title,
+        icon: values.icon,
+      });
+      return;
+    }
+    updateService(params.id, { title: values.title, icon: values.icon });
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -38,16 +131,45 @@ export default function AddService() {
       <Box width="100%" display="flex" justifyContent="center">
         <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
           <Typography color="#0c1132" fontWeight={700}>
-            {t('translation:add_new', { type: t('translation:service') })}
+            {t(!params.id ? 'translation:add_new' : 'translation:edit_type', { type: t('translation:service') })}
           </Typography>
           <Divider sx={{ margin: '16px 0' }} />
           <Box>
             <InputLabel htmlFor="title" className={classes.label}>
               {t('service_title')}
             </InputLabel>
-            <InputBase placeholder={t('service_title')} id="title" className={classes.inputSearch} fullWidth />
+            <Controller
+              control={control}
+              name="title"
+              defaultValue=""
+              rules={{
+                required: {
+                  value: true,
+                  message: t('translation:error_required', { name: t('translation:title') }),
+                },
+              }}
+              render={({ field }) => <InputBase {...field} placeholder={t('service_title')} id="title" className={classes.inputSearch} fullWidth />}
+            />
+            {!!errors['title'] && (
+              <Typography component="p" className={classes.error} fontSize={12}>
+                {errors['title']?.message}
+              </Typography>
+            )}
           </Box>
-          <ListIcon />
+          <ListIcon
+            props={{
+              control,
+              name: 'icon',
+              rules: {
+                required: {
+                  value: true,
+                  message: t('translation:error_required', { name: t('translation:icon') }),
+                },
+              },
+            }}
+            defaultIcon={getValues('icon')}
+            isEdit={!!params.id}
+          />
           <Box display="flex" justifyContent="flex-end" marginTop="24px">
             <Button
               variant="outlined"
@@ -65,6 +187,8 @@ export default function AddService() {
                 margin: '0 8px',
                 width: 120,
               }}
+              loading={!!params.id ? updateLoading : addLoading}
+              onClick={handleSubmit(onSave)}
               variant="contained"
               backgroundButton="#1aa6ee"
             >
