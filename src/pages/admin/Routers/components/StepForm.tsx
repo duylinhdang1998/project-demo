@@ -55,7 +55,10 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
+<<<<<<< HEAD
   // FIXME: Chưa có api update nên chưa lắp chức năng "Edit"
+=======
+>>>>>>> lắp khung chức năng cho form tai page router
   const handleSubmitStep1ForOneStopTrip = (formValues: StepOneValuesForOneStopTrip) => {
     dispatch(
       routesActions.createOneStopTripRequest({
@@ -82,9 +85,12 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
           vehicle: formValues.vehicle,
         },
         onSuccess() {
+<<<<<<< HEAD
           toast(<ToastCustom type="success" text={t('routers:route_created')} />, {
             className: toastClass.toastSuccess,
           });
+=======
+>>>>>>> lắp khung chức năng cho form tai page router
           nextStep();
         },
         onFailure() {
@@ -95,8 +101,11 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
       }),
     );
   };
+<<<<<<< HEAD
 
   // FIXME: Chưa có api update nên chưa lắp chức năng "Edit"
+=======
+>>>>>>> lắp khung chức năng cho form tai page router
   const handleSubmitStep1ForMultipleStopTrip = (formValues: StepOneValuesForMultipleStopTrip) => {
     dispatch(
       routesActions.createMultipleStopTripRequest({
@@ -121,9 +130,12 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
           vehicle: formValues.vehicle,
         },
         onSuccess() {
+<<<<<<< HEAD
           toast(<ToastCustom type="success" text={t('routers:route_created')} />, {
             className: toastClass.toastSuccess,
           });
+=======
+>>>>>>> lắp khung chức năng cho form tai page router
           nextStep();
         },
         onFailure() {
@@ -146,9 +158,12 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
             startPeriod: momentToNumber(formValues.fromDate),
           },
           onSuccess() {
+<<<<<<< HEAD
             toast(<ToastCustom type="success" text={t('routers:route_updated')} />, {
               className: toastClass.toastSuccess,
             });
+=======
+>>>>>>> lắp khung chức năng cho form tai page router
             nextStep();
           },
           onFailure() {

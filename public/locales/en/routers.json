@@ -35,6 +35,10 @@
   "route_updated": "Update route successfully!",
   "route_deleted": "Delete route successfully!",
   "input_price": "Input price",
+<<<<<<< HEAD
   "edit_ticket_prices": "Edit ticket prices",
   "quantity_addresses": "{{ quantity }} addresses"
+=======
+  "edit_ticket_prices": "Edit ticket prices"
+>>>>>>> lắp khung chức năng cho form tai page router
 }
