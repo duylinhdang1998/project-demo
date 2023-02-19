@@ -3,14 +3,14 @@ import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
 import cx from 'classnames';
-import { Controller, FieldErrors, FieldValues, Path, UseControllerProps } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import Select, { Props as SelectProps } from 'react-select';
 import { CheckboxGroup } from 'components/CheckboxGroup/CheckboxGroup';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
 import { UploadPDFResource } from 'components/UploadImageResource/UploadPDFResource';
 import { Field, SelectField } from 'models/Field';
+import { Controller, FieldErrors, FieldValues, Path, UseControllerProps } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import Select, { Props as SelectProps } from 'react-select';
 import { useStyles } from './styles';
 export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
   fields?: Field[];
