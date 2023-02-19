@@ -1,7 +1,9 @@
 {
   "address": "Address",
   "title": "Title",
-  "zipCode": "Zipcode",
+  "zipCode": "Zip code",
   "city": "City",
-  "country": "Country"
+  "country": "Country",
+  "destinations": "Destinations",
+  "destination": "Destination"
 }

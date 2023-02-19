@@ -1,10 +1,10 @@
 import { Divider, Drawer, List, Toolbar, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import { Outlet } from 'react-router-dom';
 import logoTbus from 'assets/images/logo-tbus.png';
 import CustomLink from 'components/CustomLink/CustomLink';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { Link, Outlet } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
 import { sidebars, sidebarsAgent } from './sidebar';
 
@@ -36,7 +36,9 @@ export default function Layout() {
   const drawer = (
     <Box>
       <Toolbar>
-        <img src={logoTbus} className={classes.img} alt="" />
+        <Link to={userInfo?.role === 'admin' ? '/admin' : '/agent'}>
+          <img src={logoTbus} className={classes.img} alt="" />
+        </Link>
       </Toolbar>
       <Divider light variant="middle" sx={{ borderColor: '#053A55' }} />
       <List>

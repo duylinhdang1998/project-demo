@@ -53,7 +53,7 @@ function TableServices({ dataSource, onRefresh, loading }: Props) {
   };
 
   const handleEdit = (item: ServiceSetting) => () => {
-    navigate('/admin/services-settings/' + item._id);
+    navigate('/admin/services-settings/' + item._id + '/edit');
   };
   const columns: ColumnsType<ServiceSetting> = [
     {

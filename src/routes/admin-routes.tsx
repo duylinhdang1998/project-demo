@@ -44,7 +44,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'services-settings/:id',
+    path: 'services-settings/:id/edit',
     element: (
       <RequiredAuth role="admin">
         <Page.AddService />
@@ -168,6 +168,14 @@ export const AdminRoutes: RouteObject[] = [
     element: (
       <RequiredAuth role="admin">
         <Page.Destinations />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'destination/:id/edit',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.AddNewDestinations />
       </RequiredAuth>
     ),
   },
