@@ -153,7 +153,7 @@ export default function AddOfficeManager() {
               <FormVerticle errors={errors} messages={messages} fields={fieldsAddOffice2} control={control} grid filterKey="account" />
               <FormVerticle errors={errors} messages={messages} fields={fieldsAddOffice3} control={control} filterKey="account" />
               <ComboButton
-                isLoading={isEditAction && officeId ? queueUpdateOffice.includes(officeId) : statusCreateOffice === 'loading'}
+                isSaving={isEditAction && officeId ? queueUpdateOffice.includes(officeId) : statusCreateOffice === 'loading'}
                 onCancel={handleCancel}
                 onSave={handleSubmit(onSubmit)}
               />

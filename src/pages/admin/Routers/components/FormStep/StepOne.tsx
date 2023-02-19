@@ -13,14 +13,14 @@ import { fieldsStepOne } from '../../constants';
 import EditPriceTrip from '../EditPriceTrip';
 import { SelectVehicle } from './components/SelectVehicle';
 
-const fieldKeys: Array<keyof Route | string> = ['vehicle', 'departurePoint', 'arrivalPoint', 'departureTime', 'arrivalTime'];
+const fieldKeys: Array<keyof Route | string> = ['vehicle', 'departurePoint', 'arrivalPoint', 'departureTime', 'arrivalDuration'];
 
-export interface StepOneValuesForTripOneway {
+export interface StepOneValuesForOneStopTrip {
   vehicle: string;
   departurePoint: Option;
   arrivalPoint: Option;
   departureTime: any; // moment
-  arrivalTime: any; // moment
+  arrivalDuration: number;
   ecoAdult: number;
   vipAdult: number;
   ecoStudent: number;
@@ -30,13 +30,14 @@ export interface StepOneValuesForTripOneway {
 }
 
 export interface StepOneProps {
-  onNextStep?: (values: StepOneValuesForTripOneway) => void;
-  onCancel?: (values: StepOneValuesForTripOneway) => void;
+  onNextStep?: (values: StepOneValuesForOneStopTrip) => void;
+  onCancel?: (values: StepOneValuesForOneStopTrip) => void;
   isEdit?: boolean;
-  values?: StepOneValuesForTripOneway;
+  values?: StepOneValuesForOneStopTrip;
+  isLoading?: boolean;
 }
 
-export default function StepOne({ onNextStep, onCancel, isEdit, values }: StepOneProps) {
+export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoading }: StepOneProps) {
   const { t } = useTranslation(['routers', 'translation']);
   const {
     control,
@@ -45,7 +46,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values }: StepOn
     getValues,
     resetField,
     reset,
-  } = useForm<StepOneValuesForTripOneway>();
+  } = useForm<StepOneValuesForOneStopTrip>();
 
   const [open, setOpen] = useState(false);
 
@@ -59,7 +60,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values }: StepOn
     onCancel?.(getValues());
   };
 
-  const handleSave = (values: StepOneValuesForTripOneway) => {
+  const handleSave = (values: StepOneValuesForOneStopTrip) => {
     onNextStep?.(values);
   };
 
@@ -76,8 +77,8 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values }: StepOn
     if (!!values && !isEmpty(values)) {
       reset({
         ...values,
-        arrivalTime: anyToMoment(values.arrivalTime),
-        departureTime: anyToMoment(values.departureTime),
+        arrivalDuration: values.arrivalDuration,
+        departureTime: anyToMoment({ value: values.departureTime }),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,7 +109,12 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values }: StepOn
         {t('routers:config_prices_per_passenger')}
       </Typography>
       <EditPriceTrip errors={errors} control={control as unknown as Control} />
-      <ComboButton textOk={isEdit ? t('translation:save') : t('translation:next')} onCancel={handleCancel} onSave={handleSubmit(handleSave)} />
+      <ComboButton
+        isSaving={isLoading}
+        textOk={isEdit ? t('translation:save') : t('translation:next')}
+        onCancel={handleCancel}
+        onSave={handleSubmit(handleSave)}
+      />
       <DialogConfirm
         openDialog={open}
         title={t('translation:cancel_type', { type: t(`routers:${isEdit ? 'edit_trip' : 'trip'}`).toLowerCase() })}

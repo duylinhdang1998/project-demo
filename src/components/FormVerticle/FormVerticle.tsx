@@ -308,10 +308,12 @@ export default function FormVerticle<T extends FieldValues>({
               <Box>
                 <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
                 <DatePicker
+                  picker={i.picker}
                   showTime={i.showTime}
                   value={field.value as any}
                   onChange={field.onChange}
                   className={cx(classes.datePicker, !!error ? classes.inputError : '')}
+                  format={i.format}
                 />
                 {!!error && (
                   <Typography component="p" className={classes.error} fontSize={12}>

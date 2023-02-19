@@ -2,13 +2,22 @@ import { Box, Divider, Step, StepLabel, Stepper, Typography } from '@mui/materia
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { Route } from 'services/models/Route';
 import { selectRoutes } from 'store/routes/selectors';
 import { departureOptions } from '../constants';
-import StepOne, { StepOneValuesForTripOneway } from './FormStep/StepOne';
-import StepOneMultiple, { StepOneValuesForTripMultiway } from './FormStep/StepOneMultiple';
-import StepThree, { StepThreeValues } from './FormStep/StepThree';
-import StepTwo, { StepTwoValues } from './FormStep/StepTwo';
+import StepOne, { StepOneValuesForOneStopTrip } from './FormStep/StepOne';
+import StepOneMultiple, { StepOneValuesForMultipleStopTrip } from './FormStep/StepOneMultiple';
+import StepThree from './FormStep/StepThree';
+import StepTwo, { ALL_DAYS_OPTION_VALUE, StepTwoValues } from './FormStep/StepTwo';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { routesActions } from 'store/routes/routesSlice';
+import { toast } from 'react-toastify';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { useToastStyle } from 'theme/toastStyles';
+import { useTranslation } from 'react-i18next';
+import { momentToNumber } from 'utils/momentToNumber';
+import { momentToString } from 'utils/momentToString';
+import { anyToMoment } from 'utils/anyToMoment';
+import { Route } from 'services/models/Route';
 
 const steps = ['Step 1', 'Step 2', 'Step 3'];
 
@@ -21,18 +30,19 @@ const useStyles = makeStyles(() => ({
 interface StepFormProps {
   isMulti?: boolean;
   isEditAction?: boolean;
-  route?: Route;
 }
 
-export default function StepForm({ isMulti, route, isEditAction }: StepFormProps) {
+export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
   const [activeStep, setActiveStep] = useState(0);
-  const [stepOneValues, setStepOneValues] = useState<StepOneValuesForTripOneway | StepOneValuesForTripMultiway | undefined>(undefined);
+  const [stepOneValues, setStepOneValues] = useState<StepOneValuesForOneStopTrip | StepOneValuesForMultipleStopTrip | undefined>(undefined);
   const [stepTwoValues, setStepTwoValues] = useState<StepTwoValues | undefined>(undefined);
-  const [stepThreeValues, setStepThreeValues] = useState<StepThreeValues | undefined>(undefined);
 
+  const { t } = useTranslation(['translation']);
   const classes = useStyles();
+  const toastClass = useToastStyle();
 
-  const { statusCreateRoute, queueUpdateRoute } = useAppSelector(selectRoutes);
+  const { statusCreateRoute, statusUpdateRoute, statusUpdateDayActive, route } = useAppSelector(selectRoutes);
+  const dispatch = useAppDispatch();
 
   const nextStep = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -45,17 +55,111 @@ export default function StepForm({ isMulti, route, isEditAction }: StepFormProps
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
+  const handleSubmitStep1ForOneStopTrip = (formValues: StepOneValuesForOneStopTrip) => {
+    dispatch(
+      routesActions.createOneStopTripRequest({
+        data: {
+          departurePoint: formValues.departurePoint.value as string,
+          departureTime: momentToString(formValues.departureTime, 'HH:mm'),
+          routeType: 'ONE_TRIP',
+          stopPoints: [
+            {
+              durationTime: Number(formValues.arrivalDuration),
+              stopPoint: formValues.arrivalPoint.value as string,
+              ECOPrices: [
+                { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
+                { passengerType: 'CHILD', price: Number(formValues.ecoChildren) },
+                { passengerType: 'STUDENT', price: Number(formValues.ecoStudent) },
+              ],
+              VIPPrices: [
+                { passengerType: 'ADULT', price: formValues.vipAdult },
+                { passengerType: 'CHILD', price: formValues.vipChildren },
+                { passengerType: 'STUDENT', price: formValues.vipStudent },
+              ],
+            },
+          ],
+          vehicle: formValues.vehicle,
+        },
+        onSuccess() {
+          nextStep();
+        },
+        onFailure() {
+          toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+            className: toastClass.toastError,
+          });
+        },
+      }),
+    );
+  };
+  const handleSubmitStep1ForMultipleStopTrip = (formValues: StepOneValuesForMultipleStopTrip) => {
+    dispatch(
+      routesActions.createMultipleStopTripRequest({
+        data: {
+          departurePoint: formValues.departurePoint.value as string,
+          departureTime: momentToString(formValues.departureTime, 'HH:mm'),
+          routeType: 'MULTI_STOP',
+          stopPoints: formValues.stops.map(stop => ({
+            durationTime: Number(stop.duration),
+            stopPoint: stop.stop_point.value as string,
+            ECOPrices: [
+              { passengerType: 'ADULT', price: stop.ecoAdult },
+              { passengerType: 'CHILD', price: stop.ecoChildren },
+              { passengerType: 'STUDENT', price: stop.ecoStudent },
+            ],
+            VIPPrices: [
+              { passengerType: 'ADULT', price: stop.vipAdult },
+              { passengerType: 'CHILD', price: stop.vipChildren },
+              { passengerType: 'STUDENT', price: stop.vipStudent },
+            ],
+          })),
+          vehicle: formValues.vehicle,
+        },
+        onSuccess() {
+          nextStep();
+        },
+        onFailure() {
+          toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+            className: toastClass.toastError,
+          });
+        },
+      }),
+    );
+  };
+
+  const handleSubmitStep2 = (formValues: StepTwoValues) => {
+    if (route) {
+      dispatch(
+        routesActions.updateActiveDaysRequest({
+          data: {
+            routeCode: route?.routeCode,
+            dayActives: formValues.days.filter(item => item !== ALL_DAYS_OPTION_VALUE) as Route['dayActives'],
+            endPeriod: momentToNumber(formValues.toDate),
+            startPeriod: momentToNumber(formValues.fromDate),
+          },
+          onSuccess() {
+            nextStep();
+          },
+          onFailure() {
+            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+              className: toastClass.toastError,
+            });
+          },
+        }),
+      );
+    }
+  };
+
+  // Set state values từng step
   useEffect(() => {
-    if (isEditAction && route) {
-      // FIXME: Set state values từng step
+    if (route) {
       if (isMulti) {
         setStepOneValues({
           vehicle: route.vehicle,
           departurePoint: departureOptions.find(option => option.value === route.departurePoint),
-          departureTime: route.departureTime,
+          departureTime: anyToMoment({ value: route.departureTime, format: 'HH:mm' }),
           stops: route.stopPoints.map(stopPointValue => ({
             stop_point: departureOptions.find(option => option.value === stopPointValue.stopPoint),
-            stop_time: stopPointValue.durationTime,
+            duration: Number(stopPointValue.durationTime),
             ecoAdult: stopPointValue.ECOPrices.ADULT,
             ecoChildren: stopPointValue.ECOPrices.CHILD,
             ecoStudent: stopPointValue.ECOPrices.STUDENT,
@@ -63,31 +167,30 @@ export default function StepForm({ isMulti, route, isEditAction }: StepFormProps
             vipChildren: stopPointValue.VIPPrices.CHILD,
             vipStudent: stopPointValue.VIPPrices.STUDENT,
           })),
-        } as StepOneValuesForTripMultiway);
+        } as StepOneValuesForMultipleStopTrip);
       } else {
         const stopPointValue = route.stopPoints[0];
         setStepOneValues({
           vehicle: route.vehicle,
           departurePoint: departureOptions.find(option => option.value === route.departurePoint),
-          departureTime: route.departureTime,
+          departureTime: anyToMoment({ value: route.departureTime, format: 'HH:mm' }),
           arrivalPoint: departureOptions.find(option => option.value === stopPointValue.stopPoint),
-          arrivalTime: stopPointValue.durationTime,
+          arrivalDuration: stopPointValue.durationTime,
           ecoAdult: stopPointValue.ECOPrices.ADULT,
           ecoChildren: stopPointValue.ECOPrices.CHILD,
           ecoStudent: stopPointValue.ECOPrices.STUDENT,
           vipAdult: stopPointValue.VIPPrices.ADULT,
           vipChildren: stopPointValue.VIPPrices.CHILD,
           vipStudent: stopPointValue.VIPPrices.STUDENT,
-        } as StepOneValuesForTripOneway);
+        } as StepOneValuesForOneStopTrip);
       }
       setStepTwoValues({
         days: route.dayActives,
-        fromDate: route.startPeriod,
-        toDate: route.endPeriod,
+        fromDate: anyToMoment({ value: route.startPeriod }),
+        toDate: anyToMoment({ value: route.endPeriod }),
       });
-      setStepThreeValues({});
     }
-  }, [isEditAction, isMulti, route]);
+  }, [isMulti, route]);
 
   const renderStepContent = () => {
     switch (activeStep) {
@@ -95,63 +198,46 @@ export default function StepForm({ isMulti, route, isEditAction }: StepFormProps
         if (isMulti) {
           return (
             <StepOneMultiple
-              values={stepOneValues as Exclude<typeof stepOneValues, StepOneValuesForTripOneway>}
+              isEdit={isEditAction}
+              isLoading={statusCreateRoute === 'loading' || statusUpdateRoute === 'loading'}
+              values={stepOneValues as Exclude<typeof stepOneValues, StepOneValuesForOneStopTrip>}
               onCancel={values => {
                 setStepOneValues(values);
                 backStep();
               }}
-              onNextStep={values => {
-                setStepOneValues(values);
-                nextStep();
-              }}
+              onNextStep={handleSubmitStep1ForMultipleStopTrip}
             />
           );
         }
         return (
           <StepOne
-            values={stepOneValues as Exclude<typeof stepOneValues, StepOneValuesForTripMultiway>}
+            isEdit={isEditAction}
+            isLoading={statusCreateRoute === 'loading' || statusUpdateRoute === 'loading'}
+            values={stepOneValues as Exclude<typeof stepOneValues, StepOneValuesForMultipleStopTrip>}
             onCancel={values => {
               setStepOneValues(values);
               backStep();
             }}
-            onNextStep={values => {
-              setStepOneValues(values);
-              nextStep();
-            }}
+            onNextStep={handleSubmitStep1ForOneStopTrip}
           />
         );
       case 1:
         return (
           <StepTwo
+            isLoading={!!route && statusUpdateDayActive === 'loading'}
             values={stepTwoValues}
             onCancel={values => {
               setStepTwoValues(values);
               backStep();
             }}
-            onNextStep={values => {
-              setStepTwoValues(values);
-              nextStep();
-            }}
+            onNextStep={handleSubmitStep2}
           />
         );
       case 2:
-        return (
-          <StepThree
-            values={stepThreeValues}
-            onCancel={values => {
-              setStepThreeValues(values);
-              backStep();
-            }}
-            isLoading={statusCreateRoute === 'loading' || (route && queueUpdateRoute.includes(route?._id))}
-            onSave={values => {
-              console.log('SAVE', {
-                stepOneValues,
-                stepTwoValues,
-                stepThreeValues: values,
-              });
-            }}
-          />
-        );
+        if (route) {
+          return <StepThree isEdit={isEditAction} onCancel={backStep} />;
+        }
+        return null;
       default:
         return null;
     }

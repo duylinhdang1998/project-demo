@@ -150,7 +150,7 @@ function FormAddEvent() {
       fieldKeys.forEach(key => {
         const key_ = key;
         resetField(key_ === 'attach' ? 'attach_document' : key_, {
-          defaultValue: key_ === 'reminderDate' ? anyToMoment(vehicleEvent[key_]) : vehicleEvent[key_],
+          defaultValue: key_ === 'reminderDate' ? anyToMoment({ value: vehicleEvent[key_] }) : vehicleEvent[key_],
         });
       });
     }
@@ -197,7 +197,7 @@ function FormAddEvent() {
       </Box>
       <ComboButton
         onCancel={handleCancel}
-        isLoading={
+        isSaving={
           statusCreateVehicleEvent === 'loading' || statusGetVehicleEvent === 'loading' || queueUpdateVehicleEvent.includes(vehicleEventId ?? '')
         }
         onSave={handleSubmit(onSubmit)}

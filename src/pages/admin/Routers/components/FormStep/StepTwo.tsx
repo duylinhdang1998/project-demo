@@ -12,15 +12,17 @@ import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { Field } from 'models/Field';
 import { anyToMoment } from 'utils/anyToMoment';
 
+export const ALL_DAYS_OPTION_VALUE = 'all_days';
+
 const options = [
-  { label: 'All days', value: 'all_days' },
-  { label: 'Monday', value: 'monday' },
-  { label: 'Tuesday', value: 'tuesday' },
-  { label: 'Wednesday', value: 'wednesday' },
-  { label: 'Thursday', value: 'thursday' },
-  { label: 'Friday', value: 'friday' },
-  { label: 'Saturday', value: 'saturday' },
-  { label: 'Sunday', value: 'sunday' },
+  { label: 'All days', value: ALL_DAYS_OPTION_VALUE },
+  { label: 'Monday', value: 'Monday' },
+  { label: 'Tuesday', value: 'Tuesday' },
+  { label: 'Wednesday', value: 'Wednesday' },
+  { label: 'Thursday', value: 'Thursday' },
+  { label: 'Friday', value: 'Friday' },
+  { label: 'Saturday', value: 'Saturday' },
+  { label: 'Sunday', value: 'Sunday' },
 ];
 
 const fields: Field[] = [
@@ -38,9 +40,10 @@ interface StepTwoProps {
   onCancel?: (values: StepTwoValues) => void;
   onNextStep?: (values: StepTwoValues) => void;
   values?: StepTwoValues;
+  isLoading?: boolean;
 }
-export default function StepTwo({ onCancel, onNextStep, values }: StepTwoProps) {
-  const { control, handleSubmit, getValues, reset } = useForm<StepTwoValues>();
+export default function StepTwo({ onCancel, onNextStep, values, isLoading }: StepTwoProps) {
+  const { control, handleSubmit, getValues, reset, resetField, watch } = useForm<StepTwoValues>();
   const { t } = useTranslation(['routers', 'translation']);
 
   const onSubmit = (values: StepTwoValues) => {
@@ -51,12 +54,21 @@ export default function StepTwo({ onCancel, onNextStep, values }: StepTwoProps) 
     if (!!values && !isEmpty(values)) {
       reset({
         ...values,
-        fromDate: anyToMoment(values.fromDate),
-        toDate: anyToMoment(values.toDate),
+        fromDate: anyToMoment({ value: values.fromDate }),
+        toDate: anyToMoment({ value: values.toDate }),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
+
+  useEffect(() => {
+    watch((value, { name }) => {
+      if (name === 'days' && value.days?.includes(ALL_DAYS_OPTION_VALUE)) {
+        resetField('days', { defaultValue: options.map(option => option.value) });
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch]);
 
   return (
     <Box my="24px">
@@ -83,6 +95,7 @@ export default function StepTwo({ onCancel, onNextStep, values }: StepTwoProps) 
       </Typography>
       <FormVerticle grid control={control} filterKey="routers" fields={fields} />
       <ComboButton
+        isSaving={isLoading}
         textOk={t('translation:next')}
         textCancel={t('translation:back')}
         onCancel={() => onCancel?.(getValues())}

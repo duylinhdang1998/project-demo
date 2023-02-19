@@ -149,7 +149,7 @@ export default function AddPackageSettings() {
                 <form onSubmitCapture={handleSubmit(onSubmit)}>
                   <FormVerticle errors={errors} messages={messages} fields={fieldsAddPackageSetting} control={control} filterKey="packageSettings" />
                   <ComboButton
-                    isLoading={packageSettingId ? queueUpdatePackageSetting.includes(packageSettingId) : statusCreatePackageSetting === 'loading'}
+                    isSaving={packageSettingId ? queueUpdatePackageSetting.includes(packageSettingId) : statusCreatePackageSetting === 'loading'}
                     onCancel={handleCancel}
                     onSave={handleSubmit(onSubmit)}
                   />

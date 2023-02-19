@@ -8,10 +8,11 @@ interface ComboButtonProps {
   onSave?: () => void;
   textOk?: string;
   textCancel?: string;
-  isLoading?: boolean;
+  isSaving?: boolean;
+  isDeleting?: boolean;
 }
 
-function ComboButton({ onCancel, onSave, textOk, textCancel, isLoading = false }: ComboButtonProps) {
+function ComboButton({ onCancel, onSave, textOk, textCancel, isDeleting = false, isSaving = false }: ComboButtonProps) {
   const { t } = useTranslation('translation');
   return (
     <Stack direction="row" justifyContent="flex-end" alignItems="center" sx={{ marginTop: '30px' }}>
@@ -22,8 +23,9 @@ function ComboButton({ onCancel, onSave, textOk, textCancel, isLoading = false }
           color: '#1AA6EE',
           width: 120,
         }}
+        loading={isDeleting}
         onClick={onCancel}
-        disabled={isLoading}
+        disabled={isSaving}
       >
         {!!textCancel ? textCancel : t('cancel')}
       </Button>
@@ -32,7 +34,8 @@ function ComboButton({ onCancel, onSave, textOk, textCancel, isLoading = false }
           margin: '0 8px',
           width: 120,
         }}
-        loading={isLoading}
+        loading={isSaving}
+        disabled={isDeleting}
         onClick={onSave}
         variant="contained"
         backgroundButton="#1aa6ee"

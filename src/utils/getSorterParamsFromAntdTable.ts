@@ -5,7 +5,6 @@ interface GetSorterParamsFromAntdTable<T> {
   sorter: SorterResult<T> | Array<SorterResult<T>>;
 }
 export const getSorterParamsFromAntdTable = <T extends AnyObject>({ sorter }: GetSorterParamsFromAntdTable<T>): Sorter<T> => {
-  console.log(sorter);
   const sorter_: Sorter<T> = Array.isArray(sorter)
     ? sorter.reduce<Sorter<T>>((res, sortComlumn) => {
         if (sortComlumn.columnKey) {

@@ -2,7 +2,6 @@ import AddIcon from '@mui/icons-material/Add';
 import { Button, Dialog, Grid, InputLabel, Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import { DatePicker } from 'antd';
 import { isEmpty } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
@@ -21,10 +20,11 @@ import { anyToMoment } from 'utils/anyToMoment';
 import { departureOptions, fieldsStepMulti } from '../../constants';
 import EditPriceTrip from '../EditPriceTrip';
 import { SelectVehicle } from './components/SelectVehicle';
+import cx from 'classnames';
 
 interface StopPointValues {
   stop_point: Option;
-  stop_time: any; // moment
+  duration: number;
   ecoAdult: number;
   vipAdult: number;
   ecoStudent: number;
@@ -32,7 +32,7 @@ interface StopPointValues {
   ecoChildren: number;
   vipChildren: number;
 }
-export interface StepOneValuesForTripMultiway {
+export interface StepOneValuesForMultipleStopTrip {
   vehicle: string;
   departurePoint: Option;
   departureTime: any; // moment
@@ -59,17 +59,41 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '14px !important',
     },
   },
-  datePicker: {
-    width: '100%',
+  inputNumberWrap: {
+    border: '1px solid #F7F7F7',
+    backgroundColor: '#fff',
+    borderRadius: '4px',
     height: '40px',
-    border: '1px solid #f7f7f7 !important',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: '0 10px',
+  },
+  inputNumber: {
+    width: '100%',
+    height: '35px',
+    borderColor: 'transparent',
+    '&:focus-visible': {
+      outline: 'none',
+    },
+  },
+  inputError: {
+    border: `1px solid ${theme.palette.error.main} !important`,
+  },
+  prefix: {
+    fontSize: '14px',
+  },
+  error: {
+    marginTop: '4px !important',
+    color: theme.palette.error.main,
   },
 }));
 
 const fieldKeys: Array<keyof Route> = ['vehicle', 'departurePoint', 'departureTime'];
 const emptyStopPoint: StopPointValues = {
   stop_point: {},
-  stop_time: undefined,
+  duration: 0,
   ecoAdult: 0,
   vipAdult: 0,
   ecoStudent: 0,
@@ -79,13 +103,14 @@ const emptyStopPoint: StopPointValues = {
 };
 
 interface StepOneMultipleProps {
-  onNextStep?: (values: StepOneValuesForTripMultiway) => void;
-  onCancel?: (values: StepOneValuesForTripMultiway) => void;
+  onNextStep?: (values: StepOneValuesForMultipleStopTrip) => void;
+  onCancel?: (values: StepOneValuesForMultipleStopTrip) => void;
   isEdit?: boolean;
-  values?: StepOneValuesForTripMultiway;
+  values?: StepOneValuesForMultipleStopTrip;
+  isLoading?: boolean;
 }
 
-export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values }: StepOneMultipleProps) {
+export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, isLoading }: StepOneMultipleProps) {
   const classes = useStyles();
   const { t } = useTranslation(['routers', 'translation']);
   const {
@@ -95,7 +120,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values }
     getValues,
     resetField,
     reset,
-  } = useForm<StepOneValuesForTripMultiway>();
+  } = useForm<StepOneValuesForMultipleStopTrip>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'stops',
@@ -126,7 +151,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values }
     append(emptyStopPoint);
   };
 
-  const handleSave = (values: StepOneValuesForTripMultiway) => {
+  const handleSave = (values: StepOneValuesForMultipleStopTrip) => {
     onNextStep?.(values);
   };
 
@@ -141,12 +166,20 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values }
 
   useEffect(() => {
     if (!!values && !isEmpty(values)) {
-      reset({
+      console.log({
         ...values,
-        departureTime: anyToMoment(values.departureTime),
+        departureTime: anyToMoment({ value: values.departureTime }),
         stops: values.stops.map(stop => ({
           ...stop,
-          stop_time: anyToMoment(stop.stop_time),
+          duration: stop.duration,
+        })),
+      });
+      reset({
+        ...values,
+        departureTime: anyToMoment({ value: values.departureTime }),
+        stops: values.stops.map(stop => ({
+          ...stop,
+          duration: stop.duration,
         })),
       });
     }
@@ -236,13 +269,26 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values }
                 <Grid item xs={12} md={6}>
                   <Controller
                     control={control}
-                    name={`stops.${index}.stop_time`}
-                    render={({ field }) => (
-                      <Box>
-                        <InputLabel className={classes.label}>{t('stop_time')}</InputLabel>
-                        <DatePicker showTime={true} value={field.value as any} onChange={field.onChange} className={classes.datePicker} />
-                      </Box>
-                    )}
+                    name={`stops.${index}.duration`}
+                    render={({ field }) => {
+                      const error = errors['stops']?.[index];
+                      const messageErr = t('translation:error_required', { name: t('arrivalDuration') });
+                      return (
+                        <Box>
+                          <InputLabel htmlFor={`duration-${f.id}`} className={classes.label}>
+                            {t('arrivalDuration')}
+                          </InputLabel>
+                          <Box className={cx(classes.inputNumberWrap, !!error ? classes.inputError : '')}>
+                            <input {...field} id={`duration-${f.id}`} min={0} type="number" className={classes.inputNumber} />
+                          </Box>
+                          {!!error && (
+                            <Typography component="p" className={classes.error} fontSize={12}>
+                              {messageErr}
+                            </Typography>
+                          )}
+                        </Box>
+                      );
+                    }}
                   />
                 </Grid>
               </Grid>
@@ -259,7 +305,12 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values }
           {t('add_new_merchandise')}
         </Button>
       </Box>
-      <ComboButton textOk={isEdit ? t('translation:save') : t('translation:next')} onCancel={handleCancel} onSave={handleSubmit(handleSave)} />
+      <ComboButton
+        isSaving={isLoading}
+        textOk={isEdit ? t('translation:save') : t('translation:next')}
+        onCancel={handleCancel}
+        onSave={handleSubmit(handleSave)}
+      />
       <DialogConfirm
         openDialog={open}
         title={t('translation:cancel_type', { type: t(`routers:${isEdit ? 'edit_trip' : 'trip'}`).toLowerCase() })}

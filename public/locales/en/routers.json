@@ -10,7 +10,7 @@
   "one_way_trip": "One way trip",
   "multi_stops_trip": "Multi stops trip",
   "stop_address": "Stop address",
-  "arrivalTime": "Arrival time",
+  "arrivalDuration": "Arrival duration time",
   "config_prices_per_passenger": "Configure prices per passenger",
   "eco_tickets": "ECO tickets",
   "vip_tickets": "VIP tickets",
@@ -34,5 +34,6 @@
   "route_created": "Add new route successfully!",
   "route_updated": "Update route successfully!",
   "route_deleted": "Delete route successfully!",
-  "input_price": "Input price"
+  "input_price": "Input price",
+  "edit_ticket_prices": "Edit ticket prices"
 }

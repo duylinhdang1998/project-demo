@@ -60,5 +60,7 @@
   "monthly": "month",
   "yearly": "year",
   "title": "Title",
-  "icon": "Icon"
+  "icon": "Icon",
+  "removed": "Removed",
+  "edited": "Edited"
 }

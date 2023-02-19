@@ -46,7 +46,7 @@ export default function CreateOneWay() {
       >
         <Box width="100%" display="flex" justifyContent="center">
           <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
-            <StepForm route={route ? route : undefined} isEditAction={isEditAction} />
+            <StepForm isEditAction={isEditAction} />
           </Box>
         </Box>
       </LayoutDetail>

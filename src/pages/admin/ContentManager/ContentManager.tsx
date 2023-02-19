@@ -126,7 +126,7 @@ function ContentManager() {
               </Typography>
               <FormVerticle control={control} fields={footerFields} filterKey="account" />
             </Box>
-            <ComboButton onSave={handleSubmit(onSubmit)} isLoading={statusUpdateContent === 'loading'} onCancel={handleCancel} />
+            <ComboButton onSave={handleSubmit(onSubmit)} isSaving={statusUpdateContent === 'loading'} onCancel={handleCancel} />
           </CardWhite>
         </Box>
 
