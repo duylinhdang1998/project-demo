@@ -66,7 +66,6 @@ interface StepThreeProps {
   isEdit?: boolean;
 }
 
-// FIXME: RESET FORM VALUES
 export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const {
     control,
@@ -109,7 +108,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             dayoff: selectedSlot[0].getTime(),
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('account:office_manager_updated')} />, {
+            toast(<ToastCustom type="success" text={t('routers:route_updated')} />, {
               className: toastClass.toastSuccess,
             });
             handleCloseDialogEdit();
@@ -146,7 +145,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             })),
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('account:office_manager_updated')} />, {
+            toast(<ToastCustom type="success" text={t('routers:route_updated')} />, {
               className: toastClass.toastSuccess,
             });
             handleCloseDialogEdit();
@@ -162,6 +161,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   };
 
   useEffect(() => {
+    // FIXME: RESET FORM VALUES -> Đang k có cái gì từ response trả về có thể làm chức năng này
     if (route) {
       reset({
         ecoAdult: route.stopPoints[0].ECOPrices.ADULT,

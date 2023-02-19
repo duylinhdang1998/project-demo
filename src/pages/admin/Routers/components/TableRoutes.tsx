@@ -63,6 +63,24 @@ function TableRoutes() {
         title: () => <Typography variant="headerTable">{t('routers:route')}</Typography>,
         sorter: true,
         render: (_, row) => {
+          const isMultipleStops = row.stopPoints.length > 1;
+          if (isMultipleStops) {
+            const firstStopPoint = row.stopPoints[0];
+            const lastStopPoint = row.stopPoints[row.stopPoints.length - 1];
+            return (
+              <ToolTipAddress stopPoints={row.stopPoints}>
+                <TextWithIcon text={firstStopPoint.stopPoint} icon={MapPinIcon} color="#2D9AFF" />
+                <TextWithIcon
+                  text={t('routers:quantity_addresses', {
+                    quantity: row.stopPoints.length - 2,
+                  })}
+                  icon={StopCircleSvg}
+                  color="#33CC7F"
+                />
+                <TextWithIcon text={lastStopPoint.stopPoint} icon={MapPinIcon} color="#2D9AFF" />
+              </ToolTipAddress>
+            );
+          }
           return (
             // FIXME: Sửa sao cho giống design
             <ToolTipAddress stopPoints={row.stopPoints}>
@@ -86,15 +104,15 @@ function TableRoutes() {
       {
         key: 'departureTime',
         dataIndex: 'departureTime',
-        title: () => <Typography variant="headerTable">{t('routers:departure_time')}</Typography>,
+        title: () => <Typography variant="headerTable">{t('routers:departureTime')}</Typography>,
         sorter: true,
         render: (_, row) => <Typography variant="body2">{row.departureTime}</Typography>,
       },
       {
         // FIXME: Cái này đâu ra? Key sort là gì
-        key: 'arrivalTime',
-        dataIndex: 'arrivalTime',
-        title: () => <Typography variant="headerTable">{t('routers:arrival_time')}</Typography>,
+        key: 'arrivalDuration',
+        dataIndex: 'arrivalDuration',
+        title: () => <Typography variant="headerTable">{t('routers:arrivalDuration')}</Typography>,
         sorter: true,
         // FIXME: Arrival time lấy đâu ra?
         render: (_, row) => <Typography variant="body2">{row.departureTime}</Typography>,

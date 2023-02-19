@@ -55,6 +55,7 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
+  // FIXME: Chưa có api update nên chưa lắp chức năng "Edit"
   const handleSubmitStep1ForOneStopTrip = (formValues: StepOneValuesForOneStopTrip) => {
     dispatch(
       routesActions.createOneStopTripRequest({
@@ -81,6 +82,9 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
           vehicle: formValues.vehicle,
         },
         onSuccess() {
+          toast(<ToastCustom type="success" text={t('routers:route_created')} />, {
+            className: toastClass.toastSuccess,
+          });
           nextStep();
         },
         onFailure() {
@@ -91,6 +95,8 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
       }),
     );
   };
+
+  // FIXME: Chưa có api update nên chưa lắp chức năng "Edit"
   const handleSubmitStep1ForMultipleStopTrip = (formValues: StepOneValuesForMultipleStopTrip) => {
     dispatch(
       routesActions.createMultipleStopTripRequest({
@@ -115,6 +121,9 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
           vehicle: formValues.vehicle,
         },
         onSuccess() {
+          toast(<ToastCustom type="success" text={t('routers:route_created')} />, {
+            className: toastClass.toastSuccess,
+          });
           nextStep();
         },
         onFailure() {
@@ -137,6 +146,9 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
             startPeriod: momentToNumber(formValues.fromDate),
           },
           onSuccess() {
+            toast(<ToastCustom type="success" text={t('routers:route_updated')} />, {
+              className: toastClass.toastSuccess,
+            });
             nextStep();
           },
           onFailure() {
