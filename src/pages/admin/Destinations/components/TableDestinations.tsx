@@ -1,36 +1,56 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Dialog, DialogTitle, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
 import { ColumnsType } from 'antd/es/table';
-import { Fragment, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { v4 as uuid } from 'uuid';
 import ActionTable, { ActionItem } from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
 import DeleteIcon from 'components/SvgIcon/DeleteIcon';
 import EditIcon from 'components/SvgIcon/EditIcon';
-import { DestinationsColumnType } from 'models/Destinations';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useDeleteDestination } from 'services/Destinations/destinations';
+import { Destination } from 'services/models/Destination';
+import { ParamsSettings } from 'services/models/Response';
+import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
+import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
+import { v4 as uuid } from 'uuid';
 
-const dataSource: DestinationsColumnType[] = [];
-for (let i = 0; i < 15; i++) {
-  dataSource.push({
-    id: uuid(),
-    title: 'Lyon',
-    address: 'Address, zipcode, city, country',
-  });
+interface Props {
+  dataSource?: Destination[];
+  isLoading?: boolean;
+  pagination?: {
+    totalRows?: number;
+  };
+  onFilter?: (params: ParamsSettings<Destination>) => void;
+  onRefresh?: () => void;
 }
 
-const dataDetails = {
-  address: '14 Cr de Verdun Gensoul, 69002 Lyon, France',
-  zip_code: '69000',
-  city: 'Lyon',
-  country: 'france',
-};
-
-export default function TableDestinations() {
+export default function TableDestinations({ dataSource = [], isLoading, pagination, onFilter, onRefresh }: Props) {
   const { t } = useTranslation(['destinations', 'translation']);
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [rowSelected, setRowSelected] = useState<Destination>();
 
-  const handleClickOpen = () => {
+  const { run: deleteDestination } = useDeleteDestination({
+    onSuccess: data => {
+      if (data.code === 0) {
+        toast(<ToastCustom type="success" text={t('translation:delete_type_success', { type: t('destination').toLowerCase() })} />, {
+          className: 'toast-success',
+        });
+        onRefresh?.();
+      } else {
+        toast(<ToastCustom type="error" text={t('translation: delete_type_error', { type: t('destination').toLowerCase() })} />, {
+          className: 'toast-error',
+        });
+      }
+    },
+  });
+
+  const handleClickOpen = (row: Destination) => () => {
+    setRowSelected(row);
     setOpen(true);
   };
 
@@ -38,22 +58,50 @@ export default function TableDestinations() {
     setOpen(false);
   };
 
-  const actions: ActionItem<DestinationsColumnType>[] = [
-    { id: uuid(), label: 'edit', icon: <EditIcon />, onClick: () => {} },
-    { id: uuid(), label: 'delete', icon: <DeleteIcon />, onClick: () => {}, color: '#FF2727' },
+  const handleDelete = (id: string) => {
+    deleteDestination(id);
+  };
+
+  const removeKeyDetails = (key: string) => {
+    const keys = ['_id', 'createdAt', 'updatedAt', '__v', 'title', 'company'];
+    return keys.includes(key);
+  };
+
+  const actions: ActionItem<Destination>[] = [
+    {
+      id: uuid(),
+      label: 'edit',
+      icon: <EditIcon />,
+      onClick: row => {
+        navigate(`/admin/destination/${row?._id}/edit`, {
+          state: {
+            destination: row,
+          },
+        });
+      },
+    },
+    {
+      id: uuid(),
+      label: 'delete',
+      icon: <DeleteIcon />,
+      onClick: row => {
+        handleDelete(row?._id ?? '');
+      },
+      color: '#FF2727',
+    },
   ];
 
-  const columns: ColumnsType<DestinationsColumnType> = [
+  const columns: ColumnsType<Destination> = [
     {
       key: 'title',
       dataIndex: 'title',
       title: () => t('title'),
-      render: (value: string) => (
-        <Typography variant="body2" sx={{ cursor: 'pointer' }} onClick={handleClickOpen}>
+      render: (value: string, item) => (
+        <Typography variant="body2" sx={{ cursor: 'pointer' }} onClick={handleClickOpen(item)}>
           {value}
         </Typography>
       ),
-      sorter: (a, b) => (a.title ?? '' > (b.title ?? '') ? 1 : -1),
+      sorter: () => 0,
       width: 200,
     },
     {
@@ -74,27 +122,44 @@ export default function TableDestinations() {
 
   return (
     <Box my="24px">
-      <AntTable columns={columns} dataSource={dataSource} rowKey={r => r.id} />
+      <AntTable
+        columns={columns}
+        dataSource={dataSource}
+        rowKey={r => r._id}
+        loading={isLoading}
+        pagination={{
+          pageSize: 10,
+          total: pagination?.totalRows,
+          current: currentPage + 1,
+        }}
+        onChange={(pagination, _, sorter, extra) => {
+          setCurrentPage(getPaginationFromAntdTable({ pagination, extra }));
+          onFilter?.({ page: getPaginationFromAntdTable({ pagination, extra }), sorter: getSorterParamsFromAntdTable({ sorter }), searcher: {} });
+        }}
+      />
       <Dialog open={open} onClose={handleClose}>
         <Box padding="24px">
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <DialogTitle sx={{ padding: '0 !important' }}>Lyon Gare Perrache</DialogTitle>
+            <DialogTitle sx={{ padding: '0 !important' }}>{rowSelected?.title}</DialogTitle>
             <IconButton onClick={handleClose}>
               <ClearIcon />
             </IconButton>
           </Stack>
           <Divider variant="middle" sx={{ margin: '16px 0' }} />
           <Grid container spacing={2}>
-            {Object.keys(dataDetails).map(i => (
-              <Fragment key={i}>
-                <Grid item xs={3}>
-                  <Typography variant="body2">{t(`${i}`)}:</Typography>
-                </Grid>
-                <Grid item xs={9}>
-                  <Typography variant="body2">{dataDetails[i]}</Typography>
-                </Grid>
-              </Fragment>
-            ))}
+            {!!rowSelected &&
+              Object.keys(rowSelected).map(i =>
+                removeKeyDetails(i) ? null : (
+                  <Fragment key={i}>
+                    <Grid item xs={3}>
+                      <Typography variant="body2">{t(`${i}`)}:</Typography>
+                    </Grid>
+                    <Grid item xs={9}>
+                      <Typography variant="body2">{rowSelected[i]}</Typography>
+                    </Grid>
+                  </Fragment>
+                ),
+              )}
           </Grid>
         </Box>
       </Dialog>

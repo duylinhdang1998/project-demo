@@ -5,10 +5,9 @@ interface GetSorterParamsFromAntdTable<T> {
   sorter: SorterResult<T> | Array<SorterResult<T>>;
 }
 export const getSorterParamsFromAntdTable = <T extends AnyObject>({ sorter }: GetSorterParamsFromAntdTable<T>): Sorter<T> => {
-  console.log(sorter);
   const sorter_: Sorter<T> = Array.isArray(sorter)
     ? sorter.reduce<Sorter<T>>((res, sortComlumn) => {
-        if (sortComlumn.columnKey) {
+        if (sortComlumn.columnKey && sortComlumn.order) {
           return {
             ...res,
             [sortComlumn.columnKey]: sortComlumn.order === 'ascend' ? 'asc' : 'desc',
@@ -16,7 +15,7 @@ export const getSorterParamsFromAntdTable = <T extends AnyObject>({ sorter }: Ge
         }
         return res;
       }, {})
-    : sorter.columnKey
+    : sorter.columnKey && sorter.order
     ? ({ [sorter.columnKey]: sorter.order === 'ascend' ? 'asc' : 'desc' } as Sorter<T>)
     : {};
   return sorter_;
