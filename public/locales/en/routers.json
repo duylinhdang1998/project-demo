@@ -31,9 +31,6 @@
   "registrationId": "Registration ID",
   "trip": "Trip",
   "prices": "prices",
-  "route_created": "Add new route successfully!",
-  "route_updated": "Update route successfully!",
-  "route_deleted": "Delete route successfully!",
   "input_price": "Input price",
   "edit_ticket_prices": "Edit ticket prices",
   "quantity_addresses": "{{ quantity }} addresses"

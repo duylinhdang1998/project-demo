@@ -68,14 +68,13 @@ export default function AddOfficeManager() {
             title: values.title,
             zipCode: values.zipCode,
           },
-          // FIXME: Hiển thị lỗi giá trị đã tồn tại -> Backend đang check uniq nhưng chưa trả về thông tin lỗi
           onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:office') })} />, {
               className: toastClass.toastError,
             });
           },
           onSuccess: () => {
-            toast(<ToastCustom type="success" text={t('account:office_manager_updated')} />, {
+            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('account:office') })} />, {
               className: toastClass.toastSuccess,
             });
             navigate('/account/offices-manager', { replace: true });
@@ -94,14 +93,13 @@ export default function AddOfficeManager() {
             title: values.title,
             zipCode: values.zipCode,
           },
-          // FIXME: Hiển thị lỗi giá trị đã tồn tại -> Backend đang check uniq nhưng chưa trả về thông tin lỗi
           onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('account:office') })} />, {
               className: toastClass.toastError,
             });
           },
           onSuccess: () => {
-            toast(<ToastCustom type="success" text={t('account:office_manager_created')} />, {
+            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('account:office') })} />, {
               className: toastClass.toastSuccess,
             });
             navigate('/account/offices-manager');

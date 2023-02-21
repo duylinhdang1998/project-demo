@@ -97,13 +97,13 @@ function FormAddVehicle() {
           data: value as Required<Values>,
           id: vehicleId,
           onSuccess: () => {
-            toast(<ToastCustom type="success" text={t('vehicles:vehicle_updated')} />, {
+            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('vehicles:vehicle') })} />, {
               className: toastClass.toastSuccess,
             });
             navigate('/admin/vehicles', { replace: true });
           },
           onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('vehicles:vehicle') })} />, {
               className: toastClass.toastError,
             });
           },
@@ -114,13 +114,13 @@ function FormAddVehicle() {
         vehiclesActions.createVehicleRequest({
           data: value as Required<Values>,
           onSuccess: () => {
-            toast(<ToastCustom type="success" text={t('vehicles:vehicle_created')} />, {
+            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('vehicles:vehicle') })} />, {
               className: toastClass.toastSuccess,
             });
             navigate('/admin/vehicles', { replace: true });
           },
           onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('vehicles:vehicle') })} />, {
               className: toastClass.toastError,
             });
           },

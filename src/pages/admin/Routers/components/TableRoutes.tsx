@@ -251,13 +251,13 @@ function TableRoutes() {
                     routesActions.deleteRouteRequest({
                       id: openDeleteRoute._id,
                       onSuccess: () => {
-                        toast(<ToastCustom type="success" text={t('routers:route_deleted')} />, {
+                        toast(<ToastCustom type="success" text={t('translation:delete_type_success', { type: t('routers:route') })} />, {
                           className: toastClass.toastSuccess,
                         });
                         handleCloseDialogDelete();
                       },
                       onFailure: () => {
-                        toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+                        toast(<ToastCustom type="error" text={t('translation:delete_type_error', { type: t('routers:route') })} />, {
                           className: toastClass.toastError,
                         });
                       },

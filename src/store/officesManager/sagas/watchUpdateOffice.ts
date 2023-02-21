@@ -24,7 +24,6 @@ function* handleUpdateOffice({ payload }: ReturnType<typeof officesManagerAction
     }
   } catch (error) {
     console.log('watchUpdateOffice.ts', error);
-    // FIXME: Hiển thị lỗi giá trị đã tồn tại -> Backend đang check uniq nhưng chưa trả về thông tin lỗi
     yield put(officesManagerActions.updateOfficeFailure({ id }));
     onFailure();
   }

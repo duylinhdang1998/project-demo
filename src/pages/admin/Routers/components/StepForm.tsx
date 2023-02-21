@@ -82,13 +82,13 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
           vehicle: formValues.vehicle,
         },
         onSuccess() {
-          toast(<ToastCustom type="success" text={t('routers:route_created')} />, {
+          toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('routers:route') })} />, {
             className: toastClass.toastSuccess,
           });
           nextStep();
         },
         onFailure() {
-          toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+          toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:route') })} />, {
             className: toastClass.toastError,
           });
         },
@@ -121,13 +121,13 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
           vehicle: formValues.vehicle,
         },
         onSuccess() {
-          toast(<ToastCustom type="success" text={t('routers:route_created')} />, {
+          toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('routers:route') })} />, {
             className: toastClass.toastSuccess,
           });
           nextStep();
         },
         onFailure() {
-          toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+          toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:route') })} />, {
             className: toastClass.toastError,
           });
         },
@@ -146,13 +146,13 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
             startPeriod: momentToNumber(formValues.fromDate),
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('routers:route_updated')} />, {
+            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
               className: toastClass.toastSuccess,
             });
             nextStep();
           },
           onFailure() {
-            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} />, {
               className: toastClass.toastError,
             });
           },

@@ -24,7 +24,6 @@ function* handleUpdatePackageSetting({ payload }: ReturnType<typeof packageSetti
     }
   } catch (error) {
     console.log('watchUpdatePackageSetting.ts', error);
-    // FIXME: Hiển thị lỗi giá trị đã tồn tại -> Backend đang check uniq nhưng chưa trả về thông tin lỗi
     yield put(packageSettingsActions.updatePackageSettingFailure({ id }));
     onFailure();
   }

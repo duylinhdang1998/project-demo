@@ -109,13 +109,13 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             dayoff: selectedSlot[0].getTime(),
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('routers:route_updated')} />, {
+            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
               className: toastClass.toastSuccess,
             });
             handleCloseDialogEdit();
           },
           onFailure() {
-            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} />, {
               className: toastClass.toastError,
             });
           },
@@ -146,13 +146,13 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             })),
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('routers:route_updated')} />, {
+            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
               className: toastClass.toastSuccess,
             });
             handleCloseDialogEdit();
           },
           onFailure() {
-            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} />, {
               className: toastClass.toastError,
             });
           },

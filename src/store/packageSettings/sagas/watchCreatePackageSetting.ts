@@ -11,7 +11,6 @@ function* handleCreatePackageSetting({ payload }: ReturnType<typeof packageSetti
   } catch (error) {
     console.log('watchCreatePackageSetting.ts', error);
     yield put(packageSettingsActions.createPackageSettingFailure({}));
-    // FIXME: Hiển thị lỗi giá trị đã tồn tại -> Backend đang check uniq nhưng chưa trả về thông tin lỗi
     onFailure();
   }
 }

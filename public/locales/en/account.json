@@ -54,9 +54,5 @@
   "free_trial": "Free trial",
   "buy_now": "Buy now",
   "popular_choice": "POPULAR CHOICE",
-  "error_required": "Please enter your {{name}}",
-  "office_manager_created": "Add new office successfully!",
-  "office_manager_updated": "Update office successfully!",
-  "office_manager_deleted": "Delete office successfully!",
-  "content_manager_updated": "Update content successfully!"
+  "error_required": "Please enter your {{name}}"
 }

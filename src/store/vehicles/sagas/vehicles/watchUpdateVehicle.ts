@@ -24,7 +24,6 @@ function* handleUpdateVehicle({ payload }: ReturnType<typeof vehiclesActions.upd
     }
   } catch (error) {
     console.log('watchUpdateVehicle.ts', error);
-    // FIXME: Hiển thị lỗi giá trị đã tồn tại -> Backend đang check uniq nhưng chưa trả về thông tin lỗi
     yield put(vehiclesActions.updateVehicleFailure({ id }));
     onFailure();
   }
