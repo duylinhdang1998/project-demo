@@ -11,7 +11,6 @@ function* handleCreateVehicleEvent({ payload }: ReturnType<typeof vehicleEventsA
   } catch (error) {
     console.log('watchCreateVehicleEvent.ts', error);
     yield put(vehicleEventsActions.createVehicleEventFailure({}));
-    // FIXME: Hiển thị lỗi giá trị đã tồn tại -> Backend đang check uniq nhưng chưa trả về thông tin lỗi
     onFailure();
   }
 }

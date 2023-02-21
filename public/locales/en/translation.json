@@ -61,6 +61,8 @@
   "yearly": "year",
   "title": "Title",
   "icon": "Icon",
+  "removed": "Removed",
+  "edited": "Edited",
   "delete_type_success": "Delete {{type}} successfully",
   "delete_type_error": "Delete {{type}} error",
   "add_type_success": "Add {{type}} successfully",

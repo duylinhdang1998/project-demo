@@ -1,15 +1,132 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Searcher } from 'services/@types/SearchParams';
 import { Route } from 'services/models/Route';
+import { CreateMultipleStopTripFailure, CreateMultipleStopTripRequest, CreateMultipleStopTripSuccess } from './actions/CreateMultipleStopTrip';
+import { CreateOneStopTripFailure, CreateOneStopTripRequest, CreateOneStopTripSuccess } from './actions/CreateOneStopTrip';
 import { DeleteRouteFailure, DeleteRouteRequest, DeleteRouteSuccess } from './actions/DeleteRoute';
 import { GetRouteFailure, GetRouteRequest, GetRouteSuccess } from './actions/GetRoute';
 import { GetRoutesFailure, GetRoutesRequest, GetRoutesSuccess } from './actions/GetRoutes';
+import { RemoveDayActiveFailure, RemoveDayActiveRequest, RemoveDayActiveSuccess } from './actions/RemoveDayActive';
+import { UpdateActiveDaysFailure, UpdateActiveDaysRequest, UpdateActiveDaysSuccess } from './actions/UpdateActiveDays';
+import { UpdateTicketPricesFailure, UpdateTicketPricesRequest, UpdateTicketPricesSuccess } from './actions/UpdateTicketPrices';
+
+const DATA_SAMPLE: Record<string, Route> = {
+  multipleStops: {
+    _id: '63f1e258520db06a111ef978',
+    company: '63d8d5e3b4c7b31bf36765c2',
+    routeCode: '14321242',
+    vehicle: '63ece1c8277819c958d5384a',
+    departurePoint: 'paris',
+    departureTime: '02:00',
+    dayActives: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    startPeriod: 1707177600000,
+    endPeriod: 1771372800000,
+    stopPoints: [
+      {
+        stopPoint: 'paris',
+        stopCode: '63f1e258520db06a111ef974',
+        durationTime: 4,
+        ECOPrices: {
+          ADULT: 11,
+          CHILD: 11,
+          STUDENT: 101,
+        },
+        VIPPrices: {
+          ADULT: 11,
+          CHILD: 110,
+          STUDENT: 11,
+        },
+        createdAt: '2023-02-19T08:48:24.427Z',
+        updatedAt: '2023-02-19T08:48:24.427Z',
+      },
+      {
+        stopPoint: 'london',
+        stopCode: '63f1e258520db06a111ef975',
+        durationTime: 33,
+        ECOPrices: {
+          ADULT: 33,
+          CHILD: 33,
+          STUDENT: 33,
+        },
+        VIPPrices: {
+          ADULT: 33,
+          CHILD: 33,
+          STUDENT: 33,
+        },
+        createdAt: '2023-02-19T08:48:24.428Z',
+        updatedAt: '2023-02-19T08:48:24.428Z',
+      },
+      {
+        stopPoint: 'berlin',
+        stopCode: '63f1e258520db06a111ef976',
+        durationTime: 33,
+        ECOPrices: {
+          ADULT: 33,
+          CHILD: 33,
+          STUDENT: 13,
+        },
+        VIPPrices: {
+          ADULT: 33,
+          CHILD: 33,
+          STUDENT: 333,
+        },
+        createdAt: '2023-02-19T08:48:24.428Z',
+        updatedAt: '2023-02-19T08:48:24.428Z',
+      },
+    ],
+    particularDays: ['2024-02-24', '2024-02-27'],
+    dayoffs: [1707177600000, 1707696000000, 1707955200000],
+    routeType: 'MULTI_STOP',
+    createdAt: '2023-02-19T08:48:24.428Z',
+    updatedAt: '2023-02-19T08:49:11.354Z',
+    __v: 2,
+  },
+  oneStop: {
+    _id: '63f19f68520db06a111ef6e1',
+    company: '63d8d5e3b4c7b31bf36765c2',
+    routeCode: '03388437',
+    vehicle: '63ece1c8277819c958d5384a',
+    departurePoint: 'paris',
+    departureTime: '02:00',
+    dayActives: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    startPeriod: 1677456000000,
+    endPeriod: 1677542400000,
+    stopPoints: [
+      {
+        stopPoint: 'paris',
+        stopCode: '63f19f68520db06a111ef6df',
+        durationTime: 4,
+        ECOPrices: {
+          ADULT: 11,
+          CHILD: 11,
+          STUDENT: 101,
+        },
+        VIPPrices: {
+          ADULT: 11,
+          CHILD: 110,
+          STUDENT: 11,
+        },
+        createdAt: '2023-02-19T04:02:48.899Z',
+        updatedAt: '2023-02-19T04:02:48.899Z',
+      },
+    ],
+    particularDays: ['2023-02-07'],
+    dayoffs: [1675209600000],
+    routeType: 'ONE_TRIP',
+    createdAt: '2023-02-19T04:02:48.900Z',
+    updatedAt: '2023-02-19T08:06:37.835Z',
+    __v: 1,
+  },
+};
 
 interface RoutesManagerState {
   statusGetRoutes: Status;
   statusGetRoute: Status;
   statusCreateRoute: Status;
-  queueUpdateRoute: Route['_id'][];
+  statusUpdateRoute: Status;
+  statusRemoveDayActive: Status;
+  statusUpdateDayActive: Status;
+  statusUpdateTicketPrices: Status;
   queueDeleteRoute: Route['_id'][];
   routes: Route[];
   currentPage: number;
@@ -23,14 +140,17 @@ const initialState: RoutesManagerState = {
   statusGetRoute: 'idle',
   statusGetRoutes: 'idle',
   statusCreateRoute: 'idle',
+  statusUpdateRoute: 'idle',
+  statusUpdateDayActive: 'idle',
+  statusRemoveDayActive: 'idle',
+  statusUpdateTicketPrices: 'idle',
   queueDeleteRoute: [],
-  queueUpdateRoute: [],
   routes: [],
   currentPage: 0,
   totalPages: 0,
   totalRows: 0,
   currentSearcher: {},
-  route: null,
+  route: DATA_SAMPLE.multipleStops,
 };
 
 export const routesSlice = createSlice({
@@ -89,6 +209,121 @@ export const routesSlice = createSlice({
       };
     },
 
+    /** <---------- create one stop trip ----------> */
+    createOneStopTripRequest: (state, _action: PayloadAction<CreateOneStopTripRequest>) => {
+      return {
+        ...state,
+        route: null,
+        statusCreateRoute: 'loading',
+      };
+    },
+    createOneStopTripSuccess: (state, action: PayloadAction<CreateOneStopTripSuccess>) => {
+      const { data } = action.payload;
+      return {
+        ...state,
+        route: data,
+        statusCreateRoute: 'success',
+      };
+    },
+    createOneStopTripFailure: (state, _action: PayloadAction<CreateOneStopTripFailure>) => {
+      return {
+        ...state,
+        route: null,
+        statusCreateRoute: 'failure',
+      };
+    },
+
+    /** <---------- create multiple stop trip ----------> */
+    createMultipleStopTripRequest: (state, _action: PayloadAction<CreateMultipleStopTripRequest>) => {
+      return {
+        ...state,
+        route: null,
+        statusCreateRoute: 'loading',
+      };
+    },
+    createMultipleStopTripSuccess: (state, action: PayloadAction<CreateMultipleStopTripSuccess>) => {
+      const { data } = action.payload;
+      return {
+        ...state,
+        route: data,
+        statusCreateRoute: 'success',
+      };
+    },
+    createMultipleStopTripFailure: (state, _action: PayloadAction<CreateMultipleStopTripFailure>) => {
+      return {
+        ...state,
+        route: null,
+        statusCreateRoute: 'failure',
+      };
+    },
+
+    /** <---------- update active days ----------> */
+    updateActiveDaysRequest: (state, _action: PayloadAction<UpdateActiveDaysRequest>) => {
+      return {
+        ...state,
+        statusUpdateDayActive: 'loading',
+      };
+    },
+    updateActiveDaysSuccess: (state, action: PayloadAction<UpdateActiveDaysSuccess>) => {
+      const { data } = action.payload;
+      return {
+        ...state,
+        route: data,
+        statusUpdateDayActive: 'success',
+      };
+    },
+    updateActiveDaysFailure: (state, _action: PayloadAction<UpdateActiveDaysFailure>) => {
+      return {
+        ...state,
+        statusUpdateDayActive: 'failure',
+      };
+    },
+
+    /** <---------- remove active day (create dayoffs) ----------> */
+    removeDayActiveRequest: (state, _action: PayloadAction<RemoveDayActiveRequest>) => {
+      return {
+        ...state,
+        statusRemoveDayActive: 'loading',
+      };
+    },
+    removeDayActiveSuccess: (state, action: PayloadAction<RemoveDayActiveSuccess>) => {
+      const { data } = action.payload;
+      return {
+        ...state,
+        route: data,
+        statusRemoveDayActive: 'success',
+      };
+    },
+    removeDayActiveFailure: (state, _action: PayloadAction<RemoveDayActiveFailure>) => {
+      return {
+        ...state,
+        statusRemoveDayActive: 'failure',
+      };
+    },
+
+    /** <---------- update ticket prices ----------> */
+    updateTicketPricesRequest: (state, _action: PayloadAction<UpdateTicketPricesRequest>) => {
+      return {
+        ...state,
+        statusUpdateTicketPrices: 'loading',
+      };
+    },
+    updateTicketPricesSuccess: (state, action: PayloadAction<UpdateTicketPricesSuccess>) => {
+      const { data } = action.payload;
+      return {
+        ...state,
+        route: data,
+        statusUpdateTicketPrices: 'success',
+      };
+    },
+    updateTicketPricesFailure: (state, _action: PayloadAction<UpdateTicketPricesFailure>) => {
+      return {
+        ...state,
+        statusRemoveDayActive: 'failure',
+      };
+    },
+
+    /** <---------- delete route ----------> */
     deleteRouteRequest: (state, action: PayloadAction<DeleteRouteRequest>) => {
       const { id } = action.payload;
       return {

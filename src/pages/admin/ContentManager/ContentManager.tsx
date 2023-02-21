@@ -43,12 +43,12 @@ function ContentManager() {
       contentManagerActions.updateContentRequest({
         data: values,
         onSuccess: () => {
-          toast(<ToastCustom type="success" text={t('account:content_manager_updated')} />, {
+          toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('account:content_manager') })} />, {
             className: toastClass.toastSuccess,
           });
         },
         onFailure: () => {
-          toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+          toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:content_manager') })} />, {
             className: toastClass.toastError,
           });
         },
@@ -126,7 +126,7 @@ function ContentManager() {
               </Typography>
               <FormVerticle control={control} fields={footerFields} filterKey="account" />
             </Box>
-            <ComboButton onSave={handleSubmit(onSubmit)} isLoading={statusUpdateContent === 'loading'} onCancel={handleCancel} />
+            <ComboButton onSave={handleSubmit(onSubmit)} isSaving={statusUpdateContent === 'loading'} onCancel={handleCancel} />
           </CardWhite>
         </Box>
 

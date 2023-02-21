@@ -149,15 +149,21 @@ function TablePackageSettings() {
                     packageSettingsActions.deletePackageSettingRequest({
                       id: openDeletePackageSetting._id,
                       onSuccess: () => {
-                        toast(<ToastCustom type="success" text={t('packageSettings:package_settings_deleted')} />, {
-                          className: toastClass.toastSuccess,
-                        });
+                        toast(
+                          <ToastCustom type="success" text={t('translation:delete_type_success', { type: t('packageSettings:package_settings') })} />,
+                          {
+                            className: toastClass.toastSuccess,
+                          },
+                        );
                         handleCloseDialogDelete();
                       },
                       onFailure: () => {
-                        toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
-                          className: toastClass.toastError,
-                        });
+                        toast(
+                          <ToastCustom type="error" text={t('translation:delete_type_error', { type: t('packageSettings:package_settings') })} />,
+                          {
+                            className: toastClass.toastError,
+                          },
+                        );
                       },
                     }),
                   );

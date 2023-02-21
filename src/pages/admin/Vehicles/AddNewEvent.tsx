@@ -52,8 +52,7 @@ export default function AddNewEvent() {
         <Box display="flex" justifyContent="center" width="100%">
           <Box padding="24px" sx={{ backgroundColor: '#fff' }} borderRadius="4px" width={{ xs: '100%', md: '80%' }}>
             <Typography fontSize={16} fontWeight="700">
-              {/* FIXME: I18n */}
-              {isEditAction ? 'Edit' : t('vehicles:add_event_for')} {vehicle?.registrationId}
+              {isEditAction ? t('translation:edit') : t('vehicles:add_event_for')} {vehicle?.registrationId}
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
             <FormAddEvent />

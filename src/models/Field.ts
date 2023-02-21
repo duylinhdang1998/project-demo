@@ -1,3 +1,4 @@
+import { DatePickerProps } from 'antd';
 import { Option as CheckboxGroupOption } from 'components/CheckboxGroup/CheckboxGroup';
 import { UploadImageResourceProps } from 'components/UploadImageResource/UploadImageResource';
 import { UploadPDFResourceProps } from 'components/UploadImageResource/UploadPDFResource';
@@ -18,6 +19,8 @@ export interface SimpleField {
   required?: boolean;
   showTime?: boolean;
   messageErr?: string;
+  picker?: DatePickerProps['picker'];
+  format?: DatePickerProps['format'];
 }
 
 export interface CheckboxField {

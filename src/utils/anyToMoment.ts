@@ -1,5 +1,11 @@
-import moment, { isMoment } from 'moment';
+import moment, { isMoment, MomentFormatSpecification } from 'moment';
 
-export const anyToMoment = (value: any) => {
-  return !value ? undefined : isMoment(value) ? value : moment(value);
+interface AnyToMoment {
+  value: any;
+  format?: MomentFormatSpecification;
+}
+
+export const anyToMoment = ({ value, format }: AnyToMoment) => {
+  const valueInMomemt = !value ? undefined : isMoment(value) ? value : moment(value, format);
+  return valueInMomemt;
 };

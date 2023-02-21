@@ -8,7 +8,7 @@ import FormVerticle from 'components/FormVerticle/FormVerticle';
 import LayoutDetail from 'layout/LayoutDetail';
 import { fieldAccount1, fieldAccount2, fieldAccount3, fieldAccount4, fieldAccount5, fieldKeys } from './constants';
 
-type Values = Record<typeof fieldKeys[number], string>;
+type Values = Record<(typeof fieldKeys)[number], string>;
 
 export default function AccountSetting() {
   const { control } = useForm<Values>();

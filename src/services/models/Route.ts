@@ -25,11 +25,11 @@ export interface Route {
   vehicle: Vehicle['_id'];
   departurePoint: string;
   departureTime: string;
-  dayActives: string[]; // FIXME: Liệu có phải là ENUM
-  startPeriod: null | string;
-  endPeriod: null | string;
+  dayActives: Array<'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'>;
+  startPeriod: null | string | number;
+  endPeriod: null | string | number;
   stopPoints: [StopPoint] | StopPoint[];
-  particularDays: [];
+  particularDays: Array<string | number>;
   dayoffs: number[];
   routeType: RouteType;
   createdAt: string;

@@ -10,18 +10,18 @@ export const departureOptions: Option[] = [
 export const fieldsSearch: Field[] = [
   { id: uuidv4(), label: 'departurePoint', options: departureOptions, type: 'select' },
   { id: uuidv4(), label: 'arrivalPoint', options: departureOptions, type: 'select' },
-  { id: uuidv4(), label: 'departureTime', type: 'datetime' },
+  { id: uuidv4(), label: 'departureTime', type: 'datetime', picker: 'time', format: 'HH:mm' },
   { id: uuidv4(), label: 'vehicle', type: 'select', placeholder: 'vehicle', options: departureOptions },
 ];
 
 export const fieldsStepOne: Field[] = [
   { id: uuidv4(), label: 'departurePoint', options: departureOptions, type: 'select', required: true },
-  { id: uuidv4(), label: 'departureTime', type: 'datetime', showTime: true, required: true },
+  { id: uuidv4(), label: 'departureTime', type: 'datetime', showTime: true, required: true, picker: 'time', format: 'HH:mm' },
   { id: uuidv4(), label: 'arrivalPoint', options: departureOptions, type: 'select', required: true },
-  { id: uuidv4(), label: 'arrivalTime', type: 'datetime', showTime: true, required: true },
+  { id: uuidv4(), label: 'arrivalDuration', type: 'number', showTime: true, required: true },
 ];
 
 export const fieldsStepMulti: Field[] = [
   { id: uuidv4(), label: 'departurePoint', options: departureOptions, type: 'select', required: true },
-  { id: uuidv4(), label: 'departureTime', type: 'datetime', showTime: true, required: true },
+  { id: uuidv4(), label: 'departureTime', type: 'datetime', showTime: true, required: true, picker: 'time', format: 'HH:mm' },
 ];

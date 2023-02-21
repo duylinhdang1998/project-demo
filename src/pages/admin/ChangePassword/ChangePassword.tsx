@@ -74,7 +74,7 @@ export default function ChangePassword() {
               {fieldChanges.map(i => (
                 <InputAuth
                   control={control}
-                  nameInput={i.label as typeof keys[number]}
+                  nameInput={i.label as (typeof keys)[number]}
                   labelText={t(`${i.label}`)}
                   id={i.label}
                   placeholder={t(`${i.label}`)}
@@ -86,7 +86,7 @@ export default function ChangePassword() {
                         }
                       : {}),
                   }}
-                  error={!!errors[i.label as typeof keys[number]]}
+                  error={!!errors[i.label as (typeof keys)[number]]}
                   messageErr={get(errors, `${i.label}.message`, '')}
                 />
               ))}

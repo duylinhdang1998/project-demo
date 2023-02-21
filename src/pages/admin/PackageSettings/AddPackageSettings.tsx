@@ -66,12 +66,12 @@ export default function AddPackageSettings() {
             description: values.description,
           },
           onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('packageSettings:package_settings') })} />, {
               className: toastClass.toastError,
             });
           },
           onSuccess: () => {
-            toast(<ToastCustom type="success" text={t('packageSettings:package_settings_updated')} />, {
+            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('packageSettings:package_settings') })} />, {
               className: toastClass.toastSuccess,
             });
             navigate('/admin/package-settings', { replace: true });
@@ -86,12 +86,12 @@ export default function AddPackageSettings() {
             description: values.description,
           },
           onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('packageSettings:package_settings') })} />, {
               className: toastClass.toastError,
             });
           },
           onSuccess: () => {
-            toast(<ToastCustom type="success" text={t('packageSettings:package_settings_created')} />, {
+            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('packageSettings:package_settings') })} />, {
               className: toastClass.toastSuccess,
             });
             navigate('/admin/package-settings');
@@ -149,7 +149,7 @@ export default function AddPackageSettings() {
                 <form onSubmitCapture={handleSubmit(onSubmit)}>
                   <FormVerticle errors={errors} messages={messages} fields={fieldsAddPackageSetting} control={control} filterKey="packageSettings" />
                   <ComboButton
-                    isLoading={packageSettingId ? queueUpdatePackageSetting.includes(packageSettingId) : statusCreatePackageSetting === 'loading'}
+                    isSaving={packageSettingId ? queueUpdatePackageSetting.includes(packageSettingId) : statusCreatePackageSetting === 'loading'}
                     onCancel={handleCancel}
                     onSave={handleSubmit(onSubmit)}
                   />

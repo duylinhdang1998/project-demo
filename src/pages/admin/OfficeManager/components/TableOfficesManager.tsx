@@ -148,13 +148,13 @@ function TableOfficesManager() {
                     officesManagerActions.deleteOfficeRequest({
                       id: openDeleteOffice._id,
                       onSuccess: () => {
-                        toast(<ToastCustom type="success" text={t('account:office_manager_deleted')} />, {
+                        toast(<ToastCustom type="success" text={t('translation:delete_type_success', { type: t('account:office') })} />, {
                           className: toastClass.toastSuccess,
                         });
                         handleCloseDialogDelete();
                       },
                       onFailure: () => {
-                        toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
+                        toast(<ToastCustom type="error" text={t('translation:delete_type_error', { type: t('account:office') })} />, {
                           className: toastClass.toastError,
                         });
                       },
