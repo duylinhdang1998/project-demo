@@ -117,7 +117,7 @@ export default function AddNewDestinations() {
           </Typography>
           <Divider sx={{ margin: '16px 0' }} />
           <FormVerticle fields={fieldsDestinations} control={control} filterKey="destinations" errors={errors} messages={messages} />
-          <ComboButton onCancel={handleCancel} onSave={handleSubmit(onSave)} isLoading={!params.id ? loading : loadingUpdate} />
+          <ComboButton onCancel={handleCancel} onSave={handleSubmit(onSave)} isSaving={!params.id ? loading : loadingUpdate} />
         </Box>
       </Box>
       <DialogConfirm

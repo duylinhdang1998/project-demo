@@ -66,10 +66,7 @@ interface StepThreeProps {
   isEdit?: boolean;
 }
 
-<<<<<<< HEAD
-=======
 // FIXME: RESET FORM VALUES
->>>>>>> lắp khung chức năng cho form tai page router
 export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const {
     control,
@@ -112,11 +109,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             dayoff: selectedSlot[0].getTime(),
           },
           onSuccess() {
-<<<<<<< HEAD
             toast(<ToastCustom type="success" text={t('routers:route_updated')} />, {
-=======
-            toast(<ToastCustom type="success" text={t('account:office_manager_updated')} />, {
->>>>>>> lắp khung chức năng cho form tai page router
               className: toastClass.toastSuccess,
             });
             handleCloseDialogEdit();
@@ -153,11 +146,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             })),
           },
           onSuccess() {
-<<<<<<< HEAD
             toast(<ToastCustom type="success" text={t('routers:route_updated')} />, {
-=======
-            toast(<ToastCustom type="success" text={t('account:office_manager_updated')} />, {
->>>>>>> lắp khung chức năng cho form tai page router
               className: toastClass.toastSuccess,
             });
             handleCloseDialogEdit();
@@ -173,10 +162,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   };
 
   useEffect(() => {
-<<<<<<< HEAD
     // FIXME: RESET FORM VALUES -> Đang k có cái gì từ response trả về có thể làm chức năng này
-=======
->>>>>>> lắp khung chức năng cho form tai page router
     if (route) {
       reset({
         ecoAdult: route.stopPoints[0].ECOPrices.ADULT,
