@@ -1,18 +1,16 @@
 import { AxiosResponse } from 'axios';
+import { ResponseDetailSuccess } from 'services/models/Response';
 import { Route } from 'services/models/Route';
 import fetchAPI from 'utils/fetchAPI';
 
-interface ResponseSuccess {
-  code: 0;
-  data: true;
-}
+type ResponseData = true;
 
 export type RemoveDayActive = Pick<Route, 'routeCode'> & {
   dayoff: Route['dayoffs'][number];
 };
 
 export const removeDayActive = async (data: RemoveDayActive) => {
-  const response: AxiosResponse<ResponseSuccess> = await fetchAPI.request({
+  const response: AxiosResponse<ResponseDetailSuccess<ResponseData>> = await fetchAPI.request({
     method: 'DELETE',
     url: '/v1.0/company/routes/days/particular',
     data: {

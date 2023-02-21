@@ -15,6 +15,14 @@ export interface ResponseDetailSuccess<T> {
   code: number;
   data: T;
 }
+
+export interface ResponseFailure {
+  code: number;
+  timestamp: string;
+  path: string;
+  message: string;
+}
+
 export interface ParamsSettings<T extends AnyObject> {
   page: Pagination;
   sorter: Sorter<T>;

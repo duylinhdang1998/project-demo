@@ -1,3 +1,4 @@
+import { DayInWeek } from './DayInWeek';
 import { Vehicle } from './Vehicle';
 
 export type RouteType = 'MULTI_STOP' | 'ONE_TRIP';
@@ -25,7 +26,8 @@ export interface Route {
   vehicle: Vehicle['_id'];
   departurePoint: string;
   departureTime: string;
-  dayActives: Array<'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'>;
+  // FIXME: Tách type enum
+  dayActives: Array<DayInWeek>;
   startPeriod: null | string | number;
   endPeriod: null | string | number;
   stopPoints: [StopPoint] | StopPoint[];
