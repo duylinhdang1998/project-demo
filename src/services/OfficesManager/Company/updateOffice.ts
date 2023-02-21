@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { Office } from 'services/models/Office';
+import { ResponseDetailSuccess } from 'services/models/Response';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
@@ -8,15 +9,12 @@ export interface UpdateOffice {
   data: Pick<Office, 'title' | 'address' | 'zipCode' | 'country' | 'city' | 'phone' | 'email'>;
 }
 
-interface ResponseSuccess {
-  code: number;
-  data: {
-    acknowledged: boolean;
-    modifiedCount: number;
-    upsertedId: null;
-    upsertedCount: number;
-    matchedCount: number;
-  };
+interface ResponseData {
+  acknowledged: boolean;
+  modifiedCount: number;
+  upsertedId: null;
+  upsertedCount: number;
+  matchedCount: number;
 }
 
 interface ResponseFailure {
@@ -26,14 +24,14 @@ interface ResponseFailure {
   message: string;
 }
 
-export const updateOffice = async ({ data, id }: UpdateOffice): Promise<ResponseSuccess> => {
-  const response: AxiosResponse<ResponseSuccess | ResponseFailure> = await fetchAPI.request({
+export const updateOffice = async ({ data, id }: UpdateOffice): Promise<ResponseDetailSuccess<ResponseData>> => {
+  const response: AxiosResponse<ResponseDetailSuccess<ResponseData> | ResponseFailure> = await fetchAPI.request({
     method: 'PUT',
     url: `/v1.0/company/office-manager/${id}`,
     data,
   });
   if (response.data.code === 0) {
-    return response.data as ResponseSuccess;
+    return response.data as ResponseDetailSuccess<ResponseData>;
   }
   const response_ = response as AxiosResponse<ResponseFailure>;
   throw new ServiceException(response_.data.message, { cause: response_.data });

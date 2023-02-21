@@ -1,4 +1,4 @@
-import { Vehicle, VehicleEvent } from 'services/models/Vehicle';
+import { VehicleEvent } from 'services/models/Vehicle';
 import { GetVehicleEvents } from 'services/Vehicle/Company/getVehicleEvents';
 
 export type GetVehicleEventsRequest = GetVehicleEvents & {};

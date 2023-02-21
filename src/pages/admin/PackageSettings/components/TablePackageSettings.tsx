@@ -30,9 +30,11 @@ function TablePackageSettings() {
   const { t } = useTranslation(['packageSettings', 'translation']);
   const [openPackageSettingDetail, setOpenPackageSettingDetail] = useState<PackageSetting | null>(null);
   const [openDeletePackageSetting, setOpenDeletePackageSetting] = useState<PackageSetting | null>(null);
+
   const { statusGetPackageSettings, packageSettings, currentPage, totalRows, queueDeletePackageSetting, currentSearcher } =
     useAppSelector(selectPackageSettings);
   const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
 
   const handleOpenDialogDetail = (record: PackageSetting) => {

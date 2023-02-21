@@ -1,23 +1,26 @@
 import { AxiosResponse } from 'axios';
+import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
 import { Vehicle } from 'services/models/Vehicle';
+import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
 export interface DeleteVehicle {
   id: Vehicle['_id'];
 }
 
-interface ResponseSuccess {
-  code: number;
-  data: {
-    acknowledged: true;
-    deletedCount: 1;
-  };
+interface ResponseData {
+  acknowledged: true;
+  deletedCount: 1;
 }
 
-export const deleteVehicle = async ({ id }: DeleteVehicle): Promise<ResponseSuccess> => {
-  const response: AxiosResponse<ResponseSuccess> = await fetchAPI.request({
+export const deleteVehicle = async ({ id }: DeleteVehicle): Promise<ResponseDetailSuccess<ResponseData>> => {
+  const response: AxiosResponse<ResponseDetailSuccess<ResponseData> | ResponseFailure> = await fetchAPI.request({
     method: 'DELETE',
     url: `/v1.0/company/vehicles/${id}`,
   });
-  return response.data;
+  if (response.data.code === 0) {
+    return response.data as ResponseDetailSuccess<ResponseData>;
+  }
+  const response_ = response as AxiosResponse<ResponseFailure>;
+  throw new ServiceException(response_.data.message, { cause: response_.data });
 };

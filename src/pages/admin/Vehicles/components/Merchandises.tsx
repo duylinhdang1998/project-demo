@@ -46,6 +46,7 @@ export const Merchandises = ({ errors, messages, control, merchandises, onChange
           label: 'merchandises',
           values: merchandises,
           onChange: onChange,
+          id: 'merchandises',
         },
       ]}
       control={control}

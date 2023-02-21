@@ -46,6 +46,7 @@ export const ServiceSettings = ({ errors, messages, control, services, onChange 
           label: 'services',
           values: services,
           onChange: onChange,
+          id: 'services',
         },
       ]}
       control={control}

@@ -96,6 +96,7 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
       setLoading(true);
       try {
         const response = await uploadImageResource({ file });
+        isStateChangedByResourcesProps.current = false;
         setFileListState(state => {
           return state.map(item => {
             if (item.uid === sessionId) {
@@ -113,6 +114,7 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
           });
         });
       } catch (error) {
+        isStateChangedByResourcesProps.current = false;
         setFileListState(state => {
           return state.filter(item => item.uid !== sessionId);
         });
@@ -151,6 +153,7 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
 
   useEffect(() => {
     if (!isStateChangedByResourcesProps.current) {
+      console.log(fileListState);
       onChange?.(
         fileListState.reduce<ImageResource[]>((result, file) => {
           if (file.response !== null) {
@@ -160,7 +163,6 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
         }, []),
       );
     }
-    isStateChangedByResourcesProps.current = false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileListState]);
 

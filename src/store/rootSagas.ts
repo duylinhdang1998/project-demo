@@ -4,6 +4,7 @@ import { contentManagerSagas } from './contentManager/sagas';
 import { officesManagerSagas } from './officesManager/sagas';
 import { packageSettingsSagas } from './packageSettings/sagas';
 import { routesSagas } from './routes/sagas';
+import { staffsSagas } from './staffs/sagas';
 import { subscriptionsSagas } from './subscriptions/sagas';
 import { vehicleEventsSagas, vehiclesSagas } from './vehicles/sagas';
 
@@ -16,6 +17,7 @@ const sagas = [
   ...vehiclesSagas,
   ...vehicleEventsSagas,
   ...routesSagas,
+  ...staffsSagas,
 ];
 
 // https://github.com/redux-saga/redux-saga/issues/760#issuecomment-273737022

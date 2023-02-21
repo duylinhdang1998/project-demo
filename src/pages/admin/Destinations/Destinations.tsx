@@ -37,7 +37,7 @@ export default function Destinations() {
             run({
               page: 0,
               searcher: {
-                title: value,
+                title: { value, operator: 'contains' },
               },
               sorter: {},
             });
@@ -53,7 +53,7 @@ export default function Destinations() {
               page,
               sorter,
               searcher: {
-                title: searchValue,
+                title: { value: searchValue, operator: 'contains' },
               },
             });
           }}

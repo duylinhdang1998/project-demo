@@ -1,20 +1,9 @@
 import { AxiosResponse } from 'axios';
+import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
 import { VehicleEvent } from 'services/models/Vehicle';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 import { momentToNumber } from 'utils/momentToNumber';
-
-interface ResponseSuccess {
-  code: number;
-  data: VehicleEvent;
-}
-
-interface ResponseFailure {
-  code: number;
-  timestamp: string;
-  path: string;
-  message: string;
-}
 
 export type CreateVehicleEvent = Pick<
   VehicleEvent,
@@ -22,7 +11,7 @@ export type CreateVehicleEvent = Pick<
 >;
 
 export const createVehicleEvent = async (data: CreateVehicleEvent) => {
-  const response: AxiosResponse<ResponseSuccess | ResponseFailure> = await fetchAPI.request({
+  const response: AxiosResponse<ResponseDetailSuccess<VehicleEvent> | ResponseFailure> = await fetchAPI.request({
     method: 'POST',
     url: '/v1.0/company/vehicle-events',
     data: {
@@ -35,7 +24,7 @@ export const createVehicleEvent = async (data: CreateVehicleEvent) => {
     },
   });
   if (response.data.code === 0) {
-    return response.data as ResponseSuccess;
+    return response.data as ResponseDetailSuccess<VehicleEvent>;
   }
   const response_ = response as AxiosResponse<ResponseFailure>;
   throw new ServiceException(response_.data.message, { cause: response_.data });

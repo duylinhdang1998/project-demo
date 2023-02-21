@@ -21,7 +21,7 @@ export const sidebars: RouteSideBar[] = [
   { path: '/admin/routers', icon: RouterIcon, name: 'routers', isAgent: true },
   { path: '/admin/package-settings', icon: PackageSettingIcon, name: 'pacakage_settings' },
   { path: '/admin/vehicles', icon: VehicleIcon, name: 'vehicles', isAgent: true },
-  { path: '/admin/staff', icon: StaffIcon, name: 'staff' },
+  { path: '/admin/staffs', icon: StaffIcon, name: 'staff' },
   { path: '/admin/passengers', icon: PassengerIcon, name: 'passengers', isAgent: true },
   { path: '/admin/destinations', icon: DestinationIcon, name: 'destinations' },
   { path: '/admin/reportings', icon: ReportingIcon, name: 'reporting' },
