@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
-import { ResponseDetailSuccess } from 'services/models/Response';
+import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
 import { Route } from 'services/models/Route';
+import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
 type ResponseData = true;
@@ -10,7 +11,7 @@ export type RemoveDayActive = Pick<Route, 'routeCode'> & {
 };
 
 export const removeDayActive = async (data: RemoveDayActive) => {
-  const response: AxiosResponse<ResponseDetailSuccess<ResponseData>> = await fetchAPI.request({
+  const response: AxiosResponse<ResponseDetailSuccess<ResponseData> | ResponseFailure> = await fetchAPI.request({
     method: 'DELETE',
     url: '/v1.0/company/routes/days/particular',
     data: {
@@ -18,5 +19,9 @@ export const removeDayActive = async (data: RemoveDayActive) => {
       dayoff: Number(data.dayoff),
     } as RemoveDayActive,
   });
-  return response.data;
+  if (response.data.code === 0) {
+    return response.data as ResponseDetailSuccess<ResponseData>;
+  }
+  const response_ = response as AxiosResponse<ResponseFailure>;
+  throw new ServiceException(response_.data.message, { cause: response_.data });
 };

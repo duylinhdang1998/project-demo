@@ -1,22 +1,20 @@
 import { AxiosResponse } from 'axios';
 import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
-import { Route } from 'services/models/Route';
+import { Staff } from 'services/models/Staff';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
-export interface DeleteRoute {
-  id: Route['_id'];
-}
+type ResponseData = number[];
 
-interface ResponseData {
-  acknowledged: true;
-  deletedCount: 1;
+export interface CreateDayOff {
+  staffId: '63da9ddc6ab3ee704d9ed425';
+  dayOff: Staff['dayOff'][number];
 }
-
-export const deleteRoute = async ({ id }: DeleteRoute): Promise<ResponseDetailSuccess<ResponseData>> => {
+export const createDayOff = async (data: CreateDayOff) => {
   const response: AxiosResponse<ResponseDetailSuccess<ResponseData> | ResponseFailure> = await fetchAPI.request({
-    method: 'DELETE',
-    url: `/v1.0/company/routes/${id}`,
+    method: 'GET', // FIXME: ???
+    url: '/v1.0/company/staffs/day-off',
+    data,
   });
   if (response.data.code === 0) {
     return response.data as ResponseDetailSuccess<ResponseData>;

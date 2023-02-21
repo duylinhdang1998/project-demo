@@ -3,9 +3,9 @@ import { Option as CheckboxGroupOption } from 'components/CheckboxGroup/Checkbox
 import { UploadImageResourceProps } from 'components/UploadImageResource/UploadImageResource';
 import { UploadPDFResourceProps } from 'components/UploadImageResource/UploadPDFResource';
 
-export interface Option {
-  key?: string;
-  value?: string;
+export interface Option<T extends string = string> {
+  key?: T;
+  value?: T;
   [key: string]: any;
 }
 

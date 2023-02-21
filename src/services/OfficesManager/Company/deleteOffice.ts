@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { Office } from 'services/models/Office';
-import { ResponseDetailSuccess } from 'services/models/Response';
+import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
+import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
 export interface DeleteOffice {
@@ -13,9 +14,13 @@ interface ResponseData {
 }
 
 export const deleteOffice = async ({ id }: DeleteOffice): Promise<ResponseDetailSuccess<ResponseData>> => {
-  const response: AxiosResponse<ResponseDetailSuccess<ResponseData>> = await fetchAPI.request({
+  const response: AxiosResponse<ResponseDetailSuccess<ResponseData> | ResponseFailure> = await fetchAPI.request({
     method: 'DELETE',
     url: `/v1.0/company/office-manager/${id}`,
   });
-  return response.data;
+  if (response.data.code === 0) {
+    return response.data as ResponseDetailSuccess<ResponseData>;
+  }
+  const response_ = response as AxiosResponse<ResponseFailure>;
+  throw new ServiceException(response_.data.message, { cause: response_.data });
 };
