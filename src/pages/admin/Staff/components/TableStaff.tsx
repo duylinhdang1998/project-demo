@@ -47,7 +47,7 @@ function TableStaff() {
       {
         key: 'role',
         dataIndex: 'role',
-        title: () => t('type'),
+        title: () => t('role'),
         align: 'center',
         render: (_, row) => <Typography variant="body2">{labelOfRole[row.role]}</Typography>,
         sorter: () => 0,
@@ -74,7 +74,7 @@ function TableStaff() {
       {
         key: 'phone',
         dataIndex: 'phone',
-        title: () => t('mobile'),
+        title: () => t('phone'),
         render: (_, row) => <Typography variant="body2">{row.phone}</Typography>,
         align: 'center',
         width: 100,
@@ -82,7 +82,7 @@ function TableStaff() {
       {
         key: 'office',
         dataIndex: 'office',
-        title: () => t('office_title'),
+        title: () => t('office'),
         // FIXME: Office title
         render: (_, row) => <Typography variant="body2">{row.office}</Typography>,
         align: 'center',

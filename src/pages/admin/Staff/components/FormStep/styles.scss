@@ -1,0 +1,27 @@
+.custom-big-calendar {
+  .cell_wrapper + .cell_wrapper {
+    border-left: 1px solid #ddd;
+  }
+  .cell_wrapper:hover .rbc-row-content {
+    color: #fff !important;
+  }
+  .rbc-row-segment {
+    position: relative;
+  }
+  .rbc-row-content {
+    height: 25px;
+  }
+  .rbc-event {
+    background-color: rgba(255, 182, 0, 0.2);
+    color: rgba(255, 182, 0, 1);
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 41px;
+    transform: translateY(-25px);
+    font-size: 10px;
+    padding: 0px, 6px, 0px, 6px;
+    border-radius: 0px 4px;
+    text-align: center;
+  }
+}

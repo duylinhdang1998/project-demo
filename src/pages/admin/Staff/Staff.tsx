@@ -8,12 +8,13 @@ import Button from 'components/Button/Button';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import TableStaff from './components/TableStaff';
-import { fieldsSearch } from './constants';
+import { fieldsSearch, typeOptions } from './constants';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { selectStaffs } from 'store/staffs/selectors';
 import { useEffect } from 'react';
 import { staffsActions } from 'store/staffs/staffsSlice';
+import { Option } from 'models/Field';
 
 const useStyles = makeStyles(() => ({
   btnAdd: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface Values {
-  type: string;
+  type: Option;
   name: string;
   mobile: string;
 }
@@ -37,7 +38,6 @@ export default function Staff() {
 
   const { control, reset, handleSubmit } = useForm<Values>({
     defaultValues: {
-      type: '',
       name: '',
       mobile: '',
     },
@@ -56,9 +56,9 @@ export default function Staff() {
         page: 0,
         sorter: {},
         searcher: {
-          phone: values.mobile,
-          lastName: values.name,
-          role: values.type,
+          phone: { value: values.mobile, operator: 'contains' },
+          lastName: { value: values.name, operator: 'contains' },
+          role: { value: values.type.value as string, operator: 'contains' },
         },
       }),
     );
@@ -66,9 +66,9 @@ export default function Staff() {
 
   useEffect(() => {
     reset({
-      mobile: currentSearcher.phone,
-      name: currentSearcher.lastName,
-      type: currentSearcher.role,
+      mobile: currentSearcher.phone?.value,
+      name: currentSearcher.lastName?.value,
+      type: typeOptions.find(option => currentSearcher.role?.value === option.value),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSearcher]);

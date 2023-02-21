@@ -19,7 +19,7 @@ function ServicesSettings() {
     {
       page: 0,
       searcher: {
-        title: searchValue,
+        title: { value: searchValue, operator: 'contains' },
       },
       sorter: {},
     },

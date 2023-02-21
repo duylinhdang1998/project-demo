@@ -5,7 +5,7 @@ import { UserRole } from './UserRole';
 export interface Staff {
   _id: string;
   company: string;
-  office: null;
+  office: string;
   role: UserRole;
   lastName: string;
   firstName: string;

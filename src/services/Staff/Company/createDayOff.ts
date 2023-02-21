@@ -7,7 +7,7 @@ import fetchAPI from 'utils/fetchAPI';
 type ResponseData = number[];
 
 export interface CreateDayOff {
-  staffId: '63da9ddc6ab3ee704d9ed425';
+  staffId: string;
   dayOffs: Staff['dayOff'];
 }
 export const createDayOff = async (data: CreateDayOff) => {
