@@ -2,10 +2,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { Field, Option } from 'models/Field';
 import { UserRole } from 'services/models/UserRole';
 
+export const labelOfRole: Record<UserRole, string> = {
+  COMPANY_ADMIN: 'Admin',
+  COMPANY_AGENT: 'Agent',
+  PASSENGER: 'Client',
+  COMPANY_DRIVER: 'Driver',
+};
+
 const typeOptions: Option<UserRole>[] = [
-  { key: 'COMPANY_AGENT', value: 'COMPANY_AGENT', label: 'Agent' },
-  { key: 'COMPANY_ADMIN', value: 'COMPANY_ADMIN', label: 'Admin' },
-  { key: 'PASSENGER', value: 'PASSENGER', label: 'Client' },
+  { key: 'COMPANY_AGENT', value: 'COMPANY_AGENT', label: labelOfRole.COMPANY_AGENT },
+  { key: 'COMPANY_ADMIN', value: 'COMPANY_ADMIN', label: labelOfRole.COMPANY_ADMIN },
+  { key: 'PASSENGER', value: 'PASSENGER', label: labelOfRole.PASSENGER },
 ];
 
 export const fieldsSearch: Field[] = [

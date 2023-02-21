@@ -3,6 +3,7 @@ import { contentManagerReducer } from './contentManager/contentManagerSlice';
 import { officesManagerReducer } from './officesManager/officesManagerSlice';
 import { packageSettingsReducer } from './packageSettings/packageSettingsSlice';
 import { routesReducer } from './routes/routesSlice';
+import { staffsReducer } from './staffs/staffsSlice';
 import { subscriptionsReducer } from './subscriptions/subscriptionsSlice';
 import { vehicleEventsReducer } from './vehicles/vehicleEventsSlice';
 import { vehiclesReducer } from './vehicles/vehiclesSlice';
@@ -16,6 +17,7 @@ const reducers = {
   vehicles: vehiclesReducer,
   vehicleEvents: vehicleEventsReducer,
   routes: routesReducer,
+  staffs: staffsReducer,
 };
 
 export default reducers;

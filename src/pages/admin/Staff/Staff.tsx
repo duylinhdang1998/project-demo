@@ -9,6 +9,11 @@ import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import TableStaff from './components/TableStaff';
 import { fieldsSearch } from './constants';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { selectStaffs } from 'store/staffs/selectors';
+import { useEffect } from 'react';
+import { staffsActions } from 'store/staffs/staffsSlice';
 
 const useStyles = makeStyles(() => ({
   btnAdd: {
@@ -30,19 +35,54 @@ export default function Staff() {
   const classes = useStyles();
   const matches = useMediaQuery('(min-width:1200px)');
 
-  const { control, handleSubmit } = useForm<Values>({
+  const { control, reset, handleSubmit } = useForm<Values>({
     defaultValues: {
       type: '',
       name: '',
       mobile: '',
     },
   });
+
+  const dispatch = useAppDispatch();
+  const { currentSearcher } = useAppSelector(selectStaffs);
+
   const handleAdd = () => {
     navigate('/admin/add-new-staff');
   };
+
   const onSubmit = (values: Values) => {
-    console.log({ values });
+    dispatch(
+      staffsActions.getStaffsRequest({
+        page: 0,
+        sorter: {},
+        searcher: {
+          phone: values.mobile,
+          lastName: values.name,
+          role: values.type,
+        },
+      }),
+    );
   };
+
+  useEffect(() => {
+    reset({
+      mobile: currentSearcher.phone,
+      name: currentSearcher.lastName,
+      type: currentSearcher.role,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSearcher]);
+
+  useEffect(() => {
+    dispatch(
+      staffsActions.getStaffsRequest({
+        page: 0,
+        sorter: {},
+        searcher: {},
+      }),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box>

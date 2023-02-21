@@ -6,7 +6,7 @@ import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 import { momentToNumber } from 'utils/momentToNumber';
 
-interface CreatePresenceDay {
+export interface CreatePresenceDay {
   staffId: Staff['_id'];
   presenceDay: Array<DayInWeek>;
   periodFrom: number;

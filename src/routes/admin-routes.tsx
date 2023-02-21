@@ -132,18 +132,26 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'staff',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.Staff />
-      </RequiredAuth>
-    ),
-  },
-  {
     path: 'add-new-staff',
     element: (
       <RequiredAuth role="admin">
         <Page.AddStaff />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'staffs/:staffId',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.AddStaff />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'staffs',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.Staff />
       </RequiredAuth>
     ),
   },

@@ -1,20 +1,22 @@
 import { AxiosResponse } from 'axios';
-import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
 import { Staff } from 'services/models/Staff';
+import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
-type ResponseData = number[];
-
-export interface CreateDayOff {
-  staffId: '63da9ddc6ab3ee704d9ed425';
-  dayOffs: Staff['dayOff'];
+export interface DeleteStaff {
+  id: Staff['_id'];
 }
-export const createDayOff = async (data: CreateDayOff) => {
+
+interface ResponseData {
+  acknowledged: true;
+  deletedCount: 1;
+}
+
+export const deleteStaff = async ({ id }: DeleteStaff): Promise<ResponseDetailSuccess<ResponseData>> => {
   const response: AxiosResponse<ResponseDetailSuccess<ResponseData> | ResponseFailure> = await fetchAPI.request({
-    method: 'GET', // FIXME: ???
-    url: '/v1.0/company/staffs/day-off',
-    data,
+    method: 'DELETE',
+    url: `/v1.0/company/staff/${id}`,
   });
   if (response.data.code === 0) {
     return response.data as ResponseDetailSuccess<ResponseData>;
