@@ -7,15 +7,15 @@ import { GetStaffFailure, GetStaffRequest, GetStaffSuccess } from './actions/Get
 import { GetStaffsFailure, GetStaffsRequest, GetStaffsSuccess } from './actions/GetStaffs';
 import { RemoveDayActiveFailure, RemoveDayActiveRequest, RemoveDayActiveSuccess } from './actions/RemoveDayActive';
 import { UpdateActiveDaysFailure, UpdateActiveDaysRequest, UpdateActiveDaysSuccess } from './actions/UpdateActiveDays';
+import { UpdateStaffInfoFailure, UpdateStaffInfoRequest, UpdateStaffInfoSuccess } from './actions/UpdateStaffInfo';
 
 interface StaffsManagerState {
   statusGetStaffs: Status;
   statusGetStaff: Status;
   statusCreateStaff: Status;
-  statusUpdateStaff: Status;
+  statusUpdateStaffInfo: Status;
   statusRemoveDayActive: Status;
   statusUpdateDayActive: Status;
-  statusUpdateTicketPrices: Status;
   queueDeleteStaff: Staff['_id'][];
   staffs: Staff[];
   currentPage: number;
@@ -29,10 +29,9 @@ const initialState: StaffsManagerState = {
   statusGetStaff: 'idle',
   statusGetStaffs: 'idle',
   statusCreateStaff: 'idle',
-  statusUpdateStaff: 'idle',
+  statusUpdateStaffInfo: 'idle',
   statusUpdateDayActive: 'idle',
   statusRemoveDayActive: 'idle',
-  statusUpdateTicketPrices: 'idle',
   queueDeleteStaff: [],
   staffs: [],
   currentPage: 0,
@@ -98,7 +97,7 @@ export const staffsSlice = createSlice({
       };
     },
 
-    /** <---------- create staff ----------> */
+    /** <---------- create staff info ----------> */
     createStaffRequest: (state, _action: PayloadAction<CreateStaffRequest>) => {
       return {
         ...state,
@@ -119,6 +118,28 @@ export const staffsSlice = createSlice({
         ...state,
         staff: null,
         statusCreateStaff: 'failure',
+      };
+    },
+
+    /** <---------- update staff info ----------> */
+    updateStaffInfoRequest: (state, _action: PayloadAction<UpdateStaffInfoRequest>) => {
+      return {
+        ...state,
+        statusUpdateStaffInfo: 'loading',
+      };
+    },
+    updateStaffInfoSuccess: (state, action: PayloadAction<UpdateStaffInfoSuccess>) => {
+      const { data } = action.payload;
+      return {
+        ...state,
+        staff: data,
+        statusUpdateStaffInfo: 'success',
+      };
+    },
+    updateStaffInfoFailure: (state, _action: PayloadAction<UpdateStaffInfoFailure>) => {
+      return {
+        ...state,
+        statusUpdateStaffInfo: 'failure',
       };
     },
 

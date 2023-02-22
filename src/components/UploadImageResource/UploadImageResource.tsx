@@ -48,6 +48,7 @@ export interface UploadImageResourceProps {
   onChange?: (resources: ImageResource[]) => void;
   multiple?: boolean;
   className?: string;
+  disabled?: boolean;
 }
 
 const useStyles = makeStyles(() => ({
@@ -70,7 +71,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const UploadImageResource = ({ resources = [], multiple = false, className, onChange }: UploadImageResourceProps) => {
+export const UploadImageResource = ({ resources = [], multiple = false, className, disabled = false, onChange }: UploadImageResourceProps) => {
   const classes = useStyles();
 
   const [loading, setLoading] = useState(false);
@@ -202,6 +203,7 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
         fileList={fileListState}
         beforeUpload={beforeUpload}
         itemRender={renderImage}
+        disabled={disabled}
       >
         {!!fileListState.length && !loading ? null : <UploadButton loading={loading} />}
       </Dragger>

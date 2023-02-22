@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { Office } from 'services/models/Office';
-import { ResponseDetailSuccess } from 'services/models/Response';
+import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
@@ -15,13 +15,6 @@ interface ResponseData {
   upsertedId: null;
   upsertedCount: number;
   matchedCount: number;
-}
-
-interface ResponseFailure {
-  code: 1000;
-  timestamp: string;
-  path: string;
-  message: string;
 }
 
 export const updateOffice = async ({ data, id }: UpdateOffice): Promise<ResponseDetailSuccess<ResponseData>> => {

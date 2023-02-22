@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface Values {
-  type: Option;
+  role: Option;
   name: string;
   mobile: string;
 }
@@ -58,7 +58,7 @@ export default function Staff() {
         searcher: {
           phone: { value: values.mobile, operator: 'contains' },
           lastName: { value: values.name, operator: 'contains' },
-          role: { value: values.type.value as string, operator: 'contains' },
+          role: { value: values.role.value as string, operator: 'contains' },
         },
       }),
     );
@@ -68,7 +68,7 @@ export default function Staff() {
     reset({
       mobile: currentSearcher.phone?.value,
       name: currentSearcher.lastName?.value,
-      type: typeOptions.find(option => currentSearcher.role?.value === option.value),
+      role: typeOptions.find(option => currentSearcher.role?.value === option.value),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSearcher]);

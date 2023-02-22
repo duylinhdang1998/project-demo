@@ -6,7 +6,7 @@ import fetchAPI from 'utils/fetchAPI';
 
 export interface UpdateVehicle {
   id: Vehicle['_id'];
-  data: Pick<Vehicle, 'ECOseats' | 'VIPseats' | 'attach' | 'brand' | 'merchandises' | 'model' | 'registrationId' | 'services'>;
+  data: Pick<Vehicle, 'ECOseats' | 'VIPseats' | 'brand' | 'model' | 'services' | 'merchandises' | 'attach' | 'registrationId'>;
 }
 
 interface ResponseData {
@@ -25,7 +25,9 @@ export const updateVehicle = async ({ data, id }: UpdateVehicle): Promise<Respon
       ...data,
       ECOseats: Number(data.ECOseats),
       VIPseats: Number(data.VIPseats),
-      attach: data.attach?._id,
+      attach: data.attach._id,
+      services: data.services.map(service => service._id),
+      merchandises: data.merchandises.map(merchandise => merchandise._id),
     },
   });
   if (response.data.code === 0) {

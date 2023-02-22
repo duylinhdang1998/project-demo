@@ -1,27 +1,19 @@
-import { put, retry, SagaReturnType, select, takeLeading } from 'redux-saga/effects';
-import { staffsActions } from '../staffsSlice';
-import { selectStaffs } from '../selectors';
+import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { createDayOff } from 'services/Staff/Company/createDayOff';
+import { getStaff } from 'services/Staff/Company/getStaff';
+import { staffsActions } from '../staffsSlice';
 
 function* handleRemoveDayActive({ payload }: ReturnType<typeof staffsActions.removeDayActiveRequest>) {
   const { data, onFailure, onSuccess } = payload;
-  const { staff }: SagaReturnType<typeof selectStaffs> = yield select(selectStaffs);
   try {
-    if (staff) {
-      yield retry(3, 1000, createDayOff, data);
-      yield put(
-        staffsActions.removeDayActiveSuccess({
-          data: {
-            ...staff,
-            // FIXME: Update trường "dayoff"
-          },
-        }),
-      );
-      onSuccess();
-    } else {
-      yield put(staffsActions.removeDayActiveFailure({}));
-      onFailure();
-    }
+    yield retry(3, 1000, createDayOff, data);
+    const response: SagaReturnType<typeof getStaff> = yield retry(3, 1000, getStaff, { id: data.staffId });
+    yield put(
+      staffsActions.removeDayActiveSuccess({
+        data: response.data,
+      }),
+    );
+    onSuccess();
   } catch (error) {
     console.log('watchRemoveDayActive.ts', error);
     yield put(staffsActions.removeDayActiveFailure({}));

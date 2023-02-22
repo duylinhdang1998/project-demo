@@ -33,6 +33,7 @@ export default function AddPackageSettings() {
     formState: { errors },
     handleSubmit,
     resetField,
+    reset,
   } = useForm<Values>();
   const [openDialog, setOpenDialog] = useState(false);
   const dispatch = useAppDispatch();
@@ -103,6 +104,7 @@ export default function AddPackageSettings() {
 
   useEffect(() => {
     if (isEditAction && packageSettingId) {
+      reset();
       dispatch(packageSettingsActions.getPackageSettingRequest({ id: packageSettingId }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,27 +1,19 @@
-import { put, retry, SagaReturnType, select, takeLeading } from 'redux-saga/effects';
+import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { getRoute } from 'services/Route/Company/getRoute';
 import { removeDayActive } from 'services/Route/Company/removeDayActive';
 import { routesActions } from '../routesSlice';
-import { selectRoutes } from '../selectors';
 
 function* handleRemoveDayActive({ payload }: ReturnType<typeof routesActions.removeDayActiveRequest>) {
-  const { data, onFailure, onSuccess } = payload;
-  const { route }: SagaReturnType<typeof selectRoutes> = yield select(selectRoutes);
+  const { data, routeId, onFailure, onSuccess } = payload;
   try {
-    if (route) {
-      yield retry(3, 1000, removeDayActive, data);
-      yield put(
-        routesActions.removeDayActiveSuccess({
-          data: {
-            ...route,
-            dayoffs: route?.dayoffs.concat(payload.data.dayoff),
-          },
-        }),
-      );
-      onSuccess();
-    } else {
-      yield put(routesActions.removeDayActiveFailure({}));
-      onFailure();
-    }
+    yield retry(3, 1000, removeDayActive, data);
+    const response: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, { id: routeId });
+    yield put(
+      routesActions.removeDayActiveSuccess({
+        data: response.data,
+      }),
+    );
+    onSuccess();
   } catch (error) {
     console.log('watchRemoveDayActive.ts', error);
     yield put(routesActions.removeDayActiveFailure({}));

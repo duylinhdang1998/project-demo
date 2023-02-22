@@ -26,7 +26,7 @@ const fieldKeys: Array<keyof CreateVehicle> = ['ECOseats', 'VIPseats', 'attach',
 export interface Values {
   ECOseats: Vehicle['ECOseats'];
   VIPseats: Vehicle['VIPseats'];
-  attach?: Vehicle['attach'];
+  attach: Vehicle['attach'];
   brand: Vehicle['brand'];
   merchandises: Vehicle['merchandises'];
   model: Vehicle['model'];
@@ -81,19 +81,19 @@ function FormAddVehicle() {
     return attach ? [attach] : [];
   };
 
-  const getServices = (): string[] => {
+  const getServices = (): Vehicle['services'] => {
     return getValues().services ?? [];
   };
 
-  const getMerchandises = (): string[] => {
+  const getMerchandises = (): Vehicle['merchandises'] => {
     return getValues().merchandises ?? [];
   };
 
-  const onSubmit = (value: Values) => {
+  const onSubmit = (formValues: Values) => {
     if (isEditAction && vehicleId) {
       dispatch(
         vehiclesActions.updateVehicleRequest({
-          data: value as Required<Values>,
+          data: formValues,
           id: vehicleId,
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('vehicles:vehicle') })} />, {
@@ -111,7 +111,7 @@ function FormAddVehicle() {
     } else {
       dispatch(
         vehiclesActions.createVehicleRequest({
-          data: value as Required<Values>,
+          data: formValues,
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('vehicles:vehicle') })} />, {
               className: toastClass.toastSuccess,

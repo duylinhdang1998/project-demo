@@ -5,10 +5,7 @@ import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 import { momentToNumber } from 'utils/momentToNumber';
 
-export type UpdateActiveDays = Pick<Route, 'routeCode' | 'dayActives'> & {
-  startPeriod: number;
-  endPeriod: number;
-};
+export type UpdateActiveDays = Pick<Route, 'routeCode' | 'dayActives' | 'startPeriod' | 'endPeriod'>;
 
 export const updateActiveDays = async (data: UpdateActiveDays) => {
   const response: AxiosResponse<ResponseDetailSuccess<Route> | ResponseFailure> = await fetchAPI.request({

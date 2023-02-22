@@ -1,11 +1,12 @@
 import { DayInWeek } from './DayInWeek';
+import { Office } from './Office';
 import { ImageResource } from './Resource';
 import { UserRole } from './UserRole';
 
 export interface Staff {
   _id: string;
   company: string;
-  office: string;
+  office: Office;
   role: UserRole;
   lastName: string;
   firstName: string;

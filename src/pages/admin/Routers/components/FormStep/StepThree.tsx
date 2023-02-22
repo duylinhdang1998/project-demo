@@ -19,7 +19,7 @@ import { Calendar, dateFnsLocalizer, Event, SlotInfo, Views } from 'react-big-ca
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
@@ -49,6 +49,15 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     border: 'none',
     cursor: 'pointer',
+  },
+  selectedDate: {
+    background: 'rgba(232, 246, 253, 1)',
+    padding: '8px 16px',
+    borderRadius: '24px',
+    display: 'inline-flex',
+    alignItems: 'center',
+    fontSize: '14px',
+    color: '#45485E',
   },
 }));
 
@@ -104,10 +113,8 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     if (route) {
       dispatch(
         routesActions.removeDayActiveRequest({
-          data: {
-            routeCode: route.routeCode,
-            dayoff: selectedSlot[0].getTime(),
-          },
+          routeId: route._id,
+          data: { routeCode: route.routeCode, dayoff: selectedSlot[0].getTime() },
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
               className: toastClass.toastSuccess,
@@ -128,6 +135,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     if (route) {
       dispatch(
         routesActions.updateTicketPricesRequest({
+          routeId: route._id,
           data: {
             routeCode: route.routeCode,
             particularDay: selectedSlot[0].getTime(),
@@ -189,18 +197,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
               <ClearIcon />
             </IconButton>
           </Stack>
-          <Box
-            // FIXME: Tách ra useStyles
-            style={{
-              background: 'rgba(232, 246, 253, 1)',
-              padding: '8px 16px',
-              borderRadius: '24px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              fontSize: '14px',
-              color: '#45485E',
-            }}
-          >
+          <Box className={classes.selectedDate}>
             <CalendarIcon />
             <span style={{ marginLeft: 4 }}>{moment(selectedSlot[0]).format('dddd, MM/DD/YYYY')}</span>
           </Box>
@@ -259,9 +256,8 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     );
   };
 
-  // FIXME: Error screen
   if (!route) {
-    return null;
+    return <Navigate to="/404" />;
   }
 
   return (
@@ -347,6 +343,9 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         textCancel={t('translation:back')}
         onCancel={handleCancel}
         onSave={() => {
+          toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
+            className: toastClass.toastSuccess,
+          });
           navigate('/admin/routers');
         }}
       />

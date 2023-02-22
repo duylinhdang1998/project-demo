@@ -7,5 +7,6 @@
   "staff": "Staff",
   "firstName": "First Name",
   "lastName": "Last Name",
-  "attach": "Attach a photo of staff"
+  "attach": "Attach a photo of staff",
+  "delete_day_off": "Delete employee's days off"
 }

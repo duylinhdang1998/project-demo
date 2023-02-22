@@ -4,7 +4,7 @@ import { Vehicle } from 'services/models/Vehicle';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
-export type CreateVehicle = Pick<Vehicle, 'ECOseats' | 'VIPseats' | 'attach' | 'brand' | 'merchandises' | 'model' | 'registrationId' | 'services'>;
+export type CreateVehicle = Pick<Vehicle, 'ECOseats' | 'VIPseats' | 'attach' | 'brand' | 'model' | 'merchandises' | 'registrationId' | 'services'>;
 
 export const createVehicle = async (data: CreateVehicle): Promise<ResponseDetailSuccess<Vehicle>> => {
   const response: AxiosResponse<ResponseDetailSuccess<Vehicle> | ResponseFailure> = await fetchAPI.request({
@@ -14,7 +14,9 @@ export const createVehicle = async (data: CreateVehicle): Promise<ResponseDetail
       ...data,
       ECOseats: Number(data.ECOseats),
       VIPseats: Number(data.VIPseats),
-      attach: data.attach?._id,
+      attach: data.attach._id,
+      services: data.services.map(service => service._id),
+      merchandises: data.merchandises.map(merchandise => merchandise._id),
     },
   });
   if (response.data.code === 0) {

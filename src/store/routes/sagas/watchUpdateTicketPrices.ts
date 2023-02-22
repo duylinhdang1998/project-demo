@@ -1,27 +1,19 @@
-import { put, retry, SagaReturnType, select, takeLeading } from 'redux-saga/effects';
+import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { getRoute } from 'services/Route/Company/getRoute';
 import { updateParticular } from 'services/Route/Company/updateParticular';
 import { routesActions } from '../routesSlice';
-import { selectRoutes } from '../selectors';
 
 function* handleUpdateTicketPrices({ payload }: ReturnType<typeof routesActions.updateTicketPricesRequest>) {
-  const { data, onFailure, onSuccess } = payload;
-  const { route }: SagaReturnType<typeof selectRoutes> = yield select(selectRoutes);
+  const { data, routeId, onFailure, onSuccess } = payload;
   try {
-    if (route) {
-      yield retry(3, 1000, updateParticular, data);
-      yield put(
-        routesActions.updateTicketPricesSuccess({
-          data: {
-            ...route,
-            particularDays: route.particularDays.concat(data.particularDay),
-          },
-        }),
-      );
-      onSuccess();
-    } else {
-      yield put(routesActions.updateTicketPricesFailure({}));
-      onFailure();
-    }
+    yield retry(3, 1000, updateParticular, data);
+    const response: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, { id: routeId });
+    yield put(
+      routesActions.updateTicketPricesSuccess({
+        data: response.data,
+      }),
+    );
+    onSuccess();
   } catch (error) {
     console.log('watchUpdateTicketPrices.ts', error);
     yield put(routesActions.updateTicketPricesFailure({}));

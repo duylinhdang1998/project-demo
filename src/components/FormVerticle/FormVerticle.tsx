@@ -8,10 +8,12 @@ import { customStyles } from 'components/FilterTicket/customStyles';
 import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
 import { UploadPDFResource } from 'components/UploadImageResource/UploadPDFResource';
 import { Field, SelectField } from 'models/Field';
+import { equals } from 'ramda';
 import { Controller, FieldErrors, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
 import { useStyles } from './styles';
+
 export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
   fields?: Field[];
   inputProps?: InputBaseProps;
@@ -62,6 +64,7 @@ export default function FormVerticle<T extends FieldValues>({
                     placeholder={t(`${i.label}`)}
                     className={classes.input}
                     error={!!error}
+                    disabled={i.disabled}
                   />
                   {!!error && (
                     <Typography component="p" className={classes.error} fontSize={12}>
@@ -99,7 +102,7 @@ export default function FormVerticle<T extends FieldValues>({
                 </InputLabel>
                 <Box className={cx(classes.inputNumberWrap, !!error ? classes.inputError : '')}>
                   {!!i.prefix && <span className={classes.prefix}>{i.prefix}</span>}
-                  <input {...field} id={i.label} min={0} type="number" className={classes.inputNumber} />
+                  <input {...field} disabled={i.disabled} id={i.label} min={0} type="number" className={classes.inputNumber} />
                 </Box>
                 {!!error && (
                   <Typography component="p" className={classes.error} fontSize={12}>
@@ -129,6 +132,7 @@ export default function FormVerticle<T extends FieldValues>({
                   control={control}
                   render={({ field }) => (
                     <FormControlLabel
+                      disabled={i.disabled}
                       className={classes.label}
                       control={<Checkbox onChange={field.onChange} value={c.value} />}
                       label={c.label}
@@ -186,6 +190,7 @@ export default function FormVerticle<T extends FieldValues>({
                     className={!!error ? classes.inputError : ''}
                     multiple={i.multiple}
                     resources={i.resources}
+                    disabled={i.disabled}
                     onChange={i.onChange}
                   />
                   {!!error && (
@@ -217,6 +222,7 @@ export default function FormVerticle<T extends FieldValues>({
                     className={!!error ? classes.inputError : ''}
                     multiple={i.multiple}
                     resources={i.resources}
+                    disabled={i.disabled}
                     onChange={i.onChange}
                     buttonText={i.buttonText}
                   />
@@ -245,7 +251,7 @@ export default function FormVerticle<T extends FieldValues>({
               return (
                 <Box>
                   <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                  <CheckboxGroup options={i.options ?? []} onChange={i.onChange} values={i.values} />
+                  <CheckboxGroup options={i.options ?? []} onChange={i.onChange} values={i.values} equalsFunc={i.equalsFunc} />
                   {!!error && (
                     <Typography component="p" className={classes.error} fontSize={12}>
                       {messageErr}
@@ -267,29 +273,32 @@ export default function FormVerticle<T extends FieldValues>({
           <Controller
             control={control}
             name={i.label as Path<T>}
-            render={() => (
-              <Box>
-                <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                <Select
-                  className={!!error ? classes.inputError : ''}
-                  onChange={selected => {
-                    const selected_ = selected as SelectField['options'][number];
-                    i.onChange(selected_.value);
-                  }}
-                  onMenuScrollToTop={i.onScrollEnd}
-                  options={i.options}
-                  styles={customStyles}
-                  placeholder={t(`${i.label}`)}
-                  value={i.options.find(option => option.value === i.value)}
-                  isLoading={i.isLoading}
-                />
-                {!!error && (
-                  <Typography component="p" className={classes.error} fontSize={12}>
-                    {messageErr}
-                  </Typography>
-                )}
-              </Box>
-            )}
+            render={() => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <Select
+                    isDisabled={i.disabled}
+                    className={!!error ? classes.inputError : ''}
+                    onChange={selected => {
+                      const selected_ = selected as SelectField['options'][number];
+                      i.onChange(selected_.value);
+                    }}
+                    onMenuScrollToTop={i.onScrollEnd}
+                    options={i.options}
+                    styles={customStyles}
+                    placeholder={t(`${i.label}`)}
+                    value={i.options.find(option => equals(option.value, i.value))}
+                    isLoading={i.isLoading}
+                  />
+                  {!!error && (
+                    <Typography component="p" className={classes.error} fontSize={12}>
+                      {messageErr}
+                    </Typography>
+                  )}
+                </Box>
+              );
+            }}
             rules={{
               required: {
                 value: i.required ?? false,
@@ -308,6 +317,7 @@ export default function FormVerticle<T extends FieldValues>({
               <Box>
                 <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
                 <DatePicker
+                  disabled={i.disabled}
                   picker={i.picker}
                   showTime={i.showTime}
                   value={field.value as any}
@@ -341,6 +351,7 @@ export default function FormVerticle<T extends FieldValues>({
                 <Select
                   {...selectProps}
                   {...field}
+                  isDisabled={i.disabled}
                   options={i.options}
                   styles={customStyles}
                   placeholder={t(`${i.label}`)}
@@ -373,6 +384,7 @@ export default function FormVerticle<T extends FieldValues>({
                     {t(`${i.label}`)}
                   </InputLabel>
                   <TextareaAutosize
+                    disabled={i.disabled}
                     minRows={10}
                     maxRows={10}
                     id={i.label}
