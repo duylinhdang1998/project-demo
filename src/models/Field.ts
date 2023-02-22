@@ -3,9 +3,10 @@ import { Option as CheckboxGroupOption, OptionValue } from 'components/CheckboxG
 import { UploadImageResourceProps } from 'components/UploadImageResource/UploadImageResource';
 import { UploadPDFResourceProps } from 'components/UploadImageResource/UploadPDFResource';
 
-export interface Option<T extends string = string> {
-  key?: T;
+export interface Option<T = string> {
+  key?: string;
   value?: T;
+  label?: string;
   [key: string]: any;
 }
 

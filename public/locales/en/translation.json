@@ -68,5 +68,6 @@
   "add_type_success": "Add {{type}} successfully",
   "add_type_error": "Add {{type}} error",
   "edit_type_success": "Edit {{type}} successfully",
-  "edit_type_error": "Edit {{type}} error"
+  "edit_type_error": "Edit {{type}} error",
+  "loading": "Loading"
 }

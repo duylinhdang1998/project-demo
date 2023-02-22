@@ -18,7 +18,7 @@ export const SelectRole = ({ errors, messages, control, role, disabled, onChange
     typeOptions.map(option => ({
       key: option.key as string,
       value: option.value as string,
-      label: option.label,
+      label: option.label as string,
     })),
   );
 

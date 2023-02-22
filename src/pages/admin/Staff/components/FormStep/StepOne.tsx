@@ -2,6 +2,7 @@ import { Box, Grid } from '@mui/material';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
+import { SelectRole } from 'components/SelectDecouplingData/SelectRole';
 import { isEmpty } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -10,7 +11,6 @@ import { ImageResource } from 'services/models/Resource';
 import { Staff } from 'services/models/Staff';
 import { getFieldsStepOne } from '../../constants';
 import { SelectOffice } from './components/SelectOffice';
-import { SelectRole } from './components/SelectRole';
 
 const fieldKeys: Array<keyof Staff> = ['attach', 'email', 'firstName', 'lastName', 'office', 'phone', 'role'];
 
