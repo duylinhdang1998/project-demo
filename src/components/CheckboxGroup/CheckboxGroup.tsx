@@ -2,26 +2,30 @@ import { Stack, Checkbox, CheckboxProps, FormControlLabel } from '@mui/material'
 import { equals } from 'ramda';
 import { useEffect, useRef, useState } from 'react';
 import { useStyles } from './styles';
+
+export type OptionValue = any;
+
 export interface Option {
   key: string;
-  value: string;
+  value: OptionValue;
   label: string;
 }
 
 interface CheckboxGroupProps {
   options: Option[];
-  onChange: (values: string[]) => void;
-  values: string[];
+  onChange: (values: OptionValue[]) => void;
+  values: OptionValue[];
+  equalsFunc: (input: OptionValue, optionValue: OptionValue) => void; // Deep populate là k có
 }
 
-export const CheckboxGroup = ({ options, values, onChange }: CheckboxGroupProps) => {
+export const CheckboxGroup = ({ options, values, onChange, equalsFunc }: CheckboxGroupProps) => {
   const classes = useStyles();
 
-  const [valuesState, setValuesState] = useState<string[]>([]);
+  const [valuesState, setValuesState] = useState<OptionValue[]>([]);
   const isStateChangedByResourcesProps = useRef(false);
 
   const handleChange =
-    (value: string): CheckboxProps['onChange'] =>
+    (value: OptionValue): CheckboxProps['onChange'] =>
     e => {
       if (e.target.checked) {
         setValuesState(state => state.concat(value));
@@ -52,11 +56,12 @@ export const CheckboxGroup = ({ options, values, onChange }: CheckboxGroupProps)
         if (!option.value) {
           return null;
         }
+        const isChecked = valuesState.find(item => equalsFunc(item, option.value));
         return (
           <FormControlLabel
             key={option.key}
             className={classes.label}
-            control={<Checkbox onChange={handleChange(option.value)} checked={valuesState.includes(option.value)} />}
+            control={<Checkbox onChange={handleChange(option.value)} checked={isChecked} />}
             label={option.label}
             sx={{
               '.MuiFormControlLabel-label': {

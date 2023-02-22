@@ -1,11 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Field, Option } from 'models/Field';
-
-const departureOptions: Option[] = [
-  { key: 'paris', value: 'paris', label: 'Paris' },
-  { key: 'london', value: 'london', label: 'London' },
-  { key: 'berlin', value: 'berlin', label: 'Berlin' },
-];
+import { Field } from 'models/Field';
 
 export const fieldsSearch: Field[] = [
   { id: uuidv4(), label: 'vehicle', type: 'text' },

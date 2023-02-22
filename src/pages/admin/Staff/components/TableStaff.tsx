@@ -84,7 +84,7 @@ function TableStaff() {
         dataIndex: 'office',
         title: () => t('office'),
         // FIXME: Office title
-        render: (_, row) => <Typography variant="body2">{row.office}</Typography>,
+        render: (_, row) => <Typography variant="body2">{row.office.title}</Typography>,
         align: 'center',
         sorter: () => 0,
         width: 300,

@@ -17,8 +17,8 @@ interface ServiceSettingsProps {
   errors: FieldErrors<any>;
   messages: Record<string, string>;
   control: Control<any, any>;
-  office: Office['_id'];
-  onChange: (office: Office['_id']) => void;
+  office: Office;
+  onChange: (office: Office) => void;
 }
 export const SelectOffice = ({ errors, messages, control, office, onChange }: ServiceSettingsProps) => {
   const [options, setOptions] = useState<Option[]>([]);
@@ -30,7 +30,7 @@ export const SelectOffice = ({ errors, messages, control, office, onChange }: Se
       data.hits.map(item => ({
         key: item._id,
         label: item.title,
-        value: item._id,
+        value: item,
       })),
     );
   };

@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { momentToNumber } from 'utils/momentToNumber';
 import { anyToMoment } from 'utils/anyToMoment';
 import { Staff } from 'services/models/Staff';
+import { omit } from 'lodash';
 
 const steps = ['Step 1', 'Step 2', 'Step 3'];
 
@@ -37,7 +38,7 @@ export default function StepForm({ isEditAction }: StepFormProps) {
   const classes = useStyles();
   const toastClass = useToastStyle();
 
-  const { statusCreateStaff, statusUpdateStaff, statusUpdateDayActive, staff } = useAppSelector(selectStaffs);
+  const { statusCreateStaff, statusUpdateStaffInfo, statusUpdateDayActive, staff } = useAppSelector(selectStaffs);
   const dispatch = useAppDispatch();
 
   const nextStep = () => {
@@ -51,22 +52,29 @@ export default function StepForm({ isEditAction }: StepFormProps) {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
-  // FIXME: Chưa có api update nên chưa lắp chức năng "Edit"
   const handleSubmitStep1 = (formValues: StepOneValues) => {
-    if (isEditAction) {
-      console.log('Update staff info');
+    if (isEditAction && staff) {
+      dispatch(
+        staffsActions.updateStaffInfoRequest({
+          staffId: staff._id,
+          data: omit(formValues, ['role', 'email']),
+          onSuccess() {
+            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('staff:staff') })} />, {
+              className: toastClass.toastSuccess,
+            });
+            nextStep();
+          },
+          onFailure() {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('staff:staff') })} />, {
+              className: toastClass.toastError,
+            });
+          },
+        }),
+      );
     } else {
       dispatch(
         staffsActions.createStaffRequest({
-          data: {
-            attach: formValues.attach._id,
-            email: formValues.email,
-            firstName: formValues.firstName,
-            lastName: formValues.lastName,
-            office: formValues.office,
-            phone: formValues.phone,
-            role: formValues.role,
-          },
+          data: formValues,
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('staff:staff') })} />, {
               className: toastClass.toastSuccess,
@@ -111,7 +119,7 @@ export default function StepForm({ isEditAction }: StepFormProps) {
 
   // Set state values từng step
   useEffect(() => {
-    if (staff) {
+    if (isEditAction && staff) {
       setStepOneValues({
         attach: staff.attach,
         email: staff.email,
@@ -120,14 +128,14 @@ export default function StepForm({ isEditAction }: StepFormProps) {
         office: staff.office,
         phone: staff.phone,
         role: staff.role,
-      } as StepOneValues);
+      });
       setStepTwoValues({
         days: staff.presenceDay,
         fromDate: anyToMoment({ value: staff.periodFrom }),
         toDate: anyToMoment({ value: staff.periodTo }),
       });
     }
-  }, [staff]);
+  }, [isEditAction, staff]);
 
   const renderStepContent = () => {
     switch (activeStep) {
@@ -135,7 +143,7 @@ export default function StepForm({ isEditAction }: StepFormProps) {
         return (
           <StepOne
             isEdit={isEditAction}
-            isLoading={statusCreateStaff === 'loading' || statusUpdateStaff === 'loading'}
+            isLoading={statusCreateStaff === 'loading' || statusUpdateStaffInfo === 'loading'}
             values={stepOneValues}
             onCancel={values => {
               setStepOneValues(values);

@@ -16,14 +16,16 @@ export const typeOptions: Option<UserRole>[] = [
 ];
 
 export const fieldsSearch: Field[] = [
-  { id: uuidv4(), label: 'type', options: typeOptions, type: 'select' },
+  { id: uuidv4(), label: 'role', options: typeOptions, type: 'select' },
   { id: uuidv4(), label: 'name', type: 'text' },
-  { id: uuidv4(), label: 'mobile', type: 'text' },
+  { id: uuidv4(), label: 'phone', type: 'text' },
 ];
 
-export const fieldsStepOne: Field[] = [
-  { id: uuidv4(), type: 'text', required: true, label: 'lastName' },
-  { id: uuidv4(), type: 'text', required: true, label: 'firstName' },
-  { id: uuidv4(), type: 'email', required: true, label: 'email' },
-  { id: uuidv4(), type: 'text', required: true, label: 'phone' },
-];
+export const getFieldsStepOne = (isEdit?: boolean): Field[] => {
+  return [
+    { id: uuidv4(), type: 'text', required: true, label: 'lastName' },
+    { id: uuidv4(), type: 'text', required: true, label: 'firstName' },
+    { id: uuidv4(), type: 'email', required: true, label: 'email', disabled: isEdit },
+    { id: uuidv4(), type: 'text', required: true, label: 'phone' },
+  ];
+};

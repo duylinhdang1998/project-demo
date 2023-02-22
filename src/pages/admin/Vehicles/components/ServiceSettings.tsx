@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react';
-import { Control, FieldErrors } from 'react-hook-form';
 import { Option } from 'components/CheckboxGroup/CheckboxGroup';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
+import { omit } from 'lodash';
+import { equals } from 'ramda';
+import { useEffect, useState } from 'react';
+import { Control, FieldErrors } from 'react-hook-form';
+import { ServiceSetting } from 'services/models/ServiceSetting';
 import { Vehicle } from 'services/models/Vehicle';
 import { getServiceSettings } from 'services/ServiceSetting/Company/getServiceSettings';
 import { Values } from './FormAddVehicle';
@@ -26,7 +29,7 @@ export const ServiceSettings = ({ errors, messages, control, services, onChange 
   // FIXME: Đổi sang useRequest của ahooks
   const handleGetOptions = async () => {
     const { data } = await getOptions();
-    setOptions(data.hits.map(item => ({ key: item._id, label: item.title, value: item._id })));
+    setOptions(data.hits.map(item => ({ key: item._id, label: item.title, value: item })));
   };
 
   useEffect(() => {
@@ -47,6 +50,11 @@ export const ServiceSettings = ({ errors, messages, control, services, onChange 
           values: services,
           onChange: onChange,
           id: 'services',
+          equalsFunc(input, optionValue) {
+            const input_ = input as Vehicle['services'][number];
+            const optionValue_ = optionValue as ServiceSetting[];
+            return equals(omit(input_, ['icon']), omit(optionValue_, ['icon']));
+          },
         },
       ]}
       control={control}

@@ -1,27 +1,19 @@
-import { put, retry, SagaReturnType, select, takeLeading } from 'redux-saga/effects';
+import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { getPackageSetting } from 'services/PackageSettings/Company/getPackageSetting';
 import { updatePackageSetting } from 'services/PackageSettings/Company/updatePackageSetting';
 import { packageSettingsActions } from '../packageSettingsSlice';
-import { selectPackageSettings } from '../selectors';
 
 function* handleUpdatePackageSetting({ payload }: ReturnType<typeof packageSettingsActions.updatePackageSettingRequest>) {
   const { id, data, onFailure, onSuccess } = payload;
-  const packageSettingsStates: SagaReturnType<typeof selectPackageSettings> = yield select(selectPackageSettings);
   try {
-    if (packageSettingsStates.packageSetting) {
-      yield retry(3, 1000, updatePackageSetting, payload);
-      yield put(
-        packageSettingsActions.updatePackageSettingSuccess({
-          data: {
-            ...packageSettingsStates.packageSetting,
-            ...data,
-          },
-        }),
-      );
-      onSuccess();
-    } else {
-      yield put(packageSettingsActions.updatePackageSettingFailure({ id }));
-      onFailure();
-    }
+    yield retry(3, 1000, updatePackageSetting, { data, id });
+    const response: SagaReturnType<typeof getPackageSetting> = yield retry(3, 1000, getPackageSetting, { id });
+    yield put(
+      packageSettingsActions.updatePackageSettingSuccess({
+        data: response.data,
+      }),
+    );
+    onSuccess();
   } catch (error) {
     console.log('watchUpdatePackageSetting.ts', error);
     yield put(packageSettingsActions.updatePackageSettingFailure({ id }));

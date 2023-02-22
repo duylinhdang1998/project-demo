@@ -5,19 +5,20 @@ import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { UserRole } from 'services/models/UserRole';
 import { typeOptions } from 'pages/admin/Staff/constants';
 
-interface ServiceSettingsProps {
+interface SelectRoleProps {
   errors: FieldErrors<any>;
   messages: Record<string, string>;
   control: Control<any, any>;
   role: UserRole;
   onChange: (role: UserRole) => void;
+  disabled?: boolean;
 }
-export const SelectRole = ({ errors, messages, control, role, onChange }: ServiceSettingsProps) => {
+export const SelectRole = ({ errors, messages, control, role, disabled, onChange }: SelectRoleProps) => {
   const [options] = useState<Option[]>(
     typeOptions.map(option => ({
       key: option.key as string,
       value: option.value as string,
-      label: option.label,
+      label: option.label as string,
     })),
   );
 
@@ -38,6 +39,7 @@ export const SelectRole = ({ errors, messages, control, role, onChange }: Servic
           },
           onScrollEnd() {},
           isLoading: false,
+          disabled: disabled,
         },
       ]}
       control={control}

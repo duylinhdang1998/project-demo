@@ -12,7 +12,7 @@ export interface CreateDayOff {
 }
 export const createDayOff = async (data: CreateDayOff) => {
   const response: AxiosResponse<ResponseDetailSuccess<ResponseData> | ResponseFailure> = await fetchAPI.request({
-    method: 'GET', // FIXME: ???
+    method: 'POST',
     url: '/v1.0/company/staffs/day-off',
     data,
   });

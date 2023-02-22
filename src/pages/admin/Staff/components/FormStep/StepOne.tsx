@@ -2,27 +2,19 @@ import { Box, Grid } from '@mui/material';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
+import { SelectRole } from 'components/SelectDecouplingData/SelectRole';
 import { isEmpty } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ImageResource } from 'services/models/Resource';
 import { Staff } from 'services/models/Staff';
-import { fieldsStepOne } from '../../constants';
+import { getFieldsStepOne } from '../../constants';
 import { SelectOffice } from './components/SelectOffice';
-import { SelectRole } from './components/SelectRole';
 
-const fieldKeys: Array<keyof Staff> = ['role', 'office', 'lastName', 'firstName', 'email', 'phone', 'attach'];
+const fieldKeys: Array<keyof Staff> = ['attach', 'email', 'firstName', 'lastName', 'office', 'phone', 'role'];
 
-export interface StepOneValues {
-  role: Staff['role'];
-  office: Staff['office'];
-  lastName: Staff['lastName'];
-  firstName: Staff['firstName'];
-  email: Staff['email'];
-  phone: Staff['phone'];
-  attach: Staff['attach'];
-}
+export type StepOneValues = Pick<Staff, 'attach' | 'email' | 'firstName' | 'lastName' | 'office' | 'phone' | 'role'>;
 
 export interface StepOneProps {
   onNextStep?: (values: StepOneValues) => void;
@@ -83,6 +75,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <SelectRole
+            disabled={isEdit}
             control={control}
             errors={errors}
             messages={messages}
@@ -108,7 +101,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
         errors={errors}
         messages={messages}
         control={control}
-        fields={fieldsStepOne}
+        fields={getFieldsStepOne(isEdit)}
         indexGridHorizon={-1}
         isGridHorizon
         grid
@@ -127,7 +120,6 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             resources: getAttach(),
             onChange: resources => {
               const lastResource = resources[resources.length - 1];
-              console.log(resources, lastResource);
               resetField('attach', {
                 defaultValue: lastResource ? lastResource : undefined,
               });

@@ -18,7 +18,7 @@ import { useState } from 'react';
 import { Calendar, dateFnsLocalizer, Event, SlotInfo, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { staffsActions } from 'store/staffs/staffsSlice';
 import { selectStaffs } from 'store/staffs/selectors';
@@ -47,6 +47,16 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     border: 'none',
     cursor: 'pointer',
+  },
+  selectedDate: {
+    background: 'rgba(232, 246, 253, 1)',
+    padding: '8px 16px',
+    borderRadius: '24px',
+    display: 'inline-flex',
+    alignItems: 'center',
+    fontSize: '14px',
+    color: '#45485E',
+    marginTop: '12px',
   },
 }));
 
@@ -112,35 +122,46 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     }
     return (
       <Dialog open onClose={handleCloseDialogEdit}>
-        <Box padding="24px">
+        <Box padding="30px">
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <DialogTitle sx={{ padding: '0 !important' }}>{t('staff:edit_ticket_prices')}</DialogTitle>
+            <DialogTitle sx={{ padding: '0 !important' }}>{t('staff:delete_day_off')}</DialogTitle>
             <IconButton onClick={handleCloseDialogEdit}>
               <ClearIcon />
             </IconButton>
           </Stack>
-          <Box
-            // FIXME: Tách ra useStyles
-            style={{
-              background: 'rgba(232, 246, 253, 1)',
-              padding: '8px 16px',
-              borderRadius: '24px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              fontSize: '14px',
-              color: '#45485E',
-            }}
-          >
+          <Box className={classes.selectedDate}>
             <CalendarIcon />
-            <span style={{ marginLeft: 4 }}>{moment(selectedSlot[0]).format('dddd, MM/DD/YYYY')}</span>
+            <span style={{ marginLeft: 4 }}>
+              {moment(selectedSlot[0]).format('dddd, MM/DD/YYYY')} - {moment(selectedSlot[selectedSlot.length - 1]).format('dddd, MM/DD/YYYY')}
+            </span>
           </Box>
           <ComboButton
-            textCancel={t('translation:delete')}
             onCancel={handleOpenDialogConfirmDelete}
             onSave={() => {
-              navigate('/admin/staffs');
+              if (staff) {
+                dispatch(
+                  staffsActions.removeDayActiveRequest({
+                    data: {
+                      staffId: staff._id,
+                      dayOffs: selectedSlot.map(item => item.getTime()),
+                    },
+                    onSuccess() {
+                      toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('staff:staff') })} />, {
+                        className: toastClass.toastSuccess,
+                      });
+                      handleCloseDialogEdit();
+                    },
+                    onFailure() {
+                      toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('staff:staff') })} />, {
+                        className: toastClass.toastError,
+                      });
+                    },
+                  }),
+                );
+              }
             }}
-            isDeleting={statusRemoveDayActive === 'loading'}
+            textOk={t('translation:delete')}
+            isSaving={statusRemoveDayActive === 'loading'}
           />
         </Box>
       </Dialog>
@@ -189,9 +210,8 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     );
   };
 
-  // FIXME: Error screen
   if (!staff) {
-    return null;
+    return <Navigate to="/404" />;
   }
 
   return (
@@ -272,6 +292,9 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         textCancel={t('translation:back')}
         onCancel={handleCancel}
         onSave={() => {
+          toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('staff:staff') })} />, {
+            className: toastClass.toastSuccess,
+          });
           navigate('/admin/staffs');
         }}
       />
