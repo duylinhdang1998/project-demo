@@ -9,7 +9,7 @@ export type Searcher<T extends AnyObject> = Partial<
     keyof T,
     {
       operator: SearcherOperator;
-      value: string;
+      value?: string;
     }
   >
 >;

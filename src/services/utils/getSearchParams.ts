@@ -6,10 +6,13 @@ export const getSearchParams = <T extends AnyObject>(searcher: Searcher<T>) => {
     if (searchItem) {
       const { operator, value } = searchItem;
       const key = `${searchKey}[${operator}]`;
-      return {
-        ...res,
-        [key]: value,
-      };
+      if (value) {
+        return {
+          ...res,
+          [key]: value,
+        };
+      }
+      return res;
     }
     return res;
   }, {});
