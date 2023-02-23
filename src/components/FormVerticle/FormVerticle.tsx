@@ -278,6 +278,7 @@ export default function FormVerticle<T extends FieldValues>({
                 <Box>
                   <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
                   <Select
+                    isSearchable
                     isDisabled={i.disabled}
                     className={!!error ? classes.inputError : ''}
                     onChange={selected => {

@@ -15,7 +15,7 @@ export interface SelectDecouplingData<Model extends AnyObject>
   transformToOption: (model: Model, index?: number) => Option<Model>;
 }
 
-const height = 38;
+export const HEIGHT = 38;
 export const SelectDecouplingData = <Model extends AnyObject>({
   value,
   onChange,
@@ -35,14 +35,14 @@ export const SelectDecouplingData = <Model extends AnyObject>({
 
   const Options: SelectComponentsConfig<Model, false, GroupBase<Model>>['MenuList'] = ({ options, children, maxHeight, getValue }) => {
     const [value] = getValue();
-    const initialOffset = options.indexOf(value) * height;
+    const initialOffset = options.indexOf(value) * HEIGHT;
 
     if (!Array.isArray(children)) {
       return null;
     }
 
     return (
-      <List width="100%" height={maxHeight} itemCount={children.length} itemSize={height} initialScrollOffset={initialOffset}>
+      <List width="100%" height={maxHeight} itemCount={children.length} itemSize={HEIGHT} initialScrollOffset={initialOffset}>
         {({ index, style }) => <div style={style}>{children[index]}</div>}
       </List>
     );

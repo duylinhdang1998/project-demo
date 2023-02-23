@@ -2,7 +2,6 @@ import { Box, Grid } from '@mui/material';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
-import { SelectRole } from 'components/SelectDecouplingData/SelectRole';
 import { isEmpty } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -10,7 +9,8 @@ import { useTranslation } from 'react-i18next';
 import { ImageResource } from 'services/models/Resource';
 import { Staff } from 'services/models/Staff';
 import { getFieldsStepOne } from '../../constants';
-import { SelectOffice } from './components/SelectOffice';
+import { SelectOffice } from '../../../../../components/SelectDecouplingData/SelectOffice';
+import { SelectRole } from 'components/SelectDecouplingData/SelectRole';
 
 const fieldKeys: Array<keyof Staff> = ['attach', 'email', 'firstName', 'lastName', 'office', 'phone', 'role'];
 
@@ -72,10 +72,11 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
 
   return (
     <Box my="24px">
-      <Grid container spacing={2}>
+      <Grid my="16px" container spacing={2}>
         <Grid item xs={12} sm={6}>
           <SelectRole
-            disabled={isEdit}
+            isRequired
+            isDisabled={isEdit}
             control={control}
             errors={errors}
             messages={messages}
@@ -94,6 +95,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             onChange={value => {
               resetField('office', { defaultValue: value });
             }}
+            isRequired
           />
         </Grid>
       </Grid>
