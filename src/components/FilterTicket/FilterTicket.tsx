@@ -3,10 +3,12 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
+import { SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
 import { Field } from 'models/Field';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
+import { getCountryList } from 'services/PackageSales/packageSales';
 import { customStyles } from './customStyles';
 
 interface FilterTicketProps<T extends FieldValues> {
@@ -110,17 +112,33 @@ export default function FilterTicket<T extends FieldValues>({
             )}
           />
         );
-      // case 'country':
-      //   return (
-      //     <SelectCountryFilter
-      //       selectProps={selectProps}
-      //       formProps={{
-      //         control: control as any,
-      //         name: i.label ?? '',
-      //       }}
-      //       label={i.label}
-      //     />
-      //   );
+      case 'country':
+        return (
+          <Controller
+            control={control}
+            name={i.label as Path<T>}
+            render={({ field }) => (
+              <Box>
+                <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                <SelectDecouplingData
+                  value={field.value}
+                  service={async () => {
+                    const response = await getCountryList();
+                    return response.data.hits;
+                  }}
+                  transformToOption={model => ({
+                    key: model._id,
+                    label: model.officialName,
+                    value: model,
+                  })}
+                  onChange={field.onChange}
+                  isClearable
+                  styles={customStyles as any}
+                />
+              </Box>
+            )}
+          />
+        );
       default:
         return null;
     }

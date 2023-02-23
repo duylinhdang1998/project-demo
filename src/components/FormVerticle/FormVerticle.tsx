@@ -290,6 +290,7 @@ export default function FormVerticle<T extends FieldValues>({
                     placeholder={t(`${i.label}`)}
                     value={i.options.find(option => equals(option.value, i.value))}
                     isLoading={i.isLoading}
+                    isClearable
                   />
                   {!!error && (
                     <Typography component="p" className={classes.error} fontSize={12}>

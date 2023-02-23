@@ -1,3 +1,5 @@
+import { PaymentStatus } from './PaymentStatus';
+
 export interface PackageSale {
   _id?: string;
   company?: string;
@@ -10,7 +12,11 @@ export interface PackageSale {
   createdAt?: Date;
   updatedAt?: Date;
   __v?: number;
-  paymentId?: string;
+  paymentId?: {
+    _id?: string;
+    paymentCode?: string;
+    paymentStatus: PaymentStatus;
+  };
 }
 
 interface Merchandise {
@@ -39,7 +45,17 @@ interface Recipent {
 }
 
 interface Trip {
-  departurePoint?: string;
-  arrivalPoint?: string;
+  departurePoint?: {
+    _id?: string;
+    name?: string;
+    officialName?: string;
+    code?: string;
+  };
+  arrivalPoint?: {
+    _id?: string;
+    name?: string;
+    officialName?: string;
+    code?: string;
+  };
   departureTime?: number;
 }

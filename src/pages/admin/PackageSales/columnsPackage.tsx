@@ -1,9 +1,12 @@
 import { Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
 import { CalendarIcon, MapPinIcon } from 'assets';
+import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import i18n from 'locales/i18n';
 import { PackageSale } from 'models/PackageSales';
+import { PaymentStatus } from 'models/PaymentStatus';
 
 export const getTotal = (arr: PackageSale['merchandises'], key: string) => {
   return arr?.reduce((s, item) => {
@@ -30,7 +33,7 @@ export const columnsPackage: ColumnsType<PackageSale> = [
         <div>
           <TextWithIcon
             icon={MapPinIcon}
-            text={trip?.departurePoint}
+            text={trip?.departurePoint?.officialName}
             typography={{
               fontSize: '14px',
             }}
@@ -38,7 +41,7 @@ export const columnsPackage: ColumnsType<PackageSale> = [
           />
           <TextWithIcon
             icon={CalendarIcon}
-            text={trip?.arrivalPoint}
+            text={trip?.arrivalPoint?.officialName}
             typography={{
               fontSize: '12px',
             }}
@@ -126,12 +129,11 @@ export const columnsPackage: ColumnsType<PackageSale> = [
     dataIndex: 'status',
     align: 'center',
     title: () => <div>{i18n.t('packageSales:status')}</div>,
-    // render: (value: string[]) => (
-    //   <Box display="flex" alignItems="center" justifyContent="center">
-    //     {value.map((i, index) => index === 0 && <Tag key={index.toString()} text={i} variant={index % 2 === 0 ? 'success' : 'error'} />)}
-    //     <TooltipMoreStatus status={value} text={`${value.length - 1}`} />
-    //   </Box>
-    // ),
-    render: () => <div>Status</div>,
+    render: (_, item) => (
+      <Box display="flex" alignItems="center" justifyContent="center">
+        <Tag text={item.paymentId?.paymentStatus} variant={item.paymentId?.paymentStatus === PaymentStatus.APPROVED ? 'success' : 'error'} />
+        {/* <TooltipMoreStatus status={item.paymentId?.paymentStatus} text={`${value.length - 1}`} /> */}
+      </Box>
+    ),
   },
 ];

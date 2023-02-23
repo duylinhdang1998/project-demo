@@ -15,7 +15,7 @@ export const customStyles: StylesConfig = {
       ...provided,
       color,
       fontSize: '14px',
-      fontFamily: 'Google sans',
+      fontFamily: '"Google sans",sans-serif',
     };
   },
   option: (provided, state) => {
@@ -23,6 +23,7 @@ export const customStyles: StylesConfig = {
       ...provided,
       color: state.isSelected ? '#fff' : '#333',
       fontSize: '14px',
+      fontFamily: '"Google sans",sans-serif',
     };
   },
   indicatorSeparator: () => {
@@ -34,6 +35,12 @@ export const customStyles: StylesConfig = {
     return {
       ...provided,
       zIndex: 9,
+    };
+  },
+  clearIndicator: provided => {
+    return {
+      ...provided,
+      color: '#333',
     };
   },
 };
