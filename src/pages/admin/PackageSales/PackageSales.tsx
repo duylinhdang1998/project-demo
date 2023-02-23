@@ -1,19 +1,21 @@
 import AddIcon from '@mui/icons-material/Add';
 import { Grid, Stack, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useMount } from 'ahooks';
 import AntTable from 'components/AntTable/AntTable';
 import Button from 'components/Button/Button';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { useGetListPackageSales } from 'services/PackageSales/packageSales';
 import { selectAuth } from 'store/auth/selectors';
-import { columnsPackage, dataPackageSales } from './columnsPackage';
+import { columnsPackage } from './columnsPackage';
 import { agentFieldSearch, fieldsSearch, keysFieldsSearch } from './constants';
 
-type Values = Record<typeof keysFieldsSearch[number], string>;
+type Values = Record<(typeof keysFieldsSearch)[number], string>;
 
 export default function PackageSales() {
   const { t } = useTranslation(['packageSales', 'translation']);
@@ -21,6 +23,8 @@ export default function PackageSales() {
   const navigate = useNavigate();
   const { userInfo } = useAppSelector(selectAuth);
   const isAgent = userInfo?.role === 'agent';
+
+  const { data, loading, run: getListPkgSales } = useGetListPackageSales();
 
   const { control, handleSubmit } = useForm<Values>({
     defaultValues: {
@@ -30,6 +34,14 @@ export default function PackageSales() {
       payment_status: '',
       order_id: '',
     },
+  });
+
+  useMount(() => {
+    getListPkgSales({
+      page: 0,
+      searcher: {},
+      sorter: {},
+    });
   });
 
   const onSubmit = (values: Values) => {
@@ -81,7 +93,7 @@ export default function PackageSales() {
           </Grid>
         </Grid>
         <Box my="30px">
-          <AntTable columns={columnsPackage} dataSource={dataPackageSales()} rowKey={record => record.orderId ?? ''} />
+          <AntTable columns={columnsPackage} loading={loading} dataSource={data?.data.hits} rowKey={record => record._id ?? ''} />
         </Box>
       </Box>
     </Box>

@@ -3,10 +3,10 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
+import { Field } from 'models/Field';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
-import { Field } from 'models/Field';
 import { customStyles } from './customStyles';
 
 interface FilterTicketProps<T extends FieldValues> {
@@ -110,6 +110,17 @@ export default function FilterTicket<T extends FieldValues>({
             )}
           />
         );
+      // case 'country':
+      //   return (
+      //     <SelectCountryFilter
+      //       selectProps={selectProps}
+      //       formProps={{
+      //         control: control as any,
+      //         name: i.label ?? '',
+      //       }}
+      //       label={i.label}
+      //     />
+      //   );
       default:
         return null;
     }

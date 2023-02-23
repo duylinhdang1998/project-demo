@@ -1,8 +1,8 @@
 import 'antd/lib/dropdown/style/css';
-import ReactDOM from 'react-dom';
 import { GlobalProvider } from 'context/GlobalContext';
 import 'index.css';
 import 'locales/i18n';
+import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
