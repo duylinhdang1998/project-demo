@@ -13,7 +13,7 @@ export interface Option<T = string> {
 export interface SimpleField {
   id?: string;
   label?: string;
-  type?: 'email' | 'text' | 'select' | 'datetime' | 'number' | 'file' | 'image' | 'checkbox' | 'textarea';
+  type?: 'email' | 'text' | 'select' | 'datetime' | 'number' | 'file' | 'image' | 'checkbox' | 'textarea' | 'country';
   placeholder?: string;
   options?: Option[];
   prefix?: string;

@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { useRequest } from 'ahooks';
 import { Option } from 'models/Field';
-import Select, { ActionMeta, GroupBase, SelectComponentsConfig, SingleValue, Props as SelectProps } from 'react-select';
+import Select, { ActionMeta, GroupBase, Props as SelectProps, SelectComponentsConfig, SingleValue } from 'react-select';
 import { FixedSizeList as List } from 'react-window';
 import { AnyObject } from 'services/@types/SearchParams';
 
@@ -21,9 +21,7 @@ export const SelectDecouplingData = <Model extends AnyObject>({
   ...rest
 }: SelectDecouplingData<Model>) => {
   const { loading, data } = useRequest<Model[], any[]>(service, {
-    retryCount: 3,
     retryInterval: 1000,
-    refreshOnWindowFocus: true,
     staleTime: 30000,
   });
   const height = 38;
