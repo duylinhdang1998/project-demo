@@ -1,18 +1,17 @@
 import { Box } from '@mui/material';
 import 'antd/lib/upload/style/css';
-import moment from 'moment';
-import { memo, useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { v4 } from 'uuid';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import moment from 'moment';
+import { memo, useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { PDFResource } from 'services/models/Resource';
 import { VehicleEvent } from 'services/models/Vehicle';
 import { CreateVehicleEvent } from 'services/Vehicle/Company/createVehicleEvent';
@@ -168,7 +167,7 @@ function FormAddEvent() {
           errors={errors}
           messages={messages}
           control={control}
-          fields={[{ type: 'textarea', placeholder: t(`description`), id: 'description', label: 'description' }]}
+          fields={[{ id: 'description', type: 'textarea', placeholder: t(`description`), label: 'description' }]}
           filterKey="vehicles"
         />
       </Box>
@@ -177,7 +176,7 @@ function FormAddEvent() {
           control={control}
           fields={[
             {
-              id: v4(),
+              id: 'attach_document',
               type: 'pdf_resource',
               label: 'attach_document',
               required: true,

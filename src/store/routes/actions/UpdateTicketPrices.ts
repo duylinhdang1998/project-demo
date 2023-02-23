@@ -3,6 +3,7 @@ import { UpdateParticular } from 'services/Route/Company/updateParticular';
 
 export interface UpdateTicketPricesRequest {
   data: UpdateParticular;
+  routeId: Route['_id'];
   onSuccess: () => void;
   onFailure: () => void;
 }

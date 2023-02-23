@@ -1,17 +1,16 @@
 import { Grid, Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import { useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { v4 } from 'uuid';
 import Button from 'components/Button/Button';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { ImageResource } from 'services/models/Resource';
 import { Vehicle } from 'services/models/Vehicle';
 import { CreateVehicle } from 'services/Vehicle/Company/createVehicle';
@@ -27,7 +26,7 @@ const fieldKeys: Array<keyof CreateVehicle> = ['ECOseats', 'VIPseats', 'attach',
 export interface Values {
   ECOseats: Vehicle['ECOseats'];
   VIPseats: Vehicle['VIPseats'];
-  attach?: Vehicle['attach'];
+  attach: Vehicle['attach'];
   brand: Vehicle['brand'];
   merchandises: Vehicle['merchandises'];
   model: Vehicle['model'];
@@ -82,19 +81,19 @@ function FormAddVehicle() {
     return attach ? [attach] : [];
   };
 
-  const getServices = (): string[] => {
+  const getServices = (): Vehicle['services'] => {
     return getValues().services ?? [];
   };
 
-  const getMerchandises = (): string[] => {
+  const getMerchandises = (): Vehicle['merchandises'] => {
     return getValues().merchandises ?? [];
   };
 
-  const onSubmit = (value: Values) => {
+  const onSubmit = (formValues: Values) => {
     if (isEditAction && vehicleId) {
       dispatch(
         vehiclesActions.updateVehicleRequest({
-          data: value as Required<Values>,
+          data: formValues,
           id: vehicleId,
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('vehicles:vehicle') })} />, {
@@ -112,7 +111,7 @@ function FormAddVehicle() {
     } else {
       dispatch(
         vehiclesActions.createVehicleRequest({
-          data: value as Required<Values>,
+          data: formValues,
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('vehicles:vehicle') })} />, {
               className: toastClass.toastSuccess,
@@ -185,7 +184,7 @@ function FormAddVehicle() {
             messages={messages}
             fields={[
               {
-                id: v4(),
+                id: 'attach',
                 type: 'image_resource',
                 label: 'attach',
                 required: true,

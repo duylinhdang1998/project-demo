@@ -46,10 +46,18 @@ export interface UploadPDFResourceProps {
   onChange?: (resources: PDFResource[]) => void;
   multiple?: boolean;
   className?: string;
+  disabled?: boolean;
   buttonText: string;
 }
 
-export const UploadPDFResource = ({ resources = [], multiple = false, className, onChange, buttonText }: UploadPDFResourceProps) => {
+export const UploadPDFResource = ({
+  resources = [],
+  multiple = false,
+  className,
+  disabled = false,
+  onChange,
+  buttonText,
+}: UploadPDFResourceProps) => {
   const [fileListState, setFileListState] = useState<FileItem[]>([]);
   const isStateChangedByResourcesProps = useRef(false);
 
@@ -183,6 +191,7 @@ export const UploadPDFResource = ({ resources = [], multiple = false, className,
   return (
     <div className="upload-wrapper">
       <Dragger
+        disabled={disabled}
         listType="picture"
         className={clxs(
           'picture-uploader',

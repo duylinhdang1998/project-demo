@@ -163,7 +163,7 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
 
   // Set state values từng step
   useEffect(() => {
-    if (route) {
+    if (isEditAction && route) {
       if (isMulti) {
         setStepOneValues({
           vehicle: route.vehicle,
@@ -202,7 +202,7 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
         toDate: anyToMoment({ value: route.endPeriod }),
       });
     }
-  }, [isMulti, route]);
+  }, [isEditAction, isMulti, route]);
 
   const renderStepContent = () => {
     switch (activeStep) {

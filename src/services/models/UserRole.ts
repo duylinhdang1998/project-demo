@@ -1,0 +1,1 @@
+export type UserRole = 'COMPANY_ADMIN' | 'COMPANY_AGENT' | 'COMPANY_DRIVER' | 'PASSENGER';

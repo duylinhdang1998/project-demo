@@ -1,19 +1,10 @@
 import { AxiosResponse } from 'axios';
+import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
 import { Route, StopPoint } from 'services/models/Route';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
-interface ResponseSuccess {
-  code: 0;
-  data: true;
-}
-
-interface ResponseFailure {
-  code: 1000;
-  timestamp: string;
-  path: string;
-  message: string;
-}
+type ResponseData = true;
 
 export interface UpdateParticular {
   routeCode: Route['routeCode'];
@@ -26,7 +17,7 @@ export interface UpdateParticular {
 }
 
 export const updateParticular = async ({ routeCode, particularDay, routeParticulars }: UpdateParticular) => {
-  const response: AxiosResponse<ResponseSuccess | ResponseFailure> = await fetchAPI.request({
+  const response: AxiosResponse<ResponseDetailSuccess<ResponseData> | ResponseFailure> = await fetchAPI.request({
     method: 'PUT',
     url: `/v1.0/company/routes/${routeCode}/days/particular`,
     data: {
@@ -40,7 +31,7 @@ export const updateParticular = async ({ routeCode, particularDay, routeParticul
   });
 
   if (response.data.code === 0) {
-    return response.data as ResponseSuccess;
+    return response.data as ResponseDetailSuccess<ResponseData>;
   }
   const response_ = response as AxiosResponse<ResponseFailure>;
   throw new ServiceException(response_.data.message, { cause: response_.data });

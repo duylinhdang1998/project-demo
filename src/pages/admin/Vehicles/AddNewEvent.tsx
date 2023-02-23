@@ -27,16 +27,14 @@ export default function AddNewEvent() {
   }, [vehicleEventId]);
 
   useEffect(() => {
-    if (vehicleId) {
+    if (vehicleId && isEditAction && vehicleEventId) {
       dispatch(vehiclesActions.getVehicleRequest({ id: vehicleId }));
-      if (isEditAction && vehicleEventId) {
-        dispatch(vehicleEventsActions.getVehicleEventRequest({ id: vehicleEventId }));
-      }
+      dispatch(vehicleEventsActions.getVehicleEventRequest({ id: vehicleEventId }));
     } else {
       navigate('/404');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isEditAction, vehicleEventId, vehicleId]);
 
   if (statusGetVehicle === 'loading' || statusGetVehicleEvent === 'loading') {
     return <LoadingScreen />;

@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { Pagination, Searcher, Sorter } from 'services/@types/SearchParams';
+import { ResponseSuccess } from 'services/models/Response';
 import { VehicleEvent } from 'services/models/Vehicle';
 import { getSearchParams } from 'services/utils/getSearchParams';
 import { getSortParams } from 'services/utils/getSortParams';
@@ -12,20 +13,9 @@ export interface GetVehicleEvents {
   vehicleId: VehicleEvent['vehicle'];
 }
 
-interface ResponseSuccess {
-  code: number;
-  data: {
-    hits: VehicleEvent[];
-    pagination: {
-      totalRows: number;
-      totalPages: number;
-    };
-  };
-}
-
 export const RECORDS_PER_PAGE = 8;
-export const getVehicleEvents = async ({ page, sorter, searcher, vehicleId }: GetVehicleEvents): Promise<ResponseSuccess> => {
-  const response: AxiosResponse<ResponseSuccess> = await fetchAPI.request({
+export const getVehicleEvents = async ({ page, sorter, searcher, vehicleId }: GetVehicleEvents): Promise<ResponseSuccess<VehicleEvent>> => {
+  const response: AxiosResponse<ResponseSuccess<VehicleEvent>> = await fetchAPI.request({
     url: '/v1.0/company/vehicle-events',
     params: {
       limit: RECORDS_PER_PAGE,

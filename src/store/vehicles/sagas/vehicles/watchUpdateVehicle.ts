@@ -1,27 +1,19 @@
-import { put, retry, SagaReturnType, select, takeLeading } from 'redux-saga/effects';
+import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { getVehicle } from 'services/Vehicle/Company/getVehicle';
 import { updateVehicle } from 'services/Vehicle/Company/updateVehicle';
-import { selectVehicles } from 'store/vehicles/selectors';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 
 function* handleUpdateVehicle({ payload }: ReturnType<typeof vehiclesActions.updateVehicleRequest>) {
   const { id, data, onFailure, onSuccess } = payload;
-  const vehiclesStates: SagaReturnType<typeof selectVehicles> = yield select(selectVehicles);
   try {
-    if (vehiclesStates.vehicle) {
-      yield retry(3, 1000, updateVehicle, payload);
-      yield put(
-        vehiclesActions.updateVehicleSuccess({
-          data: {
-            ...vehiclesStates.vehicle,
-            ...data,
-          },
-        }),
-      );
-      onSuccess();
-    } else {
-      yield put(vehiclesActions.updateVehicleFailure({ id }));
-      onFailure();
-    }
+    yield retry(3, 1000, updateVehicle, { data, id });
+    const response: SagaReturnType<typeof getVehicle> = yield retry(3, 1000, getVehicle, { id });
+    yield put(
+      vehiclesActions.updateVehicleSuccess({
+        data: response.data,
+      }),
+    );
+    onSuccess();
   } catch (error) {
     console.log('watchUpdateVehicle.ts', error);
     yield put(vehiclesActions.updateVehicleFailure({ id }));

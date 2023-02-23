@@ -31,10 +31,12 @@ export default function AddOfficeManager() {
     formState: { errors },
     handleSubmit,
     resetField,
+    reset,
   } = useForm<Values>();
   const [openDialog, setOpenDialog] = useState(false);
   const dispatch = useAppDispatch();
   const { statusCreateOffice, office, statusGetOffice, queueUpdateOffice } = useAppSelector(selectOfficesManager);
+
   const { officeId } = useParams();
   const navigate = useNavigate();
 
@@ -111,6 +113,7 @@ export default function AddOfficeManager() {
 
   useEffect(() => {
     if (isEditAction && officeId) {
+      reset();
       dispatch(officesManagerActions.getOfficeRequest({ id: officeId }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

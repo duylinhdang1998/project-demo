@@ -9,8 +9,8 @@ export interface Vehicle {
   registrationId: string;
   ECOseats: number;
   VIPseats: number;
-  services: Array<ServiceSetting['_id']>;
-  merchandises: string[]; // FIXME: Chưa có model "Merchandise"
+  services: Array<Omit<ServiceSetting, 'icon'> & { icon: ServiceSetting['icon']['_id'] }>;
+  merchandises: Array<{ _id: string }>; // FIXME: Chưa có type
   attach: ImageResource;
   createdAt: string;
   updatedAt: string;

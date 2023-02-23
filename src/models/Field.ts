@@ -1,11 +1,12 @@
 import { DatePickerProps } from 'antd';
-import { Option as CheckboxGroupOption } from 'components/CheckboxGroup/CheckboxGroup';
+import { Option as CheckboxGroupOption, OptionValue } from 'components/CheckboxGroup/CheckboxGroup';
 import { UploadImageResourceProps } from 'components/UploadImageResource/UploadImageResource';
 import { UploadPDFResourceProps } from 'components/UploadImageResource/UploadPDFResource';
 
-export interface Option {
+export interface Option<T = string> {
   key?: string;
-  value?: string;
+  value?: T;
+  label?: string;
   [key: string]: any;
 }
 
@@ -21,6 +22,7 @@ export interface SimpleField {
   messageErr?: string;
   picker?: DatePickerProps['picker'];
   format?: DatePickerProps['format'];
+  disabled?: boolean;
 }
 
 export interface CheckboxField {
@@ -32,8 +34,10 @@ export interface CheckboxField {
   id?: string;
   options: CheckboxGroupOption[];
   label: string;
-  onChange: (values: string[]) => void;
-  values: string[];
+  onChange: (values: OptionValue[]) => void;
+  values: OptionValue[];
+  equalsFunc: (input: OptionValue, optionValue: OptionValue) => void;
+  disabled?: boolean;
 }
 
 export interface SelectField {
@@ -45,10 +49,11 @@ export interface SelectField {
   id?: string;
   options: CheckboxGroupOption[];
   label: string;
-  onChange: (value: string) => void;
-  value: string;
+  onChange: (value: CheckboxGroupOption['value']) => void;
+  value: CheckboxGroupOption['value'];
   onScrollEnd: () => void;
   isLoading?: boolean;
+  disabled?: boolean;
 }
 export interface UploadImageResourceField {
   type: 'image_resource';
@@ -61,6 +66,7 @@ export interface UploadImageResourceField {
   onChange: UploadImageResourceProps['onChange'];
   resources: UploadImageResourceProps['resources'];
   multiple: UploadImageResourceProps['multiple'];
+  disabled?: boolean;
 }
 
 export interface UploadPDFResourceField {
@@ -75,5 +81,6 @@ export interface UploadPDFResourceField {
   resources: UploadPDFResourceProps['resources'];
   multiple: UploadPDFResourceProps['multiple'];
   buttonText: string;
+  disabled?: boolean;
 }
 export type Field = SimpleField | UploadPDFResourceField | UploadImageResourceField | CheckboxField | SelectField;

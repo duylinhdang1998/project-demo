@@ -59,8 +59,8 @@ export default function Vehicles() {
         page: 0,
         sorter: {},
         searcher: {
-          registrationId: values.registrationId,
-          brand: values.vehicle,
+          registrationId: { value: values.registrationId, operator: 'contains' },
+          brand: { value: values.vehicle, operator: 'contains' },
         },
       }),
     );

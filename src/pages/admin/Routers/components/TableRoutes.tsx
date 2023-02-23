@@ -50,6 +50,7 @@ function TableRoutes() {
       {
         key: '_id',
         dataIndex: '_id',
+        // FIXME: Cột này hiển thị gì?
         title: () => <Typography variant="headerTable">{t('routers:id')}</Typography>,
         sorter: true,
         render: (_, row) => <Typography variant="body2">{row._id}</Typography>,
@@ -82,7 +83,6 @@ function TableRoutes() {
             );
           }
           return (
-            // FIXME: Sửa sao cho giống design
             <ToolTipAddress stopPoints={row.stopPoints}>
               {row.stopPoints.map((stopPoint, index) => {
                 const isPrimary = index !== 1;
@@ -118,7 +118,7 @@ function TableRoutes() {
         render: (_, row) => <Typography variant="body2">{row.departureTime}</Typography>,
       },
       {
-        // FIXME: key sort là gì?
+        // FIXME: Vehicle brand & key sort là gì?
         key: 'vehicle',
         dataIndex: 'vehicle',
         title: () => <Typography variant="headerTable">{t('routers:vehicle')}</Typography>,
