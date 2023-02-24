@@ -114,7 +114,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
       dispatch(
         routesActions.removeDayActiveRequest({
           routeId: route._id,
-          data: { routeCode: route.routeCode, dayoff: selectedSlot[0].getTime() },
+          data: { routeCode: route.routeCode, dayoff: selectedSlot[0].setHours(12) },
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
               className: toastClass.toastSuccess,
@@ -138,7 +138,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           routeId: route._id,
           data: {
             routeCode: route.routeCode,
-            particularDay: selectedSlot[0].getTime(),
+            particularDay: selectedSlot[0].setHours(12),
             routeParticulars: route.stopPoints.map(stopPoint => ({
               stopCode: stopPoint.stopCode,
               ECOPrices: [

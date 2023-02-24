@@ -3,11 +3,14 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
-import { SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
+import { HEIGHT, SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
+import { labelOfRole } from 'components/SelectDecouplingData/SelectRole';
 import { Field } from 'models/Field';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
+import { UserRole } from 'services/models/UserRole';
+import { getOffices } from 'services/OfficesManager/Company/getOffices';
 import { getCountryList } from 'services/PackageSales/packageSales';
 import { customStyles } from './customStyles';
 
@@ -137,6 +140,76 @@ export default function FilterTicket<T extends FieldValues>({
                 />
               </Box>
             )}
+          />
+        );
+      case 'office':
+        return (
+          <Controller
+            control={control}
+            name={i.label as Path<T>}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <SelectDecouplingData
+                    isClearable
+                    isSearchable
+                    value={field.value}
+                    service={async () => {
+                      const response = await getOffices({
+                        page: 0,
+                        searcher: {},
+                        sorter: {},
+                        isGetAll: true,
+                      });
+                      return response.data.hits;
+                    }}
+                    transformToOption={model => ({
+                      key: model._id,
+                      label: model.title,
+                      value: model,
+                    })}
+                    styles={customStyles as any}
+                    placeholder={t(`${i.label}`)}
+                    onChange={field.onChange}
+                  />
+                </Box>
+              );
+            }}
+          />
+        );
+      case 'role':
+        return (
+          <Controller
+            control={control}
+            name={i.label as Path<T>}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <SelectDecouplingData
+                    maxMenuHeight={HEIGHT * 3}
+                    isClearable
+                    isSearchable
+                    value={field.value}
+                    service={() => {
+                      return Promise.resolve<Array<{ role: UserRole }>>([
+                        { role: 'COMPANY_AGENT' },
+                        { role: 'COMPANY_ADMIN' },
+                        { role: 'PASSENGER' },
+                      ]);
+                    }}
+                    transformToOption={model => ({
+                      value: model,
+                      label: labelOfRole[model.role],
+                    })}
+                    styles={customStyles as any}
+                    placeholder={t(`${i.label}`)}
+                    onChange={field.onChange}
+                  />
+                </Box>
+              );
+            }}
           />
         );
       default:

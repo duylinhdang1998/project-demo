@@ -20,10 +20,8 @@ import { columnsPackage } from './columnsPackage';
 import { agentFieldSearch, fieldsSearch } from './constants';
 
 interface Values {
-  destination: {
-    value: Country;
-  };
-  payment_status: Option;
+  destination?: Country;
+  payment_status?: Option;
   from: string;
   recipient: string;
   orderId: string;
@@ -55,14 +53,14 @@ export default function PackageSales() {
         ...(key === 'destination'
           ? {
               [key]: {
-                value: values.destination.value.code,
+                value: values.destination?.code,
                 operator: 'equal',
               },
             }
           : key === 'payment_status'
           ? {
               [key]: {
-                value: values.payment_status.label,
+                value: values.payment_status?.label,
                 operator: 'equal',
               },
             }

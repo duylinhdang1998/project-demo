@@ -24,6 +24,7 @@ import { staffsActions } from 'store/staffs/staffsSlice';
 import { selectStaffs } from 'store/staffs/selectors';
 import { useToastStyle } from 'theme/toastStyles';
 import './styles.scss';
+import { ToggleDayActiveRequest } from 'store/staffs/actions/ToggleDayActive';
 
 const locales = {
   'en-US': enUS,
@@ -65,7 +66,6 @@ interface StepThreeProps {
   isEdit?: boolean;
 }
 
-// FIXME: RESET FORM VALUES
 export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const toastClass = useToastStyle();
 
@@ -78,7 +78,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const [open, setOpen] = useState(false);
   const [openDialogConfirmDelete, setOpenDialogConfirmDelete] = useState(false);
 
-  const { staff, statusRemoveDayActive } = useAppSelector(selectStaffs);
+  const { staff, statusToggleDayActive } = useAppSelector(selectStaffs);
   const dispatch = useAppDispatch();
 
   const handleClose = () => setOpen(false);
@@ -92,10 +92,11 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const handleOpenDialogConfirmDelete = () => setOpenDialogConfirmDelete(true);
   const handleCloseDialogConfirmDelete = () => setOpenDialogConfirmDelete(false);
 
-  const handleRemoveActiveDay = () => {
+  const handleToggleActiveDay = (type: ToggleDayActiveRequest['type']) => {
     if (staff) {
       dispatch(
-        staffsActions.removeDayActiveRequest({
+        staffsActions.toggleDayActiveRequest({
+          type,
           data: {
             dayOffs: selectedSlot.map<number>(item => item.getTime()),
             staffId: staff._id,
@@ -105,6 +106,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
               className: toastClass.toastSuccess,
             });
             handleCloseDialogEdit();
+            handleCloseDialogConfirmDelete();
           },
           onFailure() {
             toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('staff:staff') })} />, {
@@ -117,9 +119,16 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   };
 
   const renderDialogEdit = () => {
-    if (!selectedSlot.length) {
+    if (!selectedSlot.length || !staff) {
       return null;
     }
+    const startDateSelected = staff.periodFrom
+      ? new Date(Math.max(selectedSlot[0].getTime(), new Date(staff.periodFrom).getTime()))
+      : selectedSlot[0];
+    const endDateSelected = staff.periodTo
+      ? new Date(Math.min(selectedSlot[selectedSlot.length - 1].getTime(), new Date(staff.periodTo).getTime()))
+      : selectedSlot[selectedSlot.length - 1];
+    console.log(startDateSelected, endDateSelected);
     return (
       <Dialog open onClose={handleCloseDialogEdit}>
         <Box padding="30px">
@@ -132,36 +141,15 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           <Box className={classes.selectedDate}>
             <CalendarIcon />
             <span style={{ marginLeft: 4 }}>
-              {moment(selectedSlot[0]).format('dddd, MM/DD/YYYY')} - {moment(selectedSlot[selectedSlot.length - 1]).format('dddd, MM/DD/YYYY')}
+              {moment(startDateSelected).format('dddd, MM/DD/YYYY')} - {moment(endDateSelected).format('dddd, MM/DD/YYYY')}
             </span>
           </Box>
           <ComboButton
             onCancel={handleOpenDialogConfirmDelete}
-            onSave={() => {
-              if (staff) {
-                dispatch(
-                  staffsActions.removeDayActiveRequest({
-                    data: {
-                      staffId: staff._id,
-                      dayOffs: selectedSlot.map(item => item.getTime()),
-                    },
-                    onSuccess() {
-                      toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('staff:staff') })} />, {
-                        className: toastClass.toastSuccess,
-                      });
-                      handleCloseDialogEdit();
-                    },
-                    onFailure() {
-                      toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('staff:staff') })} />, {
-                        className: toastClass.toastError,
-                      });
-                    },
-                  }),
-                );
-              }
-            }}
-            textOk={t('translation:delete')}
-            isSaving={statusRemoveDayActive === 'loading'}
+            onSave={() => handleToggleActiveDay('createDayOff')}
+            textOk={t('translation:update')}
+            textCancel={t('translation:delete')}
+            isSaving={statusToggleDayActive === 'loading'}
           />
         </Box>
       </Dialog>
@@ -191,16 +179,14 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
               {t('translation:cancel')}
             </Button>
             <Button
+              loading={statusToggleDayActive === 'loading'}
               sx={{
                 margin: '0 8px',
                 color: '#FFFFFF',
                 padding: '10px 40px',
               }}
               backgroundButton="rgba(255, 39, 39, 1)"
-              onClick={() => {
-                handleCloseDialogConfirmDelete();
-                handleRemoveActiveDay();
-              }}
+              onClick={() => handleToggleActiveDay('removeDayOff')}
             >
               {t('translation:delete')}
             </Button>
@@ -283,7 +269,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             start: new Date(dayoff),
             end: new Date(dayoff),
             allDay: true,
-            title: t('translation:removed'),
+            title: t('translation:edited'),
           })),
         ]}
       />

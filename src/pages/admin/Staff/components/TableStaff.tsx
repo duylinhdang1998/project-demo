@@ -4,6 +4,7 @@ import { ColumnsType } from 'antd/es/table';
 import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
 import Button from 'components/Button/Button';
+import { labelOfRole } from 'components/SelectDecouplingData/SelectRole';
 import CalendarIcon from 'components/SvgIcon/CalendarIcon';
 import DeleteIcon from 'components/SvgIcon/DeleteIcon';
 import EditIcon from 'components/SvgIcon/EditIcon';
@@ -22,7 +23,6 @@ import { useToastStyle } from 'theme/toastStyles';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 import { v4 as uuid } from 'uuid';
-import { labelOfRole } from '../constants';
 
 function TableStaff() {
   const toastClass = useToastStyle();
@@ -83,7 +83,6 @@ function TableStaff() {
         key: 'office',
         dataIndex: 'office',
         title: () => t('office'),
-        // FIXME: Office title
         render: (_, row) => <Typography variant="body2">{row.office.title}</Typography>,
         align: 'center',
         sorter: () => 0,
@@ -103,6 +102,7 @@ function TableStaff() {
                   navigate(`/admin/staffs/${row._id}`);
                 },
               },
+              // FIXME: Nghiệp vụ nút này là gì?
               { id: uuid(), label: 'schedule', icon: <CalendarIcon />, onClick: () => {} },
               {
                 id: uuid(),

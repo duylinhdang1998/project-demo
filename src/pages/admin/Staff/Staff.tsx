@@ -8,13 +8,13 @@ import Button from 'components/Button/Button';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import TableStaff from './components/TableStaff';
-import { fieldsSearch, typeOptions } from './constants';
+import { fieldsSearch } from './constants';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { selectStaffs } from 'store/staffs/selectors';
 import { useEffect } from 'react';
 import { staffsActions } from 'store/staffs/staffsSlice';
-import { Option } from 'models/Field';
+import { UserRole } from 'services/models/UserRole';
 
 const useStyles = makeStyles(() => ({
   btnAdd: {
@@ -24,9 +24,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface Values {
-  role: Option;
+  role?: { role: UserRole };
   name: string;
-  mobile: string;
+  phone: string;
 }
 
 export default function Staff() {
@@ -39,7 +39,7 @@ export default function Staff() {
   const { control, reset, handleSubmit } = useForm<Values>({
     defaultValues: {
       name: '',
-      mobile: '',
+      phone: '',
     },
   });
 
@@ -56,9 +56,9 @@ export default function Staff() {
         page: 0,
         sorter: {},
         searcher: {
-          phone: { value: values.mobile, operator: 'contains' },
+          phone: { value: values.phone, operator: 'contains' },
           lastName: { value: values.name, operator: 'contains' },
-          role: { value: values.role.value as string, operator: 'contains' },
+          role: { value: values.role?.role, operator: 'eq' },
         },
       }),
     );
@@ -66,9 +66,11 @@ export default function Staff() {
 
   useEffect(() => {
     reset({
-      mobile: currentSearcher.phone?.value,
+      phone: currentSearcher.phone?.value,
       name: currentSearcher.lastName?.value,
-      role: typeOptions.find(option => currentSearcher.role?.value === option.value),
+      role: {
+        role: currentSearcher.role?.value as UserRole | undefined,
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSearcher]);

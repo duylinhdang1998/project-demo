@@ -4,7 +4,8 @@ import { customStyles } from 'components/FilterTicket/customStyles';
 import { SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { UserRole } from 'services/models/UserRole';
+import { Office } from 'services/models/Office';
+import { getOffices } from 'services/OfficesManager/Company/getOffices';
 
 const useStyles = makeStyles((theme: Theme) => ({
   label: {
@@ -26,61 +27,57 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const labelOfRole: Record<UserRole, string> = {
-  COMPANY_ADMIN: 'Admin',
-  COMPANY_AGENT: 'Agent',
-  PASSENGER: 'Client',
-  COMPANY_DRIVER: 'Driver',
-};
-
-interface SelectRoleProps {
+interface SelectOfficeProps {
   errors: FieldErrors<any>;
   messages: Record<string, string>;
   control: Control<any, any>;
-  role: UserRole;
-  onChange: (role: UserRole | undefined) => void;
+  office: Office;
+  onChange: (office: Office | undefined) => void;
   isRequired?: boolean;
-  isDisabled?: boolean;
 }
 
-export const SelectRole = ({ errors, messages, control, role, isRequired = false, isDisabled = false, onChange }: SelectRoleProps) => {
-  const { t } = useTranslation(['translation', 'staff']);
+export const SelectOffice = ({ errors, messages, control, office, isRequired = false, onChange }: SelectOfficeProps) => {
+  const { t } = useTranslation(['translation', 'account']);
   const classes = useStyles();
 
-  const error = errors['role'];
-  const messageErr = messages['role'];
+  const error = errors['office'];
+  const messageErr = messages['office'];
 
   return (
     <Controller
       control={control}
-      name="role"
+      name="office"
       rules={{
         required: {
           value: isRequired,
-          message: t('error_required', { name: 'role' }),
+          message: t('error_required', { name: 'office' }),
         },
       }}
       render={() => {
         return (
           <Box>
-            <InputLabel className={classes.label}>{t('staff:role')}</InputLabel>
+            <InputLabel className={classes.label}>{t('account:Office')}</InputLabel>
             <SelectDecouplingData
               isSearchable
-              isDisabled={isDisabled}
-              value={{ role }}
+              value={office}
               isClearable={!isRequired}
-              service={() => {
-                return Promise.resolve<Array<{ role: UserRole }>>([{ role: 'COMPANY_AGENT' }, { role: 'COMPANY_ADMIN' }, { role: 'PASSENGER' }]);
+              service={async () => {
+                const response = await getOffices({
+                  page: 0,
+                  searcher: {},
+                  sorter: {},
+                  isGetAll: true,
+                });
+                return response.data.hits;
               }}
               transformToOption={model => ({
+                key: model._id,
+                label: model.title,
                 value: model,
-                label: labelOfRole[model.role],
               })}
               styles={customStyles as any}
-              placeholder={t('staff:role')}
-              onChange={selected => {
-                onChange(selected?.role);
-              }}
+              placeholder={t('account:Office')}
+              onChange={selected => onChange(selected)}
             />
             {!!error && (
               <Typography component="p" className={classes.error} fontSize={12}>

@@ -5,7 +5,7 @@ import { CreateStaffFailure, CreateStaffRequest, CreateStaffSuccess } from './ac
 import { DeleteStaffFailure, DeleteStaffRequest, DeleteStaffSuccess } from './actions/DeleteStaff';
 import { GetStaffFailure, GetStaffRequest, GetStaffSuccess } from './actions/GetStaff';
 import { GetStaffsFailure, GetStaffsRequest, GetStaffsSuccess } from './actions/GetStaffs';
-import { RemoveDayActiveFailure, RemoveDayActiveRequest, RemoveDayActiveSuccess } from './actions/RemoveDayActive';
+import { ToggleDayActiveFailure, ToggleDayActiveRequest, ToggleDayActiveSuccess } from './actions/ToggleDayActive';
 import { UpdateActiveDaysFailure, UpdateActiveDaysRequest, UpdateActiveDaysSuccess } from './actions/UpdateActiveDays';
 import { UpdateStaffInfoFailure, UpdateStaffInfoRequest, UpdateStaffInfoSuccess } from './actions/UpdateStaffInfo';
 
@@ -14,7 +14,7 @@ interface StaffsManagerState {
   statusGetStaff: Status;
   statusCreateStaff: Status;
   statusUpdateStaffInfo: Status;
-  statusRemoveDayActive: Status;
+  statusToggleDayActive: Status;
   statusUpdateDayActive: Status;
   queueDeleteStaff: Staff['_id'][];
   staffs: Staff[];
@@ -31,7 +31,7 @@ const initialState: StaffsManagerState = {
   statusCreateStaff: 'idle',
   statusUpdateStaffInfo: 'idle',
   statusUpdateDayActive: 'idle',
-  statusRemoveDayActive: 'idle',
+  statusToggleDayActive: 'idle',
   queueDeleteStaff: [],
   staffs: [],
   currentPage: 0,
@@ -166,24 +166,24 @@ export const staffsSlice = createSlice({
     },
 
     /** <---------- create day off ----------> */
-    removeDayActiveRequest: (state, _action: PayloadAction<RemoveDayActiveRequest>) => {
+    toggleDayActiveRequest: (state, _action: PayloadAction<ToggleDayActiveRequest>) => {
       return {
         ...state,
-        statusRemoveDayActive: 'loading',
+        statusToggleDayActive: 'loading',
       };
     },
-    removeDayActiveSuccess: (state, action: PayloadAction<RemoveDayActiveSuccess>) => {
+    toggleDayActiveSuccess: (state, action: PayloadAction<ToggleDayActiveSuccess>) => {
       const { data } = action.payload;
       return {
         ...state,
         staff: data,
-        statusRemoveDayActive: 'success',
+        statusToggleDayActive: 'success',
       };
     },
-    removeDayActiveFailure: (state, _action: PayloadAction<RemoveDayActiveFailure>) => {
+    toggleDayActiveFailure: (state, _action: PayloadAction<ToggleDayActiveFailure>) => {
       return {
         ...state,
-        statusRemoveDayActive: 'failure',
+        statusToggleDayActive: 'failure',
       };
     },
 
