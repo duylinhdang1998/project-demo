@@ -102,8 +102,18 @@ function TableStaff() {
                   navigate(`/admin/staffs/${row._id}`);
                 },
               },
-              // FIXME: Nghiệp vụ nút này là gì?
-              { id: uuid(), label: 'schedule', icon: <CalendarIcon />, onClick: () => {} },
+              {
+                id: uuid(),
+                label: 'schedule',
+                icon: <CalendarIcon />,
+                onClick: () => {
+                  navigate(`/admin/staffs/${row._id}`, {
+                    state: {
+                      isConsultSchedule: true,
+                    },
+                  });
+                },
+              },
               {
                 id: uuid(),
                 label: 'delete',

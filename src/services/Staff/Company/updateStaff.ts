@@ -13,7 +13,7 @@ interface ResponseData {
 }
 
 export interface UpdateStaffInfo {
-  data: Pick<Staff, 'attach' | 'office' | 'lastName' | 'firstName' | 'phone'>;
+  data: Pick<Staff, 'attach' | 'lastName' | 'firstName' | 'phone'>;
   staffId: Staff['_id'];
 }
 export const updateStaffInfo = async ({ data, staffId }: UpdateStaffInfo) => {
@@ -24,7 +24,6 @@ export const updateStaffInfo = async ({ data, staffId }: UpdateStaffInfo) => {
       ...data,
       staffId,
       attach: data.attach._id,
-      office: data.office._id,
     },
   });
   if (response.data.code === 0) {

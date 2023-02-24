@@ -26,11 +26,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface StepFormProps {
-  isEditAction?: boolean;
+  isEditAction: boolean;
+  startStep: number;
 }
 
-export default function StepForm({ isEditAction }: StepFormProps) {
-  const [activeStep, setActiveStep] = useState(0);
+export default function StepForm({ isEditAction, startStep }: StepFormProps) {
+  const [activeStep, setActiveStep] = useState(startStep);
   const [stepOneValues, setStepOneValues] = useState<StepOneValues | undefined>(undefined);
   const [stepTwoValues, setStepTwoValues] = useState<StepTwoValues | undefined>(undefined);
 
@@ -57,7 +58,7 @@ export default function StepForm({ isEditAction }: StepFormProps) {
       dispatch(
         staffsActions.updateStaffInfoRequest({
           staffId: staff._id,
-          data: omit(formValues, ['role', 'email']),
+          data: omit(formValues, ['role', 'email', 'office']),
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('staff:staff') })} />, {
               className: toastClass.toastSuccess,

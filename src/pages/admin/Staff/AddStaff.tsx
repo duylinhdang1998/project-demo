@@ -6,7 +6,7 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useLocation, useParams } from 'react-router-dom';
 import { selectStaffs } from 'store/staffs/selectors';
 import { staffsActions } from 'store/staffs/staffsSlice';
 import StepForm from './components/StepForm';
@@ -15,6 +15,7 @@ export default function AddStaff() {
   const { t } = useTranslation(['translation, staff']);
 
   const { staffId } = useParams();
+  const location = useLocation();
 
   const { statusGetStaff, staff } = useAppSelector(selectStaffs);
   const dispatch = useAppDispatch();
@@ -46,7 +47,7 @@ export default function AddStaff() {
       >
         <Box width="100%" display="flex" justifyContent="center">
           <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
-            <StepForm isEditAction={isEditAction} />
+            <StepForm isEditAction={isEditAction} startStep={location.state?.isConsultSchedule ? 2 : 0} />
           </Box>
         </Box>
       </LayoutDetail>

@@ -33,6 +33,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
     getValues,
     resetField,
     reset,
+    setValue,
   } = useForm<StepOneValues>();
 
   const [open, setOpen] = useState(false);
@@ -88,6 +89,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
         </Grid>
         <Grid item xs={12} sm={6}>
           <SelectOffice
+            isDisabled={isEdit}
             control={control}
             errors={errors}
             messages={messages}
@@ -121,10 +123,14 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             multiple: false,
             resources: getAttach(),
             onChange: resources => {
-              const lastResource = resources[resources.length - 1];
-              resetField('attach', {
-                defaultValue: lastResource ? lastResource : undefined,
-              });
+              const lastResource = resources[resources.length - 1] as Staff['attach'] | undefined;
+              if (lastResource) {
+                resetField('attach', {
+                  defaultValue: lastResource,
+                });
+              } else {
+                setValue('attach', undefined as any);
+              }
             },
           },
         ]}
