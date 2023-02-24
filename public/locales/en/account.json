@@ -20,9 +20,9 @@
   "currency": "Currency",
   "attach_profile": "Attach a profile photo",
   "attach_company": "Attach a company logo",
-  "current_password": "Current password",
-  "new_password": "New password",
-  "confirm_password": "Confirm new password",
+  "currentPassword": "Current password",
+  "newPassword": "New password",
+  "confirmPassword": "Confirm new password",
   "title": "Title",
   "office_title": "Office title",
   "cash": "Cash",
@@ -54,5 +54,7 @@
   "free_trial": "Free trial",
   "buy_now": "Buy now",
   "popular_choice": "POPULAR CHOICE",
-  "error_required": "Please enter your {{name}}"
+  "error_required": "Please enter your {{name}}",
+  "change_pass_success": "Password changed successfully",
+  "change_pass_error": "Password change failed"
 }

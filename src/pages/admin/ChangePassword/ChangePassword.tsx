@@ -9,28 +9,30 @@ import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import InputAuth from 'components/InputAuth/InputAuth';
 import { Field } from 'models/Field';
+import { useChangePassWord } from 'services/ChangePassword/changePassword';
+import { getNotifcation } from 'utils/getNotification';
 
 const fieldChanges: Field[] = [
   {
     id: uuidv4(),
-    label: 'current_password',
+    label: 'currentPassword',
   },
   {
     id: uuidv4(),
-    label: 'new_password',
+    label: 'newPassword',
   },
   {
     id: uuidv4(),
-    label: 'confirm_password',
+    label: 'confirmPassword',
   },
 ];
 
-const keys = ['current_password', 'new_password', 'confirm_password'] as const;
+const keys = ['currentPassword', 'newPassword', 'confirmPassword'] as const;
 
 interface Values {
-  current_password: string;
-  new_password: string;
-  confirm_password: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }
 
 export default function ChangePassword() {
@@ -40,13 +42,27 @@ export default function ChangePassword() {
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm<Values>({
     defaultValues: {
-      current_password: '',
-      new_password: '',
-      confirm_password: '',
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
     },
     mode: 'all',
+  });
+
+  const { run: changePasswordRequest, loading } = useChangePassWord({
+    onSuccess: data => {
+      getNotifcation({
+        code: data.code,
+        success: t('change_pass_success'),
+        error: t('change_pass_error'),
+        onSuccess: () => {
+          reset();
+        },
+      });
+    },
   });
 
   const [open, setOpen] = useState(false);
@@ -55,9 +71,10 @@ export default function ChangePassword() {
   const handleClose = () => setOpen(false);
 
   const onSubmit = (values: Values) => {
-    console.log({ errors });
-
-    console.log({ values });
+    changePasswordRequest({
+      currentPassword: values.currentPassword,
+      newPassword: values.newPassword,
+    });
   };
 
   return (
@@ -80,9 +97,9 @@ export default function ChangePassword() {
                   placeholder={t(`${i.label}`)}
                   type="password"
                   rules={{
-                    ...(i.label === 'confirm_password'
+                    ...(i.label === 'confirmPassword'
                       ? {
-                          validate: (val: string) => val === getValues('new_password') || "Confirm password doesn't match",
+                          validate: (val: string) => val === getValues('newPassword') || "Confirm password doesn't match",
                         }
                       : {}),
                   }}
@@ -91,13 +108,13 @@ export default function ChangePassword() {
                 />
               ))}
             </Box>
-            <ComboButton onCancel={handleCancel} onSave={handleSubmit(onSubmit)} />
+            <ComboButton onCancel={handleCancel} onSave={handleSubmit(onSubmit)} isSaving={loading} />
           </Box>
         </Box>
       </Box>
       <DialogConfirm
         openDialog={open}
-        title={t('translation:cancel_type', { type: t('new_password').toLowerCase() })}
+        title={t('translation:cancel_type', { type: t('newPassword').toLowerCase() })}
         subTitle={t('translation:leave_page')}
         onClose={handleClose}
       />
