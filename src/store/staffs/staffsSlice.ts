@@ -5,7 +5,7 @@ import { CreateStaffFailure, CreateStaffRequest, CreateStaffSuccess } from './ac
 import { DeleteStaffFailure, DeleteStaffRequest, DeleteStaffSuccess } from './actions/DeleteStaff';
 import { GetStaffFailure, GetStaffRequest, GetStaffSuccess } from './actions/GetStaff';
 import { GetStaffsFailure, GetStaffsRequest, GetStaffsSuccess } from './actions/GetStaffs';
-import { ToggleDayActiveFailure, ToggleDayActiveRequest, ToggleDayActiveSuccess } from './actions/ToggleDayActive';
+import { UpdateDayOffFailure, UpdateDayOffLocal, UpdateDayOffRequest, UpdateDayOffSuccess } from './actions/UpdateDayOff';
 import { UpdateActiveDaysFailure, UpdateActiveDaysRequest, UpdateActiveDaysSuccess } from './actions/UpdateActiveDays';
 import { UpdateStaffInfoFailure, UpdateStaffInfoRequest, UpdateStaffInfoSuccess } from './actions/UpdateStaffInfo';
 
@@ -14,7 +14,7 @@ interface StaffsManagerState {
   statusGetStaff: Status;
   statusCreateStaff: Status;
   statusUpdateStaffInfo: Status;
-  statusToggleDayActive: Status;
+  statusUpdateDayOff: Status;
   statusUpdateDayActive: Status;
   queueDeleteStaff: Staff['_id'][];
   staffs: Staff[];
@@ -31,7 +31,7 @@ const initialState: StaffsManagerState = {
   statusCreateStaff: 'idle',
   statusUpdateStaffInfo: 'idle',
   statusUpdateDayActive: 'idle',
-  statusToggleDayActive: 'idle',
+  statusUpdateDayOff: 'idle',
   queueDeleteStaff: [],
   staffs: [],
   currentPage: 0,
@@ -166,24 +166,37 @@ export const staffsSlice = createSlice({
     },
 
     /** <---------- create day off ----------> */
-    toggleDayActiveRequest: (state, _action: PayloadAction<ToggleDayActiveRequest>) => {
+    updateDayOffLocal: (state, action: PayloadAction<UpdateDayOffLocal>) => {
+      const { dayOff } = action.payload;
+      if (state.staff) {
+        return {
+          ...state,
+          staff: {
+            ...state.staff,
+            dayOff,
+          },
+        };
+      }
+      return state;
+    },
+    updateDayOffRequest: (state, _action: PayloadAction<UpdateDayOffRequest>) => {
       return {
         ...state,
-        statusToggleDayActive: 'loading',
+        statusUpdateDayOff: 'loading',
       };
     },
-    toggleDayActiveSuccess: (state, action: PayloadAction<ToggleDayActiveSuccess>) => {
+    updateDayOffSuccess: (state, action: PayloadAction<UpdateDayOffSuccess>) => {
       const { data } = action.payload;
       return {
         ...state,
         staff: data,
-        statusToggleDayActive: 'success',
+        statusUpdateDayOff: 'success',
       };
     },
-    toggleDayActiveFailure: (state, _action: PayloadAction<ToggleDayActiveFailure>) => {
+    updateDayOffFailure: (state, _action: PayloadAction<UpdateDayOffFailure>) => {
       return {
         ...state,
-        statusToggleDayActive: 'failure',
+        statusUpdateDayOff: 'failure',
       };
     },
 

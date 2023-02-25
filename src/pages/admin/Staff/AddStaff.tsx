@@ -42,7 +42,13 @@ export default function AddStaff() {
   return (
     <FadeIn>
       <LayoutDetail
-        title={isEditAction ? t('translation:edit_type', { type: t('staff:staff') }) : t('translation:create_new', { type: t('staff:staff') })}
+        title={
+          location.state?.isConsultSchedule
+            ? t('translation:schedule')
+            : isEditAction
+            ? t('translation:edit_type', { type: t('staff:staff') })
+            : t('translation:create_new', { type: t('staff:staff') })
+        }
         subTitle={t('staff:staff')}
       >
         <Box width="100%" display="flex" justifyContent="center">

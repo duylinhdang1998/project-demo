@@ -270,7 +270,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         defaultView="month"
         toolbar={true}
         views={[Views.MONTH]}
-        className="custom-big-calendar"
+        className="router custom-big-calendar"
         components={{
           toolbar: ({ label, onNavigate }) => {
             return (
