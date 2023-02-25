@@ -3,6 +3,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
+import { Alert } from 'antd';
+import 'antd/lib/alert/style/css';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
@@ -14,7 +16,7 @@ import { useState } from 'react';
 import { Calendar, dateFnsLocalizer, Event, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { selectStaffs } from 'store/staffs/selectors';
 import { staffsActions } from 'store/staffs/staffsSlice';
@@ -76,6 +78,8 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const { staff, statusUpdateDayOff } = useAppSelector(selectStaffs);
   const dispatch = useAppDispatch();
 
+  const location = useLocation();
+
   const handleClose = () => setOpen(false);
   const handleCancel = () => {
     setOpen(true);
@@ -112,12 +116,33 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     );
   };
 
+  const renderAlertSuccess = () => {
+    if (!location.state?.isConsultSchedule) {
+      return (
+        <Alert
+          closable
+          showIcon
+          type="success"
+          className="alertSuccess"
+          message={
+            <Box>
+              <Typography className="alert__title">Your programing is saved</Typography>
+              <Typography className="alert__description">You can delete your employee's days off from the calendar.</Typography>
+            </Box>
+          }
+        />
+      );
+    }
+    return null;
+  };
+
   if (!staff) {
     return <Navigate to="/404" />;
   }
 
   return (
     <Box my="24px">
+      {renderAlertSuccess()}
       <Calendar
         selectable
         defaultDate={staff.periodFrom ? new Date(staff.periodFrom) : undefined}

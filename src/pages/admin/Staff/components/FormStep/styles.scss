@@ -52,3 +52,44 @@
     background: rgba(255, 39, 39, 0.05);
   }
 }
+
+.alertSuccess {
+  align-items: initial;
+  font-size: 18px;
+  margin-bottom: 26px;
+  background-color: rgba(241, 255, 244, 1);
+  border-color: rgba(51, 204, 127, 1);
+  border-radius: 4px;
+  padding: 10px 13px;
+}
+
+.alertSuccess .ant-alert-content {
+  margin-top: -4px;
+}
+
+.alertSuccess .ant-alert-success .ant-alert-icon {
+  color: #52c41a;
+}
+
+.alertSuccess .alert__title {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  color: #33cc7f;
+}
+
+.alertSuccess .alert__description {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.alertSuccess .anticon.anticon-close {
+  color: #33cc7f;
+}
+
+.alertSuccess .ant-alert-close-icon {
+  display: flex;
+}
