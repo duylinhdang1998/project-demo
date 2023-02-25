@@ -61,6 +61,11 @@ export const UploadPDFResource = ({
   const [fileListState, setFileListState] = useState<FileItem[]>([]);
   const isStateChangedByResourcesProps = useRef(false);
 
+  const handleSetFileListStateByInteractive: typeof setFileListState = state => {
+    isStateChangedByResourcesProps.current = false;
+    setFileListState(state);
+  };
+
   const beforeUpload: UploadProps['beforeUpload'] = async file => {
     const error = false;
     if (!error) {
@@ -78,7 +83,7 @@ export const UploadPDFResource = ({
       });
       try {
         const response = await uploadPDFResource({ file });
-        setFileListState(state => {
+        handleSetFileListStateByInteractive(state => {
           return state.map(item => {
             if (item.uid === sessionId) {
               return {
@@ -178,7 +183,7 @@ export const UploadPDFResource = ({
         </Stack>
         <IconButton
           onClick={() => {
-            setFileListState([]);
+            handleSetFileListStateByInteractive([]);
           }}
         >
           <ClearIcon />

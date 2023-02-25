@@ -1,30 +1,29 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ClearIcon from '@mui/icons-material/Clear';
-import { Dialog, DialogTitle, IconButton, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import Button from 'components/Button/Button';
+import { Alert } from 'antd';
+import 'antd/lib/alert/style/css';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
-import CalendarIcon from 'components/SvgIcon/CalendarIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import enUS from 'date-fns/locale/en-US';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import moment from 'moment';
 import { useState } from 'react';
-import { Calendar, dateFnsLocalizer, Event, SlotInfo, Views } from 'react-big-calendar';
+import { Calendar, dateFnsLocalizer, Event, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { staffsActions } from 'store/staffs/staffsSlice';
 import { selectStaffs } from 'store/staffs/selectors';
+import { staffsActions } from 'store/staffs/staffsSlice';
 import { useToastStyle } from 'theme/toastStyles';
+import { dateClamp } from 'utils/dateClamp';
+import { isTimestampEqualDayInYear } from 'utils/handleTimestampWithDayInYear';
 import './styles.scss';
-import { ToggleDayActiveRequest } from 'store/staffs/actions/ToggleDayActive';
 
 const locales = {
   'en-US': enUS,
@@ -74,12 +73,12 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const { t } = useTranslation(['staffs', 'translation']);
   const classes = useStyles();
 
-  const [selectedSlot, setSelectedSlot] = useState<SlotInfo['slots']>([]);
   const [open, setOpen] = useState(false);
-  const [openDialogConfirmDelete, setOpenDialogConfirmDelete] = useState(false);
 
-  const { staff, statusToggleDayActive } = useAppSelector(selectStaffs);
+  const { staff, statusUpdateDayOff } = useAppSelector(selectStaffs);
   const dispatch = useAppDispatch();
+
+  const location = useLocation();
 
   const handleClose = () => setOpen(false);
   const handleCancel = () => {
@@ -87,26 +86,19 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     onCancel?.();
   };
 
-  const handleCloseDialogEdit = () => setSelectedSlot([]);
-
-  const handleOpenDialogConfirmDelete = () => setOpenDialogConfirmDelete(true);
-  const handleCloseDialogConfirmDelete = () => setOpenDialogConfirmDelete(false);
-
-  const handleToggleActiveDay = (type: ToggleDayActiveRequest['type']) => {
+  const handleSave = () => {
     if (staff) {
       dispatch(
-        staffsActions.toggleDayActiveRequest({
-          type,
+        staffsActions.updateDayOffRequest({
           data: {
-            dayOffs: selectedSlot.map<number>(item => item.getTime()),
+            dayOffs: staff.dayOff,
             staffId: staff._id,
           },
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('staff:staff') })} />, {
               className: toastClass.toastSuccess,
             });
-            handleCloseDialogEdit();
-            handleCloseDialogConfirmDelete();
+            navigate('/admin/staffs');
           },
           onFailure() {
             toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('staff:staff') })} />, {
@@ -118,82 +110,30 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     }
   };
 
-  const renderDialogEdit = () => {
-    if (!selectedSlot.length || !staff) {
-      return null;
-    }
-    const startDateSelected = staff.periodFrom
-      ? new Date(Math.max(selectedSlot[0].getTime(), new Date(staff.periodFrom).getTime()))
-      : selectedSlot[0];
-    const endDateSelected = staff.periodTo
-      ? new Date(Math.min(selectedSlot[selectedSlot.length - 1].getTime(), new Date(staff.periodTo).getTime()))
-      : selectedSlot[selectedSlot.length - 1];
-    console.log(startDateSelected, endDateSelected);
+  const isDateClampStaffPeriod = (timestamp: number) => {
     return (
-      <Dialog open onClose={handleCloseDialogEdit}>
-        <Box padding="30px">
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <DialogTitle sx={{ padding: '0 !important' }}>{t('staff:delete_day_off')}</DialogTitle>
-            <IconButton onClick={handleCloseDialogEdit}>
-              <ClearIcon />
-            </IconButton>
-          </Stack>
-          <Box className={classes.selectedDate}>
-            <CalendarIcon />
-            <span style={{ marginLeft: 4 }}>
-              {moment(startDateSelected).format('dddd, MM/DD/YYYY')} - {moment(endDateSelected).format('dddd, MM/DD/YYYY')}
-            </span>
-          </Box>
-          <ComboButton
-            onCancel={handleOpenDialogConfirmDelete}
-            onSave={() => handleToggleActiveDay('createDayOff')}
-            textOk={t('translation:update')}
-            textCancel={t('translation:delete')}
-            isSaving={statusToggleDayActive === 'loading'}
-          />
-        </Box>
-      </Dialog>
+      staff && typeof staff.periodFrom === 'number' && typeof staff.periodTo === 'number' && dateClamp(timestamp, staff.periodFrom, staff.periodTo)
     );
   };
 
-  const renderDialogConfirmDelete = () => {
-    return (
-      <Dialog open={openDialogConfirmDelete} onClose={handleCloseDialogConfirmDelete}>
-        <Box padding="24px" style={{ maxWidth: 311, textAlign: 'center' }}>
-          <Typography marginBottom="24px" fontSize="16px" fontWeight={700}>
-            {t('translation:delete_record_title')}
-          </Typography>
-          <Typography marginBottom="30px" fontSize="14px" fontWeight={400}>
-            {t('translation:delete_record_message')}
-          </Typography>
-          <Stack direction="row" alignItems="center">
-            <Button
-              variant="outlined"
-              sx={{
-                margin: '0 6px',
-                color: '#1AA6EE',
-                padding: '10px 40px',
-              }}
-              onClick={handleCloseDialogConfirmDelete}
-            >
-              {t('translation:cancel')}
-            </Button>
-            <Button
-              loading={statusToggleDayActive === 'loading'}
-              sx={{
-                margin: '0 8px',
-                color: '#FFFFFF',
-                padding: '10px 40px',
-              }}
-              backgroundButton="rgba(255, 39, 39, 1)"
-              onClick={() => handleToggleActiveDay('removeDayOff')}
-            >
-              {t('translation:delete')}
-            </Button>
-          </Stack>
-        </Box>
-      </Dialog>
-    );
+  const renderAlertSuccess = () => {
+    if (!location.state?.isConsultSchedule) {
+      return (
+        <Alert
+          closable
+          showIcon
+          type="success"
+          className="alertSuccess"
+          message={
+            <Box>
+              <Typography className="alert__title">Your programing is saved</Typography>
+              <Typography className="alert__description">You can delete your employee's days off from the calendar.</Typography>
+            </Box>
+          }
+        />
+      );
+    }
+    return null;
   };
 
   if (!staff) {
@@ -202,6 +142,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
 
   return (
     <Box my="24px">
+      {renderAlertSuccess()}
       <Calendar
         selectable
         defaultDate={staff.periodFrom ? new Date(staff.periodFrom) : undefined}
@@ -210,7 +151,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         defaultView="month"
         toolbar={true}
         views={[Views.MONTH]}
-        className="custom-big-calendar"
+        className="staff custom-big-calendar"
         components={{
           toolbar: ({ label, onNavigate }) => {
             return (
@@ -241,18 +182,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           },
           dateCellWrapper: ({ children }) => {
             return (
-              <Box
-                display="flex"
-                className="cell_wrapper"
-                flex="1 0"
-                sx={{
-                  cursor: 'pointer',
-                  '&:hover': {
-                    backgroundColor: 'primary.main',
-                    color: '#fff',
-                  },
-                }}
-              >
+              <Box display="flex" className="cell_wrapper" flex="1 0">
                 {children}
               </Box>
             );
@@ -261,28 +191,54 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             return <div>{title}</div>;
           },
         }}
+        onSelecting={() => false}
         onSelectSlot={event => {
-          setSelectedSlot(event.slots);
+          const selected = event.slots[0];
+          if (isDateClampStaffPeriod(selected.getTime())) {
+            const isDeleteDayOffAction = staff.dayOff.find(item => isTimestampEqualDayInYear(item, selected.getTime()));
+            dispatch(
+              staffsActions.updateDayOffLocal({
+                dayOff: isDeleteDayOffAction
+                  ? staff.dayOff.filter(item => !isTimestampEqualDayInYear(item, selected.getTime()))
+                  : staff.dayOff.concat(selected.getTime()),
+              }),
+            );
+          }
+        }}
+        elementProps={{ style: { background: 'cyan' } }}
+        slotPropGetter={date => {
+          if (isDateClampStaffPeriod(date.getTime())) {
+            return {
+              style: { background: 'blue' },
+            };
+          }
+          return {
+            style: { background: 'green' },
+          };
+        }}
+        dayPropGetter={date => {
+          if (isDateClampStaffPeriod(date.getTime())) {
+            return {
+              className: 'selectable',
+            };
+          }
+          return {};
         }}
         events={[
           ...staff.dayOff.map<Event>(dayoff => ({
             start: new Date(dayoff),
             end: new Date(dayoff),
             allDay: true,
-            title: t('translation:edited'),
+            title: t('translation:off'),
           })),
         ]}
       />
       <ComboButton
+        isSaving={statusUpdateDayOff === 'loading'}
         textOk={t('translation:save')}
         textCancel={t('translation:back')}
         onCancel={handleCancel}
-        onSave={() => {
-          toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('staff:staff') })} />, {
-            className: toastClass.toastSuccess,
-          });
-          navigate('/admin/staffs');
-        }}
+        onSave={handleSave}
       />
       <DialogConfirm
         openDialog={open}
@@ -290,8 +246,6 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         subTitle={t('translation:leave_page')}
         onClose={handleClose}
       />
-      {renderDialogEdit()}
-      {renderDialogConfirmDelete()}
     </Box>
   );
 }

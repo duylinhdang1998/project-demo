@@ -1,7 +1,7 @@
 import { Box, InputLabel, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { customStyles } from 'components/FilterTicket/customStyles';
-import { SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
+import { HEIGHT, SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { UserRole } from 'services/models/UserRole';
@@ -43,6 +43,7 @@ interface SelectRoleProps {
   isDisabled?: boolean;
 }
 
+const ROLES: Array<{ role: UserRole }> = [{ role: 'COMPANY_AGENT' }, { role: 'COMPANY_ADMIN' }, { role: 'PASSENGER' }];
 export const SelectRole = ({ errors, messages, control, role, isRequired = false, isDisabled = false, onChange }: SelectRoleProps) => {
   const { t } = useTranslation(['translation', 'staff']);
   const classes = useStyles();
@@ -65,13 +66,12 @@ export const SelectRole = ({ errors, messages, control, role, isRequired = false
           <Box>
             <InputLabel className={classes.label}>{t('staff:role')}</InputLabel>
             <SelectDecouplingData
+              maxMenuHeight={HEIGHT * ROLES.length}
               isSearchable
               isDisabled={isDisabled}
               value={{ role }}
               isClearable={!isRequired}
-              service={() => {
-                return Promise.resolve<Array<{ role: UserRole }>>([{ role: 'COMPANY_AGENT' }, { role: 'COMPANY_ADMIN' }, { role: 'PASSENGER' }]);
-              }}
+              service={() => Promise.resolve<typeof ROLES>(ROLES)}
               transformToOption={model => ({
                 value: model,
                 label: labelOfRole[model.role],

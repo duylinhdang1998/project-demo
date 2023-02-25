@@ -56,6 +56,7 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
         ...values,
         fromDate: anyToMoment({ value: values.fromDate }),
         toDate: anyToMoment({ value: values.toDate }),
+        days: values.days.length === options.length - 1 ? [ALL_DAYS_OPTION_VALUE, ...values.days] : values.days,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

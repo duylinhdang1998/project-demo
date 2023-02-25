@@ -78,6 +78,11 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
   const [fileListState, setFileListState] = useState<FileItem[]>([]);
   const isStateChangedByResourcesProps = useRef(false);
 
+  const handleSetFileListStateByInteractive: typeof setFileListState = state => {
+    isStateChangedByResourcesProps.current = false;
+    setFileListState(state);
+  };
+
   const beforeUpload: UploadProps['beforeUpload'] = async file => {
     const error = handleCheckRequirements({ file });
 
@@ -97,8 +102,7 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
       setLoading(true);
       try {
         const response = await uploadImageResource({ file });
-        isStateChangedByResourcesProps.current = false;
-        setFileListState(state => {
+        handleSetFileListStateByInteractive(state => {
           return state.map(item => {
             if (item.uid === sessionId) {
               return {
@@ -115,7 +119,6 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
           });
         });
       } catch (error) {
-        isStateChangedByResourcesProps.current = false;
         setFileListState(state => {
           return state.filter(item => item.uid !== sessionId);
         });
@@ -154,7 +157,6 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
 
   useEffect(() => {
     if (!isStateChangedByResourcesProps.current) {
-      console.log(fileListState);
       onChange?.(
         fileListState.reduce<ImageResource[]>((result, file) => {
           if (file.response !== null) {
@@ -178,7 +180,7 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
         <Box
           className={classes.imgWrapper}
           onClick={() => {
-            setFileListState([]);
+            handleSetFileListStateByInteractive([]);
           }}
         >
           <ClearIcon sx={{ color: '#fff' }} />

@@ -44,6 +44,7 @@ function FormAddVehicle() {
     getValues,
     resetField,
     reset,
+    setValue,
   } = useForm<Values>({
     defaultValues: {
       ECOseats: 1,
@@ -192,9 +193,13 @@ function FormAddVehicle() {
                 resources: getAttach(),
                 onChange: resources => {
                   const lastResource = resources[resources.length - 1];
-                  resetField('attach', {
-                    defaultValue: lastResource ? lastResource : undefined,
-                  });
+                  if (lastResource) {
+                    resetField('attach', {
+                      defaultValue: lastResource,
+                    });
+                  } else {
+                    setValue('attach', undefined as any);
+                  }
                 },
               },
             ]}

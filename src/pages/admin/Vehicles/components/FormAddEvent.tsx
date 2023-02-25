@@ -54,6 +54,7 @@ function FormAddEvent() {
     handleSubmit,
     getValues,
     resetField,
+    setValue,
   } = useForm<Values>();
 
   const [open, setOpen] = useState(false);
@@ -184,9 +185,13 @@ function FormAddEvent() {
               resources: getAttach(),
               onChange: resources => {
                 const lastResource = resources[resources.length - 1];
-                resetField('attach_document', {
-                  defaultValue: lastResource ? lastResource : undefined,
-                });
+                if (lastResource) {
+                  resetField('attach_document', {
+                    defaultValue: lastResource ? lastResource : undefined,
+                  });
+                } else {
+                  setValue('attach_document', undefined as any);
+                }
               },
               buttonText: t('vehicles:attach_document'),
             },

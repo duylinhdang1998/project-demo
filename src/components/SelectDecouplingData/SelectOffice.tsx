@@ -34,9 +34,10 @@ interface SelectOfficeProps {
   office: Office;
   onChange: (office: Office | undefined) => void;
   isRequired?: boolean;
+  isDisabled?: boolean;
 }
 
-export const SelectOffice = ({ errors, messages, control, office, isRequired = false, onChange }: SelectOfficeProps) => {
+export const SelectOffice = ({ errors, messages, control, office, isRequired = false, isDisabled = false, onChange }: SelectOfficeProps) => {
   const { t } = useTranslation(['translation', 'account']);
   const classes = useStyles();
 
@@ -58,6 +59,7 @@ export const SelectOffice = ({ errors, messages, control, office, isRequired = f
           <Box>
             <InputLabel className={classes.label}>{t('account:Office')}</InputLabel>
             <SelectDecouplingData
+              isDisabled={isDisabled}
               isSearchable
               value={office}
               isClearable={!isRequired}
