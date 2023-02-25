@@ -19,6 +19,7 @@ import { toast } from 'react-toastify';
 import { selectStaffs } from 'store/staffs/selectors';
 import { staffsActions } from 'store/staffs/staffsSlice';
 import { useToastStyle } from 'theme/toastStyles';
+import { dateClamp } from 'utils/dateClamp';
 import { isTimestampEqualDayInYear } from 'utils/handleTimestampWithDayInYear';
 import './styles.scss';
 
@@ -105,6 +106,12 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     }
   };
 
+  const isDateClampStaffPeriod = (timestamp: number) => {
+    return (
+      staff && typeof staff.periodFrom === 'number' && typeof staff.periodTo === 'number' && dateClamp(timestamp, staff.periodFrom, staff.periodTo)
+    );
+  };
+
   if (!staff) {
     return <Navigate to="/404" />;
   }
@@ -162,18 +169,20 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         onSelecting={() => false}
         onSelectSlot={event => {
           const selected = event.slots[0];
-          const isDeleteDayOffAction = staff.dayOff.find(item => isTimestampEqualDayInYear(item, selected.getTime()));
-          dispatch(
-            staffsActions.updateDayOffLocal({
-              dayOff: isDeleteDayOffAction
-                ? staff.dayOff.filter(item => !isTimestampEqualDayInYear(item, selected.getTime()))
-                : staff.dayOff.concat(selected.getTime()),
-            }),
-          );
+          if (isDateClampStaffPeriod(selected.getTime())) {
+            const isDeleteDayOffAction = staff.dayOff.find(item => isTimestampEqualDayInYear(item, selected.getTime()));
+            dispatch(
+              staffsActions.updateDayOffLocal({
+                dayOff: isDeleteDayOffAction
+                  ? staff.dayOff.filter(item => !isTimestampEqualDayInYear(item, selected.getTime()))
+                  : staff.dayOff.concat(selected.getTime()),
+              }),
+            );
+          }
         }}
         elementProps={{ style: { background: 'cyan' } }}
         slotPropGetter={date => {
-          if (staff.periodFrom && staff.periodTo && date.getTime() > staff.periodFrom && date.getTime() < staff.periodTo) {
+          if (isDateClampStaffPeriod(date.getTime())) {
             return {
               style: { background: 'blue' },
             };
@@ -183,7 +192,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           };
         }}
         dayPropGetter={date => {
-          if (staff.periodFrom && staff.periodTo && date.getTime() > staff.periodFrom && date.getTime() < staff.periodTo) {
+          if (isDateClampStaffPeriod(date.getTime())) {
             return {
               className: 'selectable',
             };
