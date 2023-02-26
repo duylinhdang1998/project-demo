@@ -1,14 +1,16 @@
 import { Box, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { isEmpty } from 'lodash';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
 import Button from 'components/Button/Button';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import SendIcon from 'components/SvgIcon/SendIcon';
-import { PassengerTypeColumn } from 'models/Passenger';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { isEmpty } from 'lodash';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { Passenger } from 'services/models/Passenger';
+import { passengersActions } from 'store/passengers/passengersSlice';
 import TablePassenger from './components/TablePassenger';
 import { fieldsSearch } from './constants';
 
@@ -22,38 +24,63 @@ const useStyles = makeStyles(() => ({
 interface Values {
   email: string;
   name: string;
-  mobile: string;
+  phone: string;
 }
 
 export default function Passengers() {
   const { t } = useTranslation(['passenger', 'translation']);
   const theme = useTheme();
   const classes = useStyles();
-  const [disabled, setDisabled] = useState(true);
   const matches = useMediaQuery('(min-width:1200px)');
+
+  const [disabled, setDisabled] = useState(true);
+
+  const dispatch = useAppDispatch();
 
   const { control, handleSubmit } = useForm<Values>({
     defaultValues: {
       email: '',
       name: '',
-      mobile: '',
+      phone: '',
     },
   });
+
   const handleBatch = () => {
     console.log('batch_email');
-    // navigate('/admin/add-new-staff');
-  };
-  const onSubmit = (values: Values) => {
-    console.log({ values });
   };
 
-  const handleSelect = (selectedRows: PassengerTypeColumn[]) => {
+  const onSubmit = (values: Values) => {
+    dispatch(
+      passengersActions.getPassengersRequest({
+        page: 0,
+        sorter: {},
+        searcher: {
+          lastName: { operator: 'contains', value: values.name },
+          phone: { operator: 'contains', value: values.phone },
+          email: { operator: 'contains', value: values.email },
+        },
+      }),
+    );
+  };
+
+  const handleSelect = (selectedRows: Passenger[]) => {
     setDisabled(isEmpty(selectedRows));
   };
 
+  useEffect(() => {
+    dispatch(
+      passengersActions.getPassengersRequest({
+        page: 0,
+        sorter: {},
+        searcher: {},
+      }),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Box>
-      <HeaderLayout activeSideBarHeader={t('passengers')} />
+      <HeaderLayout activeSideBarHeader={t('passenger:passengers')} />
       <Box padding="24px">
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
