@@ -46,7 +46,14 @@ export default function AddNewEvent() {
 
   return (
     <FadeIn>
-      <LayoutDetail title={t('translation:add_new', { type: t('translation:event').toLowerCase() })} subTitle={t('vehicles')}>
+      <LayoutDetail
+        title={
+          isEditAction
+            ? t('translation:edit_type', { type: t('translation:event').toLowerCase() })
+            : t('translation:add_new', { type: t('translation:event').toLowerCase() })
+        }
+        subTitle={t('vehicles:vehicles')}
+      >
         <Box display="flex" justifyContent="center" width="100%">
           <Box padding="24px" sx={{ backgroundColor: '#fff' }} borderRadius="4px" width={{ xs: '100%', md: '80%' }}>
             <Typography fontSize={16} fontWeight="700">
