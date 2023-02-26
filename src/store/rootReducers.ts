@@ -3,6 +3,7 @@ import { contentManagerReducer } from './contentManager/contentManagerSlice';
 import { officesManagerReducer } from './officesManager/officesManagerSlice';
 import { packageSettingsReducer } from './packageSettings/packageSettingsSlice';
 import { profileReducer } from './profile/profileSlice';
+import { passengersReducer } from './passengers/passengersSlice';
 import { routesReducer } from './routes/routesSlice';
 import { staffsReducer } from './staffs/staffsSlice';
 import { subscriptionsReducer } from './subscriptions/subscriptionsSlice';
@@ -20,6 +21,7 @@ const reducers = {
   routes: routesReducer,
   staffs: staffsReducer,
   profile: profileReducer,
+  passengers: passengersReducer,
 };
 
 export default reducers;

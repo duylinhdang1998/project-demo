@@ -164,7 +164,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'passengers/:id',
+    path: 'passengers/:passengerId',
     element: (
       <RequiredAuth role="admin">
         <Page.PassengerDetail />
