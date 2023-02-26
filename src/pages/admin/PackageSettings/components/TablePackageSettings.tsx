@@ -16,7 +16,7 @@ import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { PackageSetting } from 'services/models/PackageSetting';
-import { RECORDS_PER_PAGE } from 'services/PackageSettings/Company/getPackageSettings';
+import { RECORDS_PER_PAGE } from 'services/PackageSetting/Company/getPackageSettings';
 import { packageSettingsActions } from 'store/packageSettings/packageSettingsSlice';
 import { selectPackageSettings } from 'store/packageSettings/selectors';
 import { useToastStyle } from 'theme/toastStyles';
