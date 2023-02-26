@@ -3,9 +3,14 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import logoTbus from 'assets/images/logo-tbus.png';
 import CustomLink from 'components/CustomLink/CustomLink';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { useEffect } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
+import { profileActions } from 'store/profile/profileSlice';
+import { selectProfile } from 'store/profile/selectors';
 import { sidebars, sidebarsAgent } from './sidebar';
 
 const drawerWidth = 240;
@@ -28,7 +33,10 @@ const useStyles = makeStyles(() => ({
 export default function Layout() {
   const classes = useStyles();
   const theme = useTheme();
-  const { userInfo } = useAppSelector(selectAuth);
+
+  const { userInfo, isLoggedIn } = useAppSelector(selectAuth);
+  const { statusGetProfile } = useAppSelector(selectProfile);
+  const dispatch = useAppDispatch();
 
   const container = window !== undefined ? () => window.document.body : undefined;
   const drawerContent = userInfo?.role === 'admin' ? sidebars : sidebarsAgent;
@@ -48,6 +56,17 @@ export default function Layout() {
       </List>
     </Box>
   );
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(profileActions.getProfileRequest({}));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn]);
+
+  if (statusGetProfile === 'loading') {
+    return <LoadingScreen />;
+  }
 
   return (
     <Box display="flex" position="relative" width="100%" bgcolor="#F0F1F3" height="100%">

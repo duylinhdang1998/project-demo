@@ -44,6 +44,7 @@ export const officesManagerSlice = createSlice({
       const { page, searcher } = action.payload;
       return {
         ...state,
+        offices: [],
         statusGetOffices: 'loading',
         currentPage: page,
         currentSearcher: searcher,

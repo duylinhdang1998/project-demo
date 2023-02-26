@@ -8,7 +8,7 @@ import ChangeLanguage from 'components/ChangeLanguage/ChangeLanguage';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { selectAuth } from 'store/auth/selectors';
+import { selectProfile } from 'store/profile/selectors';
 import { getUrlOfResource } from 'utils/getUrlOfResource';
 
 interface HeaderLayoutProps {
@@ -47,13 +47,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps) {
   const { t } = useTranslation(['dashboard', 'translation']);
   const classes = useStyles();
-  const { profile, userInfo } = useSelector(selectAuth);
+  const { profile } = useSelector(selectProfile);
 
   const handleClick = () => {
     // toggle();
   };
 
-  if (!profile || !userInfo) {
+  if (!profile) {
     return null;
   }
 
@@ -120,7 +120,7 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
               </a>
             </div>
             <ChangeLanguage />
-            <AccountDropdown avatar={getUrlOfResource(profile.profileImage)} role={userInfo.role} fullname={profile.name} />
+            <AccountDropdown avatar={getUrlOfResource(profile.profileImage)} name={profile.name} email={profile.email} />
           </Stack>
         </Toolbar>
         <Box className={classes.subcribe}>

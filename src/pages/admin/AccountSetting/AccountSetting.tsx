@@ -8,21 +8,23 @@ import FormVerticle from 'components/FormVerticle/FormVerticle';
 import LayoutDetail from 'layout/LayoutDetail';
 import { Profile } from 'models/Profile';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { selectAuth } from 'store/auth/selectors';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
-import { currencyOptions } from './constants';
 import { ImageResource } from 'services/models/Resource';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { authActions } from 'store/auth/authSlice';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useToastStyle } from 'theme/toastStyles';
 import { toast } from 'react-toastify';
+import { omit } from 'lodash';
+import { selectProfile } from 'store/profile/selectors';
+import { profileActions } from 'store/profile/profileSlice';
 
-type Values = Pick<Profile, 'email' | 'name' | 'address' | 'zipCode' | 'city' | 'country' | 'transportLicense' | 'logoImage' | 'profileImage'> & {
-  currency: string;
-};
-const fieldKeys: Array<keyof Values> = ['name', 'address', 'zipCode', 'city', 'country', 'transportLicense', 'logoImage', 'profileImage'];
+type Values = Pick<
+  Profile,
+  'email' | 'phone' | 'name' | 'address' | 'zipCode' | 'city' | 'country' | 'transportLicense' | 'logoImage' | 'profileImage'
+>;
+
+const fieldKeys: Array<keyof Values> = ['name', 'phone', 'address', 'zipCode', 'city', 'country', 'transportLicense', 'logoImage', 'profileImage'];
 
 export default function AccountSetting() {
   const {
@@ -38,7 +40,7 @@ export default function AccountSetting() {
   const { t } = useTranslation(['account', 'translation']);
   const toastClass = useToastStyle();
 
-  const { profile, statusLogin, statusUpdateProfile } = useAppSelector(selectAuth);
+  const { profile, statusGetProfile, statusUpdateProfile } = useAppSelector(selectProfile);
   const dispatch = useAppDispatch();
 
   const messages = useMemo(() => {
@@ -68,8 +70,8 @@ export default function AccountSetting() {
 
   const onSubmit = (values: Values) => {
     dispatch(
-      authActions.updateProfileRequest({
-        data: values,
+      profileActions.updateProfileRequest({
+        data: omit(values, ['email']),
         onSuccess() {
           toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('account:profile') })} />, {
             className: toastClass.toastSuccess,
@@ -96,12 +98,13 @@ export default function AccountSetting() {
         transportLicense: profile.transportLicense,
         zipCode: profile.zipCode,
         email: profile.email,
+        phone: profile.phone,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
-  if (statusLogin === 'loading') {
+  if (statusGetProfile === 'loading') {
     return <LoadingScreen />;
   }
 
@@ -139,7 +142,7 @@ export default function AccountSetting() {
                     { id: 'zipCode', label: 'zipCode', type: 'text', required: true },
                     { id: 'country', label: 'country', type: 'text', required: true },
                     { id: 'city', label: 'city', type: 'text', required: true },
-                    { id: 'phone', label: 'phone', type: 'text', disabled: true },
+                    { id: 'phone', label: 'phone', type: 'text', required: true },
                   ]}
                   filterKey="account"
                 />
@@ -155,10 +158,7 @@ export default function AccountSetting() {
                   messages={messages}
                   control={control}
                   grid
-                  fields={[
-                    { id: 'transportLicense', label: 'transportLicense', type: 'text', required: true },
-                    { id: 'currency', label: 'currency', type: 'select', options: currencyOptions, disabled: true },
-                  ]}
+                  fields={[{ id: 'transportLicense', label: 'transportLicense', type: 'text', required: true }]}
                   filterKey="account"
                 />
               </Grid>

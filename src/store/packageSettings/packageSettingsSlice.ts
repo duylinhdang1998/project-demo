@@ -44,6 +44,7 @@ export const packageSettingsSlice = createSlice({
       const { page, searcher } = action.payload;
       return {
         ...state,
+        packageSettings: [],
         statusGetPackageSettings: 'loading',
         currentPage: page,
         currentSearcher: searcher,

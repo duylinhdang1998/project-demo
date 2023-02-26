@@ -1,4 +1,3 @@
-import { Profile } from 'models/Profile';
 import { UserInfo } from 'models/UserInfo';
 
 export interface LoginRequest {
@@ -11,7 +10,6 @@ export interface LoginRequest {
 export interface LoginSuccess {
   token: string;
   role: UserInfo['role'];
-  profile: Profile;
 }
 
 export interface LoginFailure {}

@@ -162,6 +162,7 @@ export const routesSlice = createSlice({
       const { page, searcher } = action.payload;
       return {
         ...state,
+        routes: [],
         statusGetRoutes: 'loading',
         currentPage: page,
         currentSearcher: searcher,
