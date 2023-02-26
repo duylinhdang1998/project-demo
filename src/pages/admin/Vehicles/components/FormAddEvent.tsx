@@ -168,7 +168,7 @@ function FormAddEvent() {
           errors={errors}
           messages={messages}
           control={control}
-          fields={[{ id: 'description', type: 'textarea', placeholder: t(`description`), label: 'description' }]}
+          fields={[{ id: 'description', type: 'textarea', placeholder: t('vehicles:description'), label: 'description' }]}
           filterKey="vehicles"
         />
       </Box>

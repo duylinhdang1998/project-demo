@@ -54,8 +54,8 @@ export default function ListEvents() {
     <FadeIn>
       <LayoutDetail
         variant="withTable"
-        subTitle={t('vehicles')}
-        title={t('event_lists')}
+        subTitle={t('vehicles:vehicles')}
+        title={t('vehicles:event_lists')}
         addNewItemButtonProps={{
           onClick: () => {
             navigate(`/admin/${vehicleId}/add-new-event`);
