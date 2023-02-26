@@ -1,6 +1,6 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
-import { getPackageSetting } from 'services/PackageSettings/Company/getPackageSetting';
-import { updatePackageSetting } from 'services/PackageSettings/Company/updatePackageSetting';
+import { getPackageSetting } from 'services/PackageSetting/Company/getPackageSetting';
+import { updatePackageSetting } from 'services/PackageSetting/Company/updatePackageSetting';
 import { packageSettingsActions } from '../packageSettingsSlice';
 
 function* handleUpdatePackageSetting({ payload }: ReturnType<typeof packageSettingsActions.updatePackageSettingRequest>) {

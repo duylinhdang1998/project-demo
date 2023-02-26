@@ -1,5 +1,5 @@
 import { PackageSetting } from 'services/models/PackageSetting';
-import { CreatePackageSetting } from 'services/PackageSettings/Company/createPackageSetting';
+import { CreatePackageSetting } from 'services/PackageSetting/Company/createPackageSetting';
 
 export interface CreatePackageSettingRequest {
   data: CreatePackageSetting;

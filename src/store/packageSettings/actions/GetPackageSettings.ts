@@ -1,5 +1,5 @@
 import { PackageSetting } from 'services/models/PackageSetting';
-import { GetPackageSettings } from 'services/PackageSettings/Company/getPackageSettings';
+import { GetPackageSettings } from 'services/PackageSetting/Company/getPackageSettings';
 
 export type GetPackageSettingsRequest = GetPackageSettings & {};
 

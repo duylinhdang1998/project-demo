@@ -1,5 +1,5 @@
 import { put, retry, takeLeading } from 'redux-saga/effects';
-import { deletePackageSetting } from 'services/PackageSettings/Company/deletePackageSetting';
+import { deletePackageSetting } from 'services/PackageSetting/Company/deletePackageSetting';
 import { packageSettingsActions } from '../packageSettingsSlice';
 
 function* handleDeletePackageSetting({ payload }: ReturnType<typeof packageSettingsActions.deletePackageSettingRequest>) {
