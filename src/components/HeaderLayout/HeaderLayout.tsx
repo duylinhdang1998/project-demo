@@ -9,6 +9,7 @@ import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { selectAuth } from 'store/auth/selectors';
+import { getUrlOfResource } from 'utils/getUrlOfResource';
 
 interface HeaderLayoutProps {
   onToggleDrawer?: () => void;
@@ -46,11 +47,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps) {
   const { t } = useTranslation(['dashboard', 'translation']);
   const classes = useStyles();
-  const authState = useSelector(selectAuth);
+  const { profile, userInfo } = useSelector(selectAuth);
 
   const handleClick = () => {
     // toggle();
   };
+
+  if (!profile || !userInfo) {
+    return null;
+  }
 
   return (
     <div>
@@ -115,11 +120,7 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
               </a>
             </div>
             <ChangeLanguage />
-            <AccountDropdown
-              avatar="https://images.unsplash.com/photo-1558898479-33c0057a5d12?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-              role={authState.userInfo?.role}
-              fullname="Thomas Nguyen"
-            />
+            <AccountDropdown avatar={getUrlOfResource(profile.profileImage)} role={userInfo.role} fullname={profile.name} />
           </Stack>
         </Toolbar>
         <Box className={classes.subcribe}>

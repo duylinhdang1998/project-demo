@@ -8,7 +8,7 @@
   "change_pass": "Change password",
   "logout": "Log out",
   "my_company": "My company",
-  "company_name": "Company name",
+  "name": "Company name",
   "address": "Address",
   "postalAddress": "Address",
   "zipCode": "Zip code",
@@ -18,8 +18,8 @@
   "email": "Email",
   "transport_license": "Transport License",
   "currency": "Currency",
-  "attach_profile": "Attach a profile photo",
-  "attach_company": "Attach a company logo",
+  "profileImage": "Attach a profile photo",
+  "logoImage": "Attach a company logo",
   "currentPassword": "Current password",
   "newPassword": "New password",
   "confirmPassword": "Confirm new password",
@@ -56,5 +56,6 @@
   "popular_choice": "POPULAR CHOICE",
   "error_required": "Please enter your {{name}}",
   "change_pass_success": "Password changed successfully",
-  "change_pass_error": "Password change failed"
+  "change_pass_error": "Password change failed",
+  "profile": "profile"
 }
