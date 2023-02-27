@@ -22,6 +22,7 @@ const contentManagerSlice = createSlice({
     getContentRequest: (state, _action: PayloadAction<GetContentRequest>) => {
       return {
         ...state,
+        content: null,
         statusGetContent: 'loading',
       };
     },

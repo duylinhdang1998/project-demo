@@ -4,10 +4,10 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { Dropdown, Menu } from 'antd';
 import cx from 'classnames';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from 'hooks/useAppDispatch';
 import { authActions } from 'store/auth/authSlice';
 import { accountSettings } from './accountSettings';
 
@@ -17,17 +17,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  role: {
+  userInfo: {
+    textAlign: 'left',
+  },
+  name: {
     fontWeight: '700',
     fontSize: '16px',
     color: theme.palette.grey[100],
   },
-  name: {
+  email: {
     fontSize: '12px',
     fontWeight: 400,
     color: theme.palette.grey[700],
     display: 'block',
-    textAlign: 'left',
   },
   item: {
     padding: '16px !important',
@@ -69,12 +71,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface AccountDropdownProps {
-  avatar?: string;
-  role?: string;
-  fullname?: string;
+  avatar: string;
+  name: string;
+  email: string;
 }
 
-function AccountDropdown({ avatar, role, fullname }: AccountDropdownProps) {
+function AccountDropdown({ avatar, name, email }: AccountDropdownProps) {
   const classes = useStyles();
   const { t } = useTranslation('account');
   const navigate = useNavigate();
@@ -92,9 +94,9 @@ function AccountDropdown({ avatar, role, fullname }: AccountDropdownProps) {
     <Menu className={classes.menuList}>
       <Stack direction="row" spacing={2} alignItems="center" p="16px" display={{ mobile: 'flex', tablet: 'none' }}>
         <Avatar src={avatar} alt="avatar-user" className={classes.avatar} />
-        <Box>
-          <span className={classes.role}>{role}</span>
-          <span className={classes.name}>{fullname}</span>
+        <Box className={classes.userInfo}>
+          <span className={classes.name}>{name}</span>
+          <span className={classes.email}>{email}</span>
         </Box>
       </Stack>
       {accountSettings.map(i => (
@@ -122,9 +124,9 @@ function AccountDropdown({ avatar, role, fullname }: AccountDropdownProps) {
         <IconButton disableFocusRipple disableRipple>
           <Stack direction="row" spacing={2} alignItems="center">
             <Avatar src={avatar} alt="avatar-user" className={classes.avatar} />
-            <Box className={classes.hidden}>
-              <span className={classes.role}>{role}</span>
-              <span className={classes.name}>{fullname}</span>
+            <Box className={cx(classes.hidden, classes.userInfo)}>
+              <span className={classes.name}>{name}</span>
+              <span className={classes.email}>{email}</span>
             </Box>
             <div className={classes.hidden}>
               <ArrowDropDownIcon />

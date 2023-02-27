@@ -45,6 +45,7 @@ const vehiclesSlice = createSlice({
       const { page, searcher } = action.payload;
       return {
         ...state,
+        vehicles: [],
         statusGetVehicles: 'loading',
         currentPage: page,
         currentSearcher: searcher,

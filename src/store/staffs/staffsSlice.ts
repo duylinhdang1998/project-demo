@@ -50,6 +50,7 @@ export const staffsSlice = createSlice({
       const { page, searcher } = action.payload;
       return {
         ...state,
+        staffs: [],
         statusGetStaffs: 'loading',
         currentPage: page,
         currentSearcher: searcher,

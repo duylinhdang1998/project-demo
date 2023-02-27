@@ -25,6 +25,7 @@ const subscriptionsSlice = createSlice({
       return {
         ...state,
         statusGetSubscriptions: 'loading',
+        subscriptions: [],
       };
     },
     getSubscriptionsSuccess: (state, action: PayloadAction<GetSubscriptionsSuccess>) => {
@@ -45,6 +46,7 @@ const subscriptionsSlice = createSlice({
       return {
         ...state,
         statusGetPlans: 'loading',
+        plans: [],
       };
     },
     getPlansSuccess: (state, action: PayloadAction<GetPlansSuccess>) => {
