@@ -122,7 +122,7 @@ export default function AccountSetting() {
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
             <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={8}>
                 <FormVerticle
                   errors={errors}
                   messages={messages}
@@ -157,12 +157,11 @@ export default function AccountSetting() {
                   errors={errors}
                   messages={messages}
                   control={control}
-                  grid
                   fields={[{ id: 'transportLicense', label: 'transportLicense', type: 'text', required: true }]}
                   filterKey="account"
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={4}>
                 <FormVerticle
                   errors={errors}
                   messages={messages}
