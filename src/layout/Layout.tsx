@@ -65,7 +65,11 @@ export default function Layout() {
   }, [isLoggedIn]);
 
   if (statusGetProfile === 'loading') {
-    return <LoadingScreen />;
+    return (
+      <Box height="100vh">
+        <LoadingScreen />
+      </Box>
+    );
   }
 
   return (
