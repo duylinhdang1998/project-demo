@@ -16,7 +16,7 @@
   "city": "City",
   "phone": "Phone number",
   "email": "Email",
-  "transport_license": "Transport License",
+  "transportLicense": "Transport License",
   "currency": "Currency",
   "profileImage": "Attach a profile photo",
   "logoImage": "Attach a company logo",
