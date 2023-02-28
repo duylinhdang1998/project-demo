@@ -27,7 +27,7 @@ const App = () => {
       <div className="App">
         <RouterProvider router={router} />
       </div>
-      <ToastContainer autoClose={3500} closeButton draggable hideProgressBar position="top-right" style={{ minWidth: '375px' }} />
+      <ToastContainer autoClose={2000} closeButton draggable hideProgressBar={false} position="top-right" style={{ minWidth: '375px' }} />
     </ThemeProvider>
   );
 };

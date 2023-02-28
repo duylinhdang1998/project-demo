@@ -28,6 +28,7 @@
   "cash": "Cash",
   "offline": "Offline (agents)",
   "paypal": "PayPal",
+  "credit_card": "Credit card",
   "mobile_money": "Mobile money",
   "define_method": "Define Payment methods in frontoffice",
   "an_order_status": "An order with the status “pending payment is cancelled",
@@ -57,5 +58,7 @@
   "error_required": "Please enter your {{name}}",
   "change_pass_success": "Password changed successfully",
   "change_pass_error": "Password change failed",
-  "profile": "profile"
+  "profile": "profile",
+  "update_success": "Update successfully",
+  "update_error": "Update failed"
 }
