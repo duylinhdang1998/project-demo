@@ -44,7 +44,7 @@ interface StepTwoProps {
 }
 export default function StepTwo({ onCancel, onNextStep, values, isLoading }: StepTwoProps) {
   const { control, handleSubmit, getValues, reset, resetField, watch } = useForm<StepTwoValues>();
-  const { t } = useTranslation(['routers', 'translation']);
+  const { t } = useTranslation(['staff', 'translation']);
 
   const onSubmit = (values: StepTwoValues) => {
     onNextStep?.(values);
@@ -74,7 +74,7 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
   return (
     <Box my="24px">
       <Typography color="#0C1132" fontWeight={700} fontSize={14} mb="10px">
-        {t('routers:days_of_the_week')}
+        {t('staff:days_of_the_week')}
       </Typography>
       <Controller
         control={control}
@@ -92,9 +92,9 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
         )}
       />
       <Typography color="#0C1132" fontWeight={700} fontSize={14} my="10px">
-        {t('routers:active_period')}
+        {t('staff:active_period')}
       </Typography>
-      <FormVerticle grid control={control} filterKey="routers" fields={fields} />
+      <FormVerticle grid control={control} filterKey="staff" fields={fields} />
       <ComboButton
         isSaving={isLoading}
         textOk={t('translation:next')}

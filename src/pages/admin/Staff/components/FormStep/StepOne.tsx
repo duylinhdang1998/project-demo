@@ -25,7 +25,7 @@ export interface StepOneProps {
 }
 
 export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoading }: StepOneProps) {
-  const { t } = useTranslation(['routers', 'translation']);
+  const { t } = useTranslation(['staff', 'translation']);
   const {
     control,
     formState: { errors },
@@ -59,7 +59,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
         ...res,
-        [key]: t('translation:error_required', { name: t(`routers:${key}`) }),
+        [key]: t('translation:error_required', { name: t(`staff:${key}`) }),
       };
     }, {});
   }, [t]);
@@ -145,7 +145,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
       />
       <DialogConfirm
         openDialog={open}
-        title={t('translation:cancel_type', { type: t(`routers:${isEdit ? 'edit_trip' : 'trip'}`).toLowerCase() })}
+        title={t('translation:cancel_type', { type: t(`staff:${isEdit ? 'edit_trip' : 'trip'}`).toLowerCase() })}
         subTitle={t('translation:leave_page')}
         onClose={handleClose}
       />

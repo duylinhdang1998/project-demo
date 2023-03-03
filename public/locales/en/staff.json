@@ -8,5 +8,9 @@
   "firstName": "First Name",
   "lastName": "Last Name",
   "attach": "Attach a photo of staff",
-  "delete_day_off": "Delete employee's days off"
+  "delete_day_off": "Delete employee's days off",
+  "days_of_the_week": "Days of presence of the employee",
+  "active_period": "Calendar period",
+  "fromDate": "From date",
+  "toDate": "To date"
 }
