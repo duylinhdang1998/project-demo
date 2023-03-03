@@ -1,5 +1,5 @@
 import { PackageSetting } from 'services/models/PackageSetting';
-import { GetPackageSetting } from 'services/PackageSettings/Company/getPackageSetting';
+import { GetPackageSetting } from 'services/PackageSetting/Company/getPackageSetting';
 
 export type GetPackageSettingRequest = GetPackageSetting;
 

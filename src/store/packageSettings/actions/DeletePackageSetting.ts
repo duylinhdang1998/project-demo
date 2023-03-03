@@ -1,5 +1,5 @@
 import { PackageSetting } from 'services/models/PackageSetting';
-import { DeletePackageSetting } from 'services/PackageSettings/Company/deletePackageSetting';
+import { DeletePackageSetting } from 'services/PackageSetting/Company/deletePackageSetting';
 
 export type DeletePackageSettingRequest = DeletePackageSetting & {
   onSuccess: () => void;

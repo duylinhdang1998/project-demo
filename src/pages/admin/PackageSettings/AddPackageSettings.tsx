@@ -15,7 +15,7 @@ import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { CreatePackageSetting } from 'services/PackageSettings/Company/createPackageSetting';
+import { CreatePackageSetting } from 'services/PackageSetting/Company/createPackageSetting';
 import { packageSettingsActions } from 'store/packageSettings/packageSettingsSlice';
 import { selectPackageSettings } from 'store/packageSettings/selectors';
 import { useToastStyle } from 'theme/toastStyles';

@@ -1,8 +1,8 @@
 {
   "name": "Name",
-  "mobile": "Mobile",
+  "phone": "Mobile",
   "email": "Email",
-  "total_order": "Total order",
+  "orderCounts": "Total order",
   "details": "Passenger details",
   "account_created": "Account created on",
   "lastName": "Lastname",
@@ -12,8 +12,12 @@
   "date": "Date",
   "order_total": "Order total",
   "edit": "Edit passenger",
-  "block": "Block passenger",
+  "block": "Block",
+  "unblock": "Unblock",
+  "block_title": "Block passenger",
   "block_message": "Are you sure, you want to block this passenger?",
+  "unblock_title": "Unblock passenger",
+  "unblock_message": "Are you sure, you want to unblock this passenger?",
   "passenger": "Passenger",
   "passengers": "Passengers"
 }

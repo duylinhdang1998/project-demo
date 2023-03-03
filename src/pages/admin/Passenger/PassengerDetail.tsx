@@ -1,78 +1,176 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import LayoutDetail from 'layout/LayoutDetail';
-import TableDetailPassenger from './components/TableDetailPassenger';
+import TableOrdersOfPassenger from './components/TableOrdersOfPassenger';
 import { fieldDetails } from './constants';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { selectPassengers } from 'store/passengers/selectors';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import { passengersActions } from 'store/passengers/passengersSlice';
+import { Passenger } from 'services/models/Passenger';
+import { selectAuth } from 'store/auth/selectors';
+import { toast } from 'react-toastify';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { useToastStyle } from 'theme/toastStyles';
+import { FadeIn } from 'components/FadeIn/FadeIn';
 
-interface Values {
-  lastName: string;
-  firstName: string;
-  email: string;
-  mobile: string;
-  country: string;
-}
+type Values = Pick<Passenger, 'country' | 'email' | 'firstName' | 'lastName' | 'phone'>;
 
-interface StateLocation {
-  state: {
-    isEdit: boolean;
-  };
-}
-
+const fieldKeys: Array<keyof Values> = ['country', 'email', 'firstName', 'lastName', 'phone'];
 export default function PassengerDetail() {
-  const { t } = useTranslation('passenger');
-  const location = useLocation();
-  const [open, setOpen] = useState(false);
-  const { state } = location as StateLocation;
+  const { t } = useTranslation(['passenger', 'translation']);
+  const toastClass = useToastStyle();
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<Values>();
 
-  const { control } = useForm<Values>({
-    defaultValues: {
-      lastName: '',
-      firstName: '',
-      email: '',
-      mobile: '',
-      country: '',
-    },
-  });
+  const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { passengerId } = useParams();
+
+  const { userInfo } = useAppSelector(selectAuth);
+  const { passenger, statusGetPassenger, queueUpdatePassenger } = useAppSelector(selectPassengers);
+  const dispatch = useAppDispatch();
+
+  const isAgent = userInfo?.role === 'agent';
+  const route = isAgent ? '/agent/passengers/' : '/admin/passengers/';
+  const isEditAction = useMemo(() => {
+    return !!location.state?.isEdit;
+  }, [location.state?.isEdit]);
+  const messages = useMemo(() => {
+    return fieldKeys.reduce<Record<string, string>>((res, key) => {
+      return {
+        ...res,
+        [key]: t('translation:error_required', { name: key }),
+      };
+    }, {});
+  }, [t]);
+
   const handleClose = () => {
     setOpen(false);
   };
   const handleCancel = () => setOpen(true);
 
+  const onSubmit = (values: Values) => {
+    if (passengerId) {
+      dispatch(
+        passengersActions.updatePassengerRequest({
+          id: passengerId,
+          data: {
+            country: values.country,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            phone: values.phone,
+          },
+          onSuccess() {
+            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('passenger:passenger') })} />, {
+              className: toastClass.toastSuccess,
+            });
+            navigate(route);
+          },
+          onFailure: () => {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('passenger:passenger') })} />, {
+              className: toastClass.toastError,
+            });
+          },
+        }),
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (passengerId) {
+      dispatch(
+        passengersActions.getPassengerRequest({
+          id: passengerId,
+        }),
+      );
+    } else {
+      navigate('/404');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [passengerId]);
+
+  useEffect(() => {
+    if (passenger) {
+      reset({
+        country: passenger.country,
+        email: passenger.email,
+        firstName: passenger.firstName,
+        lastName: passenger.lastName,
+        phone: passenger.phone,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [passenger]);
+
+  if (statusGetPassenger === 'loading') {
+    return <LoadingScreen />;
+  }
+
+  if (statusGetPassenger === 'success' && !passenger) {
+    return <Navigate to="/404" />;
+  }
+
   return (
-    <LayoutDetail title={t('details')} subTitle={t('passengers')}>
-      <Box width="100%" display="flex" justifyContent="center">
-        <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
-          <Typography color="#0c1132" fontWeight={700}>
-            {t(state.isEdit ? 'edit' : 'details')}
-          </Typography>
-          <Divider sx={{ margin: '16px 0' }} />
-          <Grid container spacing={2}>
-            <Grid item xs={12} lg={6}>
-              <Typography fontSize="14px" fontWeight="bold" marginBottom="16px">
-                {t('account_created')} {dayjs(new Date()).format('MM/DD/YYYY')}
-              </Typography>
-              <FormVerticle fields={fieldDetails} control={control} filterKey={'passenger'} inputProps={{ disabled: !state.isEdit }} />
+    <FadeIn>
+      <LayoutDetail title={t('passenger:details')} subTitle={t('passenger:passengers')}>
+        <Box width="100%" display="flex" justifyContent="center">
+          <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
+            <Typography color="#0c1132" fontWeight={700}>
+              {isEditAction ? t('translation:edit_type', { type: t('passenger:passenger') }) : t('passenger:details')}
+            </Typography>
+            <Divider sx={{ margin: '16px 0' }} />
+            <Grid container spacing={2}>
+              <Grid item xs={12} lg={6}>
+                <Typography fontSize="14px" fontWeight="bold" marginBottom="16px">
+                  {t('passenger:account_created')} {dayjs(new Date(passenger?.createdAt as string)).format('MM/DD/YYYY')}
+                </Typography>
+                <FormVerticle
+                  errors={errors}
+                  messages={messages}
+                  fields={fieldDetails}
+                  control={control}
+                  filterKey={'passenger'}
+                  inputProps={{
+                    disabled: !isEditAction,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                {/* FIXME: Chưa có type */}
+                <TableOrdersOfPassenger />
+              </Grid>
             </Grid>
-            <Grid item xs={12} lg={6}>
-              <TableDetailPassenger />
-            </Grid>
-          </Grid>
-          {state.isEdit && <ComboButton onCancel={handleCancel} />}
+            {isEditAction && (
+              <ComboButton
+                isSaving={!!passengerId && queueUpdatePassenger.includes(passengerId)}
+                onCancel={handleCancel}
+                onSave={handleSubmit(onSubmit)}
+              />
+            )}
+          </Box>
         </Box>
-      </Box>
-      <DialogConfirm
-        openDialog={open}
-        title={t('translation:cancel_type', { type: t('passenger').toLowerCase() })}
-        subTitle={t('translation:leave_page')}
-        onClose={handleClose}
-      />
-    </LayoutDetail>
+        <DialogConfirm
+          openDialog={open}
+          title={t('translation:cancel_type', { type: t('passenger').toLowerCase() })}
+          subTitle={t('translation:leave_page')}
+          onClose={handleClose}
+        />
+      </LayoutDetail>
+    </FadeIn>
   );
 }

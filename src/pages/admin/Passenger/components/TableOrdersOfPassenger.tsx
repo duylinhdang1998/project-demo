@@ -24,7 +24,7 @@ const data = [
   { id: uuid(), trip: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], date: new Date() },
 ];
 
-function TableDetailPassenger() {
+function TableOrdersOfPassenger() {
   const { t } = useTranslation('passenger');
   const classes = useStyles();
   return (
@@ -71,4 +71,4 @@ function TableDetailPassenger() {
     </Box>
   );
 }
-export default memo(TableDetailPassenger);
+export default memo(TableOrdersOfPassenger);
