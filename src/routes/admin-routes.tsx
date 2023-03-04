@@ -161,6 +161,7 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // List passengers
   {
     path: 'passengers',
     element: (
@@ -169,6 +170,7 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Update passenger
   {
     path: 'passengers/:passengerId',
     element: (

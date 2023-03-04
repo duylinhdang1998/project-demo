@@ -119,6 +119,7 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // List passengers
   {
     path: 'passengers',
     element: (
@@ -127,8 +128,9 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Update passenger
   {
-    path: 'passengers/:id',
+    path: 'passengers/:passengerId',
     element: (
       <RequiredAuth role="agent">
         <Page.PassengerDetail />
