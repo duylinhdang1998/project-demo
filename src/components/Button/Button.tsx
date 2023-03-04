@@ -6,6 +6,9 @@ import { memo } from 'react';
 
 interface ButtonProps extends Omit<LoadingButtonProps, 'className'> {
   backgroundButton?: string;
+  colorButton?: string;
+  backgroundButtonHover?: string;
+  colorButtonHover?: string;
   className?: string;
 }
 
@@ -17,7 +20,7 @@ const useStyles = makeStyles(() => {
   };
 });
 
-function Button({ backgroundButton, className, ...props }: ButtonProps) {
+function Button({ backgroundButton, backgroundButtonHover, colorButton, colorButtonHover, className, ...props }: ButtonProps) {
   const classes = useStyles();
   const matches = useMediaQuery('(min-width:1200px)');
 
@@ -28,8 +31,10 @@ function Button({ backgroundButton, className, ...props }: ButtonProps) {
       sx={{
         backgroundColor: backgroundButton + '!important',
         '&:hover': {
-          backgroundColor: backgroundButton,
+          backgroundColor: (backgroundButtonHover ? backgroundButtonHover : backgroundButton) + '!important',
+          color: (colorButtonHover ? colorButtonHover : colorButton) + '!important',
         },
+        color: colorButton + '!important',
         padding: '10px 14px',
         ...props.sx,
       }}

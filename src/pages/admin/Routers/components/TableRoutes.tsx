@@ -1,12 +1,14 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { Box, Dialog, Stack, Typography } from '@mui/material';
 import { ColumnsType } from 'antd/lib/table';
+import 'antd/lib/timeline/style/css';
 import { MapPinIcon, StopCircleSvg } from 'assets';
 import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
 import Button from 'components/Button/Button';
 import DeleteIcon from 'components/SvgIcon/DeleteIcon';
 import EditIcon from 'components/SvgIcon/EditIcon';
+import { ViewIcon } from 'components/SvgIcon/ViewIcon';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
@@ -23,6 +25,7 @@ import { useToastStyle } from 'theme/toastStyles';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 import { v4 as uuid } from 'uuid';
+import { DialogMultiStopTripDetail } from './DialogMultiStopTripDetail/DialogMultiStopTripDetail';
 import ToolTipAddress from './ToolTipAddress';
 
 function TableRoutes() {
@@ -36,13 +39,20 @@ function TableRoutes() {
   const dispatch = useAppDispatch();
 
   const [openDeleteRoute, setOpenDeleteRoute] = useState<Route | null>(null);
+  const [openDetailRoute, setOpenDetailRoute] = useState<Route | null>(null);
 
   const handleOpenDialogDelete = (record: Route) => {
     setOpenDeleteRoute(record);
   };
-
   const handleCloseDialogDelete = () => {
     setOpenDeleteRoute(null);
+  };
+
+  const handleOpenDialogDetail = (record: Route) => {
+    setOpenDetailRoute(record);
+  };
+  const handleCloseDialogDetail = () => {
+    setOpenDetailRoute(null);
   };
 
   const columns: ColumnsType<Route> = useMemo(() => {
@@ -159,6 +169,14 @@ function TableRoutes() {
             actions={[
               {
                 id: uuid(),
+                label: 'detail',
+                icon: <ViewIcon />,
+                onClick: () => {
+                  handleOpenDialogDetail(row);
+                },
+              },
+              {
+                id: uuid(),
                 label: 'edit',
                 icon: <EditIcon />,
                 onClick: () => {
@@ -262,6 +280,13 @@ function TableRoutes() {
     );
   };
 
+  const renderDialogDetail = () => {
+    if (openDetailRoute === null) {
+      return null;
+    }
+    return <DialogMultiStopTripDetail onClose={handleCloseDialogDetail} route={openDetailRoute} />;
+  };
+
   return (
     <Box my="24px">
       <AntTable
@@ -280,6 +305,7 @@ function TableRoutes() {
         }}
       />
       {renderDialogDelete()}
+      {renderDialogDetail()}
     </Box>
   );
 }
