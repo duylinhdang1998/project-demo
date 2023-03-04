@@ -49,7 +49,7 @@ export default function Vehicles() {
   });
   const classes = useStyles();
   const handleAdd = () => {
-    navigate('/admin/add-new-vehicles');
+    navigate(isAgent ? '/agent/vehicles/add-new-vehicles' : '/admin/vehicles/add-new-vehicles');
   };
   const onSubmit = (values: Values) => {
     console.log(values);

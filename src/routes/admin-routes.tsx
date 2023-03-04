@@ -83,6 +83,7 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Update vehicle
   {
     path: 'vehicles/:vehicleId',
     element: (
@@ -91,6 +92,7 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // List vehicle
   {
     path: 'vehicles',
     element: (
@@ -99,32 +101,36 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Add vehicle
   {
-    path: 'add-new-vehicles',
+    path: 'vehicles/add-new-vehicles',
     element: (
       <RequiredAuth role="admin">
         <Page.AddNewVehicles />
       </RequiredAuth>
     ),
   },
+  // Update vehicle event
   {
-    path: ':vehicleId/update-event/:vehicleEventId',
+    path: 'vehicles/:vehicleId/update-event/:vehicleEventId',
     element: (
       <RequiredAuth role="admin">
         <Page.AddNewEvent />
       </RequiredAuth>
     ),
   },
+  // Add vehicle event
   {
-    path: ':vehicleId/add-new-event',
+    path: 'vehicles/:vehicleId/add-new-event',
     element: (
       <RequiredAuth role="admin">
         <Page.AddNewEvent />
       </RequiredAuth>
     ),
   },
+  // List vehicle events
   {
-    path: ':vehicleId/list-events',
+    path: 'vehicles/:vehicleId/list-events',
     element: (
       <RequiredAuth role="admin">
         <Page.ListEvents />

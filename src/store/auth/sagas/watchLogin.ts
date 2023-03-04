@@ -10,7 +10,8 @@ function* handleLogin({ payload }: ReturnType<typeof authActions.loginRequest>) 
     });
     yield put(
       authActions.loginSuccess({
-        role: data.rbacCompany.role === 'COMPANY_ADMIN' ? 'admin' : 'agent',
+        role: 'agent',
+        // role: data.rbacCompany.role === 'COMPANY_ADMIN' ? 'admin' : 'agent',
         token: `${data.payload.type} ${data.payload.rbacToken}`,
       }),
     );

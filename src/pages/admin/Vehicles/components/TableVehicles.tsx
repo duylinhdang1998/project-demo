@@ -124,7 +124,7 @@ function TableVehicles() {
                       label: 'edit',
                       icon: <EditIcon />,
                       onClick: () => {
-                        navigate(`/admin/vehicles/${row._id}`);
+                        navigate(isAgent ? `/agent/vehicles/${row._id}` : `/admin/vehicles/${row._id}`);
                       },
                     }
                   : {}),
@@ -134,7 +134,7 @@ function TableVehicles() {
                 label: 'add_new_event',
                 icon: <CirclePlusIcon />,
                 onClick: () => {
-                  navigate(isAgent ? `/agent/${row._id}/add-new-event` : `/admin/${row._id}/add-new-event`);
+                  navigate(isAgent ? `/agent/vehicles/${row._id}/add-new-event` : `/admin/vehicles/${row._id}/add-new-event`);
                 },
               },
               {
@@ -142,7 +142,7 @@ function TableVehicles() {
                 label: 'show_event_lists',
                 icon: <BookmarkIcon />,
                 onClick: () => {
-                  navigate(isAgent ? `/agent/${row._id}/list-events` : `/admin/${row._id}/list-events`);
+                  navigate(isAgent ? `/agent/vehicles/${row._id}/list-events` : `/admin/vehicles/${row._id}/list-events`);
                 },
               },
               {

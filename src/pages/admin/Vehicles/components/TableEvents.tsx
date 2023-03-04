@@ -25,6 +25,7 @@ import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 import { getUrlOfResource } from 'utils/getUrlOfResource';
 import { useStyles } from '../styles';
+import { selectAuth } from 'store/auth/selectors';
 
 function TableEvents() {
   const classes = useStyles();
@@ -32,6 +33,7 @@ function TableEvents() {
   const { t } = useTranslation(['vehicles', 'translation']);
   const [openDeleteVehicleEvent, setOpenDeleteVehicleEvent] = useState<VehicleEvent | null>(null);
 
+  const { userInfo } = useAppSelector(selectAuth);
   const { statusGetVehicleEvents, vehicleEvents, currentPage, totalRows, queueDeleteVehicleEvent, currentSearcher } =
     useAppSelector(selectVehicleEvents);
   const dispatch = useAppDispatch();
@@ -46,6 +48,8 @@ function TableEvents() {
   const handleCloseDialogDelete = () => {
     setOpenDeleteVehicleEvent(null);
   };
+
+  const isAgent = userInfo?.role === 'agent';
 
   const columns: ColumnsType<VehicleEvent> = useMemo(() => {
     return [
@@ -124,7 +128,7 @@ function TableEvents() {
                 label: 'edit',
                 icon: <EditIcon />,
                 onClick: () => {
-                  navigate(`/admin/${vehicleId}/update-event/${row._id}`);
+                  navigate(isAgent ? `/agent/vehicles/${vehicleId}/update-event/${row._id}` : `/admin/vehicles/${vehicleId}/update-event/${row._id}`);
                 },
               },
               {
@@ -144,7 +148,7 @@ function TableEvents() {
         width: 150,
       },
     ];
-  }, [classes.downloadButton, navigate, t, vehicleId]);
+  }, [classes.downloadButton, isAgent, navigate, t, vehicleId]);
 
   const renderDialogDelete = () => {
     if (openDeleteVehicleEvent === null) {
