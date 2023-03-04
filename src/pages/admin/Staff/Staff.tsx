@@ -47,7 +47,7 @@ export default function Staff() {
   const { currentSearcher } = useAppSelector(selectStaffs);
 
   const handleAdd = () => {
-    navigate('/admin/add-new-staff');
+    navigate('/admin/staffs/add-new-staff');
   };
 
   const onSubmit = (values: Values) => {

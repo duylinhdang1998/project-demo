@@ -59,6 +59,7 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Update package setting
   {
     path: 'package-settings/:packageSettingId',
     element: (
@@ -67,6 +68,7 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // List package settings
   {
     path: 'package-settings',
     element: (
@@ -75,6 +77,7 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Add package setting
   {
     path: 'add-package-setting',
     element: (
@@ -137,14 +140,16 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Add staff
   {
-    path: 'add-new-staff',
+    path: 'staffs/add-new-staff',
     element: (
       <RequiredAuth role="admin">
         <Page.AddStaff />
       </RequiredAuth>
     ),
   },
+  // Update staff
   {
     path: 'staffs/:staffId',
     element: (
@@ -153,6 +158,7 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // List staffs
   {
     path: 'staffs',
     element: (
@@ -203,40 +209,45 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Update router one stop
   {
-    path: '/admin/routers/update-oneway/:routerId',
+    path: 'routers/update-oneway/:routerId',
     element: (
       <RequiredAuth role="admin">
         <Page.CreateOneWay />
       </RequiredAuth>
     ),
   },
+  // Update router multi stop
   {
-    path: '/admin/routers/update-multi/:routerId',
+    path: 'routers/update-multi/:routerId',
     element: (
       <RequiredAuth role="admin">
         <Page.CreateMultiStopWay />
       </RequiredAuth>
     ),
   },
+  // List routers
   {
-    path: '/admin/routers',
+    path: 'routers',
     element: (
       <RequiredAuth role="admin">
         <Page.Routers />
       </RequiredAuth>
     ),
   },
+  // Add one stop
   {
-    path: '/admin/routers/create-oneway',
+    path: 'routers/create-oneway',
     element: (
       <RequiredAuth role="admin">
         <Page.CreateOneWay />
       </RequiredAuth>
     ),
   },
+  // Add multi stop
   {
-    path: '/admin/routers/create-multi',
+    path: 'routers/create-multi',
     element: (
       <RequiredAuth role="admin">
         <Page.CreateMultiStopWay />

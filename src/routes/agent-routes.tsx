@@ -161,6 +161,7 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // List routers
   {
     path: 'routers',
     element: (

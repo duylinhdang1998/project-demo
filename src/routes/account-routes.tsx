@@ -19,6 +19,7 @@ export const AccountRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // List offices
   {
     path: 'offices-manager',
     element: (
@@ -27,6 +28,7 @@ export const AccountRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Update office
   {
     path: 'offices-manager/:officeId',
     element: (
@@ -35,6 +37,7 @@ export const AccountRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Add office
   {
     path: 'add-office-manager',
     element: (
