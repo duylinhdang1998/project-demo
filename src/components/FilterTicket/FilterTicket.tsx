@@ -12,6 +12,9 @@ import Select, { Props as SelectProps } from 'react-select';
 import { UserRole } from 'services/models/UserRole';
 import { getOffices } from 'services/OfficesManager/Company/getOffices';
 import { getCountryList } from 'services/PackageSales/packageSales';
+import { getListArrivals } from 'services/Route/Company/getListArrivals';
+import { getListDepartures } from 'services/Route/Company/getListDepartures';
+import { getVehicles } from 'services/Vehicle/Company/getVehicles';
 import { customStyles } from './customStyles';
 
 interface FilterTicketProps<T extends FieldValues> {
@@ -202,6 +205,104 @@ export default function FilterTicket<T extends FieldValues>({
                     transformToOption={model => ({
                       value: model,
                       label: labelOfRole[model.role],
+                    })}
+                    styles={customStyles as any}
+                    placeholder={t(`${i.label}`)}
+                    onChange={field.onChange}
+                  />
+                </Box>
+              );
+            }}
+          />
+        );
+      case 'departurePoint':
+        return (
+          <Controller
+            control={control}
+            name={i.label as Path<T>}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <SelectDecouplingData
+                    isClearable
+                    isSearchable
+                    service={async () => {
+                      const response = await getListDepartures({});
+                      return response.data.map(item => ({ value: item }));
+                    }}
+                    transformToOption={model => ({
+                      key: model.value,
+                      label: model.value,
+                      value: model,
+                    })}
+                    value={field.value}
+                    styles={customStyles as any}
+                    placeholder={t(`${i.label}`)}
+                    onChange={field.onChange}
+                  />
+                </Box>
+              );
+            }}
+          />
+        );
+      case 'arrivalPoint':
+        return (
+          <Controller
+            control={control}
+            name={i.label as Path<T>}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <SelectDecouplingData
+                    isClearable
+                    isSearchable
+                    service={async () => {
+                      const response = await getListArrivals({});
+                      return response.data.map(item => ({ value: item }));
+                    }}
+                    transformToOption={model => ({
+                      key: model.value,
+                      label: model.value,
+                      value: model,
+                    })}
+                    value={field.value}
+                    styles={customStyles as any}
+                    placeholder={t(`${i.label}`)}
+                    onChange={field.onChange}
+                  />
+                </Box>
+              );
+            }}
+          />
+        );
+      case 'vehicle':
+        return (
+          <Controller
+            control={control}
+            name={i.label as Path<T>}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <SelectDecouplingData
+                    isClearable
+                    isSearchable
+                    value={field.value}
+                    service={async () => {
+                      const response = await getVehicles({
+                        page: 0,
+                        searcher: {},
+                        sorter: {},
+                        isGetAll: true,
+                      });
+                      return response.data.hits;
+                    }}
+                    transformToOption={model => ({
+                      key: model._id,
+                      label: model.brand,
+                      value: model,
                     })}
                     styles={customStyles as any}
                     placeholder={t(`${i.label}`)}

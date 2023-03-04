@@ -5,6 +5,11 @@ import 'antd/lib/date-picker/style/css';
 import cx from 'classnames';
 import { CheckboxGroup } from 'components/CheckboxGroup/CheckboxGroup';
 import { customStyles } from 'components/FilterTicket/customStyles';
+import { SelectArrivalPoint } from 'components/SelectDecouplingData/SelectArrivalPoint';
+import { SelectDeparturePoint } from 'components/SelectDecouplingData/SelectDeparturePoint';
+import { SelectOffice } from 'components/SelectDecouplingData/SelectOffice';
+import { SelectRole } from 'components/SelectDecouplingData/SelectRole';
+import { SelectVehicle } from 'components/SelectDecouplingData/SelectVehicle';
 import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
 import { UploadPDFResource } from 'components/UploadImageResource/UploadPDFResource';
 import { Field, SelectField } from 'models/Field';
@@ -408,6 +413,76 @@ export default function FormVerticle<T extends FieldValues>({
                 message: messageErr,
               },
             }}
+          />
+        );
+      case 'controlSelectVehicle':
+        return (
+          <SelectVehicle
+            onChange={i.onChange}
+            control={control}
+            errors={errors}
+            messages={messages}
+            vehicle={i.vehicle}
+            isDisabled={i.disabled}
+            isRequired={i.required}
+            label={i.label}
+            filterKey={filterKey}
+          />
+        );
+      case 'controlSelectDeparturePoint':
+        return (
+          <SelectDeparturePoint
+            control={control}
+            errors={errors}
+            messages={messages}
+            isDisabled={i.disabled}
+            isRequired={i.required}
+            departurePoint={i.departurePoint}
+            onChange={i.onChange}
+            label={i.label}
+            filterKey={filterKey}
+          />
+        );
+      case 'controlSelectArrivalPoint':
+        return (
+          <SelectArrivalPoint
+            control={control}
+            errors={errors}
+            messages={messages}
+            isDisabled={i.disabled}
+            isRequired={i.required}
+            arrivalPoint={i.arrivalPoint}
+            onChange={i.onChange}
+            label={i.label}
+            filterKey={filterKey}
+          />
+        );
+      case 'controlSelectRole':
+        return (
+          <SelectRole
+            control={control}
+            errors={errors}
+            messages={messages}
+            isDisabled={i.disabled}
+            isRequired={i.required}
+            role={i.role}
+            onChange={i.onChange}
+            label={i.label}
+            filterKey={filterKey}
+          />
+        );
+      case 'controlSelectOffice':
+        return (
+          <SelectOffice
+            control={control}
+            errors={errors}
+            messages={messages}
+            isDisabled={i.disabled}
+            isRequired={i.required}
+            office={i.office}
+            onChange={i.onChange}
+            label={i.label}
+            filterKey={filterKey}
           />
         );
       default:

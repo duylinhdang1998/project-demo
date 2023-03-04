@@ -1,24 +1,22 @@
 import { Box, Typography } from '@mui/material';
+import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
+import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { isEmpty } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { Control, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
-import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
-import FormVerticle from 'components/FormVerticle/FormVerticle';
-import { Option } from 'models/Field';
 import { Route } from 'services/models/Route';
+import { Vehicle } from 'services/models/Vehicle';
 import { anyToMoment } from 'utils/anyToMoment';
-import { fieldsStepOne } from '../../constants';
 import EditPriceTrip from '../EditPriceTrip';
-import { SelectVehicle } from './components/SelectVehicle';
 
 const fieldKeys: Array<keyof Route | string> = ['vehicle', 'departurePoint', 'arrivalPoint', 'departureTime', 'arrivalDuration'];
 
 export interface StepOneValuesForOneStopTrip {
-  vehicle: string;
-  departurePoint: Option;
-  arrivalPoint: Option;
+  vehicle: Vehicle;
+  departurePoint: string;
+  arrivalPoint: string;
   departureTime: any; // moment
   arrivalDuration: number;
   ecoAdult: number;
@@ -44,7 +42,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
     formState: { errors },
     handleSubmit,
     getValues,
-    resetField,
+    setValue,
     reset,
   } = useForm<StepOneValuesForOneStopTrip>();
 
@@ -52,6 +50,12 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
 
   const getVehicle = () => {
     return getValues().vehicle;
+  };
+  const getDeparturePoint = () => {
+    return getValues().departurePoint;
+  };
+  const getArrivalPoint = () => {
+    return getValues().arrivalPoint;
   };
 
   const handleClose = () => setOpen(false);
@@ -75,6 +79,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
 
   useEffect(() => {
     if (!!values && !isEmpty(values)) {
+      console.log(values);
       reset({
         ...values,
         arrivalDuration: values.arrivalDuration,
@@ -86,24 +91,56 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
 
   return (
     <Box my="24px">
-      <SelectVehicle
-        control={control}
-        errors={errors}
-        messages={messages}
-        vehicle={getVehicle()}
-        onChange={value => {
-          resetField('vehicle', { defaultValue: value });
-        }}
-      />
       <FormVerticle
         errors={errors}
         messages={messages}
         control={control}
-        fields={fieldsStepOne}
-        indexGridHorizon={-1}
+        indexGridHorizon={0}
         isGridHorizon
         grid
         filterKey="routers"
+        fields={[
+          {
+            type: 'controlSelectVehicle',
+            label: 'vehicle',
+            id: 'vehicle',
+            vehicle: getVehicle(),
+            onChange: vehicle => {
+              setValue('vehicle', vehicle as StepOneValuesForOneStopTrip['vehicle']);
+            },
+            required: true,
+          },
+          {
+            type: 'controlSelectDeparturePoint',
+            label: 'departurePoint',
+            id: 'departurePoint',
+            departurePoint: getDeparturePoint(),
+            onChange: departurePoint => {
+              setValue('departurePoint', departurePoint as StepOneValuesForOneStopTrip['departurePoint']);
+            },
+            required: true,
+          },
+          {
+            id: 'departureTime',
+            label: 'departureTime',
+            type: 'datetime',
+            showTime: true,
+            required: true,
+            picker: 'time',
+            format: 'HH:mm',
+          },
+          {
+            id: 'arrivalPoint',
+            label: 'arrivalPoint',
+            type: 'controlSelectArrivalPoint',
+            arrivalPoint: getArrivalPoint(),
+            onChange: arrivalPoint => {
+              setValue('arrivalPoint', arrivalPoint as StepOneValuesForOneStopTrip['arrivalPoint']);
+            },
+            required: true,
+          },
+          { id: 'arrivalDuration', label: 'arrivalDuration', type: 'number', showTime: true, required: true },
+        ]}
       />
       <Typography fontSize={14} color="#45485e" fontWeight={500} py="16px">
         {t('routers:config_prices_per_passenger')}

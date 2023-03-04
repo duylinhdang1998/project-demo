@@ -23,7 +23,7 @@ export interface Route {
   _id: string;
   company: string;
   routeCode: string;
-  vehicle: Vehicle['_id'];
+  vehicle: Vehicle;
   departurePoint: string;
   departureTime: string;
   // FIXME: Tách type enum

@@ -1,47 +1,40 @@
 import { Box, InputLabel, Typography } from '@mui/material';
 import { customStyles } from 'components/FilterTicket/customStyles';
-import { HEIGHT, SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
+import { SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
 import { Control, Controller, FieldErrors, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { UserRole } from 'services/models/UserRole';
+import { StopPoint } from 'services/models/Route';
+import { getListArrivals } from 'services/Route/Company/getListArrivals';
 import { useStyles } from './styles';
 
-export const labelOfRole: Record<UserRole, string> = {
-  COMPANY_ADMIN: 'Admin',
-  COMPANY_AGENT: 'Agent',
-  PASSENGER: 'Client',
-  COMPANY_DRIVER: 'Driver',
-};
-
-export interface SelectRoleProps {
+export interface SelectArrivalPointProps {
   errors?: FieldErrors<any>;
   messages?: Record<string, string>;
   control?: Control<any, any>;
   isRequired?: boolean;
   isDisabled?: boolean;
   filterKey?: string;
+  arrivalPoint: StopPoint['stopPoint'];
+  onChange: (arrivalPoint: StopPoint['stopPoint'] | undefined) => void;
   label: string;
-  role: UserRole;
-  onChange: (role: UserRole | undefined) => void;
 }
 
-const ROLES: Array<{ role: UserRole }> = [{ role: 'COMPANY_AGENT' }, { role: 'COMPANY_ADMIN' }, { role: 'PASSENGER' }];
-export const SelectRole = ({
+export const SelectArrivalPoint = ({
   errors,
   messages,
   control,
-  role,
   isRequired = false,
   isDisabled = false,
+  arrivalPoint,
   onChange,
   label,
   filterKey,
-}: SelectRoleProps) => {
+}: SelectArrivalPointProps) => {
   const { t } = useTranslation(['translation', filterKey]);
   const classes = useStyles();
 
-  const error = errors && errors['role'];
-  const messageErr = messages && messages['role'];
+  const error = errors && errors['arrivalPoint'];
+  const messageErr = messages && messages['arrivalPoint'];
 
   const labelTranslated = filterKey ? t(`${filterKey}:${label}`) : t(label);
 
@@ -60,21 +53,22 @@ export const SelectRole = ({
           <Box>
             <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
             <SelectDecouplingData
-              maxMenuHeight={HEIGHT * ROLES.length}
-              isSearchable
               isDisabled={isDisabled}
-              value={{ role }}
+              isSearchable
+              value={{ value: arrivalPoint }}
               isClearable={!isRequired}
-              service={() => Promise.resolve<typeof ROLES>(ROLES)}
+              service={async () => {
+                const response = await getListArrivals({});
+                return response.data.map(item => ({ value: item }));
+              }}
               transformToOption={model => ({
+                key: model.value,
+                label: model.value,
                 value: model,
-                label: labelOfRole[model.role],
               })}
               styles={customStyles as any}
               placeholder={labelTranslated}
-              onChange={selected => {
-                onChange(selected?.role);
-              }}
+              onChange={selected => onChange(selected?.value)}
             />
             {!!error && (
               <Typography component="p" className={classes.error} fontSize={12}>

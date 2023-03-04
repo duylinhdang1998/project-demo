@@ -1,19 +1,13 @@
 import { Box, InputLabel, Typography } from '@mui/material';
 import { customStyles } from 'components/FilterTicket/customStyles';
-import { HEIGHT, SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
+import { SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
 import { Control, Controller, FieldErrors, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { UserRole } from 'services/models/UserRole';
+import { Vehicle } from 'services/models/Vehicle';
+import { getVehicles } from 'services/Vehicle/Company/getVehicles';
 import { useStyles } from './styles';
 
-export const labelOfRole: Record<UserRole, string> = {
-  COMPANY_ADMIN: 'Admin',
-  COMPANY_AGENT: 'Agent',
-  PASSENGER: 'Client',
-  COMPANY_DRIVER: 'Driver',
-};
-
-export interface SelectRoleProps {
+export interface SelectVehicleProps {
   errors?: FieldErrors<any>;
   messages?: Record<string, string>;
   control?: Control<any, any>;
@@ -21,28 +15,26 @@ export interface SelectRoleProps {
   isDisabled?: boolean;
   filterKey?: string;
   label: string;
-  role: UserRole;
-  onChange: (role: UserRole | undefined) => void;
+  vehicle: Vehicle;
+  onChange: (vehicle: Vehicle | undefined) => void;
 }
 
-const ROLES: Array<{ role: UserRole }> = [{ role: 'COMPANY_AGENT' }, { role: 'COMPANY_ADMIN' }, { role: 'PASSENGER' }];
-export const SelectRole = ({
+export const SelectVehicle = ({
   errors,
   messages,
   control,
-  role,
+  vehicle,
   isRequired = false,
   isDisabled = false,
   onChange,
   label,
   filterKey,
-}: SelectRoleProps) => {
+}: SelectVehicleProps) => {
   const { t } = useTranslation(['translation', filterKey]);
   const classes = useStyles();
 
-  const error = errors && errors['role'];
-  const messageErr = messages && messages['role'];
-
+  const error = errors && errors['vehicle'];
+  const messageErr = messages && messages['vehicle'];
   const labelTranslated = filterKey ? t(`${filterKey}:${label}`) : t(label);
 
   return (
@@ -60,21 +52,22 @@ export const SelectRole = ({
           <Box>
             <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
             <SelectDecouplingData
-              maxMenuHeight={HEIGHT * ROLES.length}
-              isSearchable
               isDisabled={isDisabled}
-              value={{ role }}
+              isSearchable
+              value={vehicle}
               isClearable={!isRequired}
-              service={() => Promise.resolve<typeof ROLES>(ROLES)}
+              service={async () => {
+                const response = await getVehicles({ page: 0, searcher: {}, sorter: {}, isGetAll: true });
+                return response.data.hits;
+              }}
               transformToOption={model => ({
+                key: model._id,
+                label: model.brand,
                 value: model,
-                label: labelOfRole[model.role],
               })}
               styles={customStyles as any}
               placeholder={labelTranslated}
-              onChange={selected => {
-                onChange(selected?.role);
-              }}
+              onChange={selected => onChange(selected)}
             />
             {!!error && (
               <Typography component="p" className={classes.error} fontSize={12}>
