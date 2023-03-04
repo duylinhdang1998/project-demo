@@ -79,6 +79,40 @@ const DATA_SAMPLE: Record<string, Route> = {
       },
       {
         stopPoint: 'Hà Nam',
+        stopCode: '63f1e258520db06a2222f976',
+        durationTime: 33,
+        ECOPrices: {
+          ADULT: 33,
+          CHILD: 33,
+          STUDENT: 13,
+        },
+        VIPPrices: {
+          ADULT: 33,
+          CHILD: 33,
+          STUDENT: 333,
+        },
+        createdAt: '2023-02-19T08:48:24.428Z',
+        updatedAt: '2023-02-19T08:48:24.428Z',
+      },
+      {
+        stopPoint: 'Hà Nam',
+        stopCode: '63f1e258333336a111ef976',
+        durationTime: 33,
+        ECOPrices: {
+          ADULT: 33,
+          CHILD: 33,
+          STUDENT: 13,
+        },
+        VIPPrices: {
+          ADULT: 33,
+          CHILD: 33,
+          STUDENT: 333,
+        },
+        createdAt: '2023-02-19T08:48:24.428Z',
+        updatedAt: '2023-02-19T08:48:24.428Z',
+      },
+      {
+        stopPoint: 'Hà Nam',
         stopCode: '63f1e258520db06a111ef976',
         durationTime: 33,
         ECOPrices: {
