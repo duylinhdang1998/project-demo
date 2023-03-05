@@ -54,7 +54,7 @@ function CreditCard() {
   const toastClass = useToastStyle();
   const { t } = useTranslation(['account', 'translation']);
   const classes = useStyles();
-  const navigate = useNavigate();
+
   const [focused, setFocused] = useState('');
   const [creditValue, setCreditValue] = useState<Values>({
     number: '',
@@ -63,6 +63,9 @@ function CreditCard() {
     cvc: '',
     postal_code: '',
   });
+
+  const navigate = useNavigate();
+
   const handleCallback = (type: CallbackArgument, isValid: boolean) => {
     console.log({ type, isValid });
     // console.log(getValues('number'));

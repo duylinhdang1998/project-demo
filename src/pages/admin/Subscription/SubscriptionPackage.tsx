@@ -61,6 +61,7 @@ export default function SubscriptionPackage() {
                 subscriptionType={subscription.subscriptionType}
                 currency={getAppCurrencySymbol()}
                 price={price}
+                // FIXME: Cái gì quyết định cái này?
                 popular={subscription.active}
               />
             </Grid>

@@ -219,6 +219,7 @@ module.exports = {
     'no-useless-escape': 'off',
     'no-async-promise-executor': 'off',
     '@typescript-eslint/space-before-function-paren': 'off',
+    'react/destructuring-assignment': 'off',
   },
   overrides: [
     {
