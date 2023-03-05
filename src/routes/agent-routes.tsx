@@ -83,6 +83,7 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // List vehicles
   {
     path: 'vehicles',
     element: (
@@ -91,30 +92,34 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Update vehicle event
   {
-    path: ':vehicleId/update-event/:vehicleEventId',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.AddNewEvent />
-      </RequiredAuth>
-    ),
-  },
-  {
-    path: ':vehicleId/add-new-event',
+    path: 'vehicles/:vehicleId/update-event/:vehicleEventId',
     element: (
       <RequiredAuth role="agent">
         <Page.AddNewEvent />
       </RequiredAuth>
     ),
   },
+  // Add vehicle event
   {
-    path: ':vehicleId/list-events',
+    path: 'vehicles/:vehicleId/add-new-event',
+    element: (
+      <RequiredAuth role="agent">
+        <Page.AddNewEvent />
+      </RequiredAuth>
+    ),
+  },
+  // List vehicle events
+  {
+    path: 'vehicles/:vehicleId/list-events',
     element: (
       <RequiredAuth role="agent">
         <Page.ListEvents />
       </RequiredAuth>
     ),
   },
+  // List passengers
   {
     path: 'passengers',
     element: (
@@ -123,8 +128,9 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Update passenger
   {
-    path: 'passengers/:id',
+    path: 'passengers/:passengerId',
     element: (
       <RequiredAuth role="agent">
         <Page.PassengerDetail />
@@ -155,6 +161,7 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // List routers
   {
     path: 'routers',
     element: (

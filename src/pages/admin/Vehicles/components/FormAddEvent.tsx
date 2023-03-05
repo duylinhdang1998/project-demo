@@ -105,7 +105,7 @@ function FormAddEvent() {
               toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('vehicles:event') })} />, {
                 className: toastClass.toastSuccess,
               });
-              navigate(isAgent ? `/agent/${vehicleId}/list-events` : `/admin/${vehicleId}/list-events`);
+              navigate(isAgent ? `/agent/vehicles/${vehicleId}/list-events` : `/admin/vehicles/${vehicleId}/list-events`);
             },
             onFailure() {
               toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('vehicles:event') })} />, {
@@ -132,7 +132,7 @@ function FormAddEvent() {
               toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('vehicles:event') })} />, {
                 className: toastClass.toastSuccess,
               });
-              navigate(`/admin/${vehicleId}/list-events`);
+              navigate(isAgent ? `/agent/vehicles/${vehicleId}/list-events` : `/admin/vehicles/${vehicleId}/list-events`);
             },
             onFailure() {
               toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('vehicles:event') })} />, {

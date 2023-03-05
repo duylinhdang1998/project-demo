@@ -14,12 +14,16 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { selectAuth } from 'store/auth/selectors';
 import TableRoutes from './components/TableRoutes';
 import { fieldsSearch } from './constants';
+import { useEffect } from 'react';
+import { routesActions } from 'store/routes/routesSlice';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { momentToNumber } from 'utils/momentToNumber';
 
 interface Values {
   vehicle: string;
-  departures_point: string;
-  arrival_points: string;
-  departure_time: string;
+  departurePoint: { value: string };
+  arrivalPoint: { value: string };
+  departureTime: any; // Moment
 }
 
 const useStyles = makeStyles(() => ({
@@ -35,17 +39,13 @@ const useStyles = makeStyles(() => ({
 
 export default function Routers() {
   const { t } = useTranslation(['routers', 'translation']);
-  const { userInfo } = useAppSelector(selectAuth);
   const navigate = useNavigate();
   const classes = useStyles();
-  const { control, handleSubmit } = useForm<Values>({
-    defaultValues: {
-      arrival_points: '',
-      departures_point: '',
-      vehicle: '',
-      departure_time: '',
-    },
-  });
+  const { control, handleSubmit } = useForm<Values>();
+
+  const { userInfo } = useAppSelector(selectAuth);
+  const dispatch = useAppDispatch();
+
   const handleAddNewTrip = (path: string) => () => {
     navigate('/admin/routers/' + path);
   };
@@ -62,8 +62,44 @@ export default function Routers() {
   );
 
   const onSubmit = (values: Values) => {
-    console.log({ values });
+    console.log(values);
+    dispatch(
+      routesActions.getRoutesRequest({
+        page: 0,
+        searcher: {
+          departurePoint: {
+            value: values.departurePoint.value,
+            operator: 'eq',
+          },
+          stopPoints: {
+            value: values.arrivalPoint.value,
+            operator: 'eq',
+          },
+          departureTime: {
+            value: momentToNumber(values.departureTime),
+            operator: 'eq',
+          },
+          vehicle: {
+            value: values.vehicle,
+            operator: 'eq',
+          },
+        },
+        sorter: {},
+      }),
+    );
   };
+
+  useEffect(() => {
+    // FIXME: API lỗi tạm thời comment
+    // dispatch(
+    //   routesActions.getRoutesRequest({
+    //     page: 0,
+    //     searcher: {},
+    //     sorter: {},
+    //   }),
+    // );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box>

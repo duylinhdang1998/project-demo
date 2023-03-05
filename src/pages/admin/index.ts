@@ -15,8 +15,8 @@ import PackageSettings from './PackageSettings/PackageSettings';
 import PassengerDetail from './Passenger/PassengerDetail';
 import Passengers from './Passenger/Passengers';
 import PaymentMethod from './PaymentMethod/PaymentMethod';
-import CreateMultiStopWay from './Routers/CreateMultiStopWay';
-import CreateOneWay from './Routers/CreateOneWay';
+import CreateMultiStopTrip from './Routers/CreateMultiStopTrip';
+import CreateOneStopTrip from './Routers/CreateOneStopTrip';
 import Routers from './Routers/Routers';
 import AddService from './ServicesSettings/AddService';
 import ServicesSettings from './ServicesSettings/ServicesSettings';
@@ -32,8 +32,8 @@ import ListEvents from './Vehicles/ListEvents';
 import Vehicles from './Vehicles/Vehicles';
 
 export {
-  CreateMultiStopWay,
-  CreateOneWay,
+  CreateMultiStopTrip as CreateMultiStopWay,
+  CreateOneStopTrip as CreateOneWay,
   Dashboard,
   ForgetPassword,
   TicketSales,

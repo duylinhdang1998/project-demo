@@ -5,7 +5,7 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { selectStaffs } from 'store/staffs/selectors';
 import StepOne, { StepOneValues } from './FormStep/StepOne';
 import StepThree from './FormStep/StepThree';
-import StepTwo, { ALL_DAYS_OPTION_VALUE, StepTwoValues } from './FormStep/StepTwo';
+import StepTwo, { StepTwoValues } from './FormStep/StepTwo';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { staffsActions } from 'store/staffs/staffsSlice';
 import { toast } from 'react-toastify';
@@ -16,6 +16,7 @@ import { momentToNumber } from 'utils/momentToNumber';
 import { anyToMoment } from 'utils/anyToMoment';
 import { Staff } from 'services/models/Staff';
 import { omit } from 'lodash';
+import { ALL_DAYS_OPTION_VALUE } from 'components/SelectDaysOfWeek/SelectDaysOfWeek';
 
 const steps = ['Step 1', 'Step 2', 'Step 3'];
 

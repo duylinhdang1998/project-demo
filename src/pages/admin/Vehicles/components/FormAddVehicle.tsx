@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import { ImageResource } from 'services/models/Resource';
 import { Vehicle } from 'services/models/Vehicle';
 import { CreateVehicle } from 'services/Vehicle/Company/createVehicle';
+import { selectAuth } from 'store/auth/selectors';
 import { selectVehicles } from 'store/vehicles/selectors';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 import { useToastStyle } from 'theme/toastStyles';
@@ -58,8 +59,11 @@ function FormAddVehicle() {
 
   const [open, setOpen] = useState(false);
 
+  const { userInfo } = useAppSelector(selectAuth);
   const { statusCreateVehicle, statusGetVehicle, queueUpdateVehicle, vehicle } = useAppSelector(selectVehicles);
   const dispatch = useAppDispatch();
+
+  const isAgent = userInfo?.role === 'agent';
 
   const messages = useMemo(() => {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
@@ -100,7 +104,7 @@ function FormAddVehicle() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('vehicles:vehicle') })} />, {
               className: toastClass.toastSuccess,
             });
-            navigate('/admin/vehicles', { replace: true });
+            navigate(isAgent ? '/agent/vehicles' : '/admin/vehicles', { replace: true });
           },
           onFailure: () => {
             toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('vehicles:vehicle') })} />, {
@@ -117,7 +121,7 @@ function FormAddVehicle() {
             toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('vehicles:vehicle') })} />, {
               className: toastClass.toastSuccess,
             });
-            navigate('/admin/vehicles', { replace: true });
+            navigate(isAgent ? '/agent/vehicles' : '/admin/vehicles', { replace: true });
           },
           onFailure: () => {
             toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('vehicles:vehicle') })} />, {

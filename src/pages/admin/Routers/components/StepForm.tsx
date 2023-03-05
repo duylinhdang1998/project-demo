@@ -1,23 +1,23 @@
 import { Box, Divider, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useEffect, useState } from 'react';
+import { ALL_DAYS_OPTION_VALUE } from 'components/SelectDaysOfWeek/SelectDaysOfWeek';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { Route } from 'services/models/Route';
+import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
-import { departureOptions } from '../constants';
+import { useToastStyle } from 'theme/toastStyles';
+import { anyToMoment } from 'utils/anyToMoment';
+import { momentToNumber } from 'utils/momentToNumber';
+import { momentToString } from 'utils/momentToString';
 import StepOne, { StepOneValuesForOneStopTrip } from './FormStep/StepOne';
 import StepOneMultiple, { StepOneValuesForMultipleStopTrip } from './FormStep/StepOneMultiple';
 import StepThree from './FormStep/StepThree';
-import StepTwo, { ALL_DAYS_OPTION_VALUE, StepTwoValues } from './FormStep/StepTwo';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { routesActions } from 'store/routes/routesSlice';
-import { toast } from 'react-toastify';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
-import { useToastStyle } from 'theme/toastStyles';
-import { useTranslation } from 'react-i18next';
-import { momentToNumber } from 'utils/momentToNumber';
-import { momentToString } from 'utils/momentToString';
-import { anyToMoment } from 'utils/anyToMoment';
-import { Route } from 'services/models/Route';
+import StepTwo, { StepTwoValues } from './FormStep/StepTwo';
 
 const steps = ['Step 1', 'Step 2', 'Step 3'];
 
@@ -60,13 +60,13 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
     dispatch(
       routesActions.createOneStopTripRequest({
         data: {
-          departurePoint: formValues.departurePoint.value as string,
+          departurePoint: formValues.departurePoint,
           departureTime: momentToString(formValues.departureTime, 'HH:mm'),
           routeType: 'ONE_TRIP',
           stopPoints: [
             {
               durationTime: Number(formValues.arrivalDuration),
-              stopPoint: formValues.arrivalPoint.value as string,
+              stopPoint: formValues.arrivalPoint,
               ECOPrices: [
                 { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
                 { passengerType: 'CHILD', price: Number(formValues.ecoChildren) },
@@ -101,12 +101,12 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
     dispatch(
       routesActions.createMultipleStopTripRequest({
         data: {
-          departurePoint: formValues.departurePoint.value as string,
+          departurePoint: formValues.departurePoint,
           departureTime: momentToString(formValues.departureTime, 'HH:mm'),
           routeType: 'MULTI_STOP',
           stopPoints: formValues.stops.map(stop => ({
             durationTime: Number(stop.duration),
-            stopPoint: stop.stop_point.value as string,
+            stopPoint: stop.stop_point,
             ECOPrices: [
               { passengerType: 'ADULT', price: stop.ecoAdult },
               { passengerType: 'CHILD', price: stop.ecoChildren },
@@ -167,10 +167,10 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
       if (isMulti) {
         setStepOneValues({
           vehicle: route.vehicle,
-          departurePoint: departureOptions.find(option => option.value === route.departurePoint),
+          departurePoint: route.departurePoint,
           departureTime: anyToMoment({ value: route.departureTime, format: 'HH:mm' }),
           stops: route.stopPoints.map(stopPointValue => ({
-            stop_point: departureOptions.find(option => option.value === stopPointValue.stopPoint),
+            stop_point: stopPointValue.stopPoint,
             duration: Number(stopPointValue.durationTime),
             ecoAdult: stopPointValue.ECOPrices.ADULT,
             ecoChildren: stopPointValue.ECOPrices.CHILD,
@@ -184,9 +184,9 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
         const stopPointValue = route.stopPoints[0];
         setStepOneValues({
           vehicle: route.vehicle,
-          departurePoint: departureOptions.find(option => option.value === route.departurePoint),
+          departurePoint: route.departurePoint,
           departureTime: anyToMoment({ value: route.departureTime, format: 'HH:mm' }),
-          arrivalPoint: departureOptions.find(option => option.value === stopPointValue.stopPoint),
+          arrivalPoint: stopPointValue.stopPoint,
           arrivalDuration: stopPointValue.durationTime,
           ecoAdult: stopPointValue.ECOPrices.ADULT,
           ecoChildren: stopPointValue.ECOPrices.CHILD,

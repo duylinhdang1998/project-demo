@@ -1,4 +1,4 @@
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
@@ -9,8 +9,6 @@ import { useTranslation } from 'react-i18next';
 import { ImageResource } from 'services/models/Resource';
 import { Staff } from 'services/models/Staff';
 import { getFieldsStepOne } from '../../constants';
-import { SelectOffice } from '../../../../../components/SelectDecouplingData/SelectOffice';
-import { SelectRole } from 'components/SelectDecouplingData/SelectRole';
 
 const fieldKeys: Array<keyof Staff> = ['attach', 'email', 'firstName', 'lastName', 'office', 'phone', 'role'];
 
@@ -73,39 +71,34 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
 
   return (
     <Box my="24px">
-      <Grid my="16px" container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <SelectRole
-            isRequired
-            isDisabled={isEdit}
-            control={control}
-            errors={errors}
-            messages={messages}
-            role={getRole()}
-            onChange={value => {
-              resetField('role', { defaultValue: value });
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <SelectOffice
-            isDisabled={isEdit}
-            control={control}
-            errors={errors}
-            messages={messages}
-            office={getOffice()}
-            onChange={value => {
-              resetField('office', { defaultValue: value });
-            }}
-            isRequired
-          />
-        </Grid>
-      </Grid>
       <FormVerticle
         errors={errors}
         messages={messages}
         control={control}
-        fields={getFieldsStepOne(isEdit)}
+        fields={[
+          {
+            type: 'controlSelectRole',
+            id: 'role',
+            label: 'role',
+            disabled: isEdit,
+            required: true,
+            role: getRole(),
+            onChange: role => {
+              resetField('role', { defaultValue: role });
+            },
+          },
+          {
+            type: 'controlSelectOffice',
+            id: 'office',
+            label: 'office',
+            required: true,
+            office: getOffice(),
+            onChange: office => {
+              resetField('office', { defaultValue: office });
+            },
+          },
+          ...getFieldsStepOne(isEdit),
+        ]}
         indexGridHorizon={-1}
         isGridHorizon
         grid

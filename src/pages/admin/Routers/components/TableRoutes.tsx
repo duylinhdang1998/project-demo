@@ -1,11 +1,6 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { Box, Dialog, Stack, Typography } from '@mui/material';
 import { ColumnsType } from 'antd/lib/table';
-import { memo, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { v4 as uuid } from 'uuid';
 import { MapPinIcon, StopCircleSvg } from 'assets';
 import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
@@ -16,6 +11,10 @@ import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { memo, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Route } from 'services/models/Route';
 import { selectAuth } from 'store/auth/selectors';
 import { routesActions } from 'store/routes/routesSlice';
@@ -23,6 +22,7 @@ import { selectRoutes } from 'store/routes/selectors';
 import { useToastStyle } from 'theme/toastStyles';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
+import { v4 as uuid } from 'uuid';
 import ToolTipAddress from './ToolTipAddress';
 
 function TableRoutes() {
@@ -125,9 +125,8 @@ function TableRoutes() {
         sorter: true,
         render: (_, row) => (
           <Box>
-            <Typography variant="body2">{row.vehicle}</Typography>
-            {/* FIXME: Vehicle brand chăng? */}
-            <Typography variant="body2">{row.vehicle}</Typography>
+            <Typography variant="body2">{row.vehicle.brand}</Typography>
+            <Typography variant="body2">{row.vehicle.registrationId}</Typography>
           </Box>
         ),
         align: 'center',
@@ -200,17 +199,6 @@ function TableRoutes() {
       },
     ];
   }, [navigate, t]);
-
-  useEffect(() => {
-    dispatch(
-      routesActions.getRoutesRequest({
-        page: 0,
-        searcher: {},
-        sorter: {},
-      }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const renderDialogDelete = () => {
     if (openDeleteRoute === null) {

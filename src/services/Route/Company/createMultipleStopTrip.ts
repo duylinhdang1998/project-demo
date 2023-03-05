@@ -17,6 +17,7 @@ export const createMultipleStopTrip = async (data: CreateMultipleStopTrip) => {
     url: '/v1.0/company/routes',
     data: {
       ...data,
+      vehicle: data.vehicle._id,
       departureTime: momentToString(data.departureTime, 'HH:mm'),
       stopPoints: data.stopPoints.map(stopPoint => ({
         ...stopPoint,
@@ -24,7 +25,7 @@ export const createMultipleStopTrip = async (data: CreateMultipleStopTrip) => {
         ECOPrices: stopPoint.ECOPrices.map(ECOPrice => ({ ...ECOPrice, price: Number(ECOPrice.price) })),
         VIPPrices: stopPoint.VIPPrices.map(VIPPrice => ({ ...VIPPrice, price: Number(VIPPrice.price) })),
       })),
-    } as CreateMultipleStopTrip,
+    },
   });
   if (response.data.code === 0) {
     return response.data as ResponseDetailSuccess<Route>;

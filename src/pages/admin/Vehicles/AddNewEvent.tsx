@@ -27,11 +27,13 @@ export default function AddNewEvent() {
   }, [vehicleEventId]);
 
   useEffect(() => {
-    if (vehicleId && isEditAction && vehicleEventId) {
-      dispatch(vehiclesActions.getVehicleRequest({ id: vehicleId }));
-      dispatch(vehicleEventsActions.getVehicleEventRequest({ id: vehicleEventId }));
-    } else {
+    if (!vehicleId) {
       navigate('/404');
+    } else {
+      if (isEditAction && vehicleEventId) {
+        dispatch(vehiclesActions.getVehicleRequest({ id: vehicleId }));
+        dispatch(vehicleEventsActions.getVehicleEventRequest({ id: vehicleEventId }));
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditAction, vehicleEventId, vehicleId]);
