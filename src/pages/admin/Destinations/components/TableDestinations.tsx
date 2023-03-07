@@ -25,9 +25,10 @@ interface Props {
   };
   onFilter?: (params: ParamsSettings<Destination>) => void;
   onRefresh?: () => void;
+  sortOrder?: 'ascend' | 'descend';
 }
 
-export default function TableDestinations({ dataSource = [], isLoading, pagination, onFilter, onRefresh }: Props) {
+export default function TableDestinations({ dataSource = [], isLoading, pagination, onFilter, onRefresh, sortOrder }: Props) {
   const { t } = useTranslation(['destinations', 'translation']);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -103,6 +104,7 @@ export default function TableDestinations({ dataSource = [], isLoading, paginati
       ),
       sorter: () => 0,
       width: 200,
+      sortOrder: !!sortOrder ? sortOrder : undefined,
     },
     {
       key: 'address',
