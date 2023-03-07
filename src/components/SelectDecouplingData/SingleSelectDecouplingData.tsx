@@ -7,8 +7,8 @@ import Select, { ActionMeta, GroupBase, Props as SelectProps, PropsValue, Select
 import { FixedSizeList as List } from 'react-window';
 import { AnyObject } from 'services/@types/SearchParams';
 
-export interface SelectDecouplingData<Model extends AnyObject>
-  extends Omit<SelectProps<Model, false, GroupBase<Model>>, 'loadingMessage' | 'components' | 'value' | 'options' | 'onChange'> {
+export interface SingleSelectDecouplingDataProps<Model extends AnyObject>
+  extends Omit<SelectProps<Model, false, GroupBase<Model>>, 'loadingMessage' | 'components' | 'value' | 'options' | 'onChange' | 'isMulti'> {
   value?: Model;
   onChange?: (value: Model | undefined, actionMeta: ActionMeta<any>) => void;
   service: Parameters<typeof useRequest<Model[], any[]>>[0];
@@ -16,13 +16,13 @@ export interface SelectDecouplingData<Model extends AnyObject>
 }
 
 export const HEIGHT = 38;
-export const SelectDecouplingData = <Model extends AnyObject>({
+export const SingleSelectDecouplingData = <Model extends AnyObject>({
   value,
   onChange,
   service,
   transformToOption,
   ...rest
-}: SelectDecouplingData<Model>) => {
+}: SingleSelectDecouplingDataProps<Model>) => {
   const { loading, data } = useRequest<Model[], any[]>(service, {
     retryInterval: 1000,
     staleTime: 30000,
@@ -51,6 +51,7 @@ export const SelectDecouplingData = <Model extends AnyObject>({
   return (
     <Select
       {...rest}
+      isMulti={false}
       loadingMessage={({ inputValue }) => <Typography>{inputValue}</Typography>}
       components={{ MenuList: Options }}
       value={optionValue as PropsValue<Model> | undefined}

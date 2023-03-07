@@ -8,6 +8,7 @@ import { customStyles } from 'components/FilterTicket/customStyles';
 import { SelectArrivalPoint } from 'components/SelectDecouplingData/SelectArrivalPoint';
 import { SelectDeparturePoint } from 'components/SelectDecouplingData/SelectDeparturePoint';
 import { SelectOffice } from 'components/SelectDecouplingData/SelectOffice';
+import { SelectPackageSetting } from 'components/SelectDecouplingData/SelectPackageSettings';
 import { SelectRole } from 'components/SelectDecouplingData/SelectRole';
 import { SelectVehicle } from 'components/SelectDecouplingData/SelectVehicle';
 import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
@@ -480,6 +481,20 @@ export default function FormVerticle<T extends FieldValues>({
             isDisabled={i.disabled}
             isRequired={i.required}
             office={i.office}
+            onChange={i.onChange}
+            label={i.label}
+            filterKey={filterKey}
+          />
+        );
+      case 'controlSelectPackageSetting':
+        return (
+          <SelectPackageSetting
+            control={control}
+            errors={errors}
+            messages={messages}
+            isDisabled={i.disabled}
+            isRequired={i.required}
+            packageSettings={i.packageSettings}
             onChange={i.onChange}
             label={i.label}
             filterKey={filterKey}

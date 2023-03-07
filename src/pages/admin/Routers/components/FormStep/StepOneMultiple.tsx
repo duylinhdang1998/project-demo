@@ -9,7 +9,7 @@ import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
-import { SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
+import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { get, isEmpty } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
@@ -300,7 +300,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
                         return (
                           <Box>
                             <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
-                            <SelectDecouplingData
+                            <SingleSelectDecouplingData
                               isSearchable
                               value={{ value }}
                               service={async () => {

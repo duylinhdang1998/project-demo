@@ -4,7 +4,6 @@ import { Field } from 'models/Field';
 export const fieldsSearch: Field[] = [
   { id: uuidv4(), label: 'vehicle', type: 'text' },
   { id: uuidv4(), label: 'registrationId', type: 'text' },
-  { id: uuidv4(), label: 'routeId', type: 'text' },
 ];
 
 export const fieldsAdd: Field[] = [

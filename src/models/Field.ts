@@ -1,8 +1,9 @@
 import { DatePickerProps } from 'antd';
-import { Option as CheckboxGroupOption, OptionValue } from 'components/CheckboxGroup/CheckboxGroup';
+import { CheckboxGroupProps, Option as CheckboxGroupOption } from 'components/CheckboxGroup/CheckboxGroup';
 import { SelectArrivalPointProps } from 'components/SelectDecouplingData/SelectArrivalPoint';
 import { SelectDeparturePointProps } from 'components/SelectDecouplingData/SelectDeparturePoint';
 import { SelectOfficeProps } from 'components/SelectDecouplingData/SelectOffice';
+import { SelectPackageSettingProps } from 'components/SelectDecouplingData/SelectPackageSettings';
 import { SelectRoleProps } from 'components/SelectDecouplingData/SelectRole';
 import { SelectVehicleProps } from 'components/SelectDecouplingData/SelectVehicle';
 import { UploadImageResourceProps } from 'components/UploadImageResource/UploadImageResource';
@@ -57,10 +58,10 @@ export interface SimpleField {
 
 export interface CheckboxField extends BaseField {
   type: 'checkbox2';
-  options: CheckboxGroupOption[];
-  onChange: (values: OptionValue[]) => void;
-  values: OptionValue[];
-  equalsFunc: (input: OptionValue, optionValue: OptionValue) => void;
+  options: CheckboxGroupProps['options'];
+  onChange: CheckboxGroupProps['onChange'];
+  values: CheckboxGroupProps['values'];
+  equalsFunc: CheckboxGroupProps['equalsFunc'];
 }
 export interface SelectField extends BaseField {
   type: 'select2';
@@ -108,6 +109,11 @@ export interface ControlSelectRoleField extends BaseField {
   role: SelectRoleProps['role'];
   onChange: SelectRoleProps['onChange'];
 }
+export interface ControlSelectPackageSettings extends BaseField {
+  type: 'controlSelectPackageSetting';
+  packageSettings: SelectPackageSettingProps['packageSettings'];
+  onChange: SelectPackageSettingProps['onChange'];
+}
 export type Field =
   | SimpleField
   | UploadPDFResourceField
@@ -118,4 +124,5 @@ export type Field =
   | ControlSelectDeparturePointField
   | ControlSelectArrivalPointField
   | ControlSelectOfficeField
-  | ControlSelectRoleField;
+  | ControlSelectRoleField
+  | ControlSelectPackageSettings;

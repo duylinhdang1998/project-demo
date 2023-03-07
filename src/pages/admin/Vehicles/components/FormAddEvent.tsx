@@ -18,7 +18,6 @@ import { CreateVehicleEvent } from 'services/Vehicle/Company/createVehicleEvent'
 import { selectAuth } from 'store/auth/selectors';
 import { selectVehicleEvents } from 'store/vehicles/selectors';
 import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
-import { useToastStyle } from 'theme/toastStyles';
 import { anyToMoment } from 'utils/anyToMoment';
 import { fieldsAddEvent } from '../constants';
 
@@ -42,7 +41,6 @@ export interface Values {
 }
 
 function FormAddEvent() {
-  const toastClass = useToastStyle();
   const { t } = useTranslation(['vehicles', 'translation']);
 
   const navigate = useNavigate();
@@ -103,13 +101,13 @@ function FormAddEvent() {
             },
             onSuccess() {
               toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('vehicles:event') })} />, {
-                className: toastClass.toastSuccess,
+                className: 'toast-success',
               });
               navigate(isAgent ? `/agent/vehicles/${vehicleId}/list-events` : `/admin/vehicles/${vehicleId}/list-events`);
             },
             onFailure() {
               toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('vehicles:event') })} />, {
-                className: toastClass.toastError,
+                className: 'toast-error',
               });
             },
           }),
@@ -130,13 +128,13 @@ function FormAddEvent() {
             },
             onSuccess() {
               toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('vehicles:event') })} />, {
-                className: toastClass.toastSuccess,
+                className: 'toast-success',
               });
               navigate(isAgent ? `/agent/vehicles/${vehicleId}/list-events` : `/admin/vehicles/${vehicleId}/list-events`);
             },
             onFailure() {
               toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('vehicles:event') })} />, {
-                className: toastClass.toastError,
+                className: 'toast-error',
               });
             },
           }),
