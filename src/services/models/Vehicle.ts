@@ -1,3 +1,4 @@
+import { PackageSetting } from './PackageSetting';
 import { ImageResource, PDFResource } from './Resource';
 import { ServiceSetting } from './ServiceSetting';
 
@@ -10,7 +11,7 @@ export interface Vehicle {
   ECOseats: number;
   VIPseats: number;
   services: Array<Omit<ServiceSetting, 'icon'> & { icon: ServiceSetting['icon']['_id'] }>;
-  merchandises: Array<{ _id: string }>; // FIXME: Chưa có type
+  merchandises: PackageSetting[];
   attach: ImageResource;
   createdAt: string;
   updatedAt: string;

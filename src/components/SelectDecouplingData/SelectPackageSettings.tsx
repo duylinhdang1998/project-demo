@@ -1,13 +1,13 @@
 import { Box, InputLabel, Typography } from '@mui/material';
 import { customStyles } from 'components/FilterTicket/customStyles';
-import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import { Control, Controller, FieldErrors, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Vehicle } from 'services/models/Vehicle';
-import { getVehicles } from 'services/Vehicle/Company/getVehicles';
+import { PackageSetting } from 'services/models/PackageSetting';
+import { getPackageSettings } from 'services/PackageSetting/Company/getPackageSettings';
+import { MultipleSelectDecouplingData } from './MultipleSelectDecouplingData';
 import { useStyles } from './styles';
 
-export interface SelectVehicleProps {
+export interface SelectPackageSettingProps {
   errors?: FieldErrors<any>;
   messages?: Record<string, string>;
   control?: Control<any, any>;
@@ -15,26 +15,27 @@ export interface SelectVehicleProps {
   isDisabled?: boolean;
   filterKey?: string;
   label: string;
-  vehicle: Vehicle;
-  onChange: (vehicle: Vehicle | undefined) => void;
+  packageSettings: PackageSetting[];
+  onChange: (packageSettings: PackageSetting[]) => void;
 }
 
-export const SelectVehicle = ({
+export const SelectPackageSetting = ({
   errors,
   messages,
   control,
-  vehicle,
+  packageSettings,
   isRequired = false,
   isDisabled = false,
   onChange,
   label,
   filterKey,
-}: SelectVehicleProps) => {
+}: SelectPackageSettingProps) => {
   const { t } = useTranslation(['translation', filterKey]);
   const classes = useStyles();
 
-  const error = errors && errors['vehicle'];
-  const messageErr = messages && messages['vehicle'];
+  const error = errors && errors['packageSetting'];
+  const messageErr = messages && messages['packageSetting'];
+
   const labelTranslated = filterKey ? t(`${filterKey}:${label}`) : t(label);
 
   return (
@@ -51,23 +52,28 @@ export const SelectVehicle = ({
         return (
           <Box>
             <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
-            <SingleSelectDecouplingData
+            <MultipleSelectDecouplingData
               isDisabled={isDisabled}
               isSearchable
-              value={vehicle}
               isClearable={!isRequired}
               service={async () => {
-                const response = await getVehicles({ page: 0, searcher: {}, sorter: {}, isGetAll: true });
+                const response = await getPackageSettings({
+                  page: 0,
+                  searcher: {},
+                  sorter: {},
+                  isGetAll: true,
+                });
                 return response.data.hits;
               }}
               transformToOption={model => ({
                 key: model._id,
-                label: model.brand,
+                label: model.title,
                 value: model,
               })}
               styles={customStyles as any}
               placeholder={labelTranslated}
               onChange={selected => onChange(selected)}
+              values={packageSettings}
             />
             {!!error && (
               <Typography component="p" className={classes.error} fontSize={12}>

@@ -1,6 +1,6 @@
 import { Box, InputLabel, Typography } from '@mui/material';
 import { customStyles } from 'components/FilterTicket/customStyles';
-import { HEIGHT, SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
+import { HEIGHT, SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import { Control, Controller, FieldErrors, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { UserRole } from 'services/models/UserRole';
@@ -59,7 +59,7 @@ export const SelectRole = ({
         return (
           <Box>
             <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
-            <SelectDecouplingData
+            <SingleSelectDecouplingData
               maxMenuHeight={HEIGHT * ROLES.length}
               isSearchable
               isDisabled={isDisabled}

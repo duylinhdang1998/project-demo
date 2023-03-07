@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
-import { HEIGHT, SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
+import { HEIGHT, SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import { labelOfRole } from 'components/SelectDecouplingData/SelectRole';
 import { Field } from 'models/Field';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
@@ -126,7 +126,7 @@ export default function FilterTicket<T extends FieldValues>({
             render={({ field }) => (
               <Box>
                 <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                <SelectDecouplingData
+                <SingleSelectDecouplingData
                   value={field.value}
                   service={async () => {
                     const response = await getCountryList();
@@ -154,7 +154,7 @@ export default function FilterTicket<T extends FieldValues>({
               return (
                 <Box>
                   <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                  <SelectDecouplingData
+                  <SingleSelectDecouplingData
                     isClearable
                     isSearchable
                     value={field.value}
@@ -190,7 +190,7 @@ export default function FilterTicket<T extends FieldValues>({
               return (
                 <Box>
                   <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                  <SelectDecouplingData
+                  <SingleSelectDecouplingData
                     maxMenuHeight={HEIGHT * 3}
                     isClearable
                     isSearchable
@@ -224,7 +224,7 @@ export default function FilterTicket<T extends FieldValues>({
               return (
                 <Box>
                   <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                  <SelectDecouplingData
+                  <SingleSelectDecouplingData
                     isClearable
                     isSearchable
                     service={async () => {
@@ -255,7 +255,7 @@ export default function FilterTicket<T extends FieldValues>({
               return (
                 <Box>
                   <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                  <SelectDecouplingData
+                  <SingleSelectDecouplingData
                     isClearable
                     isSearchable
                     service={async () => {
@@ -286,7 +286,7 @@ export default function FilterTicket<T extends FieldValues>({
               return (
                 <Box>
                   <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                  <SelectDecouplingData
+                  <SingleSelectDecouplingData
                     isClearable
                     isSearchable
                     value={field.value}

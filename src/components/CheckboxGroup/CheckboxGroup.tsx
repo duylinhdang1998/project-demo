@@ -11,11 +11,11 @@ export interface Option {
   label: string;
 }
 
-interface CheckboxGroupProps {
+export interface CheckboxGroupProps {
   options: Option[];
   onChange: (values: OptionValue[]) => void;
   values: OptionValue[];
-  equalsFunc: (input: OptionValue, optionValue: OptionValue) => void; // Deep populate là k có
+  equalsFunc: (input: OptionValue, optionValue: OptionValue) => boolean; // Deep populate là k có
 }
 
 export const CheckboxGroup = ({ options, values, onChange, equalsFunc }: CheckboxGroupProps) => {
@@ -27,10 +27,11 @@ export const CheckboxGroup = ({ options, values, onChange, equalsFunc }: Checkbo
   const handleChange =
     (value: OptionValue): CheckboxProps['onChange'] =>
     e => {
+      isStateChangedByResourcesProps.current = false;
       if (e.target.checked) {
         setValuesState(state => state.concat(value));
       } else {
-        setValuesState(state => state.filter(item => item !== value));
+        setValuesState(state => state.filter(item => !equalsFunc(item, value)));
       }
     };
 
@@ -46,7 +47,6 @@ export const CheckboxGroup = ({ options, values, onChange, equalsFunc }: Checkbo
     if (!isStateChangedByResourcesProps.current) {
       onChange(valuesState);
     }
-    isStateChangedByResourcesProps.current = false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [valuesState]);
 
