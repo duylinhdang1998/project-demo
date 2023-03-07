@@ -1,5 +1,5 @@
 import { Box, Grid, Stack, Typography } from '@mui/material';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from 'components/Button/Button';
@@ -15,15 +15,23 @@ import { PlanDuration } from './@types/PlanDuration';
 import SubscriptionItem from './components/SubscriptionItem';
 import { planDurations } from './constants';
 import { getPlanDurationsFromSubscription } from './utils/getPlanDurationsFromSubscription';
+import { Navigate } from 'react-router-dom';
 
 export default function SubscriptionPackage() {
   const { t } = useTranslation(['account', 'translation']);
-  const { statusGetSubscriptions, subscriptions } = useAppSelector(selectSubscriptions);
+
+  const { statusGetSubscriptions, statusGetCurrentSubscription, subscriptions, currentSubscription } = useAppSelector(selectSubscriptions);
   const dispatch = useAppDispatch();
+
   const [planDurationState, setPlanDurationState] = useState<PlanDuration>('monthly');
 
   useEffect(() => {
-    dispatch(subscriptionsActions.getSubscriptionsRequest({}));
+    if (isEmpty(subscriptions)) {
+      dispatch(subscriptionsActions.getSubscriptionsRequest({}));
+    }
+    if (!currentSubscription) {
+      dispatch(subscriptionsActions.getCurrentSubscriptionRequest({}));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -62,7 +70,9 @@ export default function SubscriptionPackage() {
                 currency={getAppCurrencySymbol()}
                 price={price}
                 // FIXME: Cái gì quyết định cái này?
-                popular={subscription.active}
+                popular={false}
+                disabled={!subscription.active}
+                isRegistered={subscription.subscriptionType === currentSubscription?.subscriptionType}
               />
             </Grid>
           );
@@ -71,8 +81,12 @@ export default function SubscriptionPackage() {
     );
   };
 
-  if (statusGetSubscriptions === 'loading') {
+  if (statusGetSubscriptions === 'loading' || statusGetCurrentSubscription === 'loading') {
     return <LoadingScreen />;
+  }
+
+  if ((statusGetCurrentSubscription === 'success' && !currentSubscription) || (statusGetSubscriptions === 'success' && isEmpty(subscriptions))) {
+    return <Navigate to="/404" />;
   }
 
   return (

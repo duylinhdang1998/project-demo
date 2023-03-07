@@ -4,32 +4,46 @@ import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
-import { FC, useEffect, useState } from 'react';
+import { isEmpty } from 'lodash';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useNavigate, useParams } from 'react-router';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router';
 import { SubscriptionType } from 'services/models/Subscription';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
 import { PaymentMethod } from './@types/PaymentMethod';
 import { PlanDuration } from './@types/PlanDuration';
-import { CreditCard } from './components/CreditCard';
 import { Paypal } from './components/Paypal';
 import { RadioPaymentMethod } from './components/RadioPaymentMethod';
 import { RadioPlanDuration } from './components/RadioPlanDuration';
-import { defaultPaymentMethod, planDurationsValue } from './constants';
+import { defaultPaymentMethod, planDurationsValue, defaultPlanDuration } from './constants';
 
 // FIXME: Có những phương thức thanh toán nào?
 const SubscriptionPayment: FC = () => {
   const { t } = useTranslation(['account', 'translation']);
 
-  const [planDurationState, setPlanDurationState] = useState<PlanDuration>('monthly');
-  const [paymentMethodState, setPaymentMethodState] = useState<PaymentMethod>(defaultPaymentMethod);
-
-  const { statusGetPlans, plans } = useAppSelector(selectSubscriptions);
-  const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
   const { subscriptionType } = useParams();
+  const location = useLocation();
+
+  const [planDurationState, setPlanDurationState] = useState<PlanDuration>(() => {
+    return location.state ?? defaultPlanDuration;
+  });
+  const [paymentMethodState, setPaymentMethodState] = useState<PaymentMethod>(defaultPaymentMethod);
+
+  const { statusGetPlans, statusGetSubscriptions, plans, subscriptions } = useAppSelector(selectSubscriptions);
+  const dispatch = useAppDispatch();
+
+  const isDisabledSubscription = useMemo(() => {
+    return statusGetSubscriptions === 'success' && !subscriptions.find(subscription => subscription.subscriptionType === subscriptionType)?.active;
+  }, [statusGetSubscriptions, subscriptionType, subscriptions]);
+
+  useEffect(() => {
+    if (isDisabledSubscription) {
+      navigate('/account/subscription-package', { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDisabledSubscription]);
 
   useEffect(() => {
     if (!subscriptionType) {
@@ -59,7 +73,7 @@ const SubscriptionPayment: FC = () => {
     return <LoadingScreen />;
   }
 
-  if (statusGetPlans === 'success' && !plans.length) {
+  if ((statusGetSubscriptions === 'success' && isEmpty(subscriptions)) || (statusGetPlans === 'success' && !plans.length)) {
     return <Navigate to="/404" />;
   }
 
@@ -72,7 +86,6 @@ const SubscriptionPayment: FC = () => {
             paymentMethodState={paymentMethodState}
             setPaymentMethodState={setPaymentMethodState}
             Stripe={<></>}
-            CreditCard={<CreditCard />}
             PayPal={<Paypal />}
           />
         </CardWhite>

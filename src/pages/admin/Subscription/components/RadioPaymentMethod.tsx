@@ -6,7 +6,6 @@ import { defaultPaymentMethod, paymentMethods } from '../constants';
 
 interface RadioPaymentMethodProps {
   PayPal: ReactNode;
-  CreditCard: ReactNode;
   Stripe: ReactNode;
   paymentMethodState: PaymentMethod;
   setPaymentMethodState: (paymentMethod: PaymentMethod) => void;
