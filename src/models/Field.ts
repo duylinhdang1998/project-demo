@@ -9,6 +9,7 @@ import { SelectVehicleProps } from 'components/SelectDecouplingData/SelectVehicl
 import { UploadImageResourceProps } from 'components/UploadImageResource/UploadImageResource';
 import { UploadPDFResourceProps } from 'components/UploadImageResource/UploadPDFResource';
 
+export type SorterCol = 'ascend' | 'descend' | undefined;
 export interface Option<T = string> {
   key?: string;
   value?: T;

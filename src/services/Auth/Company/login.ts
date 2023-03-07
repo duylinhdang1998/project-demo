@@ -19,13 +19,13 @@ export interface Login {
 }
 
 const ACCEPT_ROLES: UserRole[] = ['COMPANY_ADMIN', 'COMPANY_AGENT'];
-export const login = async (_: Login): Promise<ResponseDetailSuccess<ResponseData>> => {
+export const login = async ({ email, password }: Login): Promise<ResponseDetailSuccess<ResponseData>> => {
   const response: AxiosResponse<ResponseDetailSuccess<ResponseData> | ResponseFailure> = await fetchAPI.request({
     method: 'POST',
     url: '/v1.0/auth/company/login',
     data: {
-      email: 'alibaba.transport@gmail.com',
-      password: '12345678',
+      email,
+      password,
     },
   });
 

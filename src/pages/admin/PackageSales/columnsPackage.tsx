@@ -5,8 +5,15 @@ import { CalendarIcon, MapPinIcon } from 'assets';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import i18n from 'locales/i18n';
+import { get } from 'lodash';
+import { SorterCol } from 'models/Field';
 import { PackageSale } from 'models/PackageSales';
 import { PaymentStatus } from 'models/PaymentStatus';
+import TooltipMoreStatus from './components/TooltipMoreStatus';
+
+interface SortOrder {
+  [key: string]: SorterCol;
+}
 
 export const getTotal = (arr: PackageSale['merchandises'], key: string) => {
   return arr?.reduce((s, item) => {
@@ -14,7 +21,7 @@ export const getTotal = (arr: PackageSale['merchandises'], key: string) => {
   }, 0);
 };
 
-export const columnsPackage: ColumnsType<PackageSale> = [
+export const columnsPackage = (sortOrder?: SortOrder): ColumnsType<PackageSale> => [
   {
     key: 'orderId',
     dataIndex: 'orderCode',
@@ -28,12 +35,12 @@ export const columnsPackage: ColumnsType<PackageSale> = [
     width: 250,
     align: 'left',
     title: () => <div>{i18n.t('packageSales:destination')}</div>,
-    render: (trip: PackageSale['trip']) => {
+    render: (_, item: PackageSale) => {
       return (
         <div>
           <TextWithIcon
             icon={MapPinIcon}
-            text={trip?.departurePoint?.officialName}
+            text={item.departurePoint}
             typography={{
               fontSize: '14px',
             }}
@@ -41,7 +48,7 @@ export const columnsPackage: ColumnsType<PackageSale> = [
           />
           <TextWithIcon
             icon={CalendarIcon}
-            text={trip?.arrivalPoint?.officialName}
+            text={item.arrivalPoint}
             typography={{
               fontSize: '12px',
             }}
@@ -109,6 +116,7 @@ export const columnsPackage: ColumnsType<PackageSale> = [
       </div>
     ),
     sorter: () => 0,
+    sortOrder: get(sortOrder, 'weight', null),
   },
   {
     key: 'price',
@@ -123,16 +131,22 @@ export const columnsPackage: ColumnsType<PackageSale> = [
       </div>
     ),
     sorter: () => 0,
+    sortOrder: get(sortOrder, 'price', null),
   },
   {
     key: 'status',
-    dataIndex: 'status',
+    dataIndex: 'paymentDetail',
     align: 'center',
     title: () => <div>{i18n.t('packageSales:status')}</div>,
-    render: (_, item) => (
+    render: (paymenDetail: PackageSale['paymentDetail']) => (
       <Box display="flex" alignItems="center" justifyContent="center">
-        <Tag text={item.paymentId?.paymentStatus} variant={item.paymentId?.paymentStatus === PaymentStatus.APPROVED ? 'success' : 'error'} />
-        {/* <TooltipMoreStatus status={item.paymentId?.paymentStatus} text={`${value.length - 1}`} /> */}
+        {paymenDetail?.map(
+          (item, index) =>
+            index === 0 && <Tag text={item.paymentStatus} variant={item.paymentStatus === PaymentStatus.APPROVED ? 'success' : 'error'} />,
+        )}
+        {!!paymenDetail?.length && paymenDetail.length > 1 && (
+          <TooltipMoreStatus status={paymenDetail?.map(i => i.paymentStatus ?? '')} text={`${paymenDetail?.length - 1}`} />
+        )}
       </Box>
     ),
   },
