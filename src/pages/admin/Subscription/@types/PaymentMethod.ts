@@ -1,1 +1,1 @@
-export type PaymentMethod = 'PayPal' | 'CreditCard' | 'Stripe';
+export type PaymentMethod = 'PayPal' | 'Stripe';

@@ -68,5 +68,8 @@
   "CreditCard": "Credit card",
   "Stripe": "Stripe",
   "paypal_title": "Click the PayPal button to log in.",
-  "paypal_description": "You'll be prompted for your PayPal account email and password through a secure PayPal login form."
+  "paypal_description": "You'll be prompted for your PayPal account email and password through a secure PayPal login form.",
+  "subscription_registered": "Current subscription",
+  "trial_warning_message": "Your benefit from {{totalTrialDays}}-day trial version, only {{totalRemainingTrialDays}} days left.",
+  "upgrade_subscription_message": "Unlock your trial period here"
 }

@@ -14,6 +14,8 @@ interface SubscriptionItemProps {
   subscriptionFeatures: SubscriptionFeature[];
   subscriptionType: SubscriptionType;
   popular: boolean;
+  disabled: boolean;
+  isRegistered: boolean;
 }
 export default function SubscriptionItem({
   name,
@@ -23,12 +25,14 @@ export default function SubscriptionItem({
   subscriptionFeatures,
   subscriptionType,
   popular,
+  disabled,
+  isRegistered,
 }: SubscriptionItemProps) {
   const { t } = useTranslation(['account', 'translation']);
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/account/subscription-payment/${subscriptionType}`);
+    navigate(`/account/subscription-payment/${subscriptionType}`, { state: planDuration });
   };
 
   return (
@@ -71,8 +75,14 @@ export default function SubscriptionItem({
           </Stack>
         ))}
       </Box>
-      <Button variant={popular ? 'contained' : 'outlined'} fullWidth sx={{ color: !popular ? '#1AA6EE' : '#fff' }} onClick={handleClick}>
-        {t('translation:buy_now')}
+      <Button
+        disabled={disabled}
+        variant={popular ? 'contained' : 'outlined'}
+        fullWidth
+        sx={{ color: !popular ? '#1AA6EE' : '#fff' }}
+        onClick={handleClick}
+      >
+        {isRegistered ? t('account:subscription_registered') : t('translation:buy_now')}
       </Button>
     </Box>
   );

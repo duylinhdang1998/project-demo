@@ -15,7 +15,8 @@ import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
-import { getDaysLeftFromRangeDate } from 'utils/getDaysLeftFromRangeDate';
+import { getTotalRemainingDays } from './utils/getTotalRemainingDays';
+import { getTotalTrialDays } from './utils/getTotalTrialDays';
 
 export default function Subscription() {
   const { t } = useTranslation(['account', 'translation']);
@@ -34,14 +35,14 @@ export default function Subscription() {
 
   const totalTrialDays = useMemo(() => {
     if (currentSubscription) {
-      return getDaysLeftFromRangeDate(new Date(currentSubscription.startDate), new Date(currentSubscription.endDate));
+      return getTotalTrialDays(currentSubscription);
     }
     return 1;
   }, [currentSubscription]);
 
-  const remainingTrialDays = useMemo(() => {
+  const totalRemainingTrialDays = useMemo(() => {
     if (currentSubscription) {
-      return getDaysLeftFromRangeDate(new Date(), new Date(currentSubscription.endDate));
+      return getTotalRemainingDays(currentSubscription);
     }
     return 0;
   }, [currentSubscription]);
@@ -51,8 +52,12 @@ export default function Subscription() {
   };
 
   useEffect(() => {
-    dispatch(subscriptionsActions.getCurrentSubscriptionRequest({}));
-    dispatch(subscriptionsActions.getSubscriptionsRequest({}));
+    if (isEmpty(subscriptions)) {
+      dispatch(subscriptionsActions.getSubscriptionsRequest({}));
+    }
+    if (!currentSubscription) {
+      dispatch(subscriptionsActions.getCurrentSubscriptionRequest({}));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -85,14 +90,14 @@ export default function Subscription() {
               <Grid item xs={12} md={4}>
                 <Progress
                   type="circle"
-                  percent={remainingTrialDays / totalTrialDays}
+                  percent={totalRemainingTrialDays / totalTrialDays}
                   format={() => (
                     <Box>
                       <Typography fontSize={12} color="#858C93">
                         {t('translation:left')}
                       </Typography>
                       <Typography fontSize={18} color="#0c1132" fontWeight={700}>
-                        {remainingTrialDays} {t('translation:days')}
+                        {totalRemainingTrialDays} {t('translation:days')}
                       </Typography>
                     </Box>
                   )}
@@ -101,9 +106,11 @@ export default function Subscription() {
                 />
               </Grid>
             </Grid>
-            <Typography sx={{ margin: '16px 0' }} variant="body2">
-              {t('account:after_trial_end')}
-            </Typography>
+            {currentSubscription?.subscriptionType === 'TRIAL' && (
+              <Typography sx={{ margin: '16px 0' }} variant="body2">
+                {t('account:after_trial_end')}
+              </Typography>
+            )}
             <Button
               sx={{ margin: '24px 0', alignSelf: 'flex-end', padding: '10px 14px', float: 'right' }}
               backgroundButton="#1AA6EE"

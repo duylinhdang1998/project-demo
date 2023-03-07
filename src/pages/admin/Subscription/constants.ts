@@ -8,5 +8,5 @@ export const planDurationsValue: Record<PlanDuration, 1 | 12> = {
 };
 export const defaultPlanDuration: PlanDuration = 'monthly';
 
-export const paymentMethods: PaymentMethod[] = ['PayPal', 'CreditCard', 'Stripe'];
+export const paymentMethods: PaymentMethod[] = ['PayPal', 'Stripe'];
 export const defaultPaymentMethod: PaymentMethod = 'PayPal';
