@@ -23,7 +23,7 @@ export const useGetListPackageSales = (option?: Options<ResponseSuccess<PackageS
     });
     return response.data;
   };
-  return useRequest(getListPackageSales, {
+  return useRequest<ResponseSuccess<PackageSale>, [ParamsSettings<PackageSale>]>(getListPackageSales, {
     ...option,
     manual: true,
   });
