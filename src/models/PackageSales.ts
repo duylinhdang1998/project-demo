@@ -4,19 +4,24 @@ export interface PackageSale {
   _id?: string;
   company?: string;
   orderCode?: string;
-  trip?: Trip;
+  arrivalPoint?: string;
+  departurePoint?: string;
   sender?: Recipent;
+  totalPrice?: number;
+  totalQuantity?: number;
+  totalWeight?: number;
   email?: string;
   recipent?: Recipent;
   merchandises?: Merchandise[];
   createdAt?: Date;
   updatedAt?: Date;
   __v?: number;
-  paymentId?: {
-    _id?: string;
-    paymentCode?: string;
-    paymentStatus: PaymentStatus;
-  };
+  paymentDetail?: PaymentDetailItem[];
+}
+
+interface PaymentDetailItem {
+  paymentCode?: string;
+  paymentStatus?: PaymentStatus;
 }
 
 interface Merchandise {
@@ -42,20 +47,4 @@ interface Recipent {
   lastName?: string;
   mobile?: string;
   type?: string;
-}
-
-interface Trip {
-  departurePoint?: {
-    _id?: string;
-    name?: string;
-    officialName?: string;
-    code?: string;
-  };
-  arrivalPoint?: {
-    _id?: string;
-    name?: string;
-    officialName?: string;
-    code?: string;
-  };
-  departureTime?: number;
 }

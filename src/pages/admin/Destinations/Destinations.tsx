@@ -13,6 +13,7 @@ export default function Destinations() {
   const navigate = useNavigate();
   const { data: listDestinations, loading, run, refresh } = useGetListDestinations();
   const [searchValue, setSearchValue] = useState('');
+  const [sortOrder, setSortOrder] = useState<'ascend' | 'descend' | undefined>();
 
   useMount(() => {
     run({
@@ -41,14 +42,17 @@ export default function Destinations() {
               },
               sorter: {},
             });
+            setSortOrder(undefined);
             setSearchValue(value);
           }}
         />
         <TableDestinations
           dataSource={listDestinations?.data.hits}
           isLoading={loading}
+          sortOrder={sortOrder}
           pagination={listDestinations?.data.pagination}
           onFilter={({ page, sorter }) => {
+            setSortOrder(!!sorter.title ? (sorter.title === 'asc' ? 'ascend' : 'descend') : undefined);
             run({
               page,
               sorter,
