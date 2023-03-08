@@ -1,8 +1,8 @@
 import { PaymentStatus } from './PaymentStatus';
 
 export interface PackageSale {
-  _id?: string;
-  company?: string;
+  _id: string;
+  company: string;
   orderCode?: string;
   arrivalPoint?: string;
   departurePoint?: string;
@@ -11,7 +11,7 @@ export interface PackageSale {
   totalQuantity?: number;
   totalWeight?: number;
   email?: string;
-  recipent?: Recipent;
+  recipent: Recipent;
   merchandises?: Merchandise[];
   createdAt?: Date;
   updatedAt?: Date;
