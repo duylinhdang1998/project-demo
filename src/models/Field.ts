@@ -2,6 +2,7 @@ import { DatePickerProps } from 'antd';
 import { CheckboxGroupProps, Option as CheckboxGroupOption } from 'components/CheckboxGroup/CheckboxGroup';
 import { SelectArrivalPointProps } from 'components/SelectDecouplingData/SelectArrivalPoint';
 import { SelectDeparturePointProps } from 'components/SelectDecouplingData/SelectDeparturePoint';
+import { SelectDestinationProps } from 'components/SelectDecouplingData/SelectDestination';
 import { SelectOfficeProps } from 'components/SelectDecouplingData/SelectOffice';
 import { SelectPackageSettingsProps } from 'components/SelectDecouplingData/SelectPackageSettings';
 import { SelectRoleProps } from 'components/SelectDecouplingData/SelectRole';
@@ -115,6 +116,11 @@ export interface ControlSelectPackageSettings extends BaseField {
   packageSettings: SelectPackageSettingsProps['packageSettings'];
   onChange: SelectPackageSettingsProps['onChange'];
 }
+export interface ControlSelectDestination extends BaseField {
+  type: 'controlSelectDestination';
+  destination: SelectDestinationProps['destination'];
+  onChange: SelectDestinationProps['onChange'];
+}
 export type Field =
   | SimpleField
   | UploadPDFResourceField
@@ -126,4 +132,5 @@ export type Field =
   | ControlSelectArrivalPointField
   | ControlSelectOfficeField
   | ControlSelectRoleField
-  | ControlSelectPackageSettings;
+  | ControlSelectPackageSettings
+  | ControlSelectDestination;
