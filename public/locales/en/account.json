@@ -52,7 +52,10 @@
   "office": "office",
   "content": "Content",
   "footerText": "Descriptions",
-  "free_trial": "Free trial",
+  "TRIAL": "Free trial",
+  "STANDARD": "Standard",
+  "PRO": "Pro",
+  "ENTERPRISE": "Enterpise",
   "buy_now": "Buy now",
   "popular_choice": "POPULAR CHOICE",
   "error_required": "Please enter your {{name}}",
@@ -60,5 +63,13 @@
   "change_pass_error": "Password change failed",
   "profile": "profile",
   "update_success": "Update successfully",
-  "update_error": "Update failed"
+  "update_error": "Update failed",
+  "PayPal": "PayPal",
+  "CreditCard": "Credit card",
+  "Stripe": "Stripe",
+  "paypal_title": "Click the PayPal button to log in.",
+  "paypal_description": "You'll be prompted for your PayPal account email and password through a secure PayPal login form.",
+  "subscription_registered": "Current subscription",
+  "trial_warning_message": "Your benefit from {{totalTrialDays}}-day trial version, only {{totalRemainingTrialDays}} days left.",
+  "upgrade_subscription_message": "Unlock your trial period here"
 }

@@ -5,10 +5,16 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import AccountDropdown from 'components/AccountDropdown/AccountDropdown';
 import ChangeLanguage from 'components/ChangeLanguage/ChangeLanguage';
-import { memo } from 'react';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { getTotalRemainingDays } from 'pages/admin/Subscription/utils/getTotalRemainingDays';
+import { getTotalTrialDays } from 'pages/admin/Subscription/utils/getTotalTrialDays';
+import { memo, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { selectProfile } from 'store/profile/selectors';
+import { selectSubscriptions } from 'store/subscriptions/selectors';
+import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
 import { getUrlOfResource } from 'utils/getUrlOfResource';
 
 interface HeaderLayoutProps {
@@ -45,12 +51,60 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps) {
-  const { t } = useTranslation(['dashboard', 'translation']);
+  const { t } = useTranslation(['dashboard', 'translation', 'account']);
   const classes = useStyles();
+
   const { profile } = useSelector(selectProfile);
+  const { currentSubscription } = useSelector(selectSubscriptions);
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
+  const totalTrialDays = useMemo(() => {
+    if (currentSubscription) {
+      return getTotalTrialDays(currentSubscription);
+    }
+    return 1;
+  }, [currentSubscription]);
+
+  const totalRemainingTrialDays = useMemo(() => {
+    if (currentSubscription) {
+      return getTotalRemainingDays(currentSubscription);
+    }
+    return 0;
+  }, [currentSubscription]);
 
   const handleClick = () => {
     // toggle();
+  };
+
+  useEffect(() => {
+    if (!currentSubscription) {
+      dispatch(subscriptionsActions.getCurrentSubscriptionRequest({}));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const renderUpgradeSubscriptionMessage = () => {
+    if (currentSubscription?.subscriptionType === 'TRIAL') {
+      return (
+        <Box className={classes.subcribe}>
+          <Typography component="span" fontSize={{ mobile: 12, tablet: 14 }} fontWeight="400">
+            {t('account:trial_warning_message', { totalTrialDays, totalRemainingTrialDays })}{' '}
+            <Typography
+              onClick={() => navigate('/account/subscription-package')}
+              sx={{ cursor: 'pointer' }}
+              component="span"
+              variant="subtitle1"
+              fontSize={{ mobile: 12, tablet: 14 }}
+            >
+              {t('account:upgrade_subscription_message')}
+            </Typography>
+          </Typography>
+        </Box>
+      );
+    }
+    return null;
   };
 
   if (!profile) {
@@ -123,14 +177,7 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
             <AccountDropdown avatar={getUrlOfResource(profile.profileImage)} name={profile.name} email={profile.email} />
           </Stack>
         </Toolbar>
-        <Box className={classes.subcribe}>
-          <Typography component="span" fontSize={{ mobile: 12, tablet: 14 }} fontWeight="400">
-            Your benefit from 15-day trial version, only 7 days left.{' '}
-            <Typography component="span" variant="subtitle1" fontSize={{ mobile: 12, tablet: 14 }}>
-              Unlock your trial period here
-            </Typography>
-          </Typography>
-        </Box>
+        {renderUpgradeSubscriptionMessage()}
       </AppBar>
     </div>
   );

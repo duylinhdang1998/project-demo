@@ -1,101 +1,49 @@
-import { Box, FormControlLabel, Radio, RadioGroup, RadioGroupProps, Stack, Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import clxs from 'classnames';
-import { get } from 'lodash';
-import { ChangeEvent, FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router';
-import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
-import CreditCard from 'components/CreditCard/CreditCard';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
+import { isEmpty } from 'lodash';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router';
 import { SubscriptionType } from 'services/models/Subscription';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
-import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
+import { PaymentMethod } from './@types/PaymentMethod';
 import { PlanDuration } from './@types/PlanDuration';
-import { planDurations } from './constants';
-import { getPlanDurationsFromSubscriptionPlans } from './utils/getPlanDurationsFromSubscriptionPlans';
-
-const useStyles = makeStyles(() => ({
-  item: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    border: '0.5px solid #D7DADC',
-    borderRadius: 4,
-    width: '100%',
-    padding: '24px',
-  },
-  label: {
-    display: 'block',
-    width: '100%',
-  },
-  selected: {
-    border: '2px solid #1AA6EE',
-  },
-}));
+import { Paypal } from './components/Paypal';
+import { RadioPaymentMethod } from './components/RadioPaymentMethod';
+import { RadioPlanDuration } from './components/RadioPlanDuration';
+import { defaultPaymentMethod, planDurationsValue, defaultPlanDuration } from './constants';
 
 // FIXME: Có những phương thức thanh toán nào?
 const SubscriptionPayment: FC = () => {
   const { t } = useTranslation(['account', 'translation']);
-  const classes = useStyles();
-  const [planDurationState, setPlanDurationState] = useState<PlanDuration>('monthly');
-  const [method, setMethod] = useState('credit');
-  const [_, setCreditVal] = useState({
-    cvc: '',
-    expiry: '',
-    focus: '',
-    name: '',
-    number: '',
-  });
-
-  const { statusGetPlans, plans } = useAppSelector(selectSubscriptions);
-  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
   const { subscriptionType } = useParams();
+  const location = useLocation();
 
-  const handleChangeMethod = (_: ChangeEvent<HTMLInputElement>, newValue: string) => {
-    setMethod(newValue);
-  };
+  const [planDurationState, setPlanDurationState] = useState<PlanDuration>(() => {
+    return location.state ?? defaultPlanDuration;
+  });
+  const [paymentMethodState, setPaymentMethodState] = useState<PaymentMethod>(defaultPaymentMethod);
 
-  const renderPaypalValue = () => {
-    return (
-      <Box my="10px">
-        <Typography variant="body2" fontWeight={700}>
-          Click the PayPal button to log in.
-        </Typography>
-        <Typography variant="body2">You'll be prompted for your PayPal account email and password through a secure PayPal login form.</Typography>
-        <Button backgroundButton="#0A89CA" sx={{ fontStyle: 'italic', padding: '10px 18px' }}>
-          Paypal
-        </Button>
-      </Box>
-    );
-  };
+  const { statusGetPlans, statusGetSubscriptions, plans, subscriptions } = useAppSelector(selectSubscriptions);
+  const dispatch = useAppDispatch();
 
-  const _handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCreditVal(prev => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }));
-  };
+  const isDisabledSubscription = useMemo(() => {
+    return statusGetSubscriptions === 'success' && !subscriptions.find(subscription => subscription.subscriptionType === subscriptionType)?.active;
+  }, [statusGetSubscriptions, subscriptionType, subscriptions]);
 
-  const renderCreditValue = () => {
-    return (
-      <Box my="10px" display={method !== 'credit' ? 'none' : 'block'}>
-        <CreditCard />
-      </Box>
-    );
-  };
-
-  const handleChangePlanDuration: RadioGroupProps['onChange'] = (_, value) => {
-    setPlanDurationState(value as PlanDuration);
-  };
+  useEffect(() => {
+    if (isDisabledSubscription) {
+      navigate('/account/subscription-package', { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDisabledSubscription]);
 
   useEffect(() => {
     if (!subscriptionType) {
@@ -111,51 +59,35 @@ const SubscriptionPayment: FC = () => {
   }, [subscriptionType]);
 
   useEffect(() => {
-    if (statusGetPlans === 'success' && !plans.length) {
-      navigate('/notfound', { replace: true });
-    }
+    dispatch(
+      subscriptionsActions.createSubscriptionOrderRequest({
+        paymentGateWay: 'PAYPAL',
+        period: planDurationsValue[planDurationState],
+        subscriptionType: subscriptionType as SubscriptionType,
+      }),
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [statusGetPlans]);
+  }, [planDurationState]);
 
-  if (statusGetPlans === 'loading') {
+  if (statusGetPlans === 'idle' || statusGetPlans === 'loading') {
     return <LoadingScreen />;
+  }
+
+  if ((statusGetSubscriptions === 'success' && isEmpty(subscriptions)) || (statusGetPlans === 'success' && !plans.length)) {
+    return <Navigate to="/404" />;
   }
 
   return (
     <FadeIn>
       <LayoutDetail title={t('account:subscription')}>
         <CardWhite title={t('account:subcribe_to_tbus_plan')}>
-          <RadioGroup row name="subscription" value={planDurationState} onChange={handleChangePlanDuration}>
-            <Stack direction="row" alignItems="center" spacing={3} width="100%">
-              {planDurations.map(planDuration => {
-                const label = planDuration === 'monthly' ? t('account:monthly_payment') : t('account:yearly_payment');
-                const price = get(getPlanDurationsFromSubscriptionPlans(plans), planDuration).price;
-                return (
-                  <label htmlFor={planDuration} className={classes.label}>
-                    <Box className={clxs(classes.item, { [classes.selected]: planDurationState === planDuration })}>
-                      <Box>
-                        <Typography fontSize={14} color="#858C93">
-                          {label}
-                        </Typography>
-                        <Typography fontSize="18px" fontWeight={700} color="#0C1132">
-                          {price}
-                          {getAppCurrencySymbol}/{t(`translation:${planDuration}`)}
-                        </Typography>
-                      </Box>
-                      <Radio value={planDuration} id={planDuration} />
-                    </Box>
-                  </label>
-                );
-              })}
-            </Stack>
-          </RadioGroup>
-          <RadioGroup defaultValue="credit" name="method" onChange={handleChangeMethod} sx={{ marginTop: '24px' }}>
-            <FormControlLabel value="paypal" control={<Radio />} label="Paypal" sx={{ width: '140px' }} />
-            {method === 'paypal' && renderPaypalValue()}
-            <FormControlLabel value="credit" control={<Radio />} label="Credit Card" sx={{ width: '140px' }} />
-            {renderCreditValue()}
-            <FormControlLabel value="stripe" control={<Radio />} label="Stripe" sx={{ width: '140px' }} />
-          </RadioGroup>
+          <RadioPlanDuration planDurationState={planDurationState} setPlanDurationState={setPlanDurationState} />
+          <RadioPaymentMethod
+            paymentMethodState={paymentMethodState}
+            setPaymentMethodState={setPaymentMethodState}
+            Stripe={<></>}
+            PayPal={<Paypal />}
+          />
         </CardWhite>
       </LayoutDetail>
     </FadeIn>

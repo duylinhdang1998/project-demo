@@ -33,5 +33,18 @@
   "prices": "prices",
   "input_price": "Input price",
   "edit_ticket_prices": "Edit ticket prices",
-  "quantity_addresses": "{{ quantity }} addresses"
+  "quantity_addresses": "{{ quantity }} addresses",
+  "sub_routes": "sub-routes",
+  "VIPseats": "VIP seats",
+  "ECOseats": "ECO seats",
+  "minutes": "minutes",
+  "Sub_routes": "Sub-routes",
+  "start_point": "Start point",
+  "finish_point": "Finish point",
+  "ECO": "ECO",
+  "VIP": "VIP",
+  "Adult": "Adult",
+  "Student": "Student",
+  "Children": "Children",
+  "edit_price": "Edit price"
 }
