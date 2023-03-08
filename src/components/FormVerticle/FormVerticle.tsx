@@ -7,6 +7,7 @@ import { CheckboxGroup } from 'components/CheckboxGroup/CheckboxGroup';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import { SelectArrivalPoint } from 'components/SelectDecouplingData/SelectArrivalPoint';
 import { SelectDeparturePoint } from 'components/SelectDecouplingData/SelectDeparturePoint';
+import { SelectDestination } from 'components/SelectDecouplingData/SelectDestination';
 import { SelectOffice } from 'components/SelectDecouplingData/SelectOffice';
 import { SelectPackageSetting } from 'components/SelectDecouplingData/SelectPackageSettings';
 import { SelectRole } from 'components/SelectDecouplingData/SelectRole';
@@ -495,6 +496,20 @@ export default function FormVerticle<T extends FieldValues>({
             isDisabled={i.disabled}
             isRequired={i.required}
             packageSettings={i.packageSettings}
+            onChange={i.onChange}
+            label={i.label}
+            filterKey={filterKey}
+          />
+        );
+      case 'controlSelectDestination':
+        return (
+          <SelectDestination
+            control={control}
+            errors={errors}
+            messages={messages}
+            isDisabled={i.disabled}
+            isRequired={i.required}
+            destination={i.destination}
             onChange={i.onChange}
             label={i.label}
             filterKey={filterKey}

@@ -111,10 +111,10 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             required: true,
           },
           {
-            type: 'controlSelectDeparturePoint',
+            type: 'controlSelectDestination',
             label: 'departurePoint',
             id: 'departurePoint',
-            departurePoint: getDeparturePoint(),
+            destination: getDeparturePoint(),
             onChange: departurePoint => {
               setValue('departurePoint', departurePoint as StepOneValuesForOneStopTrip['departurePoint']);
             },
@@ -132,8 +132,8 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
           {
             id: 'arrivalPoint',
             label: 'arrivalPoint',
-            type: 'controlSelectArrivalPoint',
-            arrivalPoint: getArrivalPoint(),
+            type: 'controlSelectDestination',
+            destination: getArrivalPoint(),
             onChange: arrivalPoint => {
               setValue('arrivalPoint', arrivalPoint as StepOneValuesForOneStopTrip['arrivalPoint']);
             },

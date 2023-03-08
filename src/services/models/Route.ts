@@ -1,7 +1,7 @@
 import { DayInWeek } from './DayInWeek';
 import { Vehicle } from './Vehicle';
 
-export type RouteType = 'MULTI_STOP' | 'ONE_TRIP';
+export type TripType = 'MULTI_STOP' | 'ONE_TRIP';
 
 export interface StopPointPrice {
   ADULT: number;
@@ -33,7 +33,7 @@ export interface Route {
   stopPoints: [StopPoint] | StopPoint[];
   particularDays: Array<string | number>;
   dayoffs: number[];
-  routeType: RouteType;
+  tripType: TripType;
   createdAt: string;
   updatedAt: string;
   __v: number;

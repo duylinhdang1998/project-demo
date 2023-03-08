@@ -15,9 +15,9 @@ import { get, isEmpty } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { getListDestinations } from 'services/Destinations/getListDestinations';
 import { Route } from 'services/models/Route';
 import { Vehicle } from 'services/models/Vehicle';
-import { getListArrivals } from 'services/Route/Company/getListArrivals';
 import { anyToMoment } from 'utils/anyToMoment';
 import EditPriceTrip from '../EditPriceTrip';
 
@@ -168,14 +168,6 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
 
   useEffect(() => {
     if (!!values && !isEmpty(values)) {
-      console.log({
-        ...values,
-        departureTime: anyToMoment({ value: values.departureTime }),
-        stops: values.stops.map(stop => ({
-          ...stop,
-          duration: stop.duration,
-        })),
-      });
       reset({
         ...values,
         departureTime: anyToMoment({ value: values.departureTime }),
@@ -255,10 +247,10 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
             required: true,
           },
           {
-            type: 'controlSelectDeparturePoint',
+            type: 'controlSelectDestination',
             label: 'departurePoint',
             id: 'departurePoint',
-            departurePoint: getDeparturePoint(),
+            destination: getDeparturePoint(),
             onChange: departurePoint => {
               setValue('departurePoint', departurePoint as StepOneValuesForMultipleStopTrip['departurePoint']);
             },
@@ -304,8 +296,13 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
                               isSearchable
                               value={{ value }}
                               service={async () => {
-                                const response = await getListArrivals({});
-                                return response.data.map(item => ({ value: item }));
+                                const response = await getListDestinations({
+                                  page: 0,
+                                  searcher: {},
+                                  sorter: {},
+                                  isGetAll: true,
+                                });
+                                return response.data.hits.map(item => ({ value: item.title as string }));
                               }}
                               transformToOption={model => ({
                                 key: model.value,
