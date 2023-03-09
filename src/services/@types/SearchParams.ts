@@ -5,12 +5,21 @@ type AnyFunction = (...args: any[]) => any;
 type PrimitiveType = string | number | boolean | null | undefined | AnyObject | AnyArray;
 
 // Utils
+type NotNull<T> = T extends null | undefined ? never : T;
+export type DeepRequired<T> = T extends undefined | null | boolean | string | number | Function
+  ? NotNull<T>
+  : {
+      [P in keyof T]-?: T[P] extends Array<infer U>
+        ? Array<DeepRequired<U>>
+        : T[P] extends ReadonlyArray<infer U2>
+        ? DeepRequired<U2>
+        : DeepRequired<T[P]>;
+    };
+
 type PickKeysByValue<T, V> = {
   [K in keyof T]: T[K] extends AnyFunction ? never : T[K] extends V ? K : never;
 }[keyof T];
-
 type PickProperties<T, P> = Pick<T, PickKeysByValue<T, P>>;
-
 type GetKeyWithTypes<T, P> = Exclude<keyof PickProperties<T, P>, never>;
 
 // Mains
