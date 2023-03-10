@@ -14,6 +14,7 @@
     "@mui/styles": "^5.10.3",
     "@mui/system": "^5.10.5",
     "@reduxjs/toolkit": "^1.9.2",
+    "@tinymce/tinymce-react": "^4.3.0",
     "ahooks": "^3.5.4",
     "animate.css": "^4.1.1",
     "antd": "^4.24.6",
