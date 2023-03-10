@@ -1,23 +1,23 @@
 import AddIcon from '@mui/icons-material/Add';
-import { Button, Grid, Stack, Theme, Typography } from '@mui/material';
+import { Button, Grid, Stack, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import { ColumnsType } from 'antd/es/table';
-import dayjs from 'dayjs';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { MapPinIcon } from 'assets';
-import AntTable from 'components/AntTable/AntTable';
 import MyButton from 'components/Button/Button';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import Tag from 'components/Tag/Tag';
-import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { Ticket } from 'models/Ticket';
+import { Option } from 'models/Field';
+import { PaymentStatus } from 'models/PaymentStatus';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
-import { dataTicketDemo, fieldsSearch, fieldsSearch2, keysFieldsSearch } from './constants';
+import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
+import { momentToNumber } from 'utils/momentToNumber';
+import { TableTicketSales } from './components/TableTicketSales';
+import { fieldsSearch, fieldsSearch2 } from './constants';
 
 const useStyles = makeStyles((theme: Theme) => ({
   buttonSearch: {
@@ -29,119 +29,72 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-type Values = Record<typeof keysFieldsSearch[number], string>;
+interface Values {
+  departurePoint?: { value: string };
+  arrivalPoint?: { value: string };
+  order_date?: any; // Moment
+  order_id?: string;
+  payment_status?: Option<PaymentStatus>;
+}
 
 export default function TicketSales() {
   const { t } = useTranslation(['ticketSales', 'translation']);
   const classes = useStyles();
-  const { userInfo } = useAppSelector(selectAuth);
-  const navigate = useNavigate();
-  const { control, handleSubmit } = useForm<Values>({
-    defaultValues: {
-      arrival_points: '',
-      departures_point: '',
-      order_id: '',
-      payment_status: '',
-    },
-  });
 
-  const columnsTicket: ColumnsType<Ticket> = [
-    {
-      key: 'lastName',
-      dataIndex: 'lastName',
-      width: 90,
-      title: () => <div>{t('lastName')}</div>,
-      render: (value: string) => {
-        return (
-          <Typography sx={{ cursor: 'pointer' }} fontSize="14px">
-            {value}
-          </Typography>
-        );
-      },
-    },
-    {
-      key: 'firstName',
-      dataIndex: 'firstName',
-      width: 90,
-      title: () => <div>{t('firstName')}</div>,
-    },
-    {
-      key: 'trip',
-      dataIndex: 'trip',
-      width: 200,
-      title: () => <div>{t('trip')}</div>,
-      render: (value: Ticket['trip']) =>
-        value?.map((i, idx) => (
-          <TextWithIcon
-            icon={MapPinIcon}
-            key={idx}
-            text={i}
-            typography={{
-              fontSize: '14px',
-            }}
-            color="#1AA6EE"
-          />
-        )),
-    },
-    {
-      key: 'dateTime',
-      dataIndex: 'dateTime',
-      title: () => <div>{t('dateTime')}</div>,
-      width: 120,
-      render: (value: Ticket['dateTime']) => {
-        return <div>{dayjs(value).format('MM/DD/YYYY - HH:mm')}</div>;
-      },
-      align: 'center',
-    },
-    {
-      key: 'paxCount',
-      dataIndex: 'paxCount',
-      title: () => <div>{t('paxCount')}</div>,
-      width: 120,
-      align: 'center',
-      sorter: (a, b) => a?.paxCount ?? 0 - (b?.paxCount ?? 0),
-    },
-    {
-      key: 'payment_status',
-      dataIndex: 'payment_status',
-      title: () => <div>{t('payment_status')}</div>,
-      width: 120,
-      align: 'center',
-      render: (value: string) => {
-        return <Tag color={value === 'Paid' ? '#33CC7F' : '#FF2727'} backgroundColor={value === 'Paid' ? '#F1FFF4' : '#FFEDED'} text={value} />;
-      },
-    },
-    {
-      key: 'orderId',
-      dataIndex: 'orderId',
-      title: () => <div>{t('order_id')}</div>,
-      width: 80,
-      align: 'center',
-      sorter: true,
-    },
-    {
-      key: 'createdBy',
-      dataIndex: 'createdBy',
-      title: () => <div>{t('createdBy')}</div>,
-      width: 120,
-      align: 'center',
-    },
-  ];
+  // FIXME: Các field search lấy từ API nào và search theo gì ?
+  const { control, handleSubmit } = useForm<Values>();
+
+  const { userInfo } = useAppSelector(selectAuth);
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
 
   const isAgent = userInfo?.role === 'agent';
-
   const onSubmit = (values: Values) => {
-    console.log({ values });
-  };
-
-  const handleClickRow = (record: Ticket) => () => {
-    const nextUrl = isAgent ? '/agent/ticket-sales/' : '/admin/ticket-sales/';
-    navigate(nextUrl + record.id, { state: { record } });
+    dispatch(
+      ticketSalesActions.getTicketSalesRequest({
+        page: 0,
+        searcher: {
+          departurePoint: {
+            value: values.departurePoint?.value,
+            operator: 'eq',
+          },
+          arrivalPoint: {
+            value: values.arrivalPoint?.value,
+            operator: 'eq',
+          },
+          createdAt: {
+            value: momentToNumber(values.order_date),
+            operator: 'gte',
+          },
+          orderCode: {
+            value: values.order_id,
+            operator: 'contains',
+          },
+          paymentStatus: {
+            value: values.payment_status?.value,
+            operator: 'eq',
+          },
+        },
+        sorter: {},
+      }),
+    );
   };
 
   const handleAddTicket = () => {
     navigate('/agent/create-ticket-order');
   };
+
+  useEffect(() => {
+    dispatch(
+      ticketSalesActions.getTicketSalesRequest({
+        page: 0,
+        searcher: {},
+        sorter: {},
+      }),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box>
@@ -176,18 +129,7 @@ export default function TicketSales() {
             </Stack>
           </Grid>
         </Grid>
-        <Box my="30px">
-          <AntTable
-            columns={columnsTicket}
-            dataSource={dataTicketDemo()}
-            rowKey={record => record.id}
-            onRow={record => {
-              return {
-                onClick: handleClickRow(record),
-              };
-            }}
-          />
-        </Box>
+        <TableTicketSales />
       </Box>
     </Box>
   );

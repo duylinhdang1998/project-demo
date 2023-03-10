@@ -1,6 +1,6 @@
 {
-  "departures_point": "Departure points",
-  "arrival_points": "Arrival points",
+  "departurePoint": "Departure points",
+  "arrivalPoint": "Arrival points",
   "payment_status": "Payment status",
   "order_id": "Order ID",
   "order_date": "Order Date",
@@ -18,7 +18,7 @@
   "ticket_type": "Ticket type",
   "add_ticket_order": "Add ticket order",
   "select_your_trip": "Select your trip",
-  "departure_time": "Departure time",
+  "departureTime": "Departure time",
   "create_ticket_orders": "Create ticket orders",
   "filter_by": "Filter by",
   "oneway": "One Way",
@@ -49,5 +49,7 @@
   "number_of_passengers": "Number of passengers",
   "ticket_sales": "Ticket sales",
   "passenger": "Passenger",
-  "payment_methods": "Payment methods"
+  "payment_methods": "Payment methods",
+  "paid": "Paid",
+  "not_paid": "Not paid"
 }

@@ -1,47 +1,37 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Grid, Theme, useMediaQuery } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import Highlighter from 'react-highlight-words';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Grid, useMediaQuery } from '@mui/material';
 import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import LayoutDetail from 'layout/LayoutDetail';
+import Highlighter from 'react-highlight-words';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import CardSelectTrip from './components/CardSelectTrip';
 import FilterBy from './components/FilterBy';
 import { fields } from './constants';
+import { useStyles } from './styles';
 
 interface Values {
-  departures_point: string;
-  arrival_points: string;
-  departure_time: string;
+  departurePoint: { value: string };
+  arrivalPoint: { value: string };
+  departureTime: string;
 }
-
-export const useStyles = makeStyles((theme: Theme) => ({
-  highlightText: {
-    color: theme.palette.primary.main,
-    fontWeight: 'bold',
-    borderWidth: 1,
-    backgroundColor: 'transparent',
-  },
-  title: {
-    fontWeight: '400',
-    fontSize: 12,
-    color: theme.palette.grey[100],
-  },
-}));
 
 export default function CreateTicketOrder() {
   const { t } = useTranslation(['ticketSales']);
   const navigate = useNavigate();
-  const { control } = useForm<Values>();
+  const { control, handleSubmit } = useForm<Values>();
   const matches = useMediaQuery('(max-width:768px)');
   const classes = useStyles();
 
   const handleSelect = () => {
     navigate('/agent/traveller-contact-details');
+  };
+
+  const onSubmit = (values: Values) => {
+    console.log(values);
   };
 
   return (
@@ -52,7 +42,7 @@ export default function CreateTicketOrder() {
             <FilterTicket fields={fields} control={control} filterKey="ticketSales" numberColumns={3} />
           </Grid>
           <Grid item xs={12} md={1} sx={{ alignSelf: 'flex-end' }}>
-            <Button backgroundButton="#1AA6EE" fullWidth={matches}>
+            <Button onClick={handleSubmit(onSubmit)} backgroundButton="#1AA6EE" fullWidth={matches}>
               <SearchIcon />
             </Button>
           </Grid>
