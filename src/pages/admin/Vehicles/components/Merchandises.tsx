@@ -18,7 +18,7 @@ export const Merchandises = ({ errors, messages, control, merchandises, onChange
       messages={messages}
       fields={[
         {
-          type: 'controlSelectPackageSetting',
+          type: 'controlSelectPackageSettings',
           id: 'merchandises',
           label: 'merchandises',
           packageSettings: merchandises,

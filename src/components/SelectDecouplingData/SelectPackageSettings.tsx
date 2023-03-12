@@ -7,7 +7,7 @@ import { getPackageSettings } from 'services/PackageSetting/Company/getPackageSe
 import { MultipleSelectDecouplingData } from './MultipleSelectDecouplingData';
 import { useStyles } from './styles';
 
-export interface SelectPackageSettingProps {
+export interface SelectPackageSettingsProps {
   errors?: FieldErrors<any>;
   messages?: Record<string, string>;
   control?: Control<any, any>;
@@ -19,7 +19,7 @@ export interface SelectPackageSettingProps {
   onChange: (packageSettings: PackageSetting[]) => void;
 }
 
-export const SelectPackageSetting = ({
+export const SelectPackageSettings = ({
   errors,
   messages,
   control,
@@ -29,7 +29,7 @@ export const SelectPackageSetting = ({
   onChange,
   label,
   filterKey,
-}: SelectPackageSettingProps) => {
+}: SelectPackageSettingsProps) => {
   const { t } = useTranslation(['translation', filterKey]);
   const classes = useStyles();
 
