@@ -1,0 +1,18 @@
+div.custom_timeline_container div.ant-timeline-item-label {
+  width: calc(35% - 12px) !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+div.custom_timeline_container div.ant-timeline-item-content {
+  left: 35% !important;
+  width: 100% !important;
+}
+
+div.custom_timeline_container div.ant-timeline-item-tail,
+div.custom_timeline_container div.ant-timeline-item-head {
+  left: 35% !important;
+  border-color: #333;
+  color: #333;
+}
