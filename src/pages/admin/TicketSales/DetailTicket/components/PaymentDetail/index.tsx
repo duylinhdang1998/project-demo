@@ -9,7 +9,7 @@ import { useStyles } from './styles';
 const columnsPassengers = [
   { field: 'lastName', width: 80 },
   { field: 'firstName', width: 80 },
-  { field: 'ticket_type', width: 80 },
+  { field: 'typeTicket', width: 80 },
 ];
 
 export interface PaymentDetailProps {
@@ -58,7 +58,7 @@ export const PaymentDetail = ({ record }: PaymentDetailProps) => {
                 key={`columns_${c.field}`}
                 sx={{ minWidth: c.width }}
                 className={classes.headerText}
-                align={c.field === 'ticket_type' ? 'center' : 'left'}
+                align={c.field === 'typeTicket' ? 'center' : 'left'}
               >
                 {t(`${c.field}`)}
               </TableCell>

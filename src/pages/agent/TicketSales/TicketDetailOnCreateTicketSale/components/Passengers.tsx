@@ -21,15 +21,22 @@ export interface PassengersProps {
   remove: UseFieldArrayRemove;
 }
 
-const options: Array<Passenger['ticketType']> = [
+const typeTicketOptions: Array<Passenger['typeTicket']> = [
   { key: 'adult', value: 'ADULT', label: 'Adult (26-59)' },
   { key: 'student', value: 'STUDENT', label: 'Student (16-25)' },
   { key: 'children', value: 'CHILD', label: 'Children (1-15)' },
 ];
+
+const seatsTypeOptions: Array<Passenger['seatsType']> = [
+  { key: 'adult', value: 'ECO', label: 'ECO' },
+  { key: 'student', value: 'VIP', label: 'VIP' },
+];
+
 const emptyPassenger: Passenger = {
   firstName: '',
   lastName: '',
-  ticketType: options.find(option => option.value === 'ADULT') as Passenger['ticketType'],
+  typeTicket: typeTicketOptions.find(option => option.value === 'ADULT') as Passenger['typeTicket'],
+  seatsType: seatsTypeOptions.find(option => option.value === 'ECO') as Passenger['seatsType'],
 };
 
 export const Passengers = ({ control, errors, passengers, append, remove }: PassengersProps) => {
@@ -95,7 +102,8 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
       {passengers.map((f, index) => {
         const firstNamePathInFormValues: `passengers.${number}.firstName` = `passengers.${index}.firstName`;
         const lastNamePathInFormValues: `passengers.${number}.lastName` = `passengers.${index}.lastName`;
-        const ticketTypePathInFormValues: `passengers.${number}.ticketType` = `passengers.${index}.ticketType`;
+        const typeTicketPathInFormValues: `passengers.${number}.typeTicket` = `passengers.${index}.typeTicket`;
+        const seatsTypePathInFormValues: `passengers.${number}.seatsType` = `passengers.${index}.seatsType`;
         return (
           <Box key={f.id} borderTop="1px dashed #ddd" py="24px">
             <Stack direction="row" alignItems="center" justifyContent="space-between" my="10px">
@@ -106,7 +114,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
             </Stack>
             <Box my="10px">
               <Grid container spacing={2}>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={3}>
                   <Controller
                     control={control}
                     name={firstNamePathInFormValues}
@@ -132,7 +140,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={3}>
                   <Controller
                     control={control}
                     name={lastNamePathInFormValues}
@@ -158,19 +166,42 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={3}>
                   <Controller
                     control={control}
-                    name={ticketTypePathInFormValues}
+                    name={typeTicketPathInFormValues}
                     rules={{ required: { value: true, message: '' } }}
                     render={({ field }) => {
-                      const labelTranslated = t('ticketSales:ticketType');
-                      const error = get(errors, ticketTypePathInFormValues);
+                      const labelTranslated = t('ticketSales:typeTicket');
+                      const error = get(errors, typeTicketPathInFormValues);
                       const messageErr = t('translation:error_required', { name: labelTranslated });
                       return (
                         <Box>
                           <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
-                          <Select {...field} options={options} styles={customStyles} placeholder={labelTranslated} />
+                          <Select {...field} options={typeTicketOptions} styles={customStyles} placeholder={labelTranslated} />
+                          {!!error && (
+                            <Typography component="p" className={classes.error} fontSize={12}>
+                              {messageErr}
+                            </Typography>
+                          )}
+                        </Box>
+                      );
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Controller
+                    control={control}
+                    name={seatsTypePathInFormValues}
+                    rules={{ required: { value: true, message: '' } }}
+                    render={({ field }) => {
+                      const labelTranslated = t('ticketSales:seatsType');
+                      const error = get(errors, seatsTypePathInFormValues);
+                      const messageErr = t('translation:error_required', { name: labelTranslated });
+                      return (
+                        <Box>
+                          <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
+                          <Select {...field} options={seatsTypeOptions} styles={customStyles} placeholder={labelTranslated} />
                           {!!error && (
                             <Typography component="p" className={classes.error} fontSize={12}>
                               {messageErr}

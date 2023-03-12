@@ -1,10 +1,11 @@
 import { PaymentStatus } from 'models/PaymentStatus';
+import { StopPointPrice } from './Route';
 
 export interface PassengerInTicketSale {
   firstName: string;
   lastName: string;
-  typeTicket: string; // FIXME: Enum
-  seatsType: 'ECO'; // FIXME: Enum
+  typeTicket: keyof StopPointPrice;
+  seatsType: 'ECO' | 'VIP';
 }
 
 export interface TicketSale {

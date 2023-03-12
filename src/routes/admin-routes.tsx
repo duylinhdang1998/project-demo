@@ -20,7 +20,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'ticket-sales/:id',
+    path: 'ticket-sales/:orderCode',
     element: (
       <RequiredAuth role="admin">
         <Page.DetailTicketPage />

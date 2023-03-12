@@ -11,7 +11,8 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Route, StopPointPrice } from 'services/models/Route';
+import { Route } from 'services/models/Route';
+import { PassengerInTicketSale } from 'services/models/TicketSale';
 import { selectAuth } from 'store/auth/selectors';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
@@ -20,14 +21,15 @@ import { PaymentMethod } from './components/PaymentMethod';
 import { Reservation } from './components/Reservation';
 
 export interface Passenger {
-  firstName: string;
-  lastName: string;
-  ticketType: Option<keyof StopPointPrice>; // FIXME: Liệu có đúng ?
+  firstName: PassengerInTicketSale['firstName'];
+  lastName: PassengerInTicketSale['lastName'];
+  typeTicket: Option<PassengerInTicketSale['typeTicket']>;
+  seatsType: Option<PassengerInTicketSale['seatsType']>;
 }
 
 export interface TicketDetailFormValues {
   email: string;
-  method: 'credit'; // FIXME: Enum
+  method: 'credit'; // FIXME: Trường này để làm gì ????
   passengers: Passenger[];
 }
 
@@ -84,9 +86,8 @@ export const TicketDetailOnCreateTicketSale = () => {
             passengers: values.passengers.map(passenger => ({
               firstName: passenger.firstName,
               lastName: passenger.lastName,
-              typeTicket: passenger.ticketType.value as string,
-              // FIXME: Cái này đâu ra ?
-              seatsType: 'ECO',
+              typeTicket: passenger.typeTicket.value as PassengerInTicketSale['typeTicket'],
+              seatsType: passenger.seatsType.value as PassengerInTicketSale['seatsType'],
             })),
             email: values.email,
             route: route._id,
@@ -96,7 +97,7 @@ export const TicketDetailOnCreateTicketSale = () => {
             arrivalPoint: 'Hà Nội',
             departurePoint: route.departurePoint,
           },
-          onSuccess(ticketSaleId) {
+          onSuccess(ticketSaleOrderCode) {
             toast(
               <ToastCustom
                 type="success"
@@ -106,7 +107,7 @@ export const TicketDetailOnCreateTicketSale = () => {
               />,
               { className: 'toast-success' },
             );
-            navigate(isAgent ? `/agent/ticket-sales/${ticketSaleId}` : `/admin/ticket-sales/${ticketSaleId}`);
+            navigate(isAgent ? `/agent/ticket-sales/${ticketSaleOrderCode}` : `/admin/ticket-sales/${ticketSaleOrderCode}`);
           },
           onFailure() {
             toast(

@@ -20,7 +20,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'ticket-sales/:id',
+    path: 'ticket-sales/:orderCode',
     element: (
       <RequiredAuth role="agent">
         <Page.DetailTicketPage />

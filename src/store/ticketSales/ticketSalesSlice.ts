@@ -14,7 +14,7 @@ interface TicketSalesState {
   totalPages: number;
   totalRows: number;
   currentSearcher: Searcher<TicketSale>;
-  tickeSale: TicketSale | null;
+  ticketSale: TicketSale | null;
 }
 
 const initialState: TicketSalesState = {
@@ -26,7 +26,7 @@ const initialState: TicketSalesState = {
   totalPages: 0,
   totalRows: 0,
   currentSearcher: {},
-  tickeSale: null,
+  ticketSale: null,
 };
 
 export const ticketSalesSlice = createSlice({
@@ -67,7 +67,7 @@ export const ticketSalesSlice = createSlice({
       return {
         ...state,
         statusGetTicketSale: 'loading',
-        tickeSale: null,
+        ticketSale: null,
       };
     },
     getTicketSaleSuccess: (state, action: PayloadAction<GetTicketSaleSuccess>) => {
@@ -75,14 +75,14 @@ export const ticketSalesSlice = createSlice({
       return {
         ...state,
         statusGetTicketSale: 'success',
-        tickeSale: data,
+        ticketSale: data,
       };
     },
     getTicketSaleFailure: (state, _action: PayloadAction<GetTicketSaleFailure>) => {
       return {
         ...state,
         statusGetTicketSale: 'failure',
-        tickeSale: null,
+        ticketSale: null,
       };
     },
     /** <---------- create ----------> */

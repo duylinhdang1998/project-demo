@@ -41,7 +41,6 @@ export default function TicketSales() {
   const { t } = useTranslation(['ticketSales', 'translation']);
   const classes = useStyles();
 
-  // FIXME: Các field search lấy từ API nào và search theo gì ?
   const { control, handleSubmit } = useForm<Values>();
 
   const { userInfo } = useAppSelector(selectAuth);

@@ -74,20 +74,13 @@ function OrderDetails({ record }: OrderDetailsProps) {
           left={t('ticketSales:paxCount')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dayjs(record.dateTime).format('MM/DD/YYYY - HH:mm')}
+              {record.rawData.passengers.length}
             </Typography>
           }
         />
         <Infomation
           left={t('ticketSales:payment_status')}
-          right={
-            <Tag
-              color={color}
-              backgroundColor={backgroundColor}
-              // FIXME: I18n
-              text={record.paymentStatus}
-            />
-          }
+          right={<Tag color={color} backgroundColor={backgroundColor} text={record.paymentStatus} />}
         />
         <Infomation
           left={t('ticketSales:createdBy')}

@@ -13,7 +13,7 @@ export interface FilterRoutesByTripTypeProps {
   values: FilterByTripTypeFormValues;
 }
 
-const TRIP_TYPES: FilterByTripTypeFormValues['tripType'] = ['ONE_WAY', 'MULTI_STOP'];
+const TRIP_TYPES: FilterByTripTypeFormValues['tripType'] = ['ONE_TRIP', 'MULTI_STOP'];
 export const FilterRoutesByTripType = ({ onChange, counts, values }: FilterRoutesByTripTypeProps) => {
   const { t } = useTranslation(['ticketSales']);
 
@@ -41,7 +41,7 @@ export const FilterRoutesByTripType = ({ onChange, counts, values }: FilterRoute
       <Box border="1px solid #D7DADC" borderRadius="4px" padding="16px 14px">
         <Typography variant="body2">{t('trip')}</Typography>
         {TRIP_TYPES.map(TRIP_TYPE => {
-          const label = TRIP_TYPE === 'ONE_WAY' ? t('ticketSales:oneway') : t('ticketSales:round_trip');
+          const label = TRIP_TYPE === 'ONE_TRIP' ? t('ticketSales:oneway') : t('ticketSales:round_trip');
           return (
             <Stack key={TRIP_TYPE} direction="row" alignItems="center" justifyContent="space-between">
               <FormControlLabel

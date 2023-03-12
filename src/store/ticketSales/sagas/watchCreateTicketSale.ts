@@ -7,7 +7,7 @@ function* handleCreateTicketSale({ payload }: ReturnType<typeof ticketSalesActio
   try {
     const { data }: SagaReturnType<typeof createTicketSale> = yield retry(3, 1000, createTicketSale, formData);
     yield put(ticketSalesActions.createTicketSaleSuccess({ data }));
-    onSuccess(data._id);
+    onSuccess(data.orderCode);
   } catch (error) {
     console.log('watchCreateTicketSale.ts', error);
     yield put(ticketSalesActions.createTicketSaleFailure({}));

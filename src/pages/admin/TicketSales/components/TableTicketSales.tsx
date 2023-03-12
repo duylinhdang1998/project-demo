@@ -17,6 +17,7 @@ import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 import { getPaymentStatusTag } from '../utils/getPaymentStatusTag';
+import { ticketSaleModelToColumnTicket } from '../utils/ticketSaleModelToColumnTicket';
 import { ColumnTicket } from './ColumnTicket';
 
 export const TableTicketSales = () => {
@@ -79,7 +80,6 @@ export const TableTicketSales = () => {
         width: 140,
         sorter: () => 0,
         render: (_, row) => {
-          // FIXME: Điền gì ở đây?
           return <Typography>{dayjs(row.dateTime).format('MM/DD/YYYY - HH:mm')}</Typography>;
         },
       },
@@ -101,10 +101,8 @@ export const TableTicketSales = () => {
         width: 120,
         align: 'center',
         sorter: () => 0,
-        // FIXME: Enum để check style
         render: (_, row) => {
           const { color, backgroundColor } = getPaymentStatusTag(row.paymentStatus);
-          // FIXME: I18n
           return <Tag color={color} backgroundColor={backgroundColor} text={row.paymentStatus} />;
         },
       },
@@ -137,19 +135,7 @@ export const TableTicketSales = () => {
     const result: ColumnTicket[] = [];
     ticketSales.forEach(ticketSale => {
       ticketSale.passengers.forEach(passenger => {
-        result.push({
-          _id: ticketSale._id,
-          arrivalPoint: ticketSale.arrivalPoint,
-          departurePoint: ticketSale.departurePoint,
-          createdBy: ticketSale.creator,
-          dateTime: new Date(ticketSale.createdAt),
-          firstName: passenger.firstName,
-          lastName: passenger.lastName,
-          orderId: ticketSale.orderCode,
-          paymentStatus: ticketSale.paymentStatus,
-          totalPax: ticketSale.passengers.length,
-          rawData: ticketSale,
-        });
+        result.push(ticketSaleModelToColumnTicket(ticketSale, passenger));
       });
     });
     return result;
@@ -166,7 +152,7 @@ export const TableTicketSales = () => {
           return {
             onClick: () => {
               const nextUrl = isAgent ? '/agent/ticket-sales/' : '/admin/ticket-sales/';
-              navigate(nextUrl + record._id, { state: record });
+              navigate(nextUrl + record.rawData.orderCode, { state: record });
             },
           };
         }}

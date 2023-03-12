@@ -1,8 +1,9 @@
-import { Grid } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import { useRequest } from 'ahooks';
 import { Empty } from 'antd';
 import { AxiosResponse } from 'axios';
 import CardWhite from 'components/CardWhite/CardWhite';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect } from 'react';
 import Highlighter from 'react-highlight-words';
@@ -20,12 +21,12 @@ export interface FilterRoutesFormValues {
   departurePoint?: { value: string };
   arrivalPoint?: { value: string };
   departureTime?: any;
-  tripType: Array<'ONE_WAY' | 'MULTI_STOP'>; // FIXME: Enum
+  tripType: Array<'ONE_TRIP' | 'MULTI_STOP'>; // FIXME: Enum
   totalPax: number;
 }
 
 // FIXME: Update khi sửa xong page "Routers"
-const getTrips = async (tripType: any, values: FilterRoutesFormValues) => {
+const getTrips = async (tripType: string[], values: FilterRoutesFormValues) => {
   interface ResponseData {
     counts: [{ _id: 'MULTI_STOP'; count: number }, { _id: 'ONE_TRIP'; count: number }];
     routes: Array<{
@@ -52,7 +53,7 @@ const getTrips = async (tripType: any, values: FilterRoutesFormValues) => {
         // FIXME: Departure time search theo gì ?
         departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
         stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
-        tripType: { value: tripType, operator: 'eq' },
+        tripType: { value: tripType[0], operator: 'eq' },
       }),
     },
   });
@@ -69,7 +70,7 @@ export const SelectTripOnCreateTicketSale = () => {
       departurePoint: undefined,
       departureTime: undefined,
       totalPax: 0,
-      tripType: ['ONE_WAY'],
+      tripType: ['ONE_TRIP'],
     },
   });
 
@@ -92,24 +93,31 @@ export const SelectTripOnCreateTicketSale = () => {
   };
 
   const onSubmit = (values: FilterRoutesFormValues) => {
-    console.log(values);
-    // run('ONE_TRIP', values);
+    run(values.tripType, values);
   };
 
   useEffect(() => {
-    run('ONE_TRIP', getValues());
+    run(getValues().tripType, getValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderCardRoutes = () => {
     if (loading) {
-      return <h1>Loading...</h1>;
+      return (
+        <Stack alignItems="center" justifyContent="center">
+          <LoadingScreen />
+        </Stack>
+      );
     }
     if (!data) {
-      return <Empty />;
+      return (
+        <Stack alignItems="center" justifyContent="center">
+          <Empty />
+        </Stack>
+      );
     }
     return (
-      <Grid item xs={12} md={8}>
+      <>
         <Highlighter
           textToHighlight={t('ticketSales:total_trips_found', { total: data.routes.length })}
           highlightClassName={classes.highlightText}
@@ -138,7 +146,7 @@ export const SelectTripOnCreateTicketSale = () => {
             />
           );
         })}
-      </Grid>
+      </>
     );
   };
 
@@ -151,7 +159,7 @@ export const SelectTripOnCreateTicketSale = () => {
             <FilterRoutesByTripType
               values={getFilterByFormValues()}
               counts={{
-                ONE_WAY: 12,
+                ONE_TRIP: 12,
                 MULTI_STOP: 11,
               }}
               onChange={({ totalPax, tripType }) => {
@@ -161,7 +169,9 @@ export const SelectTripOnCreateTicketSale = () => {
               }}
             />
           </Grid>
-          {renderCardRoutes()}
+          <Grid item xs={12} sm={6} md={8}>
+            {renderCardRoutes()}
+          </Grid>
         </Grid>
       </CardWhite>
     </LayoutDetail>
