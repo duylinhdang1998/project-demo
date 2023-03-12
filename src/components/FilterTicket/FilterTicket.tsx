@@ -113,7 +113,14 @@ export default function FilterTicket<T extends FieldValues>({
             render={({ field }) => (
               <Box>
                 <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                <DatePicker value={field.value as any} onChange={field.onChange} className={classes.datePicker} />
+                <DatePicker
+                  showTime={i.showTime}
+                  format={i.format}
+                  picker={i.picker}
+                  value={field.value as any}
+                  onChange={field.onChange}
+                  className={classes.datePicker}
+                />
               </Box>
             )}
           />

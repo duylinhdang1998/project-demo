@@ -121,6 +121,16 @@ export interface ControlSelectDestination extends BaseField {
   destination: SelectDestinationProps['destination'];
   onChange: SelectDestinationProps['onChange'];
 }
+export interface ControlSelectDestination extends BaseField {
+  type: 'controlSelectDestination';
+  destination: SelectDestinationProps['destination'];
+  onChange: SelectDestinationProps['onChange'];
+}
+export interface ControlSelectDestination extends BaseField {
+  type: 'controlSelectDestination';
+  destination: SelectDestinationProps['destination'];
+  onChange: SelectDestinationProps['onChange'];
+}
 export type Field =
   | SimpleField
   | UploadPDFResourceField

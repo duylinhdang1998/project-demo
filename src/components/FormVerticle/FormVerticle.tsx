@@ -392,6 +392,7 @@ export default function FormVerticle<T extends FieldValues>({
                   <InputLabel htmlFor={i.label} className={classes.label}>
                     {t(`${i.label}`)}
                   </InputLabel>
+                  {/* @ts-ignore */}
                   <TextareaAutosize
                     disabled={i.disabled}
                     minRows={10}

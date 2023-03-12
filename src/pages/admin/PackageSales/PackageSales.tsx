@@ -11,9 +11,8 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { get } from 'lodash';
 import { Country } from 'models/Country';
 import { Option } from 'models/Field';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { PackageSale } from 'models/PackageSales';
-
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';

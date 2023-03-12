@@ -1,0 +1,1 @@
+export { TicketDetailOnCreateTicketSale } from './TicketDetailOnCreateTicketSale';

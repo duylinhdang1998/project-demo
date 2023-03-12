@@ -9,6 +9,7 @@ import { staffsReducer } from './staffs/staffsSlice';
 import { subscriptionsReducer } from './subscriptions/subscriptionsSlice';
 import { vehicleEventsReducer } from './vehicles/vehicleEventsSlice';
 import { vehiclesReducer } from './vehicles/vehiclesSlice';
+import { ticketSalesReducer } from './ticketSales/ticketSalesSlice';
 
 const reducers = {
   auth: authReducer,
@@ -22,6 +23,7 @@ const reducers = {
   staffs: staffsReducer,
   profile: profileReducer,
   passengers: passengersReducer,
+  ticketSales: ticketSalesReducer,
 };
 
 export default reducers;
