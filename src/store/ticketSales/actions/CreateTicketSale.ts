@@ -3,7 +3,7 @@ import { CreateTicketSale } from 'services/TicketSale/createTicketSale';
 
 export interface CreateTicketSaleRequest {
   data: CreateTicketSale;
-  onSuccess: () => void;
+  onSuccess: (ticketSaleId: TicketSale['_id']) => void;
   onFailure: () => void;
 }
 

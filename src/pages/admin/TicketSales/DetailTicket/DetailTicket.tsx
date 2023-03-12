@@ -9,6 +9,7 @@ import { ColumnTicket } from '../components/ColumnTicket';
 import OrderDetails from './components/OrderDetail';
 import { PaymentDetail } from './components/PaymentDetail';
 
+// FIXME: Nếu k có location state cần lấy = API
 export default function DetailTicketPage() {
   const { t } = useTranslation(['ticketSales']);
 

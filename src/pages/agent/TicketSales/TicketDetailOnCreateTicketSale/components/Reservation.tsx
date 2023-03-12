@@ -1,15 +1,11 @@
 import { Box, Checkbox, FormControlLabel, Stack, Typography } from '@mui/material';
-import { memo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { MapPinIcon } from 'assets';
 import ClockSvg from 'assets/images/clock.svg';
 import SnowSvg from 'assets/images/snow.svg';
 import Button from 'components/Button/Button';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
-import { useToastStyle } from 'theme/toastStyles';
+import { useTranslation } from 'react-i18next';
+import { Route } from 'services/models/Route';
 
 const dataDetails = {
   date: '27/02/2022 - 10:30 AM',
@@ -20,17 +16,15 @@ const dataDetails = {
   total: 20,
 };
 
-function Reservation() {
-  const { t } = useTranslation(['ticketSales', 'translation']);
-  const navigate = useNavigate();
-  const toastClass = useToastStyle();
+export interface ReservationProps {
+  route: Route;
+  onSubmit: () => void;
+  loading: boolean;
+}
 
-  const handleBook = () => {
-    navigate('/agent/ticket-sales/1', { state: { isSubmit: true } });
-    toast(<ToastCustom type="success" text="Order ticket successfully!" />, {
-      className: toastClass.toastSuccess,
-    });
-  };
+// FIXME: Đợi API route update thì tiến hành lắp vào UI
+export const Reservation = ({ onSubmit, loading }: ReservationProps) => {
+  const { t } = useTranslation(['ticketSales', 'translation']);
   return (
     <Box p="24px" bgcolor="#FAFDFF">
       <Typography marginBottom="24px" variant="h5">
@@ -85,11 +79,9 @@ function Reservation() {
         <Typography variant="price">${dataDetails.total}</Typography>
       </Stack>
       <Typography variant="headerTable">{t('all_taxes_and_fees')}</Typography>
-      <Button backgroundButton="#1AA6EE" fullWidth sx={{ marginTop: '24px' }} onClick={handleBook}>
+      <Button loading={loading} backgroundButton="#1AA6EE" fullWidth sx={{ marginTop: '24px' }} onClick={onSubmit}>
         {t('translation:book')}
       </Button>
     </Box>
   );
-}
-
-export default memo(Reservation);
+};

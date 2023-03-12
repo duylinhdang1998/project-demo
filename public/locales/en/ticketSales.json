@@ -4,8 +4,8 @@
   "payment_status": "Payment status",
   "order_id": "Order ID",
   "order_date": "Order Date",
-  "lastName": "Lastname",
-  "firstName": "Firstname",
+  "lastName": "Last Name",
+  "firstName": "First Name",
   "trip": "Trip",
   "dateTime": "Date-time",
   "paxCount": "Numbers of pax",
@@ -15,7 +15,7 @@
   "created_on": "Created on",
   "total": "Total",
   "passenger_order": "Passengers on this order",
-  "ticket_type": "Ticket type",
+  "ticketType": "Ticket type",
   "add_ticket_order": "Add ticket order",
   "select_your_trip": "Select your trip",
   "departureTime": "Departure time",
@@ -51,5 +51,9 @@
   "passenger": "Passenger",
   "payment_methods": "Payment methods",
   "paid": "Paid",
-  "not_paid": "Not paid"
+  "not_paid": "Not paid",
+  "email": "Email",
+  "add_new_passenger": "Add new passenger",
+  "total_trips_found": "{{total}} trips found",
+  "duration_minutes": "about {{duration}} minutes"
 }
