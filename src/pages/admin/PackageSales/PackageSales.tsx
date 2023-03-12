@@ -12,9 +12,12 @@ import { get } from 'lodash';
 import { Country } from 'models/Country';
 import { Option } from 'models/Field';
 import { useEffect, useState } from 'react';
+import { PackageSale } from 'models/PackageSales';
+
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { Searcher } from 'services/@types/SearchParams';
 import { useGetListPackageSales } from 'services/PackageSales/packageSales';
 import { selectAuth } from 'store/auth/selectors';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
@@ -53,29 +56,26 @@ export default function PackageSales() {
     });
   });
 
-  useEffect(() => {
-    console.log({ sortOrder });
-  }, [sortOrder]);
-
   const onSubmit = (values: Values) => {
-    const searcher: any = {
+    const searcher: Searcher<PackageSale> = {
       orderCode: {
         value: values.orderId,
         operator: 'eq',
       },
-      [`sender.firstName`]: {
+      'sender.firstName': {
         value: values.from,
         operator: 'eq',
       },
-      [`receiver.firstName`]: {
+      'recipent.firstName': {
         value: values.recipient,
         operator: 'eq',
       },
-      [`paymentDetail.paymentStatus`]: {
+      'paymentDetail.paymentStatus': {
         value: values.payment_status?.label,
         operator: 'eq',
       },
     };
+
     setFilterValues(searcher);
     setSortOrder({});
     getListPkgSales({

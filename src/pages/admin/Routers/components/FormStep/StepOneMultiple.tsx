@@ -15,9 +15,9 @@ import { get, isEmpty } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { getListDestinations } from 'services/Destinations/getListDestinations';
 import { Route } from 'services/models/Route';
 import { Vehicle } from 'services/models/Vehicle';
-import { getListArrivals } from 'services/Route/Company/getListArrivals';
 import { anyToMoment } from 'utils/anyToMoment';
 import EditPriceTrip from '../EditPriceTrip';
 
@@ -168,14 +168,6 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
 
   useEffect(() => {
     if (!!values && !isEmpty(values)) {
-      console.log({
-        ...values,
-        departureTime: anyToMoment({ value: values.departureTime }),
-        stops: values.stops.map(stop => ({
-          ...stop,
-          duration: stop.duration,
-        })),
-      });
       reset({
         ...values,
         departureTime: anyToMoment({ value: values.departureTime }),
@@ -255,10 +247,10 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
             required: true,
           },
           {
-            type: 'controlSelectDeparturePoint',
+            type: 'controlSelectDestination',
             label: 'departurePoint',
             id: 'departurePoint',
-            departurePoint: getDeparturePoint(),
+            destination: getDeparturePoint(),
             onChange: departurePoint => {
               setValue('departurePoint', departurePoint as StepOneValuesForMultipleStopTrip['departurePoint']);
             },
@@ -277,7 +269,8 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
       />
       <Box mt="24px">
         {fields.map((f, index) => {
-          const pathInFormValues: `stops.${any}.stop_point` = `stops.${index}.stop_point`;
+          const stopPointPathInFormValues: `stops.${any}.stop_point` = `stops.${index}.stop_point`;
+          const durationPathInFormValues: `stops.${any}.duration` = `stops.${index}.duration`;
           return (
             <Box key={f.id} borderTop="1px dashed #ddd" py="24px">
               <Stack direction="row" alignItems="center" justifyContent="space-between" my="10px">
@@ -291,12 +284,12 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
                   <Grid item xs={12} md={6}>
                     <Controller
                       control={control}
-                      name={pathInFormValues}
+                      name={stopPointPathInFormValues}
                       render={() => {
                         const labelTranslated = t('routers:stop_point');
-                        const error = get(errors, pathInFormValues);
-                        const messageErr = get(messages, pathInFormValues);
-                        const value = get(getValues(), pathInFormValues) ?? '';
+                        const error = get(errors, stopPointPathInFormValues);
+                        const messageErr = t('translation:error_required', { name: labelTranslated });
+                        const value = get(getValues(), stopPointPathInFormValues) ?? '';
                         return (
                           <Box>
                             <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
@@ -304,8 +297,13 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
                               isSearchable
                               value={{ value }}
                               service={async () => {
-                                const response = await getListArrivals({});
-                                return response.data.map(item => ({ value: item }));
+                                const response = await getListDestinations({
+                                  page: 0,
+                                  searcher: {},
+                                  sorter: {},
+                                  isGetAll: true,
+                                });
+                                return response.data.hits.map(item => ({ value: item.title as string }));
                               }}
                               transformToOption={model => ({
                                 key: model.value,
@@ -315,7 +313,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
                               styles={customStyles as any}
                               placeholder={labelTranslated}
                               onChange={selected => {
-                                setValue(pathInFormValues, selected?.value as string);
+                                setValue(stopPointPathInFormValues, selected?.value as string);
                               }}
                             />
                             {!!error && (
@@ -331,14 +329,15 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
                   <Grid item xs={12} md={6}>
                     <Controller
                       control={control}
-                      name={`stops.${index}.duration`}
+                      name={durationPathInFormValues}
                       render={({ field }) => {
-                        const error = errors['stops']?.[index];
-                        const messageErr = t('translation:error_required', { name: t('routers:arrivalDuration') });
+                        const labelTranslated = t('routers:arrivalDuration');
+                        const error = get(errors, durationPathInFormValues);
+                        const messageErr = t('translation:error_required', { name: labelTranslated });
                         return (
                           <Box>
                             <InputLabel htmlFor={`duration-${f.id}`} className={classes.label}>
-                              {t('routers:arrivalDuration')}
+                              {labelTranslated}
                             </InputLabel>
                             <Box className={cx(classes.inputNumberWrap, !!error ? classes.inputError : '')}>
                               <input {...field} id={`duration-${f.id}`} min={0} type="number" className={classes.inputNumber} />

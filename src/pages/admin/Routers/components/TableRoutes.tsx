@@ -180,7 +180,7 @@ function TableRoutes() {
                 label: 'edit',
                 icon: <EditIcon />,
                 onClick: () => {
-                  if (row.routeType === 'ONE_TRIP') {
+                  if (row.tripType === 'ONE_TRIP') {
                     navigate(`/admin/routers/update-oneway/${row._id}`);
                   } else {
                     navigate(`/admin/routers/update-multi/${row._id}`);

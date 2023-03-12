@@ -8,7 +8,7 @@ import { CreateOneStopTrip } from './createOneStopTrip';
 
 export type CreateMultipleStopTrip = Pick<Route, 'vehicle' | 'departureTime' | 'departurePoint'> & {
   stopPoints: Array<CreateOneStopTrip['stopPoints'][0]>;
-  routeType: Extract<Route['routeType'], 'MULTI_STOP'>;
+  tripType: Extract<Route['tripType'], 'MULTI_STOP'>;
 };
 
 export const createMultipleStopTrip = async (data: CreateMultipleStopTrip) => {
