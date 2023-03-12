@@ -3,7 +3,7 @@ import { CheckboxGroupProps, Option as CheckboxGroupOption } from 'components/Ch
 import { SelectArrivalPointProps } from 'components/SelectDecouplingData/SelectArrivalPoint';
 import { SelectDeparturePointProps } from 'components/SelectDecouplingData/SelectDeparturePoint';
 import { SelectOfficeProps } from 'components/SelectDecouplingData/SelectOffice';
-import { SelectPackageSettingProps } from 'components/SelectDecouplingData/SelectPackageSettings';
+import { SelectPackageSettingsProps } from 'components/SelectDecouplingData/SelectPackageSettings';
 import { SelectRoleProps } from 'components/SelectDecouplingData/SelectRole';
 import { SelectVehicleProps } from 'components/SelectDecouplingData/SelectVehicle';
 import { UploadImageResourceProps } from 'components/UploadImageResource/UploadImageResource';
@@ -111,9 +111,9 @@ export interface ControlSelectRoleField extends BaseField {
   onChange: SelectRoleProps['onChange'];
 }
 export interface ControlSelectPackageSettings extends BaseField {
-  type: 'controlSelectPackageSetting';
-  packageSettings: SelectPackageSettingProps['packageSettings'];
-  onChange: SelectPackageSettingProps['onChange'];
+  type: 'controlSelectPackageSettings';
+  packageSettings: SelectPackageSettingsProps['packageSettings'];
+  onChange: SelectPackageSettingsProps['onChange'];
 }
 export type Field =
   | SimpleField
