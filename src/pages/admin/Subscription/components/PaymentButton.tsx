@@ -62,7 +62,9 @@ export const PaymentButton = ({ variant }: PaymentButtonProps) => {
         <Typography fontWeight={500} marginRight="4px">
           {t('account:connect_with_payment')}
         </Typography>
-        <Typography fontWeight={700}>{paymentTypeTranslated}</Typography>
+        <Typography fontStyle="italic" fontWeight={700}>
+          {paymentTypeTranslated}
+        </Typography>
       </Button>
     </Box>
   );
