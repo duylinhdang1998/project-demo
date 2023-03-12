@@ -62,7 +62,7 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
         data: {
           departurePoint: formValues.departurePoint,
           departureTime: momentToString(formValues.departureTime, 'HH:mm'),
-          routeType: 'ONE_TRIP',
+          tripType: 'ONE_TRIP',
           stopPoints: [
             {
               durationTime: Number(formValues.arrivalDuration),
@@ -103,7 +103,7 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
         data: {
           departurePoint: formValues.departurePoint,
           departureTime: momentToString(formValues.departureTime, 'HH:mm'),
-          routeType: 'MULTI_STOP',
+          tripType: 'MULTI_STOP',
           stopPoints: formValues.stops.map(stop => ({
             durationTime: Number(stop.duration),
             stopPoint: stop.stop_point,

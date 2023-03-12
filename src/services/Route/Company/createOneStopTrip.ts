@@ -12,7 +12,7 @@ export type CreateOneStopTrip = Pick<Route, 'vehicle' | 'departureTime' | 'depar
       VIPPrices: Array<{ passengerType: keyof StopPoint['VIPPrices']; price: number }>;
     },
   ];
-  routeType: Extract<Route['routeType'], 'ONE_TRIP'>;
+  tripType: Extract<Route['tripType'], 'ONE_TRIP'>;
 };
 
 export const createOneStopTrip = async (data: CreateOneStopTrip) => {

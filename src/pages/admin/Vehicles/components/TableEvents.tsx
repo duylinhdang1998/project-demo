@@ -18,7 +18,6 @@ import { VehicleEvent } from 'services/models/Vehicle';
 import { RECORDS_PER_PAGE } from 'services/Vehicle/Company/getVehicleEvents';
 import { selectVehicleEvents } from 'store/vehicles/selectors';
 import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
-import { useToastStyle } from 'theme/toastStyles';
 import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { getAppLengthSymbol } from 'utils/getAppLengthSymbol';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
@@ -29,7 +28,6 @@ import { selectAuth } from 'store/auth/selectors';
 
 function TableEvents() {
   const classes = useStyles();
-  const toastClass = useToastStyle();
   const { t } = useTranslation(['vehicles', 'translation']);
   const [openDeleteVehicleEvent, setOpenDeleteVehicleEvent] = useState<VehicleEvent | null>(null);
 
@@ -109,7 +107,6 @@ function TableEvents() {
         dataIndex: 'attach_files',
         title: () => `${t('vehicles:attach_files')}`,
         render: (_, row) => (
-          // FIXME: Attach đang k có "name"
           <a className={classes.downloadButton} href={getUrlOfResource(row.attach)} download>
             {row.attach._id}
           </a>
@@ -190,13 +187,13 @@ function TableEvents() {
                       id: openDeleteVehicleEvent._id,
                       onSuccess: () => {
                         toast(<ToastCustom type="success" text={t('translation:delete_type_success', { type: t('vehicles:event') })} />, {
-                          className: toastClass.toastSuccess,
+                          className: 'toast-success',
                         });
                         handleCloseDialogDelete();
                       },
                       onFailure: () => {
                         toast(<ToastCustom type="error" text={t('translation:delete_type_error', { type: t('vehicles:event') })} />, {
-                          className: toastClass.toastError,
+                          className: 'toast-error',
                         });
                       },
                     }),

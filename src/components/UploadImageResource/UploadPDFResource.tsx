@@ -157,7 +157,6 @@ export const UploadPDFResource = ({
           <Stack direction="row" spacing={2} alignItems="center">
             <FileIcon />
             <Typography fontSize={14} color="#45485E">
-              {/* FIXME: Attach đang k có "name" */}
               {file.name.toUpperCase()}
             </Typography>
           </Stack>
@@ -173,7 +172,6 @@ export const UploadPDFResource = ({
           <FileIcon />
           <Box>
             <Typography fontSize={14} color="#45485E">
-              {/* FIXME: Attach đang k có "name" */}
               {file.response._id}
             </Typography>
             <Typography component="span" color="#858C93" fontSize={12}>
@@ -192,7 +190,6 @@ export const UploadPDFResource = ({
     );
   };
 
-  // FIXME: Style chưa giống design
   return (
     <div className="upload-wrapper">
       <Dragger
