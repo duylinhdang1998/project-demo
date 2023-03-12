@@ -57,7 +57,6 @@ export default function EditPriceTrip({ control, errors, isMulti, index }: EditP
     ];
   }, [t]);
 
-  // "errors" k đổi nên k đc recreate => K useMemo
   const error = rows.find(row => inputs.find(input => !!get(errors, getNameInput(`${input.value}${row.value}`))));
 
   return (
