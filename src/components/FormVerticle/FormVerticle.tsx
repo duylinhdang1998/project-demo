@@ -9,7 +9,7 @@ import { SelectArrivalPoint } from 'components/SelectDecouplingData/SelectArriva
 import { SelectDeparturePoint } from 'components/SelectDecouplingData/SelectDeparturePoint';
 import { SelectDestination } from 'components/SelectDecouplingData/SelectDestination';
 import { SelectOffice } from 'components/SelectDecouplingData/SelectOffice';
-import { SelectPackageSetting } from 'components/SelectDecouplingData/SelectPackageSettings';
+import { SelectPackageSettings } from 'components/SelectDecouplingData/SelectPackageSettings';
 import { SelectRole } from 'components/SelectDecouplingData/SelectRole';
 import { SelectVehicle } from 'components/SelectDecouplingData/SelectVehicle';
 import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
@@ -487,9 +487,9 @@ export default function FormVerticle<T extends FieldValues>({
             filterKey={filterKey}
           />
         );
-      case 'controlSelectPackageSetting':
+      case 'controlSelectPackageSettings':
         return (
-          <SelectPackageSetting
+          <SelectPackageSettings
             control={control}
             errors={errors}
             messages={messages}

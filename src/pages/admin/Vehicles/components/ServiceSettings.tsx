@@ -5,7 +5,6 @@ import { omit } from 'lodash';
 import { equals } from 'ramda';
 import { useEffect, useState } from 'react';
 import { Control, FieldErrors } from 'react-hook-form';
-import { ServiceSetting } from 'services/models/ServiceSetting';
 import { Vehicle } from 'services/models/Vehicle';
 import { getServiceSettings } from 'services/ServiceSetting/Company/getServiceSettings';
 import { Values } from './FormAddVehicle';
@@ -52,7 +51,7 @@ export const ServiceSettings = ({ errors, messages, control, services, onChange 
           id: 'services',
           equalsFunc(input, optionValue) {
             const input_ = input as Vehicle['services'][number];
-            const optionValue_ = optionValue as ServiceSetting[];
+            const optionValue_ = optionValue as Vehicle['services'][number];
             return equals(omit(input_, ['icon']), omit(optionValue_, ['icon']));
           },
         },
