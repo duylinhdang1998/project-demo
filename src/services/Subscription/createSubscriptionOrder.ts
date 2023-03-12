@@ -4,10 +4,12 @@ import { SubscriptionOrder, SubscriptionPlan, SubscriptionType } from 'services/
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
+export type PaymentGateWay = 'PAYPAL' | 'STRIPE';
+
 export interface CreateSubscriptionOrder {
   subscriptionType: SubscriptionType;
   period: SubscriptionPlan['months'];
-  paymentGateWay: 'PAYPAL'; // FIXME: Thiếu enum
+  paymentGateWay: PaymentGateWay;
 }
 export const createSubscriptionOrder = async (data: CreateSubscriptionOrder) => {
   const response: AxiosResponse<ResponseDetailSuccess<SubscriptionOrder> | ResponseFailure> = await fetchAPI.request({
