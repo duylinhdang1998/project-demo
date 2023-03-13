@@ -134,29 +134,31 @@ export default function PackageSales() {
             </Grid>
           </Grid>
           <Box my="30px">
-            <AntTable
-              columns={columnsPackage(sortOrder)}
-              loading={loading}
-              dataSource={data?.data.hits}
-              rowKey={record => record._id ?? ''}
-              pagination={{
-                pageSize: 10,
-                total: data?.data.pagination.totalRows,
-                current: currentPage + 1,
-              }}
-              onChange={(pagination, _, sorter, extra) => {
-                const sorterMap = getSorterParamsFromAntdTable({ sorter });
-                setSortOrder({
-                  [`${get(sorter, 'columnKey', '')}`]: get(sorter, 'order', ''),
-                });
-                getListPkgSales({
-                  page: getPaginationFromAntdTable({ pagination, extra }),
-                  searcher: filterValues,
-                  sorter: sorterMap,
-                });
-                setCurrentPage(getPaginationFromAntdTable({ pagination, extra }));
-              }}
-            />
+            {data?.code === 0 && (
+              <AntTable
+                columns={columnsPackage(sortOrder)}
+                loading={loading}
+                dataSource={data?.data?.hits ?? []}
+                rowKey={record => record._id ?? ''}
+                pagination={{
+                  pageSize: 10,
+                  total: data?.data.pagination.totalRows,
+                  current: currentPage + 1,
+                }}
+                onChange={(pagination, _, sorter, extra) => {
+                  const sorterMap = getSorterParamsFromAntdTable({ sorter });
+                  setSortOrder({
+                    [`${get(sorter, 'columnKey', '')}`]: get(sorter, 'order', ''),
+                  });
+                  getListPkgSales({
+                    page: getPaginationFromAntdTable({ pagination, extra }),
+                    searcher: filterValues,
+                    sorter: sorterMap,
+                  });
+                  setCurrentPage(getPaginationFromAntdTable({ pagination, extra }));
+                }}
+              />
+            )}
           </Box>
         </Box>
       </FadeIn>
