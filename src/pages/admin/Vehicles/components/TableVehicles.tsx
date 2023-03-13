@@ -24,7 +24,6 @@ import { RECORDS_PER_PAGE } from 'services/Vehicle/Company/getVehicles';
 import { selectAuth } from 'store/auth/selectors';
 import { selectVehicles } from 'store/vehicles/selectors';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
-import { useToastStyle } from 'theme/toastStyles';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 
@@ -36,7 +35,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 function TableVehicles() {
-  const toastClass = useToastStyle();
   const classes = useStyles();
   const { t } = useTranslation(['vehicles', 'translation']);
   const navigate = useNavigate();
@@ -70,11 +68,9 @@ function TableVehicles() {
               <img src={AlertIcon} className={classes.iconAlert} alt="" />
             </Box>
             <Box mx="5px">
-              <Typography variant="body2">
+              <Typography variant="body2" textAlign="left">
                 {record.brand} - {record.model}
               </Typography>
-              {/* FIXME: "250 000kms" ở đâu ra? */}
-              <Typography variant="body2">250 000 kms</Typography>
             </Box>
           </Box>
         ),
@@ -102,14 +98,6 @@ function TableVehicles() {
         render: (_, record) => <Typography variant="body2">{record.VIPseats}</Typography>,
         align: 'center',
         sorter: true,
-      },
-      {
-        key: 'routeId',
-        dataIndex: 'routeId',
-        title: () => t('vehicles:routeId'),
-        // FIXME: routeId chưa có
-        render: _ => <Typography variant="body2">Route ID</Typography>,
-        align: 'center',
       },
       {
         key: 'action',
@@ -207,13 +195,13 @@ function TableVehicles() {
                       id: openDeleteVehicle._id,
                       onSuccess: () => {
                         toast(<ToastCustom type="success" text={t('translation:delete_type_success', { type: t('vehicles:vehicle') })} />, {
-                          className: toastClass.toastSuccess,
+                          className: 'toast-success',
                         });
                         handleCloseDialogDelete();
                       },
                       onFailure: () => {
                         toast(<ToastCustom type="error" text={t('translation:delete_type_error', { type: t('vehicles:vehicle') })} />, {
-                          className: toastClass.toastError,
+                          className: 'toast-error',
                         });
                       },
                     }),

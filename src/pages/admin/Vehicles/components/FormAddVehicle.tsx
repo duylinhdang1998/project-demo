@@ -17,7 +17,6 @@ import { CreateVehicle } from 'services/Vehicle/Company/createVehicle';
 import { selectAuth } from 'store/auth/selectors';
 import { selectVehicles } from 'store/vehicles/selectors';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
-import { useToastStyle } from 'theme/toastStyles';
 import { fieldsAdd } from '../constants';
 import { Merchandises } from './Merchandises';
 import { ServiceSettings } from './ServiceSettings';
@@ -36,8 +35,6 @@ export interface Values {
 }
 
 function FormAddVehicle() {
-  const toastClass = useToastStyle();
-
   const {
     control,
     formState: { errors },
@@ -50,6 +47,8 @@ function FormAddVehicle() {
     defaultValues: {
       ECOseats: 1,
       VIPseats: 1,
+      merchandises: [],
+      services: [],
     },
   });
   const { t } = useTranslation(['vehicles', 'translation']);
@@ -95,6 +94,7 @@ function FormAddVehicle() {
   };
 
   const onSubmit = (formValues: Values) => {
+    console.log(formValues);
     if (isEditAction && vehicleId) {
       dispatch(
         vehiclesActions.updateVehicleRequest({
@@ -102,13 +102,13 @@ function FormAddVehicle() {
           id: vehicleId,
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('vehicles:vehicle') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             navigate(isAgent ? '/agent/vehicles' : '/admin/vehicles', { replace: true });
           },
           onFailure: () => {
             toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('vehicles:vehicle') })} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
         }),
@@ -119,13 +119,13 @@ function FormAddVehicle() {
           data: formValues,
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('vehicles:vehicle') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             navigate(isAgent ? '/agent/vehicles' : '/admin/vehicles', { replace: true });
           },
           onFailure: () => {
             toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('vehicles:vehicle') })} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
         }),

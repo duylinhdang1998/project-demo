@@ -11,7 +11,22 @@ interface MerchandisesProps {
   onChange: (values: Vehicle['merchandises']) => void;
 }
 
-// FIXME: Chưa có api merchandises
-export const Merchandises = ({ errors, messages, control }: MerchandisesProps) => {
-  return <FormVerticle errors={errors} messages={messages} fields={[]} control={control} filterKey="vehicles" />;
+export const Merchandises = ({ errors, messages, control, merchandises, onChange }: MerchandisesProps) => {
+  return (
+    <FormVerticle
+      errors={errors}
+      messages={messages}
+      fields={[
+        {
+          type: 'controlSelectPackageSettings',
+          id: 'merchandises',
+          label: 'merchandises',
+          packageSettings: merchandises,
+          onChange,
+        },
+      ]}
+      control={control}
+      filterKey="vehicles"
+    />
+  );
 };

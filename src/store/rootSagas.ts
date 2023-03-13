@@ -9,6 +9,7 @@ import { routesSagas } from './routes/sagas';
 import { staffsSagas } from './staffs/sagas';
 import { subscriptionsSagas } from './subscriptions/sagas';
 import { vehicleEventsSagas, vehiclesSagas } from './vehicles/sagas';
+import { ticketSalesSagas } from './ticketSales/sagas';
 
 const sagas = [
   ...authSagas,
@@ -22,6 +23,7 @@ const sagas = [
   ...staffsSagas,
   ...profileSagas,
   ...passengersSagas,
+  ...ticketSalesSagas,
 ];
 
 // https://github.com/redux-saga/redux-saga/issues/760#issuecomment-273737022

@@ -7,13 +7,13 @@ import AddMerchandise from './PackageSales/AddMerchandise';
 import ClientInfo from './PackageSales/ClientInfo';
 import CreatePackageOrders from './PackageSales/CreatePackageOrders';
 import OrderConfirm from './PackageSales/OrderConfirm';
-import CreateTicketOrder from './TicketSales/CreateTicketOrder';
-import TravellerDetails from './TicketSales/TravellerDetails';
+import { SelectTripOnCreateTicketSale } from './TicketSales/SelectTripOnCreateTicketSale';
+import { TicketDetailOnCreateTicketSale } from './TicketSales/TicketDetailOnCreateTicketSale';
 
 export {
   Dashboard,
-  CreateTicketOrder,
-  TravellerDetails,
+  SelectTripOnCreateTicketSale,
+  TicketDetailOnCreateTicketSale,
   CreatePackageOrders,
   AddMerchandise,
   ClientInfo,

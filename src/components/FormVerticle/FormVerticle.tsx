@@ -7,7 +7,9 @@ import { CheckboxGroup } from 'components/CheckboxGroup/CheckboxGroup';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import { SelectArrivalPoint } from 'components/SelectDecouplingData/SelectArrivalPoint';
 import { SelectDeparturePoint } from 'components/SelectDecouplingData/SelectDeparturePoint';
+import { SelectDestination } from 'components/SelectDecouplingData/SelectDestination';
 import { SelectOffice } from 'components/SelectDecouplingData/SelectOffice';
+import { SelectPackageSettings } from 'components/SelectDecouplingData/SelectPackageSettings';
 import { SelectRole } from 'components/SelectDecouplingData/SelectRole';
 import { SelectVehicle } from 'components/SelectDecouplingData/SelectVehicle';
 import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
@@ -390,6 +392,7 @@ export default function FormVerticle<T extends FieldValues>({
                   <InputLabel htmlFor={i.label} className={classes.label}>
                     {t(`${i.label}`)}
                   </InputLabel>
+                  {/* @ts-ignore */}
                   <TextareaAutosize
                     disabled={i.disabled}
                     minRows={10}
@@ -480,6 +483,34 @@ export default function FormVerticle<T extends FieldValues>({
             isDisabled={i.disabled}
             isRequired={i.required}
             office={i.office}
+            onChange={i.onChange}
+            label={i.label}
+            filterKey={filterKey}
+          />
+        );
+      case 'controlSelectPackageSettings':
+        return (
+          <SelectPackageSettings
+            control={control}
+            errors={errors}
+            messages={messages}
+            isDisabled={i.disabled}
+            isRequired={i.required}
+            packageSettings={i.packageSettings}
+            onChange={i.onChange}
+            label={i.label}
+            filterKey={filterKey}
+          />
+        );
+      case 'controlSelectDestination':
+        return (
+          <SelectDestination
+            control={control}
+            errors={errors}
+            messages={messages}
+            isDisabled={i.disabled}
+            isRequired={i.required}
+            destination={i.destination}
             onChange={i.onChange}
             label={i.label}
             filterKey={filterKey}

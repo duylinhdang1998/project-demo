@@ -1,13 +1,10 @@
 import { useRequest } from 'ahooks';
+import { Options } from 'ahooks/lib/useRequest/src/types';
 import { AxiosResponse } from 'axios';
 import { Destination } from 'services/models/Destination';
 import { ParamsSettings, ResponseDetailSuccess, ResponseSuccess } from 'services/models/Response';
-import { getSearchParams } from 'services/utils/getSearchParams';
-import { getSortParams } from 'services/utils/getSortParams';
 import fetchAPI from 'utils/fetchAPI';
-import { Options } from 'ahooks/lib/useRequest/src/types';
-
-const RECORDS_PER_PAGE = 10;
+import { getListDestinations } from './getListDestinations';
 
 interface PostDataDestination {
   title?: string;
@@ -18,19 +15,6 @@ interface PostDataDestination {
 }
 
 export const useGetListDestinations = () => {
-  const getListDestinations = async ({ page, sorter, searcher }: ParamsSettings<Destination>): Promise<ResponseSuccess<Destination>> => {
-    const response: AxiosResponse<ResponseSuccess<Destination>> = await fetchAPI.request({
-      url: '/v1.0/company/destinations',
-      params: {
-        limit: RECORDS_PER_PAGE,
-        offset: page * RECORDS_PER_PAGE,
-        ...getSortParams(sorter),
-        ...getSearchParams(searcher),
-      },
-    });
-    return response.data;
-  };
-
   return useRequest<ResponseSuccess<Destination>, [ParamsSettings<Destination>]>(getListDestinations, {
     manual: true,
   });

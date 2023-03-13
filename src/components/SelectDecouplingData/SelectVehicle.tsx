@@ -1,6 +1,6 @@
 import { Box, InputLabel, Typography } from '@mui/material';
 import { customStyles } from 'components/FilterTicket/customStyles';
-import { SelectDecouplingData } from 'components/SelectDecouplingData/SelectDecouplingData';
+import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import { Control, Controller, FieldErrors, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Vehicle } from 'services/models/Vehicle';
@@ -51,7 +51,7 @@ export const SelectVehicle = ({
         return (
           <Box>
             <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
-            <SelectDecouplingData
+            <SingleSelectDecouplingData
               isDisabled={isDisabled}
               isSearchable
               value={vehicle}

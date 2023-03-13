@@ -26,7 +26,6 @@ const useStyles = makeStyles(() => ({
 interface Values {
   vehicle: string;
   registrationId: string;
-  routeId: string;
 }
 
 export default function Vehicles() {
@@ -44,7 +43,6 @@ export default function Vehicles() {
     defaultValues: {
       vehicle: '',
       registrationId: '',
-      routeId: '',
     },
   });
   const classes = useStyles();
@@ -52,8 +50,6 @@ export default function Vehicles() {
     navigate(isAgent ? '/agent/vehicles/add-new-vehicles' : '/admin/vehicles/add-new-vehicles');
   };
   const onSubmit = (values: Values) => {
-    console.log(values);
-    // FIXME: Chưa có "routeId" cũng như "ô select Vehicle" là cái gì
     dispatch(
       vehiclesActions.getVehiclesRequest({
         page: 0,
@@ -85,7 +81,7 @@ export default function Vehicles() {
           <Grid item xs={12} md={8}>
             <Grid container columns={8} rowSpacing={2}>
               <Grid item xs={8} md={7}>
-                <FilterTicket control={control} fields={fieldsSearch} filterKey="vehicles" numberColumns={matches ? 3 : 10} />
+                <FilterTicket control={control} fields={fieldsSearch} filterKey="vehicles" numberColumns={matches ? 4 : 10} />
               </Grid>
               <Grid
                 item
@@ -93,7 +89,7 @@ export default function Vehicles() {
                 md={1}
                 sx={{
                   alignSelf: 'flex-end',
-                  marginLeft: matches ? '-48px' : '0px',
+                  marginLeft: matches ? '-120px' : '0px',
                 }}
               >
                 <Button

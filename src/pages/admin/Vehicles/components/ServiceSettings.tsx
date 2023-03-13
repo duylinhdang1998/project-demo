@@ -1,20 +1,21 @@
+import { useRequest } from 'ahooks';
 import { Option } from 'components/CheckboxGroup/CheckboxGroup';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { omit } from 'lodash';
 import { equals } from 'ramda';
 import { useEffect, useState } from 'react';
 import { Control, FieldErrors } from 'react-hook-form';
-import { ServiceSetting } from 'services/models/ServiceSetting';
 import { Vehicle } from 'services/models/Vehicle';
 import { getServiceSettings } from 'services/ServiceSetting/Company/getServiceSettings';
 import { Values } from './FormAddVehicle';
 
-const getOptions = () => {
-  return getServiceSettings({
+const getServiceSettings_ = async () => {
+  const response = await getServiceSettings({
     page: 0,
     searcher: {},
     sorter: {},
   });
+  return response.data.hits;
 };
 
 interface ServiceSettingsProps {
@@ -25,18 +26,16 @@ interface ServiceSettingsProps {
   onChange: (values: Vehicle['services']) => void;
 }
 export const ServiceSettings = ({ errors, messages, control, services, onChange }: ServiceSettingsProps) => {
+  const { data = [] } = useRequest(getServiceSettings_, {
+    retryInterval: 1000,
+    staleTime: 30000,
+  });
+
   const [options, setOptions] = useState<Option[]>([]);
-  // FIXME: Đổi sang useRequest của ahooks
-  const handleGetOptions = async () => {
-    const { data } = await getOptions();
-    setOptions(data.hits.map(item => ({ key: item._id, label: item.title, value: item })));
-  };
 
   useEffect(() => {
-    handleGetOptions();
-  }, []);
-
-  // FIXME: Loading component
+    setOptions(data.map(item => ({ key: item._id, label: item.title, value: item })));
+  }, [data]);
 
   return (
     <FormVerticle
@@ -52,7 +51,7 @@ export const ServiceSettings = ({ errors, messages, control, services, onChange 
           id: 'services',
           equalsFunc(input, optionValue) {
             const input_ = input as Vehicle['services'][number];
-            const optionValue_ = optionValue as ServiceSetting[];
+            const optionValue_ = optionValue as Vehicle['services'][number];
             return equals(omit(input_, ['icon']), omit(optionValue_, ['icon']));
           },
         },
