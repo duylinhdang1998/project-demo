@@ -19,13 +19,18 @@ interface Seats {
   VIP?: number;
 }
 
-interface ITrackingRoute {
+export interface ITrackingRoute {
   _id?: string;
   company?: string;
   dateTracking?: Date;
   dateRoute?: number;
   seatsAvailable?: Seats;
   seatsBooked?: Seats;
+  route: {
+    _id?: string;
+    departurePoint: string;
+    stopPoint: string;
+  };
 }
 
 interface ITrackingVehicle {
@@ -38,19 +43,25 @@ interface ITrackingVehicle {
 }
 
 export const useGetDashboard = () => {
-  const getTrackingEvents: Promise<AxiosResponse<ResponseDetailSuccess<ITrackingEvent>>> = fetchAPI.request({
-    url: 'v1.0/company/tracking/events',
-  });
-
-  const getTrackingVehicles: Promise<AxiosResponse<ResponseSuccess<ITrackingVehicle>>> = fetchAPI.request({
-    url: 'v1.0/company/tracking/vehicles',
-  });
-  const getTrackingRoutes: Promise<AxiosResponse<ResponseSuccess<ITrackingRoute>>> = fetchAPI.request({
-    url: 'v1.0/company/tracking/routes',
-  });
   const getDashboard = async () => {
     try {
-      const [trackingEvents, trackingRoutes, trackingVehicles] = await Promise.all([getTrackingEvents, getTrackingVehicles, getTrackingRoutes]);
+      const [trackingEvents, trackingVehicles, trackingRoutes] = await Promise.all<
+        [
+          Promise<AxiosResponse<ResponseDetailSuccess<ITrackingEvent>>>,
+          Promise<AxiosResponse<ResponseSuccess<ITrackingVehicle>>>,
+          Promise<AxiosResponse<ResponseSuccess<ITrackingRoute>>>,
+        ]
+      >([
+        fetchAPI.request({
+          url: 'v1.0/company/tracking/events',
+        }),
+        fetchAPI.request({
+          url: 'v1.0/company/tracking/vehicles',
+        }),
+        fetchAPI.request({
+          url: 'v1.0/company/tracking/routes',
+        }),
+      ]);
       return {
         trackingEvents: trackingEvents.data.code === 0 ? trackingEvents.data.data : undefined,
         trackingRoutes: trackingRoutes.data.code === 0 ? trackingRoutes.data.data : undefined,

@@ -8,6 +8,8 @@ export interface CardDasboardProps {
   icon?: string;
   text?: string;
   trackings?: ITrackingEvent['trackings'];
+  unit?: string;
+  value?: string;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -32,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-function CardDasboard({ icon, text, trackings }: CardDasboardProps) {
+function CardDasboard({ icon, text, trackings, value, unit }: CardDasboardProps) {
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -53,7 +55,7 @@ function CardDasboard({ icon, text, trackings }: CardDasboardProps) {
           fontWeight={700}
           color={theme.palette.grey[100]}
         >
-          {trackings?.PACKAGE_MONEY_DAILY}
+          {new Intl.NumberFormat('en-US').format(trackings?.[value as any])} {unit}
         </Typography>
       </Card>
     </Box>
