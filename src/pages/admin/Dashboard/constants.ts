@@ -5,26 +5,18 @@ export const statisTics: CardDasboardProps[] = [
   {
     icon: DailyTicketIcon,
     text: 'daily_ticket',
-    value: '20,250,000',
-    unit: 'FCFA',
   },
   {
     icon: DailyPackageIcon,
     text: 'daily_package',
-    value: '20,250,000',
-    unit: 'FCFA',
   },
   {
     icon: DailyPassengerIcon,
     text: 'daily_passenger',
-    value: '20,250,000',
-    unit: '',
   },
   {
     icon: DailyParcelsIcon,
     text: 'daily_parcel',
-    value: '20,250,000',
-    unit: '',
   },
 ];
 

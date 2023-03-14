@@ -7,7 +7,9 @@ function* handleUpdateProfile({ payload }: ReturnType<typeof profileActions.upda
   const { data, onSuccess, onFailure } = payload;
   try {
     yield retry(3, 1000, updateProfile, data);
-    const response: SagaReturnType<typeof getProfile> = yield retry(3, 1000, getProfile, {});
+    const response: SagaReturnType<typeof getProfile> = yield retry(3, 1000, getProfile, {
+      url: '/v1.0/company/profile',
+    });
     yield put(profileActions.updateProfileSuccess({ data: response.data }));
     onSuccess();
   } catch {
