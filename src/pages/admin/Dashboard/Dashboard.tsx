@@ -7,6 +7,9 @@ import CardDasboard from 'components/CardDashboard/CardDasboard';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import TableDashboard from './components/TableDashboard';
 import { statisTics, vehiclesOperations } from './constants';
+import { useGetDashboard } from 'services/Dashboard/dashboard';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import { FadeIn } from 'components/FadeIn/FadeIn';
 
 const useStyles = makeStyles(() => ({
   iconBus: {
@@ -20,13 +23,14 @@ export default function Dashboard() {
   const { t } = useTranslation('dashboard');
   const theme = useTheme();
   const classes = useStyles();
+  const { data, loading } = useGetDashboard();
 
   const renderStatisticCard = () => {
     return (
       <Grid container direction="row" spacing={{ mobile: '13px', tablet: '24px' }} alignItems="strech">
         {statisTics.map(i => (
           <Grid item xs={6} sm={3} key={i.text}>
-            <CardDasboard {...i} text={t(`${i.text}`)} />
+            <CardDasboard icon={i.icon} text={t(`${i}`)} trackings={data?.trackingEvents?.trackings} />
           </Grid>
         ))}
       </Grid>
@@ -85,11 +89,17 @@ export default function Dashboard() {
     <Box>
       <HeaderLayout activeSideBarHeader={t(`dashboard`)} />
       <Box p="24px">
-        {renderStatisticCard()}
-        <Grid container spacing={'24px'} my="24px" alignItems="stretch">
-          {renderRouteProgram()}
-          {renderVihicles()}
-        </Grid>
+        {loading ? (
+          <LoadingScreen />
+        ) : (
+          <FadeIn>
+            {renderStatisticCard()}
+            <Grid container spacing={'24px'} my="24px" alignItems="stretch">
+              {renderRouteProgram()}
+              {renderVihicles()}
+            </Grid>
+          </FadeIn>
+        )}
       </Box>
     </Box>
   );

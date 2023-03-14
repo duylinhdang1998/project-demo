@@ -4,10 +4,12 @@ import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
-export interface GetProfile {}
-export const getProfile = async (_: GetProfile) => {
+export interface GetProfile {
+  url: string;
+}
+export const getProfile = async ({ url }: GetProfile) => {
   const response: AxiosResponse<ResponseDetailSuccess<Profile> | ResponseFailure> = await fetchAPI.request({
-    url: '/v1.0/company/profile',
+    url,
   });
 
   if (response.data.code === 0) {

@@ -12,20 +12,40 @@ const RECORDS_PER_PAGE = 10;
 
 export const useGetListPackageSales = (option?: Options<ResponseSuccess<PackageSale>, any>) => {
   const getListPackageSales = async ({ page, sorter, searcher }: ParamsSettings<PackageSale>): Promise<ResponseSuccess<PackageSale>> => {
-    const response: AxiosResponse<ResponseSuccess<PackageSale>> = await fetchAPI.request({
-      url: '/v1.0/company/package-sales',
-      params: {
-        limit: RECORDS_PER_PAGE,
-        offset: page * RECORDS_PER_PAGE,
-        ...getSortParams(sorter),
-        ...getSearchParams(searcher),
-      },
-    });
-    return response.data;
+    try {
+      const response: AxiosResponse<ResponseSuccess<PackageSale>> = await fetchAPI.request({
+        url: '/v1.0/company/package-sales',
+        params: {
+          limit: RECORDS_PER_PAGE,
+          offset: page * RECORDS_PER_PAGE,
+          ...getSortParams(sorter),
+          ...getSearchParams(searcher),
+        },
+      });
+      return response.data;
+    } catch (err) {
+      console.log('123', err);
+      return {
+        code: 500,
+        data: {
+          hits: [],
+          pagination: {
+            totalRows: 0,
+            totalPages: 0,
+          },
+        },
+      };
+    }
   };
   return useRequest<ResponseSuccess<PackageSale>, [ParamsSettings<PackageSale>]>(getListPackageSales, {
     ...option,
     manual: true,
+    onSuccess(data) {
+      console.log(data);
+    },
+    onError: err => {
+      console.log('456', err);
+    },
   });
 };
 

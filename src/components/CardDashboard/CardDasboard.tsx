@@ -2,12 +2,12 @@ import { Card, Theme, Typography, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { memo } from 'react';
+import { ITrackingEvent } from 'services/Dashboard/dashboard';
 
 export interface CardDasboardProps {
   icon?: string;
   text?: string;
-  unit?: string;
-  value?: string;
+  trackings?: ITrackingEvent['trackings'];
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-function CardDasboard({ icon, text, unit, value }: CardDasboardProps) {
+function CardDasboard({ icon, text, trackings }: CardDasboardProps) {
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -53,7 +53,7 @@ function CardDasboard({ icon, text, unit, value }: CardDasboardProps) {
           fontWeight={700}
           color={theme.palette.grey[100]}
         >
-          {value} {unit}
+          {trackings?.PACKAGE_MONEY_DAILY}
         </Typography>
       </Card>
     </Box>
