@@ -58,13 +58,17 @@ export const SelectOffice = ({
               value={office}
               isClearable={!isRequired}
               service={async () => {
-                const response = await getOffices({
-                  page: 0,
-                  searcher: {},
-                  sorter: {},
-                  isGetAll: true,
-                });
-                return response.data.hits;
+                try {
+                  const response = await getOffices({
+                    page: 0,
+                    searcher: {},
+                    sorter: {},
+                    isGetAll: true,
+                  });
+                  return response.data.hits;
+                } catch {
+                  return [];
+                }
               }}
               transformToOption={model => ({
                 key: model._id,

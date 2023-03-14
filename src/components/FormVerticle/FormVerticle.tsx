@@ -365,6 +365,7 @@ export default function FormVerticle<T extends FieldValues>({
                   styles={customStyles}
                   placeholder={t(`${i.label}`)}
                   className={cx(classes.datePicker, selectProps?.className ?? '', !!error ? classes.inputError : '')}
+                  isClearable={i.isClearable}
                 />
                 {!!error && (
                   <Typography component="p" className={classes.error} fontSize={12}>

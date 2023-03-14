@@ -58,8 +58,12 @@ export const SelectArrivalPoint = ({
               value={{ value: arrivalPoint }}
               isClearable={!isRequired}
               service={async () => {
-                const response = await getListArrivals({});
-                return response.data.map(item => ({ value: item }));
+                try {
+                  const response = await getListArrivals({});
+                  return response.data.map(item => ({ value: item }));
+                } catch {
+                  return [];
+                }
               }}
               transformToOption={model => ({
                 key: model.value,

@@ -14,7 +14,7 @@ export const fieldsSearch: Field[] = [
   { id: uuidv4(), label: 'departurePoint', type: 'departurePoint' },
   { id: uuidv4(), label: 'arrivalPoint', type: 'arrivalPoint' },
   { id: uuidv4(), label: 'order_date', type: 'datetime', showTime: true, format: 'MM/DD/YYYY - HH:mm' },
-  { id: uuidv4(), label: 'payment_status', options: paymentsStatus, type: 'select' },
+  { id: uuidv4(), label: 'payment_status', options: paymentsStatus, type: 'select', isClearable: true },
   { id: uuidv4(), label: 'order_id', type: 'text', placeholder: 'order_id' },
 ];
 

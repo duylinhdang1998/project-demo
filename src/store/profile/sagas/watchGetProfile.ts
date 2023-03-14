@@ -3,7 +3,7 @@ import { getProfile } from 'services/Company/getProfile';
 import { RootState } from 'store/configureStore';
 import { profileActions } from '../profileSlice';
 
-function* handleGetProfile({ payload }: ReturnType<typeof profileActions.getProfileRequest>) {
+function* handleGetProfile(_: ReturnType<typeof profileActions.getProfileRequest>) {
   try {
     const roleUser = yield select((state: RootState) => state.auth.userInfo?.role);
     // yield retry(3, 1000, getProfile, payload);

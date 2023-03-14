@@ -10,12 +10,16 @@ import { getServiceSettings } from 'services/ServiceSetting/Company/getServiceSe
 import { Values } from './FormAddVehicle';
 
 const getServiceSettings_ = async () => {
-  const response = await getServiceSettings({
-    page: 0,
-    searcher: {},
-    sorter: {},
-  });
-  return response.data.hits;
+  try {
+    const response = await getServiceSettings({
+      page: 0,
+      searcher: {},
+      sorter: {},
+    });
+    return response.data.hits;
+  } catch {
+    return [];
+  }
 };
 
 interface ServiceSettingsProps {

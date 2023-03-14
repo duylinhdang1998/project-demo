@@ -297,13 +297,17 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
                               isSearchable
                               value={{ value }}
                               service={async () => {
-                                const response = await getListDestinations({
-                                  page: 0,
-                                  searcher: {},
-                                  sorter: {},
-                                  isGetAll: true,
-                                });
-                                return response.data.hits.map(item => ({ value: item.title as string }));
+                                try {
+                                  const response = await getListDestinations({
+                                    page: 0,
+                                    searcher: {},
+                                    sorter: {},
+                                    isGetAll: true,
+                                  });
+                                  return response.data.hits.map(item => ({ value: item.title as string }));
+                                } catch {
+                                  return [];
+                                }
                               }}
                               transformToOption={model => ({
                                 key: model.value,

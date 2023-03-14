@@ -18,9 +18,10 @@ import { useEffect } from 'react';
 import { routesActions } from 'store/routes/routesSlice';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { momentToNumber } from 'utils/momentToNumber';
+import { Vehicle } from 'services/models/Vehicle';
 
 interface Values {
-  vehicle: string;
+  vehicle: Vehicle;
   departurePoint: { value: string };
   arrivalPoint: { value: string };
   departureTime: any; // Moment
@@ -79,8 +80,8 @@ export default function Routers() {
             value: momentToNumber(values.departureTime),
             operator: 'eq',
           },
-          vehicle: {
-            value: values.vehicle,
+          'vehicle._id': {
+            value: values.vehicle._id,
             operator: 'eq',
           },
         },
