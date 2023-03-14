@@ -100,7 +100,14 @@ export default function FilterTicket<T extends FieldValues>({
             render={({ field }) => (
               <Box>
                 <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                <Select {...selectProps} {...field} options={i.options} styles={customStyles} placeholder={t(`${i.label}`)} />
+                <Select
+                  {...selectProps}
+                  {...field}
+                  options={i.options}
+                  styles={customStyles}
+                  placeholder={t(`${i.label}`)}
+                  isClearable={i.isClearable}
+                />
               </Box>
             )}
           />

@@ -56,6 +56,7 @@ export interface SimpleField {
   picker?: DatePickerProps['picker'];
   format?: DatePickerProps['format'];
   disabled?: boolean;
+  isClearable?: boolean;
 }
 
 export interface CheckboxField extends BaseField {
