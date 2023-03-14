@@ -4,7 +4,12 @@ import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MapPinIcon } from 'assets';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import { columnsRoutes, routes } from '../constants';
+import { columnsRoutes } from '../constants';
+import { ITrackingRoute } from 'services/Dashboard/dashboard';
+
+interface Props {
+  dataSource?: ITrackingRoute[];
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
   iconBus: {
@@ -23,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-function TableDashboard() {
+function TableDashboard({ dataSource }: Props) {
   const classes = useStyles();
   const { t } = useTranslation('dashboard');
   const theme = useTheme();
@@ -42,30 +47,35 @@ function TableDashboard() {
           </TableCell>
         ))}
         <TableBody>
-          {routes.map(row => {
+          {dataSource?.map(row => {
             return (
-              <TableRow key={row.id} sx={{ py: '8px' }}>
+              <TableRow key={row._id} sx={{ py: '8px' }}>
                 <TableCell className={classes.cell}>
-                  {row.routes.map((route, idx) => (
-                    <TextWithIcon
-                      icon={MapPinIcon}
-                      key={idx}
-                      text={route}
-                      typography={{
-                        fontSize: '14px',
-                      }}
-                      color={theme.palette.secondary.light}
-                    />
-                  ))}
+                  <TextWithIcon
+                    icon={MapPinIcon}
+                    text={row.route.departurePoint}
+                    typography={{
+                      fontSize: '14px',
+                    }}
+                    color={theme.palette.secondary.light}
+                  />
+                  <TextWithIcon
+                    icon={MapPinIcon}
+                    text={row.route.stopPoint}
+                    typography={{
+                      fontSize: '14px',
+                    }}
+                    color={theme.palette.secondary.light}
+                  />
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
-                  {row.times}
+                  {row.dateTracking}
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
-                  {row.ECOseats}
+                  {row.seatsAvailable?.ECO}
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
-                  {row.VIPseats}
+                  {row.seatsAvailable?.VIP}
                 </TableCell>
               </TableRow>
             );
