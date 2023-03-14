@@ -24,40 +24,49 @@ export interface FilterRoutesFormValues {
   tripType: Array<'ONE_TRIP' | 'MULTI_STOP'>; // FIXME: Enum
   totalPax: number;
 }
-
+interface ResponseData {
+  counts: [{ _id: 'MULTI_STOP'; count: number }, { _id: 'ONE_TRIP'; count: number }];
+  routes: Array<{
+    _id: '63f86e161928573f21a81601';
+    company: '63d8d5e3b4c7b31bf36765c2';
+    routeCode: '19265369';
+    departurePoint: 'Nam Định';
+    stopPoint: 'Hà Nội';
+    durationTime: 120;
+    ECOPrices: { ADULT: 20; STUDENT: 15; CHILD: 10 };
+    VIPPrices: { ADULT: 30; STUDENT: 25; CHILD: 20 };
+    isChanged: true;
+    routeType: any;
+    tripType: any;
+    createdAt: '2023-02-24T07:58:14.273Z';
+    updatedAt: '2023-02-24T07:58:14.273Z';
+    __v: 0;
+  }>;
+}
 // FIXME: Update khi sửa xong page "Routers"
 const getTrips = async (tripType: string[], values: FilterRoutesFormValues) => {
-  interface ResponseData {
-    counts: [{ _id: 'MULTI_STOP'; count: number }, { _id: 'ONE_TRIP'; count: number }];
-    routes: Array<{
-      _id: '63f86e161928573f21a81601';
-      company: '63d8d5e3b4c7b31bf36765c2';
-      routeCode: '19265369';
-      departurePoint: 'Nam Định';
-      stopPoint: 'Hà Nội';
-      durationTime: 120;
-      ECOPrices: { ADULT: 20; STUDENT: 15; CHILD: 10 };
-      VIPPrices: { ADULT: 30; STUDENT: 25; CHILD: 20 };
-      isChanged: true;
-      routeType: any;
-      tripType: any;
-      createdAt: '2023-02-24T07:58:14.273Z';
-      updatedAt: '2023-02-24T07:58:14.273Z';
-      __v: 0;
-    }>;
+  try {
+    const response: AxiosResponse<{ data: { hits: ResponseData } }> = await fetchAPI.request({
+      url: '/v1.0/company/routes',
+      params: {
+        ...getSearchParams<any>({
+          // FIXME: Departure time search theo gì ?
+          departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
+          stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
+          tripType: { value: tripType[0], operator: 'eq' },
+        }),
+      },
+    });
+    return response.data.data.hits;
+  } catch {
+    return {
+      counts: [
+        { _id: 'MULTI_STOP', count: 0 },
+        { _id: 'ONE_TRIP', count: 0 },
+      ],
+      routes: [],
+    } as ResponseData;
   }
-  const response: AxiosResponse<{ data: { hits: ResponseData } }> = await fetchAPI.request({
-    url: '/v1.0/company/routes',
-    params: {
-      ...getSearchParams<any>({
-        // FIXME: Departure time search theo gì ?
-        departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
-        stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
-        tripType: { value: tripType[0], operator: 'eq' },
-      }),
-    },
-  });
-  return response.data.data.hits;
 };
 
 export const SelectTripOnCreateTicketSale = () => {

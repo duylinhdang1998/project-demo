@@ -58,8 +58,12 @@ export const SelectDeparturePoint = ({
               value={{ value: departurePoint }}
               isClearable={!isRequired}
               service={async () => {
-                const response = await getListDepartures({});
-                return response.data.map(item => ({ value: item }));
+                try {
+                  const response = await getListDepartures({});
+                  return response.data.map(item => ({ value: item }));
+                } catch {
+                  return [];
+                }
               }}
               transformToOption={model => ({
                 key: model.value,

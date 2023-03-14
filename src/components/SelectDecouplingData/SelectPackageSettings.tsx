@@ -57,13 +57,17 @@ export const SelectPackageSettings = ({
               isSearchable
               isClearable={!isRequired}
               service={async () => {
-                const response = await getPackageSettings({
-                  page: 0,
-                  searcher: {},
-                  sorter: {},
-                  isGetAll: true,
-                });
-                return response.data.hits;
+                try {
+                  const response = await getPackageSettings({
+                    page: 0,
+                    searcher: {},
+                    sorter: {},
+                    isGetAll: true,
+                  });
+                  return response.data.hits;
+                } catch {
+                  return [];
+                }
               }}
               transformToOption={model => ({
                 key: model._id,
