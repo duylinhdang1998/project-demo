@@ -1,39 +1,78 @@
 import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { v4 as uuid } from 'uuid';
 import Button from 'components/Button/Button';
 import MerchandiseDetailView from 'components/MerchandiseDetailView/MerchandiseDetailView';
 import OrderDetailView from 'components/OrderDetailView/OrderDetailView';
 import CheckCircle from 'components/SvgIcon/CheckCircle';
 import LayoutDetail from 'layout/LayoutDetail';
-
-const dataDetails = {
-  order_id: '023232-0023',
-  departures_point: 'Lyon Gare Perrache',
-  date: '02/27/2022 - 10H30',
-  sender_name: 'Payoun Samia',
-  sender_mobile: '0123456789',
-  recipent_name: 'Payoun Samia',
-  recipent_mobile: '0123456789',
-  quantity: 2,
-  weight: '4kg',
-  price: '$10',
-  payment_status: 'Paid',
-};
-
-const merchandises = [
-  { title: 'Package 2kg', weight: '2kg', price: '$2', id: uuid() },
-  { title: 'Package 2kg', weight: '2kg', price: '$2', id: uuid() },
-];
+import { useLocation, useNavigate } from 'react-router-dom';
+import { PackageSale } from 'models/PackageSales';
+import dayjs from 'dayjs';
+import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
+import { PaymentStatus } from 'models/PaymentStatus';
 
 export default function ControlMerchandiseDetail() {
   const { t } = useTranslation(['dashboard']);
   const [status, setStatus] = useState('arrived');
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const locationState = useMemo(() => {
+    return location.state as PackageSale | null | undefined;
+  }, [location.state]);
+
+  const dataDetails = useMemo(() => {
+    return {
+      order_id: locationState?.orderCode,
+      departure_point: locationState?.departurePoint,
+      // FIXME: Format date time
+      date: dayjs(locationState?.createdAt).format('MM/DD/YYYY - HH:mm'),
+      sender_name: locationState?.sender?.firstName + ' ' + locationState?.sender?.lastName,
+      sender_mobile: locationState?.sender?.mobile,
+      recipent_name: locationState?.recipent?.firstName + ' ' + locationState?.recipent?.lastName,
+      recipent_mobile: locationState?.recipent?.mobile,
+      // FIXME: totalQuantity?
+      quantity: locationState?.merchandises?.length,
+      // FIXME: Weight symbol
+      weight:
+        locationState?.merchandises?.reduce((accumulator, item) => {
+          return accumulator + (item?.weight ?? 0);
+        }, 0) + 'kg',
+      // FIXME: totalPrice?
+      price:
+        getAppCurrencySymbol() +
+        locationState?.merchandises?.reduce((accumulator, item) => {
+          return accumulator + (item?.price ?? 0);
+        }, 0),
+      // FIXME: Đợi anh Linh update type
+      payment_status: PaymentStatus.APPROVED,
+    };
+  }, [locationState]);
+
+  const merchandises = useMemo(() => {
+    return locationState?.merchandises?.map(merchandise => {
+      return {
+        title: merchandise.package?.title,
+        // FIXME: Weight symbol
+        weight: merchandise.weight + 'kg',
+        price: getAppCurrencySymbol() + merchandise.price,
+        id: merchandise.package?._id,
+      };
+    });
+  }, [locationState]);
+
   const handleChangeStatus = (val: string) => () => {
     setStatus(val);
   };
+
+  useEffect(() => {
+    if (!locationState) {
+      navigate('/agent/control-merchandise-delivery');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locationState]);
 
   return (
     <LayoutDetail title={t('dashboard.control_merchandise_deliver')}>
@@ -46,6 +85,7 @@ export default function ControlMerchandiseDetail() {
           </Grid>
           <Grid item xs={12} md={3}>
             <Stack direction="column" spacing="24px">
+              {/* FIXME: Thiếu API */}
               <Box bgcolor="#fff" borderRadius="4px" padding="24px">
                 <Typography variant="h5">{t('delivery_status')}</Typography>
                 <Divider sx={{ margin: '16px 0' }} />

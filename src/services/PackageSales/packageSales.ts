@@ -3,7 +3,7 @@ import { Options } from 'ahooks/lib/useRequest/src/types';
 import { AxiosResponse } from 'axios';
 import { Country } from 'models/Country';
 import { PackageSale } from 'models/PackageSales';
-import { ParamsSettings, ResponseSuccess } from 'services/models/Response';
+import { ParamsSettings, ResponseDetailSuccess, ResponseSuccess } from 'services/models/Response';
 import { getSearchParams } from 'services/utils/getSearchParams';
 import { getSortParams } from 'services/utils/getSortParams';
 import fetchAPI from 'utils/fetchAPI';
@@ -62,4 +62,21 @@ export const getCountryList = async (): Promise<ResponseSuccess<Country>> => {
 
 export const useGetCountryList = () => {
   return useRequest(getCountryList);
+};
+
+export const useGetPackageSale = () => {
+  const getPackageSale = async (orderCode: PackageSale['orderCode']): Promise<PackageSale | null> => {
+    try {
+      const response: AxiosResponse<ResponseDetailSuccess<PackageSale>> = await fetchAPI.request({
+        url: `/v1.0/company/package-sale/${orderCode}/detail`,
+      });
+      return response.data.data;
+    } catch {
+      return null;
+    }
+  };
+
+  return useRequest<PackageSale | null, [PackageSale['orderCode']]>(getPackageSale, {
+    manual: true,
+  });
 };
