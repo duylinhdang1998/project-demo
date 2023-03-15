@@ -34,5 +34,14 @@
   "payment_status": "Payment status",
   "delivery_status": "Delivery status",
   "arrived_destination": "Arrived at destination",
-  "delivered_recipient": "Delivered to recipient"
+  "delivered_recipient": "Delivered to recipient",
+  "departure_point": "Departure point",
+  "sender_name": "Sender’s name",
+  "sender_mobile": "Sender’s mobile",
+  "recipent_name": "Recipient’s name",
+  "recipent_mobile": "Recipient’s mobile",
+  "quantity": "Quantity",
+  "weight": "Weight",
+  "price": "Price",
+  "order_id": "Order ID"
 }

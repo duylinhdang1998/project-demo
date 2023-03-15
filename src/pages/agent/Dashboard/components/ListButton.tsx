@@ -13,6 +13,14 @@ function ListButton() {
   const { t } = useTranslation(['dashboard']);
   const navigate = useNavigate();
 
+  const handleCreateTicketOrder = () => {
+    navigate('/agent/create-ticket-order');
+  };
+
+  const handleCreateMerchandise = () => {
+    navigate('/agent/create-package-orders');
+  };
+
   const handleControlTicket = () => {
     navigate('/agent/control-ticket');
   };
@@ -24,12 +32,24 @@ function ListButton() {
   return (
     <Grid container spacing="24px">
       <Grid item xs={12} sm={6} md={3}>
-        <Button fullWidth backgroundButton={theme.palette.primary.main} startIcon={<AddIcon sx={{ fontSize: '24px' }} />} sx={{ height: '40px' }}>
+        <Button
+          fullWidth
+          backgroundButton={theme.palette.primary.main}
+          startIcon={<AddIcon sx={{ fontSize: '24px' }} />}
+          sx={{ height: '40px' }}
+          onClick={handleCreateTicketOrder}
+        >
           {t('create_ticket_order')}
         </Button>
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
-        <Button fullWidth backgroundButton={theme.palette.primary.main} startIcon={<MerchaindiseOrderIcon />} sx={{ height: '40px' }}>
+        <Button
+          fullWidth
+          backgroundButton={theme.palette.primary.main}
+          startIcon={<MerchaindiseOrderIcon />}
+          sx={{ height: '40px' }}
+          onClick={handleCreateMerchandise}
+        >
           {t('create_merchandise')}
         </Button>
       </Grid>
