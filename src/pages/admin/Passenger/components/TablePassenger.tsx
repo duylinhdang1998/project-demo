@@ -179,7 +179,7 @@ function TablePassenger({ onSelect }: TablePassengerProps) {
                     passengersActions.updateStatusPassengerRequest({
                       id: openDialogConfirmBlock._id,
                       data: {
-                        status: 'BLOCK',
+                        status: isBlocking ? 'ACTIVE' : 'BLOCK',
                       },
                       onSuccess: () => {
                         toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('passenger:passenger') })} />, {
