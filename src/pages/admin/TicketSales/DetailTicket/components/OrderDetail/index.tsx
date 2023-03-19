@@ -74,7 +74,7 @@ function OrderDetails({ record }: OrderDetailsProps) {
           left={t('ticketSales:paxCount')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {record.rawData.passengers.length}
+              {record.rawData.totalPax}
             </Typography>
           }
         />
