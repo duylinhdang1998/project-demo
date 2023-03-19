@@ -13,7 +13,7 @@ import { useMemo } from 'react';
 import { getPaymentStatusTag } from 'pages/admin/TicketSales/utils/getPaymentStatusTag';
 import { PaymentStatus } from 'models/PaymentStatus';
 
-export default function ControlMerchandise() {
+export default function ControlMerchandiseChecking() {
   const { t } = useTranslation(['dashboard', 'translation']);
   const navigate = useNavigate();
 
@@ -25,9 +25,7 @@ export default function ControlMerchandise() {
       lastName_recipent: data?.recipent.lastName,
       firstName_recipent: data?.recipent.firstName,
       firstName_sender: data?.sender?.firstName,
-      // FIXME: totalQuantity?
-      number_of_merchandise: data?.merchandises?.length,
-      // FIXME: Đợi anh Linh update type
+      number_of_merchandise: data?.totalQuantity,
       payment_status: PaymentStatus.APPROVED,
     };
   }, [data]);

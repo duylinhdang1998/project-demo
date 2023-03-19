@@ -149,7 +149,7 @@ const AgentRoutes: RouteObject[] = [
     path: 'control-merchandise-delivery',
     element: (
       <RequiredAuth role="agent">
-        <Page.Agent.ControlMerchandise />
+        <Page.Agent.ControlMerchandiseChecking />
       </RequiredAuth>
     ),
   },
