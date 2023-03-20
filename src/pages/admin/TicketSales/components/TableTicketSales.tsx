@@ -84,14 +84,14 @@ export const TableTicketSales = () => {
         },
       },
       {
-        key: 'paxCount',
-        dataIndex: 'paxCount',
+        key: 'totalPax',
+        dataIndex: 'totalPax',
         title: () => t('ticketSales:paxCount'),
         width: 120,
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
-          return <Typography>{row.rawData.passengers.length}</Typography>;
+          return <Typography>{row.rawData.totalPax}</Typography>;
         },
       },
       {

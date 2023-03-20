@@ -15,7 +15,7 @@ export const ticketSaleModelToColumnTicket = (ticketSale: TicketSale, passenger?
     lastName: passenger_?.lastName ?? '',
     orderId: ticketSale.orderCode,
     paymentStatus: ticketSale.paymentStatus,
-    totalPax: ticketSale.passengers.length,
+    totalPax: ticketSale.totalPax,
     rawData: ticketSale,
   };
 };
