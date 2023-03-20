@@ -1,5 +1,3 @@
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { Box, Divider, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -20,20 +18,27 @@ import { contentManagerActions } from 'store/contentManager/contentManagerSlice'
 import { selectContentManager } from 'store/contentManager/selectors';
 import { useToastStyle } from 'theme/toastStyles';
 import { footerFields, sidebarFields } from './constants';
-import { uploadPlugin } from './utils/ckeditorPlugins';
+import { Editor } from '@tinymce/tinymce-react';
+import { uploadImageResource } from 'services/Resource/uploadImageResource';
+import { getUrlOfResource } from 'utils/getUrlOfResource';
+import { blobToFile } from 'utils/blobToFile';
 
 type Values = Pick<Content, 'city' | 'email' | 'phone' | 'content' | 'footerText' | 'postalAddress' | 'zipCode'>;
 const fieldKeys: Array<keyof Values> = ['city', 'email', 'phone', 'content', 'footerText', 'postalAddress', 'zipCode'];
 
 function ContentManager() {
   const { t } = useTranslation(['account', 'translation']);
-  const { control, getValues, handleSubmit, resetField } = useForm<Values>();
+  const { control, getValues, handleSubmit, setValue } = useForm<Values>();
   const toastClass = useToastStyle();
 
   const [open, setOpen] = useState(false);
 
   const { statusGetContent, statusUpdateContent, content } = useAppSelector(selectContentManager);
   const dispatch = useAppDispatch();
+
+  const getContent = () => {
+    return getValues().content;
+  };
 
   const handleClose = () => setOpen(false);
   const handleCancel = () => setOpen(true);
@@ -64,9 +69,7 @@ function ContentManager() {
   useEffect(() => {
     if (content) {
       fieldKeys.forEach(key => {
-        resetField(key, {
-          defaultValue: content[key],
-        });
+        setValue(key, content[key]);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,29 +89,28 @@ function ContentManager() {
               {t('account:content')}
             </Typography>
             <Box my="20px">
-              <CKEditor
-                config={{
-                  extraPlugins: [
-                    // @ts-ignore
-                    uploadPlugin({
-                      onSuccess: () => {},
-                      onFailure: () => {
-                        toast(<ToastCustom type="error" text={t('translation:internal_server_error')} />, {
-                          className: toastClass.toastError,
-                        });
-                      },
-                    }),
-                  ],
+              <Editor
+                // FIXME: API key
+                apiKey={undefined}
+                initialValue={getContent()}
+                onChange={e => {
+                  const data = e.target.getContent();
+                  setValue('content', data);
                 }}
-                onReady={editor => {
-                  editor.setData(getValues().content);
-                }}
-                editor={ClassicEditor}
-                onChange={(_, editor) => {
-                  const data = editor.getData();
-                  resetField('content', {
-                    defaultValue: data,
-                  });
+                init={{
+                  height: 500,
+                  menubar: false,
+                  plugins: ['link', 'lists', 'table', 'image', 'media', 'advlist', 'paste', 'undo', 'redo', 'blockquote'],
+                  toolbar: 'blocks bold italic link bullist numlist outdent indent image blockquote table media undo redo',
+                  images_upload_handler: async blobInfo => {
+                    try {
+                      const file = blobToFile(blobInfo.blob(), blobInfo.filename());
+                      const response = await uploadImageResource({ file });
+                      return Promise.resolve(getUrlOfResource(response.data));
+                    } catch (error) {
+                      return Promise.reject(error);
+                    }
+                  },
                 }}
               />
             </Box>
