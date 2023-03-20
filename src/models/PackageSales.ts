@@ -3,25 +3,28 @@ import { PaymentStatus } from './PaymentStatus';
 export interface PackageSale {
   _id: string;
   company: string;
-  orderCode?: string;
-  arrivalPoint?: string;
-  departurePoint?: string;
-  sender?: Recipent;
-  totalPrice?: number;
-  totalQuantity?: number;
-  totalWeight?: number;
-  email?: string;
+  orderCode: string;
+  route: string;
+  departurePoint: string;
+  arrivalPoint: string;
+  departureTime: number;
+  sender: Recipent;
+  email: string;
   recipent: Recipent;
-  merchandises?: Merchandise[];
-  createdAt?: Date;
-  updatedAt?: Date;
-  __v?: number;
-  paymentDetail?: PaymentDetailItem[];
+  merchandises: Merchandise[];
+  deliveryStatus: string; // FIXME: Enum
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  paymentDetail: PaymentDetailItem[];
+  totalWeight: number;
+  totalPrice: number;
+  totalQuantity: number;
 }
 
 interface PaymentDetailItem {
-  paymentCode?: string;
-  paymentStatus?: PaymentStatus;
+  paymentCode: string;
+  paymentStatus: PaymentStatus;
 }
 
 interface Merchandise {

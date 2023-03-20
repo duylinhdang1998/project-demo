@@ -73,7 +73,6 @@ export default function ControlTicket() {
               </>
             }
           />
-          {/* FIXME: Format date time */}
           <Infomation left={t('ticketSales:date_time')} right={dayjs(ticketSale?.createdAt).format('MM/DD/YYYY - HH:mm')} />
           <Infomation left={t('ticketSales:number_of_passengers')} right={ticketSale?.passengers.length} />
           <Infomation
