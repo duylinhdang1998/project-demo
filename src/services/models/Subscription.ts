@@ -1,3 +1,5 @@
+import { PaymentGateWay } from 'services/Subscription/createSubscriptionOrder';
+
 export type SubscriptionType = 'TRIAL' | 'STANDARD' | 'PRO' | 'ENTERPRISE';
 
 export interface SubscriptionFeature {
@@ -38,16 +40,18 @@ export interface SubscriptionOrder {
     company: string;
     paymentCode: string;
     orderType: 'SUBCRIPTION'; // FIXME: enum
-    paymentGateWay: 'PAYPAL'; // FIXME: enum
+    paymentGateWay: PaymentGateWay;
     paymentStatus: 'PENDING'; // FIXME: enum
     _id: string;
     createdAt: string;
     updatedAt: string;
     __v: 0;
   };
-  paymentLink: Array<{
-    href: string;
-    rel: 'self' | 'approve' | 'update' | 'capture';
-    method: 'GET' | 'PATCH' | 'POST';
-  }>;
+  paymentLink:
+    | string
+    | Array<{
+        href: string;
+        rel: 'self' | 'approve' | 'update' | 'capture';
+        method: 'GET' | 'PATCH' | 'POST';
+      }>;
 }

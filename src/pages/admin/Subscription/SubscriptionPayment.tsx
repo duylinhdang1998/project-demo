@@ -13,10 +13,10 @@ import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
 import { PaymentMethod } from './@types/PaymentMethod';
 import { PlanDuration } from './@types/PlanDuration';
-import { Paypal } from './components/Paypal';
+import { PaymentButton } from './components/PaymentButton';
 import { RadioPaymentMethod } from './components/RadioPaymentMethod';
 import { RadioPlanDuration } from './components/RadioPlanDuration';
-import { defaultPaymentMethod, planDurationsValue, defaultPlanDuration } from './constants';
+import { defaultPaymentMethod, planDurationsValue, defaultPlanDuration, paymentGateWayMapping } from './constants';
 
 // FIXME: Có những phương thức thanh toán nào?
 const SubscriptionPayment: FC = () => {
@@ -61,13 +61,13 @@ const SubscriptionPayment: FC = () => {
   useEffect(() => {
     dispatch(
       subscriptionsActions.createSubscriptionOrderRequest({
-        paymentGateWay: 'PAYPAL',
+        paymentGateWay: paymentGateWayMapping[paymentMethodState],
         period: planDurationsValue[planDurationState],
         subscriptionType: subscriptionType as SubscriptionType,
       }),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [planDurationState]);
+  }, [paymentMethodState, planDurationState]);
 
   if (statusGetPlans === 'idle' || statusGetPlans === 'loading') {
     return <LoadingScreen />;
@@ -85,8 +85,8 @@ const SubscriptionPayment: FC = () => {
           <RadioPaymentMethod
             paymentMethodState={paymentMethodState}
             setPaymentMethodState={setPaymentMethodState}
-            Stripe={<></>}
-            PayPal={<Paypal />}
+            PayPal={<PaymentButton variant="PayPal" />}
+            Stripe={<PaymentButton variant="Stripe" />}
           />
         </CardWhite>
       </LayoutDetail>
