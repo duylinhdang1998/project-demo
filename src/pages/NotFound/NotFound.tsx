@@ -5,7 +5,7 @@ import Button from 'components/Button/Button';
 import './style.css';
 
 export default function NotFound() {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['translation']);
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -25,7 +25,7 @@ export default function NotFound() {
         </span>
       </section>
       <Button variant="contained" color="primary" backgroundButton="#1AA6EE" onClick={handleBack} sx={{ padding: '0 10px' }}>
-        {t('back_home')}
+        {t('translation:back_home')}
       </Button>
     </Box>
   );

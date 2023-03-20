@@ -151,7 +151,7 @@ function TablePassenger({ onSelect }: TablePassengerProps) {
             {isBlocking ? t('passenger:unblock_title') : t('passenger:block_title')}
           </Typography>
           <Typography marginBottom="30px" fontSize="14px" fontWeight={400}>
-            {isBlocking ? t('unpassenger:unblock_message') : t('passenger:block_message')}
+            {isBlocking ? t('passenger:unblock_message') : t('passenger:block_message')}
           </Typography>
           <Stack direction="row" alignItems="center">
             <Button
@@ -179,7 +179,7 @@ function TablePassenger({ onSelect }: TablePassengerProps) {
                     passengersActions.updateStatusPassengerRequest({
                       id: openDialogConfirmBlock._id,
                       data: {
-                        status: 'BLOCK',
+                        status: isBlocking ? 'ACTIVE' : 'BLOCK',
                       },
                       onSuccess: () => {
                         toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('passenger:passenger') })} />, {
