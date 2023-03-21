@@ -3,19 +3,20 @@ import { ImageResource, PDFResource } from './Resource';
 import { ServiceSetting } from './ServiceSetting';
 
 export interface Vehicle {
+  __v: number;
   _id: string;
-  company: string;
-  brand: string;
-  model: string;
-  registrationId: string;
   ECOseats: number;
   VIPseats: number;
-  services: Array<Omit<ServiceSetting, 'icon'> & { icon: ServiceSetting['icon']['_id'] }>;
-  merchandises: PackageSetting[];
   attach: ImageResource;
+  brand: string;
+  company: string;
   createdAt: string;
+  merchandises: PackageSetting[];
+  model: string;
+  registrationId: string;
+  services: Array<Omit<ServiceSetting, 'icon'> & { icon: ServiceSetting['icon']['_id'] }>;
   updatedAt: string;
-  __v: number;
+  vehicleEvents?: VehicleEvent[];
 }
 
 export interface VehicleEvent {
