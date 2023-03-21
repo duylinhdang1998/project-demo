@@ -25,11 +25,12 @@ import { v4 } from 'uuid';
 
 interface TablePassengerProps {
   onSelect?: (selected: Passenger[]) => void;
+  selectedPassengers: Passenger[];
 }
 
 const passengerIsBlocking = (passenger: Passenger) => passenger.status === 'BLOCK';
 
-function TablePassenger({ onSelect }: TablePassengerProps) {
+function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
   const { t } = useTranslation(['passenger', 'translation']);
   const toastClass = useToastStyle();
 
@@ -138,7 +139,6 @@ function TablePassenger({ onSelect }: TablePassengerProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t]);
 
-  // FIXME: Toggle block chứ k phải chỉ block
   const renderDialogConfirmBlock = () => {
     if (openDialogConfirmBlock === null) {
       return null;
@@ -231,6 +231,7 @@ function TablePassenger({ onSelect }: TablePassengerProps) {
         rowSelection={{
           type: 'checkbox',
           onChange: (_, selectedRows) => onSelect?.(selectedRows),
+          selectedRowKeys: selectedPassengers.map(item => item._id),
         }}
       />
       {renderDialogConfirmBlock()}

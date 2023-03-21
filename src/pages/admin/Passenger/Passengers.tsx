@@ -9,6 +9,7 @@ import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import SendIcon from 'components/SvgIcon/SendIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { isEmpty } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -16,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { Passenger } from 'services/models/Passenger';
 import { passengersActions } from 'store/passengers/passengersSlice';
+import { selectPassengers } from 'store/passengers/selectors';
 import { EmailEditor } from './components/EmailEditor';
 import TablePassenger from './components/TablePassenger';
 import { fieldsSearch } from './constants';
@@ -46,8 +48,8 @@ export default function Passengers() {
 
   const [selectedPassengers, setSelectedPassengers] = useState<Passenger[]>([]);
   const [openEmailEditor, setOpenEmailEditor] = useState(false);
-  const [isSending, setIsSending] = useState(false);
 
+  const { statusSendEmail } = useAppSelector(selectPassengers);
   const dispatch = useAppDispatch();
 
   const searchForm = useForm<SearchFormValues>();
@@ -67,17 +69,24 @@ export default function Passengers() {
   };
 
   const handleBatchEmail = async (values: BatchMailFormValues) => {
-    setIsSending(true);
-    try {
-      console.log(values);
-      toast(<ToastCustom type="success" text={t('passenger:send_email_success')} />, { className: 'toast-success' });
-      setOpenEmailEditor(false);
-      emailEditorForm.reset({ description: '', subject: '' });
-    } catch {
-      toast(<ToastCustom type="error" text={t('passenger:send_email_error')} />, { className: 'toast-error' });
-    } finally {
-      setIsSending(false);
-    }
+    dispatch(
+      passengersActions.sendEmailRequest({
+        data: {
+          description: values.description,
+          subject: values.subject,
+          passengerId: selectedPassengers.map(passenger => passenger._id),
+        },
+        onSuccess() {
+          toast(<ToastCustom type="success" text={t('passenger:send_email_success')} />, { className: 'toast-success' });
+          setOpenEmailEditor(false);
+          setSelectedPassengers([]);
+          emailEditorForm.reset({ description: '', subject: '' });
+        },
+        onFailure() {
+          toast(<ToastCustom type="error" text={t('passenger:send_email_error')} />, { className: 'toast-error' });
+        },
+      }),
+    );
   };
 
   const onSubmit = (values: SearchFormValues) => {
@@ -155,7 +164,7 @@ export default function Passengers() {
             </Stack>
             <Stack direction="row" alignItems="center">
               <Button
-                loading={isSending}
+                loading={statusSendEmail === 'loading'}
                 sx={{
                   color: 'rgba(26, 166, 238, 1)',
                   backgroundColor: 'rgba(255, 255, 255, 1)',
@@ -167,6 +176,7 @@ export default function Passengers() {
                 {t('translation:cancel')}
               </Button>
               <Button
+                loading={statusSendEmail === 'loading'}
                 sx={{
                   backgroundColor: 'rgba(26, 166, 238, 1)',
                   color: 'rgba(255, 255, 255, 1)',
@@ -220,7 +230,7 @@ export default function Passengers() {
             </Button>
           </Grid>
         </Grid>
-        <TablePassenger onSelect={setSelectedPassengers} />
+        <TablePassenger selectedPassengers={selectedPassengers} onSelect={setSelectedPassengers} />
       </Box>
       {renderEmailEditor()}
     </Box>

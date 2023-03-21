@@ -3,12 +3,14 @@ import { Searcher } from 'services/@types/SearchParams';
 import { Passenger } from 'services/models/Passenger';
 import { GetPassengerFailure, GetPassengerRequest, GetPassengerSuccess } from './actions/GetPassenger';
 import { GetPassengersFailure, GetPassengersRequest, GetPassengersSuccess } from './actions/GetPassengers';
+import { SendEmailFailure, SendEmailRequest, SendEmailSuccess } from './actions/SendEmail';
 import { UpdatePassengerFailure, UpdatePassengerRequest, UpdatePassengerSuccess } from './actions/UpdatePassenger';
 import { UpdateStatusPassengerFailure, UpdateStatusPassengerRequest, UpdateStatusPassengerSuccess } from './actions/UpdateStatusPassenger';
 
 interface PassengersState {
   statusGetPassengers: Status;
   statusGetPassenger: Status;
+  statusSendEmail: Status;
   queueUpdatePassenger: Passenger['_id'][];
   passengers: Passenger[];
   currentPage: number;
@@ -21,6 +23,7 @@ interface PassengersState {
 const initialState: PassengersState = {
   statusGetPassenger: 'idle',
   statusGetPassengers: 'idle',
+  statusSendEmail: 'idle',
   queueUpdatePassenger: [],
   passengers: [],
   currentPage: 0,
@@ -138,6 +141,24 @@ export const passengersSlice = createSlice({
       return {
         ...state,
         queueUpdatePassenger: state.queueUpdatePassenger.filter(item => id !== item),
+      };
+    },
+    sendEmailRequest: (state, _action: PayloadAction<SendEmailRequest>) => {
+      return {
+        ...state,
+        statusSendEmail: 'loading',
+      };
+    },
+    sendEmailSuccess: (state, _action: PayloadAction<SendEmailSuccess>) => {
+      return {
+        ...state,
+        statusSendEmail: 'success',
+      };
+    },
+    sendEmailFailure: (state, _action: PayloadAction<SendEmailFailure>) => {
+      return {
+        ...state,
+        statusSendEmail: 'failure',
       };
     },
   },
