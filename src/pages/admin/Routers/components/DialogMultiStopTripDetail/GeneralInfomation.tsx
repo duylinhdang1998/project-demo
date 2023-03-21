@@ -1,6 +1,5 @@
 import { Box, Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { DialogMultiStopTripDetailProps } from './DialogMultiStopTripDetail';
 
@@ -37,7 +36,7 @@ export const GeneralInfomation = ({ route }: DialogMultiStopTripDetailProps) => 
             {t('routers:vehicle')}:
           </Typography>
           <Typography component="p" className={classes.infomationValue}>
-            {route.vehicle.brand} {route.vehicle.model}
+            {route.vehicle?.brand} {route.vehicle?.model}
           </Typography>
         </Box>
       </Grid>
@@ -46,9 +45,8 @@ export const GeneralInfomation = ({ route }: DialogMultiStopTripDetailProps) => 
           <Typography component="p" className={classes.infomationName}>
             {t('routers:VIPseats')}:
           </Typography>
-          {/* FIXME: Điền cái gì ở đây? */}
           <Typography component="p" className={classes.infomationValue}>
-            12
+            {route.vehicle?.VIPseats}
           </Typography>
         </Box>
       </Grid>
@@ -57,9 +55,8 @@ export const GeneralInfomation = ({ route }: DialogMultiStopTripDetailProps) => 
           <Typography component="p" className={classes.infomationName}>
             {t('routers:ECOseats')}:
           </Typography>
-          <Typography component="p" className={classNames(classes.danger, classes.infomationValue)}>
-            {/* FIXME: Điền cái gì ở đây? */}
-            FULL
+          <Typography component="p" className={classes.infomationValue}>
+            {route.vehicle?.ECOseats}
           </Typography>
         </Box>
       </Grid>

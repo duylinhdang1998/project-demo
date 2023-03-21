@@ -21,7 +21,7 @@ import { Vehicle } from 'services/models/Vehicle';
 import { anyToMoment } from 'utils/anyToMoment';
 import EditPriceTrip from '../EditPriceTrip';
 
-interface StopPointValues {
+interface RoutePointValues {
   stop_point: string;
   duration: number;
   ecoAdult: number;
@@ -35,7 +35,7 @@ export interface StepOneValuesForMultipleStopTrip {
   vehicle: Vehicle;
   departurePoint: string;
   departureTime: any; // moment
-  stops: StopPointValues[];
+  routePoints: RoutePointValues[];
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const fieldKeys: Array<keyof Route> = ['vehicle', 'departurePoint', 'departureTime'];
-const emptyStopPoint: StopPointValues = {
+const emptyRoutePoint: RoutePointValues = {
   stop_point: '',
   duration: 0,
   ecoAdult: 0,
@@ -122,11 +122,11 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
   } = useForm<StepOneValuesForMultipleStopTrip>();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'stops',
+    name: 'routePoints',
   });
 
   const [open, setOpen] = useState(false);
-  const [openDeleteStopPoint, setOpenDeleteStopPoint] = useState<number | null>(null);
+  const [openDeleteRoutePoint, setOpenDeleteRoutePoint] = useState<number | null>(null);
 
   const getVehicle = () => {
     return getValues().vehicle;
@@ -138,10 +138,10 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
   const handleClose = () => setOpen(false);
 
   const handleOpenDialogDelete = (index: number) => {
-    setOpenDeleteStopPoint(index);
+    setOpenDeleteRoutePoint(index);
   };
   const handleCloseDialogDelete = () => {
-    setOpenDeleteStopPoint(null);
+    setOpenDeleteRoutePoint(null);
   };
 
   const handleCancel = () => {
@@ -150,7 +150,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
   };
 
   const handleAppend = () => {
-    append(emptyStopPoint);
+    append(emptyRoutePoint);
   };
 
   const handleSave = (values: StepOneValuesForMultipleStopTrip) => {
@@ -171,9 +171,9 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
       reset({
         ...values,
         departureTime: anyToMoment({ value: values.departureTime }),
-        stops: values.stops.map(stop => ({
-          ...stop,
-          duration: stop.duration,
+        routePoints: values.routePoints.map(routePoint => ({
+          ...routePoint,
+          duration: routePoint.duration,
         })),
       });
     }
@@ -181,7 +181,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
   }, [values]);
 
   const renderDialogDelete = () => {
-    if (openDeleteStopPoint === null) {
+    if (openDeleteRoutePoint === null) {
       return null;
     }
     return (
@@ -213,7 +213,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
               }}
               backgroundButton="rgba(255, 39, 39, 1)"
               onClick={() => {
-                remove(openDeleteStopPoint);
+                remove(openDeleteRoutePoint);
                 handleCloseDialogDelete();
               }}
             >
@@ -269,8 +269,8 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
       />
       <Box mt="24px">
         {fields.map((f, index) => {
-          const stopPointPathInFormValues: `stops.${any}.stop_point` = `stops.${index}.stop_point`;
-          const durationPathInFormValues: `stops.${any}.duration` = `stops.${index}.duration`;
+          const routePointPathInFormValues: `routePoints.${any}.stop_point` = `routePoints.${index}.stop_point`;
+          const durationPathInFormValues: `routePoints.${any}.duration` = `routePoints.${index}.duration`;
           return (
             <Box key={f.id} borderTop="1px dashed #ddd" py="24px">
               <Stack direction="row" alignItems="center" justifyContent="space-between" my="10px">
@@ -284,12 +284,12 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
                   <Grid item xs={12} md={6}>
                     <Controller
                       control={control}
-                      name={stopPointPathInFormValues}
+                      name={routePointPathInFormValues}
                       render={() => {
                         const labelTranslated = t('routers:stop_point');
-                        const error = get(errors, stopPointPathInFormValues);
+                        const error = get(errors, routePointPathInFormValues);
                         const messageErr = t('translation:error_required', { name: labelTranslated });
-                        const value = get(getValues(), stopPointPathInFormValues) ?? '';
+                        const value = get(getValues(), routePointPathInFormValues) ?? '';
                         return (
                           <Box>
                             <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
@@ -314,10 +314,11 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
                                 label: model.value,
                                 value: model,
                               })}
+                              equalFunc={(model, input) => model.value === input?.value}
                               styles={customStyles as any}
                               placeholder={labelTranslated}
                               onChange={selected => {
-                                setValue(stopPointPathInFormValues, selected?.value as string);
+                                setValue(routePointPathInFormValues, selected?.value as string);
                               }}
                             />
                             {!!error && (

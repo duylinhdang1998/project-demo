@@ -4,7 +4,7 @@ import { RemoveDayActive } from 'services/Route/Company/removeDayActive';
 // Create dayoffs
 export interface RemoveDayActiveRequest {
   data: RemoveDayActive;
-  routeId: Route['_id'];
+  routeCode: Route['routeCode'];
   onSuccess: () => void;
   onFailure: () => void;
 }

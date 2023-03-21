@@ -37,7 +37,7 @@ export default function EditPriceTrip({ control, errors, isMulti, index }: EditP
   const classes = useStyles();
   const getNameInput = defaultName => {
     if (isMulti) {
-      return `stops.${index}.${defaultName}`;
+      return `routePoints.${index}.${defaultName}`;
     }
     return defaultName;
   };

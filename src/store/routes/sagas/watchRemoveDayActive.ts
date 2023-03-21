@@ -4,10 +4,10 @@ import { removeDayActive } from 'services/Route/Company/removeDayActive';
 import { routesActions } from '../routesSlice';
 
 function* handleRemoveDayActive({ payload }: ReturnType<typeof routesActions.removeDayActiveRequest>) {
-  const { data, routeId, onFailure, onSuccess } = payload;
+  const { data, routeCode, onFailure, onSuccess } = payload;
   try {
     yield retry(3, 1000, removeDayActive, data);
-    const response: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, { id: routeId });
+    const response: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, { routeCode });
     yield put(
       routesActions.removeDayActiveSuccess({
         data: response.data,

@@ -75,6 +75,7 @@ export const SelectOffice = ({
                 label: model.title,
                 value: model,
               })}
+              equalFunc={(model, input) => model._id === input?._id}
               styles={customStyles as any}
               placeholder={labelTranslated}
               onChange={selected => onChange(selected)}

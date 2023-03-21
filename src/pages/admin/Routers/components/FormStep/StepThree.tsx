@@ -113,7 +113,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     if (route) {
       dispatch(
         routesActions.removeDayActiveRequest({
-          routeId: route._id,
+          routeCode: route.routeCode,
           data: { routeCode: route.routeCode, dayoff: selectedSlot[0].setHours(12) },
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
@@ -135,21 +135,21 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     if (route) {
       dispatch(
         routesActions.updateTicketPricesRequest({
-          routeId: route._id,
+          routeCode: route.routeCode,
           data: {
             routeCode: route.routeCode,
             particularDay: selectedSlot[0].setHours(12),
-            routeParticulars: route.stopPoints.map(stopPoint => ({
-              stopCode: stopPoint.stopCode,
+            routeParticulars: route.routePoints.map(routePoint => ({
+              routePointId: routePoint._id,
               ECOPrices: [
                 { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
                 { passengerType: 'CHILD', price: Number(formValues.ecoChildren) },
                 { passengerType: 'STUDENT', price: Number(formValues.ecoStudent) },
               ],
               VIPPrices: [
-                { passengerType: 'ADULT', price: formValues.vipAdult },
-                { passengerType: 'CHILD', price: formValues.vipChildren },
-                { passengerType: 'STUDENT', price: formValues.vipStudent },
+                { passengerType: 'ADULT', price: Number(formValues.vipAdult) },
+                { passengerType: 'CHILD', price: Number(formValues.vipChildren) },
+                { passengerType: 'STUDENT', price: Number(formValues.vipStudent) },
               ],
             })),
           },
@@ -173,12 +173,12 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     // FIXME: RESET FORM VALUES -> Đang k có cái gì từ response trả về có thể làm chức năng này
     if (route) {
       reset({
-        ecoAdult: route.stopPoints[0].ECOPrices.ADULT,
-        ecoChildren: route.stopPoints[0].ECOPrices.CHILD,
-        ecoStudent: route.stopPoints[0].ECOPrices.STUDENT,
-        vipAdult: route.stopPoints[0].VIPPrices.ADULT,
-        vipChildren: route.stopPoints[0].VIPPrices.CHILD,
-        vipStudent: route.stopPoints[0].VIPPrices.STUDENT,
+        ecoAdult: route.routePoints[0].ECOPrices?.ADULT,
+        ecoChildren: route.routePoints[0].ECOPrices?.CHILD,
+        ecoStudent: route.routePoints[0].ECOPrices?.STUDENT,
+        vipAdult: route.routePoints[0].VIPPrices?.ADULT,
+        vipChildren: route.routePoints[0].VIPPrices?.CHILD,
+        vipStudent: route.routePoints[0].VIPPrices?.STUDENT,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

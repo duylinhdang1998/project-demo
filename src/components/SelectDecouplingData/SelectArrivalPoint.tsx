@@ -3,7 +3,7 @@ import { customStyles } from 'components/FilterTicket/customStyles';
 import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import { Control, Controller, FieldErrors, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { StopPoint } from 'services/models/Route';
+import { RoutePoint } from 'services/models/Route';
 import { getListArrivals } from 'services/Route/Company/getListArrivals';
 import { useStyles } from './styles';
 
@@ -14,8 +14,8 @@ export interface SelectArrivalPointProps {
   isRequired?: boolean;
   isDisabled?: boolean;
   filterKey?: string;
-  arrivalPoint: StopPoint['stopPoint'];
-  onChange: (arrivalPoint: StopPoint['stopPoint'] | undefined) => void;
+  arrivalPoint: RoutePoint['stopPoint'];
+  onChange: (arrivalPoint: RoutePoint['stopPoint'] | undefined) => void;
   label: string;
 }
 
@@ -70,6 +70,7 @@ export const SelectArrivalPoint = ({
                 label: model.value,
                 value: model,
               })}
+              equalFunc={(model, input) => model.value === input?.value}
               styles={customStyles as any}
               placeholder={labelTranslated}
               onChange={selected => onChange(selected?.value)}

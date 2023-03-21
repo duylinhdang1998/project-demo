@@ -1,12 +1,12 @@
 import { PaymentStatus } from 'models/PaymentStatus';
 import { PaymentGateway } from './PaymentGateway';
-import { StopPointPrice } from './Route';
 import { UserRole } from './UserRole';
+import { RoutePointPrice } from './Route';
 
 export interface PassengerInTicketSale {
   firstName: string;
   lastName: string;
-  typeTicket: keyof StopPointPrice;
+  typeTicket: keyof RoutePointPrice;
   seatsType: 'ECO' | 'VIP';
 }
 

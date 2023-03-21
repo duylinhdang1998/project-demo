@@ -1,15 +1,15 @@
 import { AxiosResponse } from 'axios';
 import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
-import { Route, StopPoint } from 'services/models/Route';
+import { Route, RoutePoint, RoutePointPriceType } from 'services/models/Route';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 import { momentToString } from 'utils/momentToString';
 
 export type CreateOneStopTrip = Pick<Route, 'vehicle' | 'departureTime' | 'departurePoint'> & {
   stopPoints: [
-    Pick<StopPoint, 'durationTime' | 'stopPoint'> & {
-      ECOPrices: Array<{ passengerType: keyof StopPoint['ECOPrices']; price: number }>;
-      VIPPrices: Array<{ passengerType: keyof StopPoint['VIPPrices']; price: number }>;
+    Pick<RoutePoint, 'durationTime' | 'stopPoint'> & {
+      ECOPrices: Array<{ passengerType: RoutePointPriceType; price: number }>;
+      VIPPrices: Array<{ passengerType: RoutePointPriceType; price: number }>;
     },
   ];
   tripType: Extract<Route['tripType'], 'ONE_TRIP'>;
@@ -21,13 +21,13 @@ export const createOneStopTrip = async (data: CreateOneStopTrip) => {
     url: '/v1.0/company/routes',
     data: {
       ...data,
-      vehicle: data.vehicle._id,
+      vehicle: data.vehicle?._id,
       departureTime: momentToString(data.departureTime, 'HH:mm'),
-      stopPoints: data.stopPoints.map(stopPoint => ({
-        ...stopPoint,
-        durationTime: Number(stopPoint.durationTime),
-        ECOPrices: stopPoint.ECOPrices.map(ECOPrice => ({ ...ECOPrice, price: Number(ECOPrice.price) })),
-        VIPPrices: stopPoint.VIPPrices.map(VIPPrice => ({ ...VIPPrice, price: Number(VIPPrice.price) })),
+      stopPoints: data.stopPoints.map(routePoint => ({
+        ...routePoint,
+        durationTime: Number(routePoint.durationTime),
+        ECOPrices: routePoint.ECOPrices.map(ECOPrice => ({ ...ECOPrice, price: Number(ECOPrice.price) })),
+        VIPPrices: routePoint.VIPPrices.map(VIPPrice => ({ ...VIPPrice, price: Number(VIPPrice.price) })),
       })),
     },
   });

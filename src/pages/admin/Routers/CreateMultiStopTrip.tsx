@@ -1,30 +1,31 @@
 import { Box } from '@mui/material';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useParams } from 'react-router-dom';
+import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
 import StepForm from './components/StepForm';
 
 export default function CreateMultiStopTrip() {
   const { t } = useTranslation(['routers', 'translation']);
 
-  const { routerId } = useParams();
+  const { routeCode } = useParams();
 
   const { statusGetRoute, route } = useAppSelector(selectRoutes);
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const isEditAction = useMemo(() => {
-    return !!routerId;
-  }, [routerId]);
+    return !!routeCode;
+  }, [routeCode]);
 
   useEffect(() => {
-    if (isEditAction && routerId) {
-      // FIXME: API lỗi tạm thời comment
-      // dispatch(routesActions.getRouteRequest({ id: routerId }));
+    if (isEditAction && routeCode) {
+      dispatch(routesActions.getRouteRequest({ routeCode }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditAction]);
@@ -33,7 +34,7 @@ export default function CreateMultiStopTrip() {
     return <LoadingScreen />;
   }
 
-  if (isEditAction && !route && statusGetRoute === 'success') {
+  if (isEditAction && (statusGetRoute === 'failure' || (!route && statusGetRoute === 'success'))) {
     return <Navigate to="/404" />;
   }
 

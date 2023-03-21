@@ -4,10 +4,10 @@ import { updateParticular } from 'services/Route/Company/updateParticular';
 import { routesActions } from '../routesSlice';
 
 function* handleUpdateTicketPrices({ payload }: ReturnType<typeof routesActions.updateTicketPricesRequest>) {
-  const { data, routeId, onFailure, onSuccess } = payload;
+  const { data, routeCode, onFailure, onSuccess } = payload;
   try {
     yield retry(3, 1000, updateParticular, data);
-    const response: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, { id: routeId });
+    const response: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, { routeCode });
     yield put(
       routesActions.updateTicketPricesSuccess({
         data: response.data,

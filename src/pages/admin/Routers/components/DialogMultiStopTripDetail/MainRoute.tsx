@@ -3,8 +3,8 @@ import { makeStyles } from '@mui/styles';
 import { Timeline } from 'antd';
 import 'antd/lib/timeline/style/css';
 import { LocationIcon } from 'components/SvgIcon/LocationIcon';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StopPoint } from 'services/models/Route';
 import { DialogMultiStopTripDetailProps } from './DialogMultiStopTripDetail';
 
 const useStyles = makeStyles(() => ({
@@ -26,43 +26,59 @@ export const MainRoute = ({ route }: DialogMultiStopTripDetailProps) => {
   const classes = useStyles();
   const { t } = useTranslation(['routers']);
 
-  const renderSpecialMark = (stopPoint: StopPoint, variant: 'start' | 'end') => {
-    const bgColor = variant === 'start' ? 'rgba(45, 154, 255, 1)' : 'rgba(255, 39, 39, 1)';
+  const mainRoutePoints = useMemo(() => {
+    return route.routePoints.filter(routePoint => routePoint.routeType === 'MAIN_ROUTE');
+  }, [route]);
+
+  const renderStartMark = () => {
     return (
       <Timeline.Item
-        key={stopPoint.stopCode}
         dot={
-          <Box className={classes.specialMark} bgcolor={bgColor}>
+          <Box className={classes.specialMark} bgcolor="rgba(45, 154, 255, 1)">
             <LocationIcon />
           </Box>
         }
       >
-        <Typography component="p">{stopPoint.stopPoint}</Typography>
-        {/* FIXME: Điền cái gì? */}
+        <Typography component="p">{route.departurePoint}</Typography>
+        <Typography component="p">{route.departureTime}</Typography>
+      </Timeline.Item>
+    );
+  };
+
+  const renderLastMark = () => {
+    const lastPoint = mainRoutePoints[mainRoutePoints.length - 1];
+    return (
+      <Timeline.Item
+        dot={
+          <Box className={classes.specialMark} bgcolor="rgba(45, 154, 255, 1)">
+            <LocationIcon />
+          </Box>
+        }
+      >
+        <Typography component="p">{lastPoint.stopPoint}</Typography>
         <Typography component="p">
-          {route.departureTime} - {stopPoint.durationTime} {t('routers:minutes')}
+          {lastPoint.durationTime} {t('routers:minutes')}
         </Typography>
       </Timeline.Item>
     );
   };
 
+  const renderSubRouteMark = () => {
+    return mainRoutePoints.slice(0, -1).map(routePoint => {
+      return (
+        <Timeline.Item key={routePoint._id} color="rgba(51, 204, 127, 1)">
+          {routePoint.stopPoint}
+        </Timeline.Item>
+      );
+    });
+  };
+
   return (
     <Grid item className={classes.container}>
       <Timeline>
-        {route.stopPoints.map((stopPoint, index, array) => {
-          if (index === 0) {
-            return renderSpecialMark(stopPoint, 'start');
-          }
-          if (index === array.length - 1) {
-            return renderSpecialMark(stopPoint, 'end');
-          }
-          return (
-            // FIXME: Label lấy từ cái gì?
-            <Timeline.Item key={stopPoint.stopCode} color="rgba(51, 204, 127, 1)">
-              {stopPoint.stopPoint}
-            </Timeline.Item>
-          );
-        })}
+        {renderStartMark()}
+        {renderSubRouteMark()}
+        {renderLastMark()}
       </Timeline>
     </Grid>
   );
