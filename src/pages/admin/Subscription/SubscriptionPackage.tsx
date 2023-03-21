@@ -69,8 +69,7 @@ export default function SubscriptionPackage() {
                 subscriptionType={subscription.subscriptionType}
                 currency={getAppCurrencySymbol()}
                 price={price}
-                // FIXME: Cái gì quyết định cái này?
-                popular={false}
+                popular={subscription.populateChoice}
                 disabled={!subscription.active}
                 isRegistered={subscription.subscriptionType === currentSubscription?.subscriptionType}
               />
