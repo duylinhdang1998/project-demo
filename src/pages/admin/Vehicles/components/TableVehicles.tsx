@@ -26,6 +26,7 @@ import { selectVehicles } from 'store/vehicles/selectors';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
+import { isToday } from 'utils/isToday';
 
 const useStyles = makeStyles(() => ({
   iconAlert: {
@@ -61,19 +62,23 @@ function TableVehicles() {
         dataIndex: 'brand',
         title: () => t('vehicles:vehicle'),
         align: 'center',
-        render: (_, record) => (
-          <Box display="flex" alignItems="center">
-            <Box mx="5px">
-              {/* FIXME: Cái này có phải 1 trường của request k hay FE fix cứng? */}
-              <img src={AlertIcon} className={classes.iconAlert} alt="" />
+        render: (_, record) => {
+          const isHaveAnAppointment = record.vehicleEvents?.find(vehicleEvent => {
+            return isToday(new Date(vehicleEvent.reminderDate));
+          });
+          return (
+            <Box display="flex" alignItems="center">
+              <Box mx="5px" minWidth="32px" minHeight="32px">
+                {isHaveAnAppointment && <img src={AlertIcon} className={classes.iconAlert} alt="" />}
+              </Box>
+              <Box mx="5px">
+                <Typography variant="body2" textAlign="left">
+                  {record.brand} - {record.model}
+                </Typography>
+              </Box>
             </Box>
-            <Box mx="5px">
-              <Typography variant="body2" textAlign="left">
-                {record.brand} - {record.model}
-              </Typography>
-            </Box>
-          </Box>
-        ),
+          );
+        },
         sorter: () => 0,
       },
       {
