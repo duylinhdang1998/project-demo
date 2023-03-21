@@ -16,13 +16,15 @@ export interface SubscriptionPlan {
 }
 
 export interface Subscription {
-  subscriptionType: SubscriptionType;
-  name: string;
   active: true;
   currency: string;
   monthlyPrice: number;
-  subscriptionFeatures: SubscriptionFeature[];
+  name: string;
   plans: SubscriptionPlan[];
+  populateChoice: boolean;
+  priority: number;
+  subscriptionFeatures: SubscriptionFeature[];
+  subscriptionType: SubscriptionType;
 }
 
 export interface CurrentSubscription {

@@ -18,7 +18,6 @@ import { RadioPaymentMethod } from './components/RadioPaymentMethod';
 import { RadioPlanDuration } from './components/RadioPlanDuration';
 import { defaultPaymentMethod, planDurationsValue, defaultPlanDuration, paymentGateWayMapping } from './constants';
 
-// FIXME: Có những phương thức thanh toán nào?
 const SubscriptionPayment: FC = () => {
   const { t } = useTranslation(['account', 'translation']);
 
