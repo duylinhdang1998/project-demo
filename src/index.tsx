@@ -1,4 +1,5 @@
 import 'antd/lib/dropdown/style/css';
+import GlobalErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import { GlobalProvider } from 'context/GlobalContext';
 import 'index.css';
 import 'locales/i18n';
@@ -8,7 +9,9 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <GlobalProvider>
-    <App />
+    <GlobalErrorBoundary>
+      <App />
+    </GlobalErrorBoundary>
   </GlobalProvider>,
   document.getElementById('root') as HTMLElement,
 );
