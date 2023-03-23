@@ -82,7 +82,8 @@ export const Reservation = ({ onSubmit, route, passengers, loading }: Reservatio
       </Box>
       <FormControlLabel
         control={<Checkbox checked />}
-        label={`${t('policy_privacy')}`}
+        // FIXME: Cái gì đây ?
+        label={`${t('ticketSales:policy_privacy')}`}
         sx={{
           '.MuiFormControlLabel-label': {
             fontSize: '14px !important',
