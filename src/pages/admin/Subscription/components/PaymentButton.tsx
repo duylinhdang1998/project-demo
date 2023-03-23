@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { PaymentMethod } from '../@types/PaymentMethod';
+import { setCheckoutNotification } from '../utils/handleCheckoutNotification';
 
 interface PaymentButtonProps {
   variant: PaymentMethod;
@@ -55,6 +56,7 @@ export const PaymentButton = ({ variant }: PaymentButtonProps) => {
               ? subscriptionOrder?.paymentLink
               : subscriptionOrder?.paymentLink.find(({ rel }) => rel === 'approve')?.href;
           if (href) {
+            setCheckoutNotification(false);
             window.location.href = href;
           }
         }}

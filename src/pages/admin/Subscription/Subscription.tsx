@@ -7,16 +7,20 @@ import CardWhite from 'components/CardWhite/CardWhite';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { isEmpty } from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
+import { STATUS } from './constants';
 import { getTotalRemainingDays } from './utils/getTotalRemainingDays';
 import { getTotalTrialDays } from './utils/getTotalTrialDays';
+import { getCheckoutNotification, setCheckoutNotification } from './utils/handleCheckoutNotification';
 
 export default function Subscription() {
   const { t } = useTranslation(['account', 'translation']);
@@ -60,6 +64,23 @@ export default function Subscription() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (statusGetCurrentSubscription === 'success' && getCheckoutNotification()) {
+      setCheckoutNotification(true);
+      if (location.search.includes(STATUS.success)) {
+        toast(<ToastCustom type="success" text={t('account:upgrade_subscription_success')} />, {
+          className: 'toast-success',
+        });
+      }
+      if (location.search.includes(STATUS.cancelled)) {
+        toast(<ToastCustom type="error" text={t('account:upgrade_subscription_cancelled')} />, {
+          className: 'toast-error',
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [statusGetCurrentSubscription]);
 
   if (statusGetCurrentSubscription === 'loading' || statusGetSubscriptions === 'loading') {
     return <LoadingScreen />;

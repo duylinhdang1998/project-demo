@@ -16,3 +16,8 @@ export const paymentGateWayMapping: Record<PaymentMethod, PaymentGateway> = {
   PayPal: 'PAYPAL',
   Stripe: 'STRIPE',
 };
+
+export const STATUS = {
+  success: 'status=success',
+  cancelled: 'status=cancelled',
+};
