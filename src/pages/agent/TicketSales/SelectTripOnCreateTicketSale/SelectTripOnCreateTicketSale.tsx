@@ -1,17 +1,16 @@
-import { Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import { useRequest } from 'ahooks';
-import { Empty } from 'antd';
-import { AxiosResponse } from 'axios';
+import { Empty, Pagination } from 'antd';
 import CardWhite from 'components/CardWhite/CardWhite';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { getSearchParams } from 'services/utils/getSearchParams';
-import fetchAPI from 'utils/fetchAPI';
+import { RouteOfTicketSale } from 'services/models/TicketSale';
+import { searchRoutes } from 'services/TicketSale/searchRoutes';
 import CardSelectTrip from './components/CardSelectTrip';
 import { FilterRoutesBySearcher } from './components/FilterRoutesBySearcher';
 import { FilterByTripTypeFormValues, FilterRoutesByTripType } from './components/FilterRoutesByTripType';
@@ -21,51 +20,30 @@ export interface FilterRoutesFormValues {
   departurePoint?: { value: string };
   arrivalPoint?: { value: string };
   departureTime?: any;
-  tripType: Array<'ONE_TRIP' | 'MULTI_STOP'>; // FIXME: Enum
-  totalPax: number;
+  tripType: RouteOfTicketSale['tripType'];
+  totalPax: number; // FIXME: Search theo cái gì ???
 }
-interface ResponseData {
-  counts: [{ _id: 'MULTI_STOP'; count: number }, { _id: 'ONE_TRIP'; count: number }];
-  routes: Array<{
-    _id: '63f86e161928573f21a81601';
-    company: '63d8d5e3b4c7b31bf36765c2';
-    routeCode: '19265369';
-    departurePoint: 'Nam Định';
-    stopPoint: 'Hà Nội';
-    durationTime: 120;
-    ECOPrices: { ADULT: 20; STUDENT: 15; CHILD: 10 };
-    VIPPrices: { ADULT: 30; STUDENT: 25; CHILD: 20 };
-    isChanged: true;
-    routeType: any;
-    tripType: any;
-    createdAt: '2023-02-24T07:58:14.273Z';
-    updatedAt: '2023-02-24T07:58:14.273Z';
-    __v: 0;
-  }>;
-}
-// FIXME: Update khi sửa xong page "Routers"
-const getTrips = async (tripType: string[], values: FilterRoutesFormValues) => {
+
+const getTrips = async (page: number, values: FilterRoutesFormValues): Promise<Awaited<ReturnType<typeof searchRoutes>>['data']> => {
   try {
-    const response: AxiosResponse<{ data: { hits: ResponseData } }> = await fetchAPI.request({
-      url: '/v1.0/company/routes',
-      params: {
-        ...getSearchParams<any>({
-          // FIXME: Departure time search theo gì ?
-          departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
-          stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
-          tripType: { value: tripType[0], operator: 'eq' },
-        }),
+    const response = await searchRoutes({
+      page: 0,
+      searcher: {
+        tripType: { value: values.tripType, operator: 'eq' },
+        departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
+        stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
+        'route.departureTime': { value: values.departureTime, operator: 'eq' },
       },
     });
-    return response.data.data.hits;
+    return response.data;
   } catch {
     return {
+      routes: [],
       counts: [
         { _id: 'MULTI_STOP', count: 0 },
         { _id: 'ONE_TRIP', count: 0 },
       ],
-      routes: [],
-    } as ResponseData;
+    };
   }
 };
 
@@ -79,13 +57,15 @@ export const SelectTripOnCreateTicketSale = () => {
       departurePoint: undefined,
       departureTime: undefined,
       totalPax: 0,
-      tripType: ['ONE_TRIP'],
+      tripType: 'ONE_TRIP',
     },
   });
 
   const { run, loading, data } = useRequest(getTrips, {
     manual: true,
   });
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
 
@@ -97,18 +77,19 @@ export const SelectTripOnCreateTicketSale = () => {
     };
   };
 
-  const handleSelect = (route: any) => {
+  const handleSelect = (route: RouteOfTicketSale) => {
     navigate('/agent/traveller-contact-details', { state: route });
   };
 
   const onSubmit = (values: FilterRoutesFormValues) => {
-    run(values.tripType, values);
+    setCurrentPage(1);
+    run(1, values);
   };
 
   useEffect(() => {
-    run(getValues().tripType, getValues());
+    run(currentPage, getValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPage]);
 
   const renderCardRoutes = () => {
     if (loading) {
@@ -125,36 +106,40 @@ export const SelectTripOnCreateTicketSale = () => {
         </Stack>
       );
     }
+    const totalRoutes = data.counts.find(count => count._id === getFilterByFormValues().tripType)?.count ?? 0;
     return (
       <>
         <Highlighter
-          textToHighlight={t('ticketSales:total_trips_found', { total: data.routes.length })}
+          textToHighlight={t('ticketSales:total_trips_found', { total: totalRoutes })}
           highlightClassName={classes.highlightText}
-          searchWords={[data.routes.length.toString()]}
+          searchWords={[totalRoutes.toString()]}
           autoEscape={true}
           className={classes.title}
         />
-        {data?.routes.map(route => {
-          return (
-            <CardSelectTrip
-              key={route._id}
-              // FIXME: Cái gì điền ở đây
-              timeStart="08:30"
-              // FIXME: Cái gì điền ở đây
-              timeEnd="10:30"
-              placeStart={route.departurePoint}
-              // FIXME: Cái gì điền ở đây
-              placeEnd={route.stopPoint}
-              // FIXME: Cái gì điền ở đây
-              price={20}
-              // FIXME: Cái gì điền ở đây
-              duration={t('ticketSales:duration_minutes', { duration: route.durationTime })}
-              // FIXME: Cái gì điền ở đây
-              vehicle="Mercedes S450"
-              onSelect={() => handleSelect(route)}
-            />
-          );
-        })}
+        <Box sx={{ marginBottom: '16px' }}>
+          {data?.routes.map(route => {
+            return (
+              <CardSelectTrip
+                key={route._id}
+                // FIXME: Cái gì điền ở đây
+                timeStart="08:30"
+                // FIXME: Cái gì điền ở đây
+                timeEnd="10:30"
+                placeStart={route.departurePoint}
+                placeEnd={route.stopPoint}
+                // FIXME: Cái gì điền ở đây
+                price={20}
+                duration={t('ticketSales:duration_minutes', { duration: route.durationTime })}
+                // FIXME: Cái gì điền ở đây
+                vehicle="Mercedes S450"
+                onSelect={() => handleSelect(route)}
+              />
+            );
+          })}
+        </Box>
+        <Stack alignItems="flex-end">
+          <Pagination onChange={setCurrentPage} current={currentPage} total={totalRoutes} showLessItems />
+        </Stack>
       </>
     );
   };
@@ -168,8 +153,8 @@ export const SelectTripOnCreateTicketSale = () => {
             <FilterRoutesByTripType
               values={getFilterByFormValues()}
               counts={{
-                ONE_TRIP: 12,
-                MULTI_STOP: 11,
+                ONE_TRIP: data?.counts.find(count => count._id === 'ONE_TRIP')?.count ?? 0,
+                MULTI_STOP: data?.counts.find(count => count._id === 'MULTI_STOP')?.count ?? 0,
               }}
               onChange={({ totalPax, tripType }) => {
                 setValue('totalPax', totalPax);

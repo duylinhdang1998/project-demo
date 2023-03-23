@@ -3,8 +3,13 @@ import { TicketSale } from 'services/models/TicketSale';
 import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
+import { PaymentGateway } from 'services/models/PaymentGateway';
 
-export type CreateTicketSale = Pick<TicketSale, 'route' | 'departureTime' | 'departurePoint' | 'arrivalPoint' | 'passengers' | 'email'>;
+export type CreateTicketSale = Pick<TicketSale, 'route' | 'departureTime' | 'departurePoint' | 'arrivalPoint' | 'passengers' | 'email'> & {
+  paymentType: PaymentGateway;
+  returnUrl: string;
+  cancelUrl: string;
+};
 
 export const createTicketSale = async (data: CreateTicketSale): Promise<ResponseDetailSuccess<TicketSale>> => {
   const response: AxiosResponse<ResponseDetailSuccess<TicketSale> | ResponseFailure> = await fetchAPI.request({

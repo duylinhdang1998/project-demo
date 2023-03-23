@@ -1,4 +1,4 @@
-import { PaymentGateWay } from 'services/Subscription/createSubscriptionOrder';
+import { PaymentGateway } from './PaymentGateway';
 
 export type SubscriptionType = 'TRIAL' | 'STANDARD' | 'PRO' | 'ENTERPRISE';
 
@@ -42,7 +42,7 @@ export interface SubscriptionOrder {
     company: string;
     paymentCode: string;
     orderType: 'SUBCRIPTION'; // FIXME: enum
-    paymentGateWay: PaymentGateWay;
+    paymentGateWay: PaymentGateway;
     paymentStatus: 'PENDING'; // FIXME: enum
     _id: string;
     createdAt: string;

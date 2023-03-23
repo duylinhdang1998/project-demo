@@ -1,16 +1,16 @@
 import { AxiosResponse } from 'axios';
+import { PaymentGateway } from 'services/models/PaymentGateway';
 import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
 import { SubscriptionOrder, SubscriptionPlan, SubscriptionType } from 'services/models/Subscription';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
-export type PaymentGateWay = 'PAYPAL' | 'STRIPE';
-
 export interface CreateSubscriptionOrder {
   subscriptionType: SubscriptionType;
   period: SubscriptionPlan['months'];
-  paymentGateWay: PaymentGateWay;
+  paymentGateWay: PaymentGateway;
 }
+
 export const createSubscriptionOrder = async (data: CreateSubscriptionOrder) => {
   const response: AxiosResponse<ResponseDetailSuccess<SubscriptionOrder> | ResponseFailure> = await fetchAPI.request({
     method: 'POST',

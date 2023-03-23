@@ -1,18 +1,17 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
-
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { Option } from 'models/Field';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Route } from 'services/models/Route';
-import { PassengerInTicketSale } from 'services/models/TicketSale';
+import { PaymentGateway } from 'services/models/PaymentGateway';
+import { PassengerInTicketSale, RouteOfTicketSale } from 'services/models/TicketSale';
 import { selectAuth } from 'store/auth/selectors';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
@@ -29,7 +28,7 @@ export interface Passenger {
 
 export interface TicketDetailFormValues {
   email: string;
-  method: 'credit'; // FIXME: Trường này để làm gì ????
+  method: PaymentGateway;
   passengers: Passenger[];
 }
 
@@ -51,9 +50,10 @@ export const TicketDetailOnCreateTicketSale = () => {
     handleSubmit,
     setValue,
     getValues,
+    watch,
   } = useForm<TicketDetailFormValues>({
     defaultValues: {
-      method: 'credit',
+      method: 'PAYPAL',
       passengers: [],
     },
   });
@@ -63,7 +63,7 @@ export const TicketDetailOnCreateTicketSale = () => {
   });
 
   const isAgent = userInfo?.role === 'agent';
-  const route = location.state as Route | undefined;
+  const route = location.state as RouteOfTicketSale | undefined;
   const messages = useMemo(() => {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
@@ -76,9 +76,11 @@ export const TicketDetailOnCreateTicketSale = () => {
   const getPaymentMethod = (): TicketDetailFormValues['method'] => {
     return getValues().method;
   };
+  const getPassengers = (): TicketDetailFormValues['passengers'] => {
+    return getValues().passengers;
+  };
 
   const onSubmit = (values: TicketDetailFormValues) => {
-    console.log(values);
     if (route) {
       dispatch(
         ticketSalesActions.createTicketSaleRequest({
@@ -91,11 +93,13 @@ export const TicketDetailOnCreateTicketSale = () => {
             })),
             email: values.email,
             route: route._id,
-            // FIXME: Đợi BE update API
-            departureTime: 0,
-            // FIXME: Đợi BE update API
-            arrivalPoint: 'Hà Nội',
+            // FIXME: Điền gì ở đây ??
+            departureTime: route.durationTime,
+            arrivalPoint: route.stopPoint,
             departurePoint: route.departurePoint,
+            cancelUrl: '',
+            returnUrl: '',
+            paymentType: values.method,
           },
           onSuccess(ticketSaleOrderCode) {
             toast(
@@ -123,10 +127,11 @@ export const TicketDetailOnCreateTicketSale = () => {
         }),
       );
     }
-    // navigate('/agent/ticket-sales/1', {
-    //   state: { isSubmit: true },
-    // });
   };
+
+  useEffect(() => {
+    watch();
+  }, [watch]);
 
   if (!route) {
     return <Navigate to={isAgent ? '/agent/ticket-sales' : '/admin/ticket-sales'} />;
@@ -162,7 +167,12 @@ export const TicketDetailOnCreateTicketSale = () => {
               />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Reservation loading={statusCreateTicketSale === 'loading'} route={route} onSubmit={handleSubmit(onSubmit)} />
+              <Reservation
+                loading={statusCreateTicketSale === 'loading'}
+                route={route}
+                passengers={getPassengers()}
+                onSubmit={handleSubmit(onSubmit)}
+              />
             </Grid>
           </Grid>
         </Box>

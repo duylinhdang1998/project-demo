@@ -4,27 +4,42 @@ import ClockSvg from 'assets/images/clock.svg';
 import SnowSvg from 'assets/images/snow.svg';
 import Button from 'components/Button/Button';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Route } from 'services/models/Route';
-
-const dataDetails = {
-  date: '27/02/2022 - 10:30 AM',
-  trip: ['Lyon Gare Perrache', 'Lyon Gare Perrache'],
-  operated: 'Alsa Spain',
-  class: 'FLEXIBLE',
-  services: ['Air conditioning', 'Luggage transport', 'Free wifi'],
-  total: 20,
-};
+import { RouteOfTicketSale } from 'services/models/TicketSale';
+import { Passenger } from '../TicketDetailOnCreateTicketSale';
 
 export interface ReservationProps {
-  route: Route;
+  route: RouteOfTicketSale;
+  passengers: Passenger[];
   onSubmit: () => void;
   loading: boolean;
 }
 
-// FIXME: Đợi API route update thì tiến hành lắp vào UI
-export const Reservation = ({ onSubmit, loading }: ReservationProps) => {
+export const Reservation = ({ onSubmit, route, passengers, loading }: ReservationProps) => {
   const { t } = useTranslation(['ticketSales', 'translation']);
+
+  const dataDetails = useMemo(() => {
+    return {
+      // FIXME: Điền gì ở đây
+      date: '27/02/2022 - 10:30 AM',
+      trip: [route.departurePoint, route.stopPoint],
+      // FIXME: Điền gì ở đây
+      operated: 'Alsa Spain',
+      // FIXME: Điền gì ở đây
+      class: 'FLEXIBLE',
+      // FIXME: Đợi populate Vehicle
+      services: ['Air conditioning', 'Luggage transport', 'Free wifi'],
+      total: passengers.reduce((result, passenger) => {
+        const seatsTypePricesKey = passenger.seatsType.value && `${passenger.seatsType.value}Prices`;
+        const ticketTypePriceKey = passenger.typeTicket.value;
+        const seatsTypePrices = seatsTypePricesKey && (route[seatsTypePricesKey] as RouteOfTicketSale['ECOPrices'] | RouteOfTicketSale['VIPPrices']);
+        const ticketTypePrice = seatsTypePrices && ticketTypePriceKey ? seatsTypePrices[ticketTypePriceKey] : 0;
+        return result + ticketTypePrice;
+      }, 0),
+    };
+  }, [route, passengers]);
+
   return (
     <Box p="24px" bgcolor="#FAFDFF">
       <Typography marginBottom="24px" variant="h5">
