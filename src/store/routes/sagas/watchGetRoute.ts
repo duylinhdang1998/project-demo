@@ -3,9 +3,9 @@ import { getRoute } from 'services/Route/Company/getRoute';
 import { routesActions } from '../routesSlice';
 
 function* handleGetRoute({ payload }: ReturnType<typeof routesActions.getRouteRequest>) {
-  const { id } = payload;
+  const { routeCode } = payload;
   try {
-    const { data }: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, { id });
+    const { data }: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, { routeCode });
     yield put(routesActions.getRouteSuccess({ data }));
   } catch (error) {
     console.log('watchGetRoute.ts', error);

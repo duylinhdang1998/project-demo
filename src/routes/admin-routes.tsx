@@ -211,7 +211,7 @@ export const AdminRoutes: RouteObject[] = [
   },
   // Update router one stop
   {
-    path: 'routers/update-oneway/:routerId',
+    path: 'routers/update-oneway/:routeCode',
     element: (
       <RequiredAuth role="admin">
         <Page.CreateOneWay />
@@ -220,7 +220,7 @@ export const AdminRoutes: RouteObject[] = [
   },
   // Update router multi stop
   {
-    path: 'routers/update-multi/:routerId',
+    path: 'routers/update-multi/:routeCode',
     element: (
       <RequiredAuth role="admin">
         <Page.CreateMultiStopWay />

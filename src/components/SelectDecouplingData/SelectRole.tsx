@@ -70,6 +70,7 @@ export const SelectRole = ({
                 value: model,
                 label: labelOfRole[model.role],
               })}
+              equalFunc={(model, input) => model.role === input?.role}
               styles={customStyles as any}
               placeholder={labelTranslated}
               onChange={selected => {

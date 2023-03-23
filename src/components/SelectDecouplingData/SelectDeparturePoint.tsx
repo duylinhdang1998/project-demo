@@ -70,6 +70,7 @@ export const SelectDeparturePoint = ({
                 label: model.value,
                 value: model,
               })}
+              equalFunc={(model, input) => model.value === input?.value}
               styles={customStyles as any}
               placeholder={labelTranslated}
               onChange={selected => onChange(selected?.value)}

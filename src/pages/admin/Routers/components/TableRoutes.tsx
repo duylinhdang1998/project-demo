@@ -13,11 +13,13 @@ import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { isEmpty } from 'ramda';
 import { memo, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Route } from 'services/models/Route';
+import { RECORDS_PER_PAGE } from 'services/Route/Company/getRoutes';
 import { selectAuth } from 'store/auth/selectors';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
@@ -35,7 +37,7 @@ function TableRoutes() {
   const navigate = useNavigate();
 
   const { userInfo } = useAppSelector(selectAuth);
-  const { routes, statusGetRoutes, queueDeleteRoute, currentSearcher } = useAppSelector(selectRoutes);
+  const { routes, totalRows, currentPage, statusGetRoutes, queueDeleteRoute, currentSearcher } = useAppSelector(selectRoutes);
   const dispatch = useAppDispatch();
 
   const [openDeleteRoute, setOpenDeleteRoute] = useState<Route | null>(null);
@@ -58,12 +60,11 @@ function TableRoutes() {
   const columns: ColumnsType<Route> = useMemo(() => {
     return [
       {
-        key: '_id',
-        dataIndex: '_id',
-        // FIXME: Cột này hiển thị gì?
+        key: 'routeCode',
+        dataIndex: 'routeCode',
         title: () => <Typography variant="headerTable">{t('routers:id')}</Typography>,
         sorter: true,
-        render: (_, row) => <Typography variant="body2">{row._id}</Typography>,
+        render: (_, row) => <Typography variant="body2">{row.routeCode}</Typography>,
         width: 100,
         align: 'center',
       },
@@ -74,40 +75,31 @@ function TableRoutes() {
         title: () => <Typography variant="headerTable">{t('routers:route')}</Typography>,
         sorter: true,
         render: (_, row) => {
-          const isMultipleStops = row.stopPoints.length > 1;
+          const isMultipleStops = row.tripType === 'MULTI_STOP';
+          const mainRoutes = row.routePoints.filter(routePoint => routePoint.routeType === 'MAIN_ROUTE');
+          const lastRoutePoint = mainRoutes[mainRoutes.length - 1];
+          const startPoint = row.departurePoint;
+          const routesInTooltip = mainRoutes.slice(0, -1);
           if (isMultipleStops) {
-            const firstStopPoint = row.stopPoints[0];
-            const lastStopPoint = row.stopPoints[row.stopPoints.length - 1];
             return (
-              <ToolTipAddress stopPoints={row.stopPoints}>
-                <TextWithIcon text={firstStopPoint.stopPoint} icon={MapPinIcon} color="#2D9AFF" />
+              <ToolTipAddress routePoints={routesInTooltip}>
+                <TextWithIcon text={startPoint} icon={MapPinIcon} color="#2D9AFF" />
                 <TextWithIcon
                   text={t('routers:quantity_addresses', {
-                    quantity: row.stopPoints.length - 2,
+                    quantity: routesInTooltip.length,
                   })}
                   icon={StopCircleSvg}
                   color="#33CC7F"
                 />
-                <TextWithIcon text={lastStopPoint.stopPoint} icon={MapPinIcon} color="#2D9AFF" />
+                <TextWithIcon text={lastRoutePoint.stopPoint} icon={MapPinIcon} color="#2D9AFF" />
               </ToolTipAddress>
             );
           }
           return (
-            <ToolTipAddress stopPoints={row.stopPoints}>
-              {row.stopPoints.map((stopPoint, index) => {
-                const isPrimary = index !== 1;
-                if (isPrimary) {
-                  return (
-                    <TextWithIcon
-                      key={stopPoint.stopCode}
-                      text={stopPoint.stopPoint}
-                      icon={isPrimary ? MapPinIcon : StopCircleSvg}
-                      color={isPrimary ? '#2D9AFF' : '#33CC7F'}
-                    />
-                  );
-                }
-              })}
-            </ToolTipAddress>
+            <Box>
+              <TextWithIcon text={startPoint} icon={MapPinIcon} color="#2D9AFF" />
+              <TextWithIcon text={lastRoutePoint.stopPoint} icon={MapPinIcon} color="#2D9AFF" />
+            </Box>
           );
         },
       },
@@ -128,15 +120,14 @@ function TableRoutes() {
         render: (_, row) => <Typography variant="body2">{row.departureTime}</Typography>,
       },
       {
-        // FIXME: Vehicle brand & key sort là gì?
-        key: 'vehicle',
-        dataIndex: 'vehicle',
+        key: 'vehicle.brand',
+        dataIndex: 'vehicle.brand',
         title: () => <Typography variant="headerTable">{t('routers:vehicle')}</Typography>,
         sorter: true,
         render: (_, row) => (
           <Box>
-            <Typography variant="body2">{row.vehicle.brand}</Typography>
-            <Typography variant="body2">{row.vehicle.registrationId}</Typography>
+            <Typography variant="body2">{row.vehicle?.brand}</Typography>
+            <Typography variant="body2">{row.vehicle?.registrationId}</Typography>
           </Box>
         ),
         align: 'center',
@@ -146,8 +137,7 @@ function TableRoutes() {
         key: 'VIPseats',
         dataIndex: 'VIPseats',
         title: () => <Typography variant="headerTable">{t('routers:VIPseats')}</Typography>,
-        // FIXME: Hiển thị cái gì?
-        render: () => <Typography variant="body2">10</Typography>,
+        render: (_, row) => <Typography variant="body2">{row.vehicle?.VIPseats}</Typography>,
         width: 120,
         align: 'center',
       },
@@ -155,64 +145,66 @@ function TableRoutes() {
         key: 'ECOseats',
         dataIndex: 'ECOseats',
         title: () => <Typography variant="headerTable">{t('routers:ECOseats')}</Typography>,
-        render: () => (
-          // FIXME: Hiển thị cái gì?
-          <Typography variant="body2">10</Typography>
-        ),
+        render: (_, row) => <Typography variant="body2">{row.vehicle?.ECOseats}</Typography>,
         width: 120,
         align: 'center',
       },
       {
         title: () => t('translation:action'),
-        render: (_, row) => (
-          <ActionTable
-            actions={[
-              {
-                id: uuid(),
-                label: 'detail',
-                icon: <ViewIcon />,
-                onClick: () => {
-                  handleOpenDialogDetail(row);
+        render: (_, row) => {
+          const isMultipleStops = row.tripType === 'MULTI_STOP';
+          return (
+            <ActionTable
+              actions={[
+                isMultipleStops
+                  ? {
+                      id: uuid(),
+                      label: 'detail',
+                      icon: <ViewIcon />,
+                      onClick: () => {
+                        handleOpenDialogDetail(row);
+                      },
+                    }
+                  : {},
+                {
+                  id: uuid(),
+                  label: 'edit',
+                  icon: <EditIcon />,
+                  onClick: () => {
+                    if (row.tripType === 'ONE_TRIP') {
+                      navigate(`/admin/routers/update-oneway/${row.routeCode}`);
+                    } else {
+                      navigate(`/admin/routers/update-multi/${row.routeCode}`);
+                    }
+                  },
                 },
-              },
-              {
-                id: uuid(),
-                label: 'edit',
-                icon: <EditIcon />,
-                onClick: () => {
-                  if (row.tripType === 'ONE_TRIP') {
-                    navigate(`/admin/routers/update-oneway/${row._id}`);
-                  } else {
-                    navigate(`/admin/routers/update-multi/${row._id}`);
-                  }
+                {
+                  id: uuid(),
+                  label: 'copy',
+                  icon: (
+                    <ContentCopyIcon
+                      sx={{
+                        color: '#858C93',
+                        fontSize: '20px',
+                      }}
+                    />
+                  ),
+                  onClick: () => {},
                 },
-              },
-              {
-                id: uuid(),
-                label: 'copy',
-                icon: (
-                  <ContentCopyIcon
-                    sx={{
-                      color: '#858C93',
-                      fontSize: '20px',
-                    }}
-                  />
-                ),
-                onClick: () => {},
-              },
-              {
-                id: uuid(),
-                label: 'delete',
-                icon: <DeleteIcon />,
-                onClick: () => {
-                  handleOpenDialogDelete(row);
+                {
+                  id: uuid(),
+                  label: 'delete',
+                  icon: <DeleteIcon />,
+                  onClick: () => {
+                    handleOpenDialogDelete(row);
+                  },
+                  color: '#FF2727',
                 },
-                color: '#FF2727',
-              },
-            ]}
-            row={row}
-          />
-        ),
+              ].filter(item => !isEmpty(item))}
+              row={row}
+            />
+          );
+        },
         width: 80,
       },
     ];
@@ -302,6 +294,13 @@ function TableRoutes() {
               searcher: currentSearcher,
             }),
           );
+        }}
+        pagination={{
+          total: totalRows,
+          showLessItems: true,
+          showSizeChanger: false,
+          pageSize: RECORDS_PER_PAGE,
+          current: currentPage + 1,
         }}
       />
       {renderDialogDelete()}

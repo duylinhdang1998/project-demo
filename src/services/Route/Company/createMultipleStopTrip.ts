@@ -17,13 +17,13 @@ export const createMultipleStopTrip = async (data: CreateMultipleStopTrip) => {
     url: '/v1.0/company/routes',
     data: {
       ...data,
-      vehicle: data.vehicle._id,
+      vehicle: data.vehicle?._id,
       departureTime: momentToString(data.departureTime, 'HH:mm'),
-      stopPoints: data.stopPoints.map(stopPoint => ({
-        ...stopPoint,
-        durationTime: Number(stopPoint.durationTime),
-        ECOPrices: stopPoint.ECOPrices.map(ECOPrice => ({ ...ECOPrice, price: Number(ECOPrice.price) })),
-        VIPPrices: stopPoint.VIPPrices.map(VIPPrice => ({ ...VIPPrice, price: Number(VIPPrice.price) })),
+      stopPoints: data.stopPoints.map(routePoint => ({
+        ...routePoint,
+        durationTime: Number(routePoint.durationTime),
+        ECOPrices: routePoint.ECOPrices.map(ECOPrice => ({ ...ECOPrice, price: Number(ECOPrice.price) })),
+        VIPPrices: routePoint.VIPPrices.map(VIPPrice => ({ ...VIPPrice, price: Number(VIPPrice.price) })),
       })),
     },
   });

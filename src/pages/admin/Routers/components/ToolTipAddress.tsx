@@ -4,12 +4,12 @@ import { Timeline } from 'antd';
 import 'antd/lib/timeline/style/css';
 import { Fragment, memo, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StopPoint } from 'services/models/Route';
+import { RoutePoint } from 'services/models/Route';
 import './styles.css';
 
 interface ToolTipAddressProps {
   children?: ReactNode;
-  stopPoints: StopPoint[];
+  routePoints: RoutePoint[];
 }
 
 const useStyles = makeStyles(() => ({
@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ToolTipAddress({ children, stopPoints }: ToolTipAddressProps) {
+function ToolTipAddress({ children, routePoints }: ToolTipAddressProps) {
   const classes = useStyles();
   const { t } = useTranslation(['routers']);
   return (
@@ -39,10 +39,9 @@ function ToolTipAddress({ children, stopPoints }: ToolTipAddressProps) {
           </Typography>
           <Box className="custom_timeline_container_router" marginTop="20px">
             <Timeline mode="left">
-              {stopPoints.map(i => (
-                // FIXME: Label lấy từ cái gì?
-                <Timeline.Item key={i.stopCode} color="#333" label={i.durationTime}>
-                  {i.stopPoint}
+              {routePoints.map(routePoint => (
+                <Timeline.Item key={routePoint._id} color="#333" label={routePoint.durationTime}>
+                  {routePoint.stopPoint}
                 </Timeline.Item>
               ))}
             </Timeline>

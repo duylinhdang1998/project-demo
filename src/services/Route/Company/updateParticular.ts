@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
-import { Route, StopPoint } from 'services/models/Route';
+import { Route, RoutePoint, RoutePointPriceType } from 'services/models/Route';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
@@ -10,9 +10,9 @@ export interface UpdateParticular {
   routeCode: Route['routeCode'];
   particularDay: number;
   routeParticulars: Array<{
-    stopCode: StopPoint['stopCode'];
-    ECOPrices: Array<{ passengerType: keyof StopPoint['ECOPrices']; price: number }>;
-    VIPPrices: Array<{ passengerType: keyof StopPoint['VIPPrices']; price: number }>;
+    routePointId: RoutePoint['_id'];
+    ECOPrices: Array<{ passengerType: RoutePointPriceType; price: number }>;
+    VIPPrices: Array<{ passengerType: RoutePointPriceType; price: number }>;
   }>;
 }
 

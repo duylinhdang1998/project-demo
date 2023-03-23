@@ -53,10 +53,10 @@ export default function Routers() {
 
   const menuChildren = (
     <>
-      <Menu.Item className={classes.menuItem} onClick={handleAddNewTrip('create-oneway')}>
+      <Menu.Item key="ONE_WAY" className={classes.menuItem} onClick={handleAddNewTrip('create-oneway')}>
         {t('one_way_trip')}
       </Menu.Item>
-      <Menu.Item className={classes.menuItem} onClick={handleAddNewTrip('create-multi')}>
+      <Menu.Item key="MULTI" className={classes.menuItem} onClick={handleAddNewTrip('create-multi')}>
         {t('multi_stops_trip')}
       </Menu.Item>
     </>
@@ -72,7 +72,7 @@ export default function Routers() {
             value: values.departurePoint.value,
             operator: 'eq',
           },
-          stopPoints: {
+          'routePoints.stopPoint': {
             value: values.arrivalPoint.value,
             operator: 'eq',
           },
@@ -91,14 +91,13 @@ export default function Routers() {
   };
 
   useEffect(() => {
-    // FIXME: API lỗi tạm thời comment
-    // dispatch(
-    //   routesActions.getRoutesRequest({
-    //     page: 0,
-    //     searcher: {},
-    //     sorter: {},
-    //   }),
-    // );
+    dispatch(
+      routesActions.getRoutesRequest({
+        page: 0,
+        searcher: {},
+        sorter: {},
+      }),
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

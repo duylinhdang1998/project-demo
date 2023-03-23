@@ -155,6 +155,7 @@ export default function FilterTicket<T extends FieldValues>({
                     label: model.officialName,
                     value: model,
                   })}
+                  equalFunc={(model, value) => model._id === value?._id}
                   onChange={field.onChange}
                   isClearable
                   styles={customStyles as any}
@@ -194,6 +195,7 @@ export default function FilterTicket<T extends FieldValues>({
                       label: model.title,
                       value: model,
                     })}
+                    equalFunc={(model, value) => model._id === value?._id}
                     styles={customStyles as any}
                     placeholder={t(`${i.label}`)}
                     onChange={field.onChange}
@@ -228,6 +230,7 @@ export default function FilterTicket<T extends FieldValues>({
                       value: model,
                       label: labelOfRole[model.role],
                     })}
+                    equalFunc={(model, value) => model.role === value?.role}
                     styles={customStyles as any}
                     placeholder={t(`${i.label}`)}
                     onChange={field.onChange}
@@ -262,6 +265,7 @@ export default function FilterTicket<T extends FieldValues>({
                       label: model.value,
                       value: model,
                     })}
+                    equalFunc={(model, value) => model.value === value?.value}
                     value={field.value}
                     styles={customStyles as any}
                     placeholder={t(`${i.label}`)}
@@ -297,6 +301,7 @@ export default function FilterTicket<T extends FieldValues>({
                       label: model.value,
                       value: model,
                     })}
+                    equalFunc={(model, input) => model.value === input?.value}
                     value={field.value}
                     styles={customStyles as any}
                     placeholder={t(`${i.label}`)}
@@ -338,6 +343,7 @@ export default function FilterTicket<T extends FieldValues>({
                       label: model.brand,
                       value: model,
                     })}
+                    equalFunc={(model, input) => model._id === input?._id}
                     styles={customStyles as any}
                     placeholder={t(`${i.label}`)}
                     onChange={field.onChange}

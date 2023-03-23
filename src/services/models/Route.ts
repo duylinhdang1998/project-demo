@@ -3,38 +3,45 @@ import { Vehicle } from './Vehicle';
 
 export type TripType = 'MULTI_STOP' | 'ONE_TRIP';
 
-export interface StopPointPrice {
-  ADULT: number;
-  STUDENT: number;
-  CHILD: number;
-}
+export type RouteType = 'MAIN_ROUTE' | 'SUB_ROUTE';
 
-export interface StopPoint {
-  stopPoint: string;
-  stopCode: string;
-  durationTime: number;
-  ECOPrices: StopPointPrice;
-  VIPPrices: StopPointPrice;
+export type RoutePointPriceType = 'ADULT' | 'STUDENT' | 'CHILD';
+
+export type RoutePointPrice = Record<RoutePointPriceType, number>;
+
+export interface RoutePoint {
+  ECOPrices: RoutePointPrice | null;
+  VIPPrices: RoutePointPrice | null;
+  company: string;
   createdAt: string;
+  departurePoint: string;
+  durationTime: number;
+  isChanged: boolean;
+  routeCode: string;
+  routeType: RouteType;
+  stopPoint: string;
+  tripType: TripType;
   updatedAt: string;
+  vehicle: Vehicle | null;
+  __v: number;
+  _id: string;
 }
 
 export interface Route {
+  __v: number;
   _id: string;
   company: string;
-  routeCode: string;
-  vehicle: Vehicle;
+  createdAt: string;
+  dayActives: Array<DayInWeek>;
+  dayoffs: number[];
   departurePoint: string;
   departureTime: string;
-  // FIXME: Tách type enum
-  dayActives: Array<DayInWeek>;
-  startPeriod: null | string | number;
   endPeriod: null | string | number;
-  stopPoints: [StopPoint] | StopPoint[];
   particularDays: Array<string | number>;
-  dayoffs: number[];
+  routeCode: string;
+  routePoints: [RoutePoint] | RoutePoint[];
+  startPeriod: null | string | number;
   tripType: TripType;
-  createdAt: string;
   updatedAt: string;
-  __v: number;
+  vehicle: Vehicle | null;
 }
