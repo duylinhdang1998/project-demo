@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

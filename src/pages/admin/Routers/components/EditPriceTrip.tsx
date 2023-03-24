@@ -1,7 +1,7 @@
 import { InputBase, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import cx from 'classnames';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { useMemo } from 'react';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

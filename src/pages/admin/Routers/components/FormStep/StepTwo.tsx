@@ -4,12 +4,13 @@ import 'antd/lib/checkbox/style/css';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { SelectDaysOfWeek, ALL_DAYS_OPTION_VALUE, options } from 'components/SelectDaysOfWeek/SelectDaysOfWeek';
-import { isEmpty } from 'lodash';
+import dayjs from 'dayjs';
+import { isEmpty } from 'lodash-es';
 import { Field } from 'models/Field';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { anyToMoment } from 'utils/anyToMoment';
+import { toDayjs } from 'utils/toDayjs';
 import { v4 as uuidv4 } from 'uuid';
 
 const fields: Field[] = [
@@ -19,8 +20,8 @@ const fields: Field[] = [
 
 export interface StepTwoValues {
   days: string[];
-  fromDate: any; // moment
-  toDate: any; // moment
+  fromDate: dayjs.Dayjs;
+  toDate: dayjs.Dayjs;
 }
 
 interface StepTwoProps {
@@ -41,8 +42,8 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
     if (!!values && !isEmpty(values)) {
       reset({
         ...values,
-        fromDate: anyToMoment({ value: values.fromDate }),
-        toDate: anyToMoment({ value: values.toDate }),
+        fromDate: toDayjs({ value: values.fromDate }),
+        toDate: toDayjs({ value: values.toDate }),
         days: values.days.length === options.length - 1 ? [ALL_DAYS_OPTION_VALUE, ...values.days] : values.days,
       });
     }

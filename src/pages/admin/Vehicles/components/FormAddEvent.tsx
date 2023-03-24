@@ -4,9 +4,9 @@ import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
+import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import moment from 'moment';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,8 @@ import { CreateVehicleEvent } from 'services/Vehicle/Company/createVehicleEvent'
 import { selectAuth } from 'store/auth/selectors';
 import { selectVehicleEvents } from 'store/vehicles/selectors';
 import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
-import { anyToMoment } from 'utils/anyToMoment';
+import { dayjsToNumber } from 'utils/dayjsToNumber';
+import { toDayjs } from 'utils/toDayjs';
 import { fieldsAddEvent } from '../constants';
 
 const fieldKeys: Array<keyof Omit<CreateVehicleEvent, 'vehicle'>> = [
@@ -32,7 +33,7 @@ const fieldKeys: Array<keyof Omit<CreateVehicleEvent, 'vehicle'>> = [
 ];
 
 export interface Values {
-  reminderDate: any;
+  reminderDate: dayjs.Dayjs;
   totalKilometers: VehicleEvent['totalKilometers'];
   fuelFees: VehicleEvent['fuelFees'];
   extraFees: VehicleEvent['extraFees'];
@@ -95,7 +96,7 @@ function FormAddEvent() {
               description: value.description,
               extraFees: value.extraFees,
               fuelFees: value.fuelFees,
-              reminderDate: (value.reminderDate as moment.Moment).valueOf(),
+              reminderDate: dayjsToNumber(value.reminderDate),
               totalKilometers: value.totalKilometers,
               vehicle: vehicleId,
             },
@@ -122,7 +123,7 @@ function FormAddEvent() {
               description: value.description,
               extraFees: value.extraFees,
               fuelFees: value.fuelFees,
-              reminderDate: (value.reminderDate as moment.Moment).valueOf(),
+              reminderDate: dayjsToNumber(value.reminderDate),
               totalKilometers: value.totalKilometers,
               vehicle: vehicleId,
             },
@@ -148,7 +149,7 @@ function FormAddEvent() {
       fieldKeys.forEach(key => {
         const key_ = key;
         resetField(key_ === 'attach' ? 'attach_document' : key_, {
-          defaultValue: key_ === 'reminderDate' ? anyToMoment({ value: vehicleEvent[key_] }) : vehicleEvent[key_],
+          defaultValue: key_ === 'reminderDate' ? toDayjs({ value: vehicleEvent[key_] }) : vehicleEvent[key_],
         });
       });
     }

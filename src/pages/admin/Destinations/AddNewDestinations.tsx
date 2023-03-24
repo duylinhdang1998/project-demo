@@ -3,7 +3,7 @@ import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import LayoutDetail from 'layout/LayoutDetail';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

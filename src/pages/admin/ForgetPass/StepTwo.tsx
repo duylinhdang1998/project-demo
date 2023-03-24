@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import PasswordIcon from 'assets/images/password.svg';
 import InputAuth from 'components/InputAuth/InputAuth';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

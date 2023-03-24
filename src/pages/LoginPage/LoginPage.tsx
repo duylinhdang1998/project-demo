@@ -9,7 +9,7 @@ import TextWithLink from 'components/TextWithLink/TextWithLink';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import Highlighter from 'react-highlight-words';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

@@ -16,6 +16,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '4px',
     color: theme.palette.primary.main + '!important',
     fontWeight: '700 !important',
+    '&:hover': {
+      backgroundColor: '#fff!important',
+    },
   },
   resendOtp: {
     marginTop: '-8px',

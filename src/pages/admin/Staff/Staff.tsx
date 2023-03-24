@@ -66,8 +66,8 @@ export default function Staff() {
 
   useEffect(() => {
     reset({
-      phone: currentSearcher.phone?.value,
-      name: currentSearcher.lastName?.value,
+      phone: currentSearcher.phone?.value as string | undefined,
+      name: currentSearcher.lastName?.value as string | undefined,
       role: {
         role: currentSearcher.role?.value as UserRole | undefined,
       },

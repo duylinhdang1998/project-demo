@@ -10,7 +10,7 @@ import SendIcon from 'components/SvgIcon/SendIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

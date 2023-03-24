@@ -5,7 +5,7 @@ import { CalendarIcon, MapPinIcon } from 'assets';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import i18n from 'locales/i18n';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { SorterCol } from 'models/Field';
 import { PackageSale } from 'models/PackageSales';
 import { PaymentStatus } from 'models/PaymentStatus';

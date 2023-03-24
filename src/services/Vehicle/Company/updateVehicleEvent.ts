@@ -3,7 +3,6 @@ import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response
 import { VehicleEvent } from 'services/models/Vehicle';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
-import { momentToNumber } from 'utils/momentToNumber';
 
 export interface UpdateVehicleEvent {
   id: VehicleEvent['_id'];
@@ -24,7 +23,6 @@ export const updateVehicleEvent = async ({ data, id }: UpdateVehicleEvent): Prom
     url: `/v1.0/company/vehicle-events/${id}`,
     data: {
       ...data,
-      reminderDate: momentToNumber(data.reminderDate),
       extraFees: Number(data.extraFees),
       fuelFees: Number(data.fuelFees),
       totalKilometers: Number(data.totalKilometers),

@@ -10,7 +10,7 @@ import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';

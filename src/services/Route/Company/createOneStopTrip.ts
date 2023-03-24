@@ -3,7 +3,6 @@ import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response
 import { Route, RoutePoint, RoutePointPriceType } from 'services/models/Route';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
-import { momentToString } from 'utils/momentToString';
 
 export type CreateOneStopTrip = Pick<Route, 'vehicle' | 'departureTime' | 'departurePoint'> & {
   stopPoints: [
@@ -22,7 +21,6 @@ export const createOneStopTrip = async (data: CreateOneStopTrip) => {
     data: {
       ...data,
       vehicle: data.vehicle?._id,
-      departureTime: momentToString(data.departureTime, 'HH:mm'),
       stopPoints: data.stopPoints.map(routePoint => ({
         ...routePoint,
         durationTime: Number(routePoint.durationTime),

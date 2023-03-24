@@ -6,7 +6,7 @@ import Button2 from 'components/Button/Button';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import { useStyles } from 'components/FormVerticle/styles';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { useState } from 'react';
 import { Control, Controller, FieldArrayWithId, FieldErrors, UseFieldArrayAppend, UseFieldArrayRemove } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

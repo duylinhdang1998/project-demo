@@ -1,7 +1,7 @@
 import { useRequest } from 'ahooks';
 import { Option } from 'components/CheckboxGroup/CheckboxGroup';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
-import { omit } from 'lodash';
+import { omit } from 'lodash-es';
 import { equals } from 'ramda';
 import { useEffect, useState } from 'react';
 import { Control, FieldErrors } from 'react-hook-form';

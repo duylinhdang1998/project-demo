@@ -3,7 +3,6 @@ import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response
 import { VehicleEvent } from 'services/models/Vehicle';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
-import { momentToNumber } from 'utils/momentToNumber';
 
 export type CreateVehicleEvent = Pick<
   VehicleEvent,
@@ -16,7 +15,6 @@ export const createVehicleEvent = async (data: CreateVehicleEvent) => {
     url: '/v1.0/company/vehicle-events',
     data: {
       ...data,
-      reminderDate: momentToNumber(data.reminderDate),
       extraFees: Number(data.extraFees),
       fuelFees: Number(data.fuelFees),
       totalKilometers: Number(data.totalKilometers),

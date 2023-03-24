@@ -11,7 +11,7 @@ import Radio from 'components/Radio/Radio';
 import { useGetPaymentMethod } from 'services/Company/paymentMethods';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import CreditCard from 'components/CreditCard/CreditCard';
 
 export default function PaymentMethod() {

@@ -5,6 +5,7 @@ import { Box } from '@mui/system';
 import MyButton from 'components/Button/Button';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
+import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { Option } from 'models/Field';
@@ -15,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
-import { momentToNumber } from 'utils/momentToNumber';
+import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { TableTicketSales } from './components/TableTicketSales';
 import { fieldsSearch, fieldsSearch2 } from './constants';
 
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface Values {
   departurePoint?: { value: string };
   arrivalPoint?: { value: string };
-  order_date?: any; // Moment
+  order_date?: dayjs.Dayjs;
   order_id?: string;
   payment_status?: Option<PaymentStatus>;
 }
@@ -63,7 +64,7 @@ export default function TicketSales() {
             operator: 'eq',
           },
           createdAt: {
-            value: momentToNumber(values.order_date),
+            value: values.order_date && dayjsToNumber(values.order_date),
             operator: 'gte',
           },
           orderCode: {

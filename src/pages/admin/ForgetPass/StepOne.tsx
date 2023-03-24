@@ -3,7 +3,7 @@ import InputAuth from 'components/InputAuth/InputAuth';
 import MessageIcon from 'assets/images/message.svg';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { useStyles } from './styles';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';

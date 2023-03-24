@@ -11,9 +11,9 @@ import { Route } from 'services/models/Route';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
 import { useToastStyle } from 'theme/toastStyles';
-import { anyToMoment } from 'utils/anyToMoment';
-import { momentToNumber } from 'utils/momentToNumber';
-import { momentToString } from 'utils/momentToString';
+import { toDayjs } from 'utils/toDayjs';
+import { dayjsToNumber } from 'utils/dayjsToNumber';
+import { dayjsToString } from 'utils/dayjsToString';
 import StepOne, { StepOneValuesForOneStopTrip } from './FormStep/StepOne';
 import StepOneMultiple, { StepOneValuesForMultipleStopTrip } from './FormStep/StepOneMultiple';
 import StepThree from './FormStep/StepThree';
@@ -63,7 +63,7 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
         routesActions.createOneStopTripRequest({
           data: {
             departurePoint: formValues.departurePoint,
-            departureTime: momentToString(formValues.departureTime, 'HH:mm'),
+            departureTime: dayjsToString(formValues.departureTime, 'HH:mm'),
             tripType: 'ONE_TRIP',
             stopPoints: [
               {
@@ -107,7 +107,7 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
         routesActions.createMultipleStopTripRequest({
           data: {
             departurePoint: formValues.departurePoint,
-            departureTime: momentToString(formValues.departureTime, 'HH:mm'),
+            departureTime: dayjsToString(formValues.departureTime, 'HH:mm'),
             tripType: 'MULTI_STOP',
             stopPoints: formValues.routePoints.map(routePoint => ({
               durationTime: Number(routePoint.duration),
@@ -148,8 +148,8 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
           data: {
             routeCode: route?.routeCode,
             dayActives: formValues.days.filter(item => item !== ALL_DAYS_OPTION_VALUE) as Route['dayActives'],
-            endPeriod: momentToNumber(formValues.toDate),
-            startPeriod: momentToNumber(formValues.fromDate),
+            endPeriod: dayjsToNumber(formValues.toDate),
+            startPeriod: dayjsToNumber(formValues.fromDate),
           },
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
@@ -174,7 +174,7 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
         setStepOneValues({
           vehicle: route.vehicle,
           departurePoint: route.departurePoint,
-          departureTime: anyToMoment({ value: route.departureTime, format: 'HH:mm' }),
+          departureTime: toDayjs({ value: route.departureTime }),
           routePoints: route.routePoints.map(routePointValue => {
             console.log(1111, routePointValue);
             return {
@@ -194,7 +194,7 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
         setStepOneValues({
           vehicle: route.vehicle,
           departurePoint: route.departurePoint,
-          departureTime: anyToMoment({ value: route.departureTime, format: 'HH:mm' }),
+          departureTime: toDayjs({ value: route.departureTime }),
           arrivalPoint: routePointValue.stopPoint,
           arrivalDuration: routePointValue.durationTime,
           ecoAdult: routePointValue.ECOPrices?.ADULT,
@@ -207,8 +207,8 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
       }
       setStepTwoValues({
         days: route.dayActives,
-        fromDate: anyToMoment({ value: route.startPeriod }),
-        toDate: anyToMoment({ value: route.endPeriod }),
+        fromDate: toDayjs({ value: route.startPeriod }),
+        toDate: toDayjs({ value: route.endPeriod }),
       });
     }
   }, [isEditAction, isMulti, route]);

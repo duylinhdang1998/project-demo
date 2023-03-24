@@ -1,7 +1,7 @@
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { Button, Checkbox, FormControlLabel, Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import Highlighter from 'react-highlight-words';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

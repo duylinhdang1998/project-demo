@@ -1,6 +1,6 @@
 import { Box, Divider, FormControlLabel, Grid, InputBase, InputLabel, Radio, RadioGroup, Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';

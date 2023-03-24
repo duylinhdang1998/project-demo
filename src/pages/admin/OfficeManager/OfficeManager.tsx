@@ -36,7 +36,7 @@ export default function OfficeManager() {
       <HeaderLayout activeSideBarHeader={t('account:offices_manager')} />
       <Box padding="24px">
         <BoxSearch
-          searchValue={currentSearcher.title?.value}
+          searchValue={currentSearcher.title?.value as string | undefined}
           onSearch={value => {
             dispatch(
               officesManagerActions.getOfficesRequest({
