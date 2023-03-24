@@ -13,7 +13,7 @@ export interface FilterRoutesByTripTypeProps {
   values: FilterByTripTypeFormValues;
 }
 
-const TRIP_TYPES: FilterByTripTypeFormValues['tripType'] = ['ONE_TRIP', 'MULTI_STOP'];
+const TRIP_TYPES: Array<FilterByTripTypeFormValues['tripType']> = ['ONE_TRIP', 'MULTI_STOP'];
 export const FilterRoutesByTripType = ({ onChange, counts, values }: FilterRoutesByTripTypeProps) => {
   const { t } = useTranslation(['ticketSales']);
 
@@ -34,7 +34,7 @@ export const FilterRoutesByTripType = ({ onChange, counts, values }: FilterRoute
   }, [values]);
 
   return (
-    <Box>
+    <Box sx={{ position: 'sticky', top: '1rem' }}>
       <Typography component="p" variant="textBold" sx={{ marginBottom: '16px' }}>
         {t('filter_by')}
       </Typography>
@@ -52,12 +52,7 @@ export const FilterRoutesByTripType = ({ onChange, counts, values }: FilterRoute
                       if (checked) {
                         setState(state => ({
                           ...state,
-                          tripType: state.tripType.concat(TRIP_TYPE),
-                        }));
-                      } else {
-                        setState(state => ({
-                          ...state,
-                          tripType: state.tripType.filter(item => item !== TRIP_TYPE),
+                          tripType: state.tripType !== TRIP_TYPE ? TRIP_TYPE : state.tripType,
                         }));
                       }
                     }}

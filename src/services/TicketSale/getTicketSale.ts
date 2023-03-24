@@ -1,15 +1,20 @@
 import { AxiosResponse } from 'axios';
 import { TicketSale } from 'services/models/TicketSale';
-import { ResponseDetailSuccess } from 'services/models/Response';
+import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
 import fetchAPI from 'utils/fetchAPI';
+import { ServiceException } from 'services/utils/ServiceException';
 
 export interface GetTicketSale {
   orderCode: TicketSale['orderCode'];
 }
 
 export const getTicketSale = async ({ orderCode }: GetTicketSale) => {
-  const response: AxiosResponse<ResponseDetailSuccess<TicketSale>> = await fetchAPI.request({
+  const response: AxiosResponse<ResponseDetailSuccess<TicketSale> | ResponseFailure> = await fetchAPI.request({
     url: `/v1.0/company/ticket-sales/${orderCode}/orders`,
   });
-  return response.data;
+  if (response.data.code === 0) {
+    return response.data as ResponseDetailSuccess<TicketSale>;
+  }
+  const response_ = response as AxiosResponse<ResponseFailure>;
+  throw new ServiceException(response_.data.message, { cause: response_.data });
 };

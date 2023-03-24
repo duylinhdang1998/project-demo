@@ -14,17 +14,22 @@ export interface PaymentMethodProps {
   onChange: (value: TicketDetailFormValues['method']) => void;
 }
 
-const PAYMENT_METHODS: Array<TicketDetailFormValues['method']> = ['credit'];
-const PAYMENT_LABELS: Record<TicketDetailFormValues['method'], string> = {
-  credit: 'Credit card',
-};
-const PAYMENT_IMAGES: Record<TicketDetailFormValues['method'], string> = {
-  credit: VisaPng,
-};
+const PAYMENT_METHODS: Array<TicketDetailFormValues['method']> = ['PAYPAL', 'STRIPE'];
 
 export const PaymentMethod = ({ errors, messages, label, method, onChange }: PaymentMethodProps) => {
   const classes = useStyles();
   const { t } = useTranslation(['ticketSales']);
+
+  const PAYMENT_LABELS: Record<TicketDetailFormValues['method'], string> = {
+    PAYPAL: t('account:Paypal'),
+    STRIPE: t('account:Stripe'),
+  };
+  const PAYMENT_IMAGES: Record<TicketDetailFormValues['method'], string> = {
+    // FIXME: Ảnh
+    PAYPAL: VisaPng,
+    // FIXME: Ảnh
+    STRIPE: VisaPng,
+  };
 
   const error = errors && label ? errors[label] : false;
   const messageErr = messages && label ? messages[label] : '';
@@ -36,8 +41,8 @@ export const PaymentMethod = ({ errors, messages, label, method, onChange }: Pay
         return (
           <RadioGroup
             value={method}
-            onChange={e => {
-              onChange(e.target.value as TicketDetailFormValues['method']);
+            onChange={() => {
+              onChange(PAYMENT_METHOD);
             }}
             name={label}
             className={error ? classes.fieldError : undefined}

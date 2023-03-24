@@ -1,4 +1,4 @@
-import { PaymentGateWay } from 'services/Subscription/createSubscriptionOrder';
+import { PaymentGateway } from 'services/models/PaymentGateway';
 import { PaymentMethod } from './@types/PaymentMethod';
 import { PlanDuration } from './@types/PlanDuration';
 
@@ -12,7 +12,7 @@ export const defaultPlanDuration: PlanDuration = 'monthly';
 export const paymentMethods: PaymentMethod[] = ['PayPal', 'Stripe'];
 export const defaultPaymentMethod: PaymentMethod = 'PayPal';
 
-export const paymentGateWayMapping: Record<PaymentMethod, PaymentGateWay> = {
+export const paymentGateWayMapping: Record<PaymentMethod, PaymentGateway> = {
   PayPal: 'PAYPAL',
   Stripe: 'STRIPE',
 };
