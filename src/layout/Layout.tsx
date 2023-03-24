@@ -122,7 +122,7 @@ export default function Layout() {
           position: 'relative',
           minHeight: '100vh',
           backgroundColor: '#F0F1F3',
-          // overflowX: 'hidden', FIXME: Cái này để làm gì ??
+          overflowX: 'hidden',
         }}
       >
         <Outlet />

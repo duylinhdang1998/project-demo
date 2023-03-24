@@ -3,11 +3,19 @@ import { useTranslation } from 'react-i18next';
 import LayoutDetail from 'layout/LayoutDetail';
 import FormAddVehicle from './components/FormAddVehicle';
 import { FadeIn } from 'components/FadeIn/FadeIn';
-import { useParams } from 'react-router-dom';
-import { useMemo } from 'react';
+import { Navigate, useParams } from 'react-router-dom';
+import { useEffect, useMemo } from 'react';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { selectVehicles } from 'store/vehicles/selectors';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 
 export default function AddNewVehicles() {
   const { t } = useTranslation(['vehicles', 'translation']);
+
+  const { statusGetVehicle, vehicle } = useAppSelector(selectVehicles);
+  const dispatch = useAppDispatch();
 
   const { vehicleId } = useParams();
 
@@ -15,6 +23,20 @@ export default function AddNewVehicles() {
     return !!vehicleId;
   }, [vehicleId]);
 
+  useEffect(() => {
+    if (isEditAction && vehicleId) {
+      dispatch(vehiclesActions.getVehicleRequest({ id: vehicleId }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditAction]);
+
+  if (statusGetVehicle === 'loading') {
+    return <LoadingScreen />;
+  }
+
+  if (statusGetVehicle === 'success' && !vehicle) {
+    return <Navigate to="/404" />;
+  }
   return (
     <FadeIn>
       <LayoutDetail

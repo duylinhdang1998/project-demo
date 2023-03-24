@@ -3,6 +3,7 @@ import { useRequest } from 'ahooks';
 import { Empty, Pagination } from 'antd';
 import CardWhite from 'components/CardWhite/CardWhite';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import dayjs from 'dayjs';
 import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
@@ -11,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { searchRoutes } from 'services/TicketSale/searchRoutes';
+import { dayjsToString } from 'utils/dayjsToString';
 import CardSelectTrip from './components/CardSelectTrip';
 import { FilterRoutesBySearcher } from './components/FilterRoutesBySearcher';
 import { FilterByTripTypeFormValues, FilterRoutesByTripType } from './components/FilterRoutesByTripType';
@@ -19,7 +21,7 @@ import { useStyles } from './styles';
 export interface FilterRoutesFormValues {
   departurePoint?: { value: string };
   arrivalPoint?: { value: string };
-  departureTime?: any;
+  departureTime?: dayjs.Dayjs;
   tripType: RouteOfTicketSale['tripType'];
   totalPax: number; // FIXME: Search theo cái gì ???
 }
@@ -32,7 +34,10 @@ const getTrips = async (page: number, values: FilterRoutesFormValues): Promise<A
         tripType: { value: values.tripType, operator: 'eq' },
         departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
         stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
-        'route.departureTime': { value: values.departureTime, operator: 'eq' },
+        'route.departureTime': {
+          value: values.departureTime && dayjsToString(values.departureTime, 'HH:mm'),
+          operator: 'eq',
+        },
       },
     });
     return response.data;

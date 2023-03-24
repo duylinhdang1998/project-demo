@@ -40,9 +40,9 @@ function FormAddVehicle() {
     formState: { errors },
     handleSubmit,
     getValues,
-    resetField,
-    reset,
     setValue,
+    watch,
+    reset,
   } = useForm<Values>({
     defaultValues: {
       ECOseats: 1,
@@ -94,7 +94,6 @@ function FormAddVehicle() {
   };
 
   const onSubmit = (formValues: Values) => {
-    console.log(formValues);
     if (isEditAction && vehicleId) {
       dispatch(
         vehiclesActions.updateVehicleRequest({
@@ -134,26 +133,25 @@ function FormAddVehicle() {
   };
 
   useEffect(() => {
-    if (isEditAction && vehicleId) {
-      reset({ ECOseats: 1, VIPseats: 1 });
-      dispatch(vehiclesActions.getVehicleRequest({ id: vehicleId }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEditAction]);
-
-  useEffect(() => {
     if (isEditAction && vehicle && statusGetVehicle === 'success') {
-      fieldKeys.forEach(key => {
-        resetField(key, {
-          defaultValue: vehicle[key],
-        });
+      reset({
+        ECOseats: vehicle.ECOseats,
+        VIPseats: vehicle.VIPseats,
+        attach: vehicle.attach,
+        brand: vehicle.brand,
+        merchandises: vehicle.merchandises,
+        model: vehicle.model,
+        registrationId: vehicle.registrationId,
+        services: vehicle.services,
       });
-    }
-    if (isEditAction && !vehicle && statusGetVehicle === 'success') {
-      navigate('/404');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusGetVehicle, vehicle, isEditAction]);
+
+  useEffect(() => {
+    watch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch]);
 
   return (
     <Box>
@@ -168,9 +166,7 @@ function FormAddVehicle() {
             errors={errors}
             messages={messages}
             onChange={values => {
-              resetField('services', {
-                defaultValue: values,
-              });
+              setValue('services', values);
             }}
           />
           <Merchandises
@@ -179,9 +175,7 @@ function FormAddVehicle() {
             errors={errors}
             messages={messages}
             onChange={values => {
-              resetField('merchandises', {
-                defaultValue: values,
-              });
+              setValue('merchandises', values);
             }}
           />
           <FormVerticle
@@ -197,13 +191,7 @@ function FormAddVehicle() {
                 resources: getAttach(),
                 onChange: resources => {
                   const lastResource = resources[resources.length - 1];
-                  if (lastResource) {
-                    resetField('attach', {
-                      defaultValue: lastResource,
-                    });
-                  } else {
-                    setValue('attach', undefined as any);
-                  }
+                  setValue('attach', lastResource);
                 },
               },
             ]}
