@@ -1,5 +1,5 @@
-import 'animate.css/animate.min.css';
 import { ReactNode } from 'react';
+import './styles.css';
 
 interface FadeInProps {
   children: ReactNode;

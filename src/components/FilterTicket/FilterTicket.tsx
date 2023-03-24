@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
-import { HEIGHT, SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
+import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import { labelOfRole } from 'components/SelectDecouplingData/SelectRole';
 import { Field } from 'models/Field';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
@@ -215,7 +215,6 @@ export default function FilterTicket<T extends FieldValues>({
                 <Box>
                   <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
                   <SingleSelectDecouplingData
-                    maxMenuHeight={HEIGHT * 3}
                     isClearable
                     isSearchable
                     value={field.value}

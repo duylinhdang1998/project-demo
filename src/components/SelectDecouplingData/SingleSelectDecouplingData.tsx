@@ -7,7 +7,10 @@ import { FixedSizeList as List } from 'react-window';
 import { AnyObject } from 'services/@types/SearchParams';
 
 export interface SingleSelectDecouplingDataProps<Model extends AnyObject>
-  extends Omit<SelectProps<Model, false, GroupBase<Model>>, 'loadingMessage' | 'components' | 'value' | 'options' | 'onChange' | 'isMulti'> {
+  extends Omit<
+    SelectProps<Model, false, GroupBase<Model>>,
+    'loadingMessage' | 'components' | 'value' | 'options' | 'onChange' | 'isMulti' | 'maxMenuHeight'
+  > {
   value?: Model;
   onChange?: (value: Model | undefined, actionMeta: ActionMeta<any>) => void;
   service: Parameters<typeof useRequest<Model[], any[]>>[0];
@@ -15,7 +18,7 @@ export interface SingleSelectDecouplingDataProps<Model extends AnyObject>
   equalFunc: (model: Model, value: Model | undefined) => boolean;
 }
 
-export const HEIGHT = 38;
+const HEIGHT = 38;
 export const SingleSelectDecouplingData = <Model extends AnyObject>({
   value,
   onChange,
@@ -35,6 +38,11 @@ export const SingleSelectDecouplingData = <Model extends AnyObject>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, value]);
 
+  const options = useMemo(() => {
+    return data?.map(transformToOption) ?? [];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
   const Options: SelectComponentsConfig<Model, false, GroupBase<Model>>['MenuList'] = ({ options, children, maxHeight, getValue }) => {
     const [value] = getValue();
     const initialOffset = options.indexOf(value) * HEIGHT;
@@ -53,6 +61,7 @@ export const SingleSelectDecouplingData = <Model extends AnyObject>({
   return (
     <Select
       {...rest}
+      maxMenuHeight={options.length < 8 ? HEIGHT * options.length : undefined}
       isMulti={false}
       loadingMessage={({ inputValue }) => <Typography>{inputValue}</Typography>}
       components={{ MenuList: Options }}
@@ -60,7 +69,7 @@ export const SingleSelectDecouplingData = <Model extends AnyObject>({
       onChange={(newValue, actionMeta) => {
         onChange?.(newValue?.value as any, actionMeta);
       }}
-      options={data?.map(transformToOption) as any}
+      options={options as any}
       isLoading={loading || rest.isLoading}
     />
   );

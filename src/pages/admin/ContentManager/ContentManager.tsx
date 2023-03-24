@@ -22,6 +22,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { uploadImageResource } from 'services/Resource/uploadImageResource';
 import { getUrlOfResource } from 'utils/getUrlOfResource';
 import { blobToFile } from 'utils/blobToFile';
+import env from 'env';
 
 type Values = Pick<Content, 'city' | 'email' | 'phone' | 'content' | 'footerText' | 'postalAddress' | 'zipCode'>;
 const fieldKeys: Array<keyof Values> = ['city', 'email', 'phone', 'content', 'footerText', 'postalAddress', 'zipCode'];
@@ -90,8 +91,7 @@ function ContentManager() {
             </Typography>
             <Box my="20px">
               <Editor
-                // FIXME: API key
-                apiKey={undefined}
+                apiKey={env.tinyMCEApiKey}
                 initialValue={getContent()}
                 onChange={e => {
                   const data = e.target.getContent();
