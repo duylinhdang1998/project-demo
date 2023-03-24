@@ -16,7 +16,7 @@ import { PlanDuration } from './@types/PlanDuration';
 import { PaymentButton } from './components/PaymentButton';
 import { RadioPaymentMethod } from './components/RadioPaymentMethod';
 import { RadioPlanDuration } from './components/RadioPlanDuration';
-import { defaultPaymentMethod, planDurationsValue, defaultPlanDuration, paymentGateWayMapping } from './constants';
+import { defaultPaymentMethod, defaultPlanDuration, paymentGateWayMapping, planDurationsValue, STATUS } from './constants';
 
 const SubscriptionPayment: FC = () => {
   const { t } = useTranslation(['account', 'translation']);
@@ -63,6 +63,8 @@ const SubscriptionPayment: FC = () => {
         paymentGateWay: paymentGateWayMapping[paymentMethodState],
         period: planDurationsValue[planDurationState],
         subscriptionType: subscriptionType as SubscriptionType,
+        cancelUrl: window.location.origin + window.location.pathname + `?${STATUS.cancelled}`,
+        returnUrl: window.location.origin + '/account/subscription' + `?${STATUS.success}`,
       }),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps

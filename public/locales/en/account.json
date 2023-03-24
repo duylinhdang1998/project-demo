@@ -73,5 +73,7 @@
   "trial_warning_message": "Your benefit from {{totalTrialDays}}-day trial version, only {{totalRemainingTrialDays}} days left.",
   "upgrade_subscription_message": "Unlock your trial period here",
   "connect_with_payment": "Connect with",
-  "create_subscription_order_failure": "Something went wrong. Please wait for the browser to reload and try again!"
+  "create_subscription_order_failure": "Something went wrong. Please wait for the browser to reload and try again!",
+  "upgrade_subscription_success": "Upgrade subscription successfully!",
+  "upgrade_subscription_cancelled": "Subscription order cancelled!"
 }

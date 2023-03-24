@@ -9,6 +9,8 @@ export interface CreateSubscriptionOrder {
   subscriptionType: SubscriptionType;
   period: SubscriptionPlan['months'];
   paymentGateWay: PaymentGateway;
+  returnUrl: string;
+  cancelUrl: string;
 }
 
 export const createSubscriptionOrder = async (data: CreateSubscriptionOrder) => {
