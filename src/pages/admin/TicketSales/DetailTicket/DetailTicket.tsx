@@ -4,6 +4,7 @@ import Button from 'components/Button/Button';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import PrintIcon from 'components/SvgIcon/PrintIcon';
 import SendIcon from 'components/SvgIcon/SendIcon';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useMemo, useRef } from 'react';
@@ -11,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { Navigate, useLocation, useParams } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
+import { toast } from 'react-toastify';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { ColumnTicket } from '../components/ColumnTicket';
@@ -25,7 +27,7 @@ export default function DetailTicketPage() {
   const location = useLocation();
   const { orderCode } = useParams();
 
-  const { statusGetTicketSale, ticketSale } = useAppSelector(selectTicketSales);
+  const { statusGetTicketSale, statusSendEmail, ticketSale } = useAppSelector(selectTicketSales);
   const dispatch = useDispatch();
 
   const record: ColumnTicket | undefined = useMemo(() => {
@@ -39,6 +41,26 @@ export default function DetailTicketPage() {
   }, [location.state, ticketSale]);
 
   const printPDFRef = useRef<PrintPDF | null>(null);
+
+  const handleSendEmail = () => {
+    if (orderCode) {
+      dispatch(
+        ticketSalesActions.sendEmailRequest({
+          orderCode,
+          onSuccess() {
+            toast(<ToastCustom type="success" text={t('ticketSales:send_email_success')} />, {
+              className: 'toast-success',
+            });
+          },
+          onFailure() {
+            toast(<ToastCustom type="error" text={t('ticketSales:send_email_error')} />, {
+              className: 'toast-error',
+            });
+          },
+        }),
+      );
+    }
+  };
 
   useEffect(() => {
     if (!record && orderCode) {
@@ -70,6 +92,8 @@ export default function DetailTicketPage() {
         </PrintPDF>
         <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={2} my="24px">
           <Button
+            onClick={handleSendEmail}
+            loading={statusSendEmail === 'loading'}
             variant="outlined"
             sx={{
               padding: '12px 16px',

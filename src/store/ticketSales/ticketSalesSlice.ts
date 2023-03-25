@@ -4,8 +4,10 @@ import { TicketSale } from 'services/models/TicketSale';
 import { CreateTicketSaleFailure, CreateTicketSaleRequest, CreateTicketSaleSuccess } from './actions/CreateTicketSale';
 import { GetTicketSaleFailure, GetTicketSaleRequest, GetTicketSaleSuccess } from './actions/GetTicketSale';
 import { GetTicketSalesFailure, GetTicketSalesRequest, GetTicketSalesSuccess } from './actions/GetTicketSales';
+import { SendEmailFailure, SendEmailRequest, SendEmailSuccess } from './actions/SendEmail';
 
 interface TicketSalesState {
+  statusSendEmail: Status;
   statusGetTicketSales: Status;
   statusGetTicketSale: Status;
   statusCreateTicketSale: Status;
@@ -18,6 +20,7 @@ interface TicketSalesState {
 }
 
 const initialState: TicketSalesState = {
+  statusSendEmail: 'idle',
   statusGetTicketSale: 'idle',
   statusGetTicketSales: 'idle',
   statusCreateTicketSale: 'idle',
@@ -104,6 +107,24 @@ export const ticketSalesSlice = createSlice({
       return {
         ...state,
         statusCreateTicketSale: 'failure',
+      };
+    },
+    sendEmailRequest: (state, _action: PayloadAction<SendEmailRequest>) => {
+      return {
+        ...state,
+        statusSendEmail: 'loading',
+      };
+    },
+    sendEmailSuccess: (state, _action: PayloadAction<SendEmailSuccess>) => {
+      return {
+        ...state,
+        statusSendEmail: 'success',
+      };
+    },
+    sendEmailFailure: (state, _action: PayloadAction<SendEmailFailure>) => {
+      return {
+        ...state,
+        statusSendEmail: 'failure',
       };
     },
   },
