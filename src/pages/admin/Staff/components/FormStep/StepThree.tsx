@@ -126,8 +126,8 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           className="alertSuccess"
           message={
             <Box>
-              <Typography className="alert__title">Your programing is saved</Typography>
-              <Typography className="alert__description">You can delete your employee's days off from the calendar.</Typography>
+              <Typography className="alert__title">{t('staff:alert_title')}</Typography>
+              <Typography className="alert__description">{t('staff:alert_description')}</Typography>
             </Box>
           }
         />
@@ -204,17 +204,6 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
               }),
             );
           }
-        }}
-        elementProps={{ style: { background: 'cyan' } }}
-        slotPropGetter={date => {
-          if (isDateClampStaffPeriod(date.getTime())) {
-            return {
-              style: { background: 'blue' },
-            };
-          }
-          return {
-            style: { background: 'green' },
-          };
         }}
         dayPropGetter={date => {
           if (isDateClampStaffPeriod(date.getTime())) {
