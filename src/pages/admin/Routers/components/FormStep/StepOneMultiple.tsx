@@ -120,7 +120,11 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
     getValues,
     setValue,
     reset,
-  } = useForm<StepOneValuesForMultipleStopTrip>();
+  } = useForm<StepOneValuesForMultipleStopTrip>({
+    defaultValues: {
+      routePoints: [],
+    },
+  });
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'routePoints',
@@ -128,6 +132,8 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
 
   const [open, setOpen] = useState(false);
   const [openDeleteRoutePoint, setOpenDeleteRoutePoint] = useState<number | null>(null);
+
+  const isAddable = getValues().routePoints.length < 5;
 
   const getVehicle = () => {
     return getValues().vehicle;
@@ -369,9 +375,11 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
             </Box>
           );
         })}
-        <Button variant="outlined" fullWidth className={classes.btn} startIcon={<AddIcon sx={{ color: '#1AA6EE' }} />} onClick={handleAppend}>
-          {t('routers:add_new_stop')}
-        </Button>
+        {isAddable && (
+          <Button variant="outlined" fullWidth className={classes.btn} startIcon={<AddIcon sx={{ color: '#1AA6EE' }} />} onClick={handleAppend}>
+            {t('routers:add_new_stop')}
+          </Button>
+        )}
       </Box>
       <ComboButton
         isSaving={isLoading}

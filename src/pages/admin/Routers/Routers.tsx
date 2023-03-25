@@ -2,30 +2,30 @@ import AddIcon from '@mui/icons-material/Add';
 import { Box, Grid, Stack } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Menu } from 'antd';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 import MyButton from 'components/Button/Button';
 import DropdownCustom from 'components/DropdownCustom/DropdownCustom';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
+import dayjs from 'dayjs';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { Vehicle } from 'services/models/Vehicle';
 import { selectAuth } from 'store/auth/selectors';
+import { routesActions } from 'store/routes/routesSlice';
+import { dayjsToString } from 'utils/dayjsToString';
+import { v4 as uuidv4 } from 'uuid';
 import TableRoutes from './components/TableRoutes';
 import { fieldsSearch } from './constants';
-import { useEffect } from 'react';
-import { routesActions } from 'store/routes/routesSlice';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { dayjsToNumber } from 'utils/dayjsToNumber';
-import { Vehicle } from 'services/models/Vehicle';
-import dayjs from 'dayjs';
 
 interface Values {
-  vehicle: Vehicle;
-  departurePoint: { value: string };
-  arrivalPoint: { value: string };
-  departureTime: dayjs.Dayjs;
+  vehicle?: Vehicle;
+  departurePoint?: { value: string };
+  arrivalPoint?: { value: string };
+  departureTime?: dayjs.Dayjs;
 }
 
 const useStyles = makeStyles(() => ({
@@ -70,19 +70,19 @@ export default function Routers() {
         page: 0,
         searcher: {
           departurePoint: {
-            value: values.departurePoint.value,
+            value: values.departurePoint?.value,
             operator: 'eq',
           },
           'routePoints.stopPoint': {
-            value: values.arrivalPoint.value,
+            value: values.arrivalPoint?.value,
             operator: 'eq',
           },
           departureTime: {
-            value: dayjsToNumber(values.departureTime),
+            value: values.departureTime ? dayjsToString(values.departureTime, 'HH:mm') : undefined,
             operator: 'eq',
           },
           'vehicle._id': {
-            value: values.vehicle._id,
+            value: values.vehicle?._id,
             operator: 'eq',
           },
         },
