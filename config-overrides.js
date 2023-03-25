@@ -1,4 +1,5 @@
 const rewireWebpackBundleAnalyzer = require('react-app-rewire-webpack-bundle-analyzer');
+const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 
 module.exports = function override(config, env) {
   // ...
@@ -10,7 +11,7 @@ module.exports = function override(config, env) {
     });
   }
 
-  config.plugins = [...config.plugins];
+  config.plugins = [...config.plugins, new AntdDayjsWebpackPlugin()];
 
   return config;
 };
