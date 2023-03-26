@@ -1,5 +1,5 @@
 import { Box, Divider, Typography } from '@mui/material';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

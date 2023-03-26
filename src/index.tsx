@@ -7,6 +7,10 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// import 'dayjs/locale/zh-cn'
+// dayjs.locale('zh-cn')
+// if using locale other than 'en', please load the locale file in advance
+
 ReactDOM.render(
   <GlobalProvider>
     <GlobalErrorBoundary>

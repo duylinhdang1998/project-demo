@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { TicketSale } from 'services/models/TicketSale';
 import { ColumnTicket } from '../components/ColumnTicket';
 

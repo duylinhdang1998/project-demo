@@ -15,7 +15,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useToastStyle } from 'theme/toastStyles';
 import { toast } from 'react-toastify';
-import { omit } from 'lodash';
+import { omit } from 'lodash-es';
 import { selectProfile } from 'store/profile/selectors';
 import { profileActions } from 'store/profile/profileSlice';
 

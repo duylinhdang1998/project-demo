@@ -1,6 +1,7 @@
 import { Box, InputLabel, Typography } from '@mui/material';
 import { Editor } from '@tinymce/tinymce-react';
 import { useStyles } from 'components/FormVerticle/styles';
+import env from 'env';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { BatchMailFormValues } from '../Passengers';
@@ -49,6 +50,7 @@ export const EmailEditor = ({ control, description, errors, messages, onChange, 
             {t(`passenger:${label}`)}
           </InputLabel>
           <Editor
+            apiKey={env.tinyMCEApiKey}
             initialValue={description}
             onChange={e => {
               onChange(e.target.getContent());

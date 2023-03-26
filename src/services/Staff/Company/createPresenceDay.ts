@@ -4,7 +4,6 @@ import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response
 import { Staff } from 'services/models/Staff';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
-import { momentToNumber } from 'utils/momentToNumber';
 
 export interface CreatePresenceDay {
   staffId: Staff['_id'];
@@ -17,11 +16,7 @@ export const createPresenceDay = async (data: CreatePresenceDay) => {
   const response: AxiosResponse<ResponseDetailSuccess<Staff> | ResponseFailure> = await fetchAPI.request({
     method: 'POST',
     url: '/v1.0/company/staffs/presence',
-    data: {
-      ...data,
-      periodFrom: momentToNumber(data.periodFrom),
-      periodTo: momentToNumber(data.periodTo),
-    } as CreatePresenceDay,
+    data,
   });
   if (response.data.code === 0) {
     return response.data as ResponseDetailSuccess<Staff>;

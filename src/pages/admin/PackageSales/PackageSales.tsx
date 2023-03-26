@@ -8,7 +8,7 @@ import { FadeIn } from 'components/FadeIn/FadeIn';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { Country } from 'models/Country';
 import { Option } from 'models/Field';
 import { useState } from 'react';

@@ -11,14 +11,15 @@ import { customStyles } from 'components/FilterTicket/customStyles';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import { get, isEmpty } from 'lodash';
+import dayjs from 'dayjs';
+import { get, isEmpty } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { getListDestinations } from 'services/Destinations/getListDestinations';
 import { Route } from 'services/models/Route';
 import { Vehicle } from 'services/models/Vehicle';
-import { anyToMoment } from 'utils/anyToMoment';
+import { toDayjs } from 'utils/toDayjs';
 import EditPriceTrip from '../EditPriceTrip';
 
 interface RoutePointValues {
@@ -34,7 +35,7 @@ interface RoutePointValues {
 export interface StepOneValuesForMultipleStopTrip {
   vehicle: Vehicle;
   departurePoint: string;
-  departureTime: any; // moment
+  departureTime: dayjs.Dayjs;
   routePoints: RoutePointValues[];
 }
 
@@ -170,7 +171,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
     if (!!values && !isEmpty(values)) {
       reset({
         ...values,
-        departureTime: anyToMoment({ value: values.departureTime }),
+        departureTime: toDayjs({ value: values.departureTime }),
         routePoints: values.routePoints.map(routePoint => ({
           ...routePoint,
           duration: routePoint.duration,

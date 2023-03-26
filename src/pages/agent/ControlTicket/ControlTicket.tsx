@@ -6,7 +6,7 @@ import Qrcode from 'components/Qrcode/Qrcode';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';

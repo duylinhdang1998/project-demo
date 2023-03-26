@@ -2,13 +2,14 @@ import { Box, Typography } from '@mui/material';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
-import { isEmpty } from 'lodash';
+import dayjs from 'dayjs';
+import { isEmpty } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
 import { Control, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Route } from 'services/models/Route';
 import { Vehicle } from 'services/models/Vehicle';
-import { anyToMoment } from 'utils/anyToMoment';
+import { toDayjs } from 'utils/toDayjs';
 import EditPriceTrip from '../EditPriceTrip';
 
 const fieldKeys: Array<keyof Route | string> = ['vehicle', 'departurePoint', 'arrivalPoint', 'departureTime', 'arrivalDuration'];
@@ -17,7 +18,7 @@ export interface StepOneValuesForOneStopTrip {
   vehicle: Vehicle;
   departurePoint: string;
   arrivalPoint: string;
-  departureTime: any; // moment
+  departureTime: dayjs.Dayjs;
   arrivalDuration: number;
   ecoAdult: number;
   vipAdult: number;
@@ -83,7 +84,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
       reset({
         ...values,
         arrivalDuration: values.arrivalDuration,
-        departureTime: anyToMoment({ value: values.departureTime }),
+        departureTime: toDayjs({ value: values.departureTime }),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

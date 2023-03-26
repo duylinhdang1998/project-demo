@@ -44,7 +44,7 @@ export type Searcher<T extends AnyObject> = Partial<
     Path<T>,
     {
       operator: SearcherOperator;
-      value?: string;
+      value?: string | number | boolean;
     }
   >
 >;

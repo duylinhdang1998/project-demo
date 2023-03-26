@@ -11,9 +11,9 @@ import CalendarIcon from 'components/SvgIcon/CalendarIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import enUS from 'date-fns/locale/en-US';
+import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Calendar, dateFnsLocalizer, Event, SlotInfo, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -199,7 +199,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           </Stack>
           <Box className={classes.selectedDate}>
             <CalendarIcon />
-            <span style={{ marginLeft: 4 }}>{moment(selectedSlot[0]).format('dddd, MM/DD/YYYY')}</span>
+            <span style={{ marginLeft: 4 }}>{dayjs(selectedSlot[0]).format('dddd, MM/DD/YYYY')}</span>
           </Box>
           <EditPriceTrip errors={errors} control={control as any} />
           <ComboButton

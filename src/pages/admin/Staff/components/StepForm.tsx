@@ -12,10 +12,10 @@ import { toast } from 'react-toastify';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useToastStyle } from 'theme/toastStyles';
 import { useTranslation } from 'react-i18next';
-import { momentToNumber } from 'utils/momentToNumber';
-import { anyToMoment } from 'utils/anyToMoment';
+import { dayjsToNumber } from 'utils/dayjsToNumber';
+import { toDayjs } from 'utils/toDayjs';
 import { Staff } from 'services/models/Staff';
-import { omit } from 'lodash';
+import { omit } from 'lodash-es';
 import { ALL_DAYS_OPTION_VALUE } from 'components/SelectDaysOfWeek/SelectDaysOfWeek';
 
 const steps = ['Step 1', 'Step 2', 'Step 3'];
@@ -99,8 +99,8 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
         staffsActions.updateActiveDaysRequest({
           data: {
             presenceDay: formValues.days.filter(item => item !== ALL_DAYS_OPTION_VALUE) as Staff['presenceDay'],
-            periodFrom: momentToNumber(formValues.fromDate),
-            periodTo: momentToNumber(formValues.toDate),
+            periodFrom: dayjsToNumber(formValues.fromDate),
+            periodTo: dayjsToNumber(formValues.toDate),
             staffId: staff._id,
           },
           onSuccess() {
@@ -133,8 +133,8 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
       });
       setStepTwoValues({
         days: staff.presenceDay,
-        fromDate: anyToMoment({ value: staff.periodFrom }),
-        toDate: anyToMoment({ value: staff.periodTo }),
+        fromDate: toDayjs({ value: staff.periodFrom }),
+        toDate: toDayjs({ value: staff.periodTo }),
       });
     }
   }, [isEditAction, staff]);

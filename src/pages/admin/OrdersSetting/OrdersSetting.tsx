@@ -8,7 +8,7 @@ import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useGetOrderSettings, useUpdateOrderSettings } from 'services/Company/orderSettings';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { Controller, useForm } from 'react-hook-form';
 import { getNotifcation } from 'utils/getNotification';

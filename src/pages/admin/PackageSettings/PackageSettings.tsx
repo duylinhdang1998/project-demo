@@ -36,7 +36,7 @@ export default function PackageSettings() {
       <HeaderLayout activeSideBarHeader={t('packageSettings:package_settings')} />
       <Box padding="24px">
         <BoxSearch
-          searchValue={currentSearcher.title?.value}
+          searchValue={currentSearcher.title?.value as string | undefined}
           onSearch={value => {
             dispatch(
               packageSettingsActions.getPackageSettingsRequest({

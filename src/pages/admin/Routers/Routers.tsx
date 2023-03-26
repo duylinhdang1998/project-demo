@@ -1,5 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
-import { Box, Button, Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Menu } from 'antd';
 import { useForm } from 'react-hook-form';
@@ -17,14 +17,15 @@ import { fieldsSearch } from './constants';
 import { useEffect } from 'react';
 import { routesActions } from 'store/routes/routesSlice';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { momentToNumber } from 'utils/momentToNumber';
+import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { Vehicle } from 'services/models/Vehicle';
+import dayjs from 'dayjs';
 
 interface Values {
   vehicle: Vehicle;
   departurePoint: { value: string };
   arrivalPoint: { value: string };
-  departureTime: any; // Moment
+  departureTime: dayjs.Dayjs;
 }
 
 const useStyles = makeStyles(() => ({
@@ -77,7 +78,7 @@ export default function Routers() {
             operator: 'eq',
           },
           departureTime: {
-            value: momentToNumber(values.departureTime),
+            value: dayjsToNumber(values.departureTime),
             operator: 'eq',
           },
           'vehicle._id': {
@@ -123,9 +124,9 @@ export default function Routers() {
             }}
           >
             <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" justifyContent="center" spacing={2}>
-              <Button variant="contained" fullWidth onClick={handleSubmit(onSubmit)}>
+              <MyButton backgroundButton="#1aa6ee" variant="contained" fullWidth onClick={handleSubmit(onSubmit)}>
                 {t('translation:search')}
-              </Button>
+              </MyButton>
               {userInfo?.role === 'admin' && (
                 <DropdownCustom menuChildren={menuChildren} trigger={['click']} placement="bottomLeft" menuClassName={classes.menuList}>
                   <MyButton variant="contained" fullWidth backgroundButton="#33CC7F" startIcon={<AddIcon />}>

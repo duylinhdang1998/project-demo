@@ -2,7 +2,7 @@ import { Box, Radio, RadioGroup, RadioGroupProps, Stack, Typography } from '@mui
 import { makeStyles } from '@mui/styles';
 import clxs from 'classnames';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
