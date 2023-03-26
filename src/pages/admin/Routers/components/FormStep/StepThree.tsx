@@ -4,6 +4,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Dialog, DialogTitle, IconButton, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
+import { Alert } from 'antd';
 import Button from 'components/Button/Button';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
@@ -24,6 +25,7 @@ import { toast } from 'react-toastify';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
 import { useToastStyle } from 'theme/toastStyles';
+import { dateClamp } from 'utils/dateClamp';
 import EditPriceTrip from '../EditPriceTrip';
 import './styles.scss';
 
@@ -169,6 +171,15 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     }
   };
 
+  const isDateClampRouterPeriod = (timestamp: number) => {
+    return (
+      route &&
+      typeof route.startPeriod === 'number' &&
+      typeof route.endPeriod === 'number' &&
+      dateClamp(timestamp, route.startPeriod, route.endPeriod)
+    );
+  };
+
   useEffect(() => {
     // FIXME: RESET FORM VALUES -> Đang k có cái gì từ response trả về có thể làm chức năng này
     if (route) {
@@ -256,12 +267,31 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     );
   };
 
+  const renderAlertSuccess = () => {
+    return (
+      <Alert
+        closable
+        showIcon
+        type="success"
+        className="alertSuccess"
+        message={
+          <Box>
+            <Typography className="alert__title">{t('routers:alert_title')}</Typography>
+            <Typography className="alert__description">{t('routers:alert__description_1')}</Typography>
+            <Typography className="alert__description">{t('routers:alert__description_2')}</Typography>
+          </Box>
+        }
+      />
+    );
+  };
+
   if (!route) {
     return <Navigate to="/404" />;
   }
 
   return (
     <Box my="24px">
+      {renderAlertSuccess()}
       <Calendar
         selectable
         defaultDate={route.startPeriod ? new Date(route.startPeriod) : undefined}
@@ -324,12 +354,20 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         onSelectSlot={event => {
           setSelectedSlot(event.slots);
         }}
+        dayPropGetter={date => {
+          if (isDateClampRouterPeriod(date.getTime())) {
+            return {
+              className: 'selectable',
+            };
+          }
+          return {};
+        }}
         events={[
           ...route.dayoffs.map<Event>(dayoff => ({
             start: new Date(dayoff),
             end: new Date(dayoff),
             allDay: true,
-            title: t('translation:removed'),
+            title: t('translation:off'),
           })),
           ...route.particularDays.map<Event>(particularDay => ({
             start: new Date(particularDay),

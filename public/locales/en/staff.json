@@ -13,5 +13,7 @@
   "days_of_the_week": "Days of presence of the employee",
   "active_period": "Calendar period",
   "fromDate": "From date",
-  "toDate": "To date"
+  "toDate": "To date",
+  "alert_title": "Your programing is saved",
+  "alert_description": "You can delete your employee's days off from the calendar."
 }
