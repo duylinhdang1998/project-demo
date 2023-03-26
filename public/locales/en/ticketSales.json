@@ -56,5 +56,7 @@
   "email": "Email",
   "add_new_passenger": "Add new passenger",
   "total_trips_found": "{{total}} trips found",
-  "duration_minutes": "about {{duration}} minutes"
+  "duration_minutes": "about {{duration}} minutes",
+  "send_email_success": "Send email successfully",
+  "send_email_error": "Send email error"
 }
