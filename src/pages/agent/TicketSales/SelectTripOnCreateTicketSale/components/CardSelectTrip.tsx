@@ -1,14 +1,17 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Timeline } from 'antd';
 import 'antd/lib/timeline/style/css';
-import BusPng from 'assets/images/bus.png';
 import Button from 'components/Button/Button';
+import { useStyles } from 'pages/admin/Routers/components/DialogMultiStopTripDetail/SubRoute';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { RouteOfTicketSale } from 'services/models/TicketSale';
+import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import './styles.css';
+import BusPng from 'assets/images/bus.png';
 
-const useStyles = makeStyles(() => ({
+const useMainStyles = makeStyles(() => ({
   root: {
     boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.1)',
     borderRadius: '4px',
@@ -32,25 +35,117 @@ interface CardSelectTripProps {
   placeStart?: string;
   timeEnd?: string;
   placeEnd?: string;
-  vehicle?: string;
-  price?: number;
+  vehicle?: RouteOfTicketSale['vehicle'];
+  ECOPrices?: RouteOfTicketSale['ECOPrices'];
+  VIPPrices?: RouteOfTicketSale['VIPPrices'];
   duration?: string;
   onSelect?: () => void;
 }
 
-function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, price, duration, onSelect }: CardSelectTripProps) {
-  const classes = useStyles();
-  const { t } = useTranslation(['translation']);
+function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, ECOPrices, VIPPrices, duration, onSelect }: CardSelectTripProps) {
+  const mainClasses = useMainStyles();
+  const blockPricesClasses = useStyles();
+  const { t } = useTranslation(['translation', 'routers']);
+
+  const renderBlockPrices = () => {
+    return (
+      <Grid container justifyContent="space-between" alignItems="center">
+        <Grid item flex="1 1 auto">
+          <Grid container spacing={1} alignItems="center">
+            <Grid item>
+              <Box className={blockPricesClasses.ticketTypeIcon} bgcolor="rgba(51, 204, 127, 1)">
+                {t('routers:ECO')}
+              </Box>
+            </Grid>
+            <Grid item>
+              <Box>
+                <Typography component="span" className={blockPricesClasses.ticketTypeTitle}>
+                  {t('routers:Adult')}:
+                </Typography>
+                <Typography component="span" className={blockPricesClasses.ticketTypeValue}>
+                  {getAppCurrencySymbol()}
+                  {ECOPrices?.ADULT}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item lg={4}>
+              <Box className={blockPricesClasses.ticketTypeDivider}>
+                <Typography component="span" className={blockPricesClasses.ticketTypeTitle}>
+                  {t('routers:Student')}:
+                </Typography>
+                <Typography component="span" className={blockPricesClasses.ticketTypeValue}>
+                  {getAppCurrencySymbol()}
+                  {ECOPrices?.STUDENT}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item>
+              <Box>
+                <Typography component="span" className={blockPricesClasses.ticketTypeTitle}>
+                  {t('routers:Children')}:
+                </Typography>
+                <Typography component="span" className={blockPricesClasses.ticketTypeValue}>
+                  {getAppCurrencySymbol()}
+                  {ECOPrices?.CHILD}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+          <Grid container spacing={1} alignItems="center">
+            <Grid item>
+              <Box bgcolor="rgba(255, 182, 0, 1)" className={blockPricesClasses.ticketTypeIcon}>
+                {t('routers:VIP')}
+              </Box>
+            </Grid>
+            <Grid item>
+              <Box>
+                <Typography component="span" className={blockPricesClasses.ticketTypeTitle}>
+                  {t('routers:Adult')}:
+                </Typography>
+                <Typography component="span" className={blockPricesClasses.ticketTypeValue}>
+                  {getAppCurrencySymbol()}
+                  {VIPPrices?.ADULT}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item lg={4}>
+              <Box className={blockPricesClasses.ticketTypeDivider}>
+                <Typography component="span" className={blockPricesClasses.ticketTypeTitle}>
+                  {t('routers:Student')}:
+                </Typography>
+                <Typography component="span" className={blockPricesClasses.ticketTypeValue}>
+                  {getAppCurrencySymbol()}
+                  {VIPPrices?.STUDENT}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item>
+              <Box>
+                <Typography component="span" className={blockPricesClasses.ticketTypeTitle}>
+                  {t('routers:Children')}:
+                </Typography>
+                <Typography component="span" className={blockPricesClasses.ticketTypeValue}>
+                  {getAppCurrencySymbol()}
+                  {VIPPrices?.CHILD}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    );
+  };
+
   return (
-    <Box className={classes.root} padding="24px 16px">
+    <Box className={mainClasses.root} padding="24px 16px" marginBottom="20px">
       <Stack
         direction={{ mobile: 'column', desktop: 'row' }}
         justifyContent="space-between"
         spacing={2}
         alignItems={{ xs: 'flex-start', md: 'center' }}
       >
-        <Box className="ticket_sales_custom_timeline_container">
-          <Timeline mode="left" className={classes.timeline}>
+        <Box flex="35%" className="ticket_sales_custom_timeline_container">
+          <Timeline mode="left" className={mainClasses.timeline}>
             <Timeline.Item color="#333" label={timeStart}>
               {placeStart}
             </Timeline.Item>
@@ -59,22 +154,22 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, pri
             </Timeline.Item>
           </Timeline>
         </Box>
-        <Box>
-          <Typography variant="price">${price}</Typography>
-          <Typography fontSize={12} color="#B2BABE">
+        <Box flex="auto">
+          {renderBlockPrices()}
+          <Typography sx={{ marginTop: '12px', marginRight: '12px' }} textAlign="right" fontSize={12} color="#B2BABE">
             {duration}
           </Typography>
         </Box>
       </Stack>
       <Stack direction="row" justifyContent="space-between" alignItems="center" my="16px">
         <Stack direction="row" alignItems="center" spacing={2}>
-          <img src={BusPng} className={classes.img} />
-          <Typography variant="body2">{vehicle}</Typography>
+          <img src={vehicle?.attach?.thumbnail ?? BusPng} className={mainClasses.img} />
+          <Typography variant="body2">{vehicle?.brand}</Typography>
         </Stack>
         <Stack spacing={2} direction="row" alignItems="center">
-          <i className={`fas fa-wifi ${classes.icon}`} />
-          <i className={`fas fa-tv-alt ${classes.icon}`} />
-          <i className={`fas fa-tint ${classes.icon}`} />
+          <i className={`fas fa-wifi ${mainClasses.icon}`} />
+          <i className={`fas fa-tv-alt ${mainClasses.icon}`} />
+          <i className={`fas fa-tint ${mainClasses.icon}`} />
         </Stack>
       </Stack>
       <Button variant="outlined" fullWidth onClick={onSelect}>

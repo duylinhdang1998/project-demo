@@ -1,18 +1,18 @@
 div.ticket_sales_custom_timeline_container div.ant-timeline-item-label {
-  width: calc(55% - 12px) !important;
+  width: calc(35% - 12px) !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 div.ticket_sales_custom_timeline_container div.ant-timeline-item-content {
-  left: 55% !important;
+  left: 35% !important;
   width: 100% !important;
 }
 
 div.ticket_sales_custom_timeline_container div.ant-timeline-item-tail,
 div.ticket_sales_custom_timeline_container div.ant-timeline-item-head {
-  left: 55% !important;
+  left: 35% !important;
   border-color: #333;
   color: #333;
 }

@@ -7,7 +7,7 @@ export interface Vehicle {
   _id: string;
   ECOseats: number;
   VIPseats: number;
-  attach: ImageResource;
+  attach?: ImageResource;
   brand: string;
   company: string;
   createdAt: string;

@@ -5,32 +5,37 @@ import SnowSvg from 'assets/images/snow.svg';
 import Button from 'components/Button/Button';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { useMemo } from 'react';
+import { useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { Passenger } from '../TicketDetailOnCreateTicketSale';
 
 export interface ReservationProps {
+  control: any;
   route: RouteOfTicketSale;
-  passengers: Passenger[];
   onSubmit: () => void;
   loading: boolean;
 }
 
-export const Reservation = ({ onSubmit, route, passengers, loading }: ReservationProps) => {
+export const Reservation = ({ onSubmit, control, route, loading }: ReservationProps) => {
   const { t } = useTranslation(['ticketSales', 'translation']);
+
+  const passengers = useWatch({
+    name: 'passengers',
+    control,
+  }) as Passenger[];
 
   const dataDetails = useMemo(() => {
     return {
-      // FIXME: Điền gì ở đây
-      date: '27/02/2022 - 10:30 AM',
+      date: route.route.departureTime,
       trip: [route.departurePoint, route.stopPoint],
       // FIXME: Điền gì ở đây
       operated: 'Alsa Spain',
       // FIXME: Điền gì ở đây
       class: 'FLEXIBLE',
-      // FIXME: Đợi populate Vehicle
-      services: ['Air conditioning', 'Luggage transport', 'Free wifi'],
-      total: passengers.reduce((result, passenger) => {
+      // FIXME: Đợi BE populate dữ liệu
+      services: [], // route.vehicle?.services.map(service => service.title),
+      total: passengers.reduce<number>((result, passenger) => {
         const seatsTypePricesKey = passenger.seatsType.value && `${passenger.seatsType.value}Prices`;
         const ticketTypePriceKey = passenger.typeTicket.value;
         const seatsTypePrices = seatsTypePricesKey && (route[seatsTypePricesKey] as RouteOfTicketSale['ECOPrices'] | RouteOfTicketSale['VIPPrices']);
@@ -76,7 +81,7 @@ export const Reservation = ({ onSubmit, route, passengers, loading }: Reservatio
         <Typography variant="body2" component="p" marginBottom="16px">
           {t('service')}
         </Typography>
-        {dataDetails.services.map(i => (
+        {dataDetails.services?.map(i => (
           <TextWithIcon icon={SnowSvg} text={i} color="#45485E" />
         ))}
       </Box>

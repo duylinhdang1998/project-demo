@@ -11,29 +11,29 @@ export interface PassengerInTicketSale {
 }
 
 export interface TicketSale {
+  __v: number;
   _id: string;
-  orderCode: string;
-  company: string;
-  route: string;
-  vehicle: string;
-  departureTime: number;
-  day: string;
-  departurePoint: string;
-  arrivalPoint: string;
-  totalPrice: number;
-  totalPax: number;
   ECOseated: number;
   VIPseated: number;
-  passengers: PassengerInTicketSale[];
-  email: string;
-  paymentStatus: PaymentStatus;
-  paymentType: PaymentGateway;
+  arrivalPoint: string;
+  company: string;
+  createdAt: string;
   creator: string;
   creatorType: UserRole;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
+  day: string;
+  departurePoint: string;
+  departureTime: number;
+  email: string;
+  orderCode: string;
+  passengers: PassengerInTicketSale[];
   payment: string;
+  paymentStatus: PaymentStatus;
+  paymentType: PaymentGateway;
+  route: string;
+  totalPax: number;
+  totalPrice: number;
+  updatedAt: string;
+  vehicle: string;
 }
 
 export interface RouteOfTicketSale {

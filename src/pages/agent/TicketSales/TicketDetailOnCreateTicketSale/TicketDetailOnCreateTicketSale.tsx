@@ -1,6 +1,7 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
+import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
@@ -15,6 +16,7 @@ import { PassengerInTicketSale, RouteOfTicketSale } from 'services/models/Ticket
 import { selectAuth } from 'store/auth/selectors';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
+import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { Passengers } from './components/Passengers';
 import { PaymentMethod } from './components/PaymentMethod';
 import { Reservation } from './components/Reservation';
@@ -76,9 +78,6 @@ export const TicketDetailOnCreateTicketSale = () => {
   const getPaymentMethod = (): TicketDetailFormValues['method'] => {
     return getValues().method;
   };
-  const getPassengers = (): TicketDetailFormValues['passengers'] => {
-    return getValues().passengers;
-  };
 
   const onSubmit = (values: TicketDetailFormValues) => {
     if (route) {
@@ -93,8 +92,7 @@ export const TicketDetailOnCreateTicketSale = () => {
             })),
             email: values.email,
             route: route._id,
-            // FIXME: Điền gì ở đây ??
-            departureTime: route.durationTime,
+            departureTime: dayjsToNumber(dayjs(route.route.departureTime, 'HH:mm')),
             arrivalPoint: route.stopPoint,
             departurePoint: route.departurePoint,
             cancelUrl: '',
@@ -167,12 +165,7 @@ export const TicketDetailOnCreateTicketSale = () => {
               />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Reservation
-                loading={statusCreateTicketSale === 'loading'}
-                route={route}
-                passengers={getPassengers()}
-                onSubmit={handleSubmit(onSubmit)}
-              />
+              <Reservation control={control} loading={statusCreateTicketSale === 'loading'} route={route} onSubmit={handleSubmit(onSubmit)} />
             </Grid>
           </Grid>
         </Box>
