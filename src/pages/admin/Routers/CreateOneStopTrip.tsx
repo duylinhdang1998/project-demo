@@ -6,7 +6,8 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { Route } from 'services/models/Route';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
 import StepForm from './components/StepForm';
@@ -15,6 +16,7 @@ export default function CreateOneStopTrip() {
   const { t } = useTranslation(['routers', 'translation']);
 
   const { routeCode } = useParams();
+  const location = useLocation();
 
   const { statusGetRoute, route } = useAppSelector(selectRoutes);
   const dispatch = useAppDispatch();
@@ -22,6 +24,7 @@ export default function CreateOneStopTrip() {
   const isEditAction = useMemo(() => {
     return !!routeCode;
   }, [routeCode]);
+  const sourceToCopy = location.state as Route | undefined;
 
   useEffect(() => {
     if (isEditAction && routeCode) {
@@ -46,7 +49,7 @@ export default function CreateOneStopTrip() {
       >
         <Box width="100%" display="flex" justifyContent="center">
           <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
-            <StepForm isEditAction={isEditAction} />
+            <StepForm isEditAction={isEditAction} sourceToCopy={sourceToCopy} />
           </Box>
         </Box>
       </LayoutDetail>

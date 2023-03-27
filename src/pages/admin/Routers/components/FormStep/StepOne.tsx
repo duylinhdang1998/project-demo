@@ -43,8 +43,9 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
     formState: { errors },
     handleSubmit,
     getValues,
-    setValue,
     reset,
+    watch,
+    resetField,
   } = useForm<StepOneValuesForOneStopTrip>();
 
   const [open, setOpen] = useState(false);
@@ -80,15 +81,18 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
 
   useEffect(() => {
     if (!!values && !isEmpty(values)) {
-      console.log(values);
       reset({
         ...values,
         arrivalDuration: values.arrivalDuration,
-        departureTime: toDayjs({ value: values.departureTime }),
+        departureTime: toDayjs({ value: values.departureTime, format: 'HH:mm' }),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
+
+  useEffect(() => {
+    watch();
+  }, [watch]);
 
   return (
     <Box my="24px">
@@ -107,7 +111,9 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             id: 'vehicle',
             vehicle: getVehicle(),
             onChange: vehicle => {
-              setValue('vehicle', vehicle as StepOneValuesForOneStopTrip['vehicle']);
+              resetField('vehicle', {
+                defaultValue: vehicle as StepOneValuesForOneStopTrip['vehicle'],
+              });
             },
             required: true,
           },
@@ -117,7 +123,9 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             id: 'departurePoint',
             destination: getDeparturePoint(),
             onChange: departurePoint => {
-              setValue('departurePoint', departurePoint as StepOneValuesForOneStopTrip['departurePoint']);
+              resetField('departurePoint', {
+                defaultValue: departurePoint as StepOneValuesForOneStopTrip['departurePoint'],
+              });
             },
             required: true,
           },
@@ -136,7 +144,9 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             type: 'controlSelectDestination',
             destination: getArrivalPoint(),
             onChange: arrivalPoint => {
-              setValue('arrivalPoint', arrivalPoint as StepOneValuesForOneStopTrip['arrivalPoint']);
+              resetField('arrivalPoint', {
+                defaultValue: arrivalPoint as StepOneValuesForOneStopTrip['arrivalPoint'],
+              });
             },
             required: true,
           },

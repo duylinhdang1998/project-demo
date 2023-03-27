@@ -11,11 +11,11 @@ import { Route } from 'services/models/Route';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
 import { useToastStyle } from 'theme/toastStyles';
-import { toDayjs } from 'utils/toDayjs';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { dayjsToString } from 'utils/dayjsToString';
+import { toDayjs } from 'utils/toDayjs';
 import StepOne, { StepOneValuesForOneStopTrip } from './FormStep/StepOne';
-import StepOneMultiple, { StepOneValuesForMultipleStopTrip } from './FormStep/StepOneMultiple';
+import StepOneMultiple, { RoutePointValues, StepOneValuesForMultipleStopTrip } from './FormStep/StepOneMultiple';
 import StepThree from './FormStep/StepThree';
 import StepTwo, { StepTwoValues } from './FormStep/StepTwo';
 
@@ -30,10 +30,11 @@ const useStyles = makeStyles(() => ({
 interface StepFormProps {
   isMulti?: boolean;
   isEditAction?: boolean;
+  sourceToCopy?: Route;
 }
 
-export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
-  const [activeStep, setActiveStep] = useState(isEditAction ? 2 : 0);
+export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFormProps) {
+  const [activeStep, setActiveStep] = useState(0);
   const [stepOneValues, setStepOneValues] = useState<StepOneValuesForOneStopTrip | StepOneValuesForMultipleStopTrip | undefined>(undefined);
   const [stepTwoValues, setStepTwoValues] = useState<StepTwoValues | undefined>(undefined);
 
@@ -174,27 +175,30 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
         setStepOneValues({
           vehicle: route.vehicle,
           departurePoint: route.departurePoint,
-          departureTime: toDayjs({ value: route.departureTime }),
-          routePoints: route.routePoints.map(routePointValue => {
-            console.log(1111, routePointValue);
-            return {
-              stop_point: routePointValue.stopPoint,
-              duration: Number(routePointValue.durationTime),
-              ecoAdult: routePointValue.ECOPrices?.ADULT,
-              ecoChildren: routePointValue.ECOPrices?.CHILD,
-              ecoStudent: routePointValue.ECOPrices?.STUDENT,
-              vipAdult: routePointValue.VIPPrices?.ADULT,
-              vipChildren: routePointValue.VIPPrices?.CHILD,
-              vipStudent: routePointValue.VIPPrices?.STUDENT,
-            };
-          }),
+          departureTime: toDayjs({ value: route.departureTime, format: 'HH:mm' }),
+          routePoints: route.routePoints.reduce<StepOneValuesForMultipleStopTrip['routePoints']>((result, routePointValue) => {
+            if (routePointValue.routeType === 'MAIN_ROUTE') {
+              const value = {
+                stop_point: routePointValue.stopPoint,
+                duration: Number(routePointValue.durationTime),
+                ecoAdult: routePointValue.ECOPrices?.ADULT,
+                ecoChildren: routePointValue.ECOPrices?.CHILD,
+                ecoStudent: routePointValue.ECOPrices?.STUDENT,
+                vipAdult: routePointValue.VIPPrices?.ADULT,
+                vipChildren: routePointValue.VIPPrices?.CHILD,
+                vipStudent: routePointValue.VIPPrices?.STUDENT,
+              };
+              return result.concat(value as RoutePointValues);
+            }
+            return result;
+          }, []),
         } as StepOneValuesForMultipleStopTrip);
       } else {
         const routePointValue = route.routePoints[0];
         setStepOneValues({
           vehicle: route.vehicle,
           departurePoint: route.departurePoint,
-          departureTime: toDayjs({ value: route.departureTime }),
+          departureTime: toDayjs({ value: route.departureTime, format: 'HH:mm' }),
           arrivalPoint: routePointValue.stopPoint,
           arrivalDuration: routePointValue.durationTime,
           ecoAdult: routePointValue.ECOPrices?.ADULT,
@@ -212,6 +216,54 @@ export default function StepForm({ isMulti, isEditAction }: StepFormProps) {
       });
     }
   }, [isEditAction, isMulti, route]);
+
+  useEffect(() => {
+    if (sourceToCopy) {
+      if (isMulti) {
+        setStepOneValues({
+          vehicle: sourceToCopy.vehicle,
+          departurePoint: sourceToCopy.departurePoint,
+          departureTime: toDayjs({ value: sourceToCopy.departureTime, format: 'HH:mm' }),
+          routePoints: sourceToCopy.routePoints.reduce<StepOneValuesForMultipleStopTrip['routePoints']>((result, routePointValue) => {
+            if (routePointValue.routeType === 'MAIN_ROUTE') {
+              const value = {
+                stop_point: routePointValue.stopPoint,
+                duration: Number(routePointValue.durationTime),
+                ecoAdult: routePointValue.ECOPrices?.ADULT,
+                ecoChildren: routePointValue.ECOPrices?.CHILD,
+                ecoStudent: routePointValue.ECOPrices?.STUDENT,
+                vipAdult: routePointValue.VIPPrices?.ADULT,
+                vipChildren: routePointValue.VIPPrices?.CHILD,
+                vipStudent: routePointValue.VIPPrices?.STUDENT,
+              };
+              return result.concat(value as RoutePointValues);
+            }
+            return result;
+          }, []),
+        } as StepOneValuesForMultipleStopTrip);
+      } else {
+        const routePointValue = sourceToCopy.routePoints[0];
+        setStepOneValues({
+          vehicle: sourceToCopy.vehicle,
+          departurePoint: sourceToCopy.departurePoint,
+          departureTime: toDayjs({ value: sourceToCopy.departureTime, format: 'HH:mm' }),
+          arrivalPoint: routePointValue.stopPoint,
+          arrivalDuration: routePointValue.durationTime,
+          ecoAdult: routePointValue.ECOPrices?.ADULT,
+          ecoChildren: routePointValue.ECOPrices?.CHILD,
+          ecoStudent: routePointValue.ECOPrices?.STUDENT,
+          vipAdult: routePointValue.VIPPrices?.ADULT,
+          vipChildren: routePointValue.VIPPrices?.CHILD,
+          vipStudent: routePointValue.VIPPrices?.STUDENT,
+        } as StepOneValuesForOneStopTrip);
+      }
+      setStepTwoValues({
+        days: sourceToCopy.dayActives,
+        fromDate: toDayjs({ value: sourceToCopy.startPeriod }),
+        toDate: toDayjs({ value: sourceToCopy.endPeriod }),
+      });
+    }
+  }, [isMulti, sourceToCopy]);
 
   const renderStepContent = () => {
     switch (activeStep) {
