@@ -22,7 +22,7 @@ import { Vehicle } from 'services/models/Vehicle';
 import { toDayjs } from 'utils/toDayjs';
 import EditPriceTrip from '../EditPriceTrip';
 
-interface RoutePointValues {
+export interface RoutePointValues {
   stop_point: string;
   duration: number;
   ecoAdult: number;
@@ -177,7 +177,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
     if (!!values && !isEmpty(values)) {
       reset({
         ...values,
-        departureTime: toDayjs({ value: values.departureTime }),
+        departureTime: toDayjs({ value: values.departureTime, format: 'HH:mm' }),
         routePoints: values.routePoints.map(routePoint => ({
           ...routePoint,
           duration: routePoint.duration,

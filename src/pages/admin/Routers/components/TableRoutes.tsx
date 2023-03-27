@@ -24,6 +24,7 @@ import { selectAuth } from 'store/auth/selectors';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
 import { useToastStyle } from 'theme/toastStyles';
+import { addMinutesToTimeString } from 'utils/addMinutesToTimeString';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 import { v4 as uuid } from 'uuid';
@@ -69,7 +70,6 @@ function TableRoutes() {
         align: 'center',
       },
       {
-        // FIXME: Key để sort là gì?
         key: 'route',
         dataIndex: 'route',
         title: () => <Typography variant="headerTable">{t('routers:route')}</Typography>,
@@ -111,13 +111,15 @@ function TableRoutes() {
         render: (_, row) => <Typography variant="body2">{row.departureTime}</Typography>,
       },
       {
-        // FIXME: Cái này đâu ra? Key sort là gì
-        key: 'arrivalDuration',
-        dataIndex: 'arrivalDuration',
+        key: 'routePoints.durationTime',
+        dataIndex: 'routePoints.durationTime',
         title: () => <Typography variant="headerTable">{t('routers:arrivalDuration')}</Typography>,
         sorter: true,
-        // FIXME: Arrival time lấy đâu ra?
-        render: (_, row) => <Typography variant="body2">{row.departureTime}</Typography>,
+        render: (_, row) => {
+          const mainRoutes = row.routePoints.filter(routePoint => routePoint.routeType === 'MAIN_ROUTE');
+          const lastRoute = mainRoutes[mainRoutes.length - 1];
+          return <Typography variant="body2">{addMinutesToTimeString(row.departureTime, lastRoute.durationTime)}</Typography>;
+        },
       },
       {
         key: 'vehicle.brand',
@@ -189,7 +191,12 @@ function TableRoutes() {
                       }}
                     />
                   ),
-                  onClick: () => {},
+                  onClick: () => {
+                    const path = isMultipleStops ? 'create-multi' : 'create-oneway';
+                    navigate('/admin/routers/' + path, {
+                      state: row,
+                    });
+                  },
                 },
                 {
                   id: uuid(),
