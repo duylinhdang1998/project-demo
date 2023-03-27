@@ -20,7 +20,7 @@ import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import EditPriceTrip from '../EditPriceTrip';
 import { DialogMultiStopTripDetailProps } from './DialogMultiStopTripDetail';
 
-const useStyles = makeStyles(() => ({
+export const useStyles = makeStyles(() => ({
   titleIcon: {
     background: 'rgba(255, 138, 0, 1) !important',
     width: '12px !important',

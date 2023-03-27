@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { searchRoutes } from 'services/TicketSale/searchRoutes';
+import { addMinutesToTimeString } from 'utils/addMinutesToTimeString';
 import { dayjsToString } from 'utils/dayjsToString';
 import CardSelectTrip from './components/CardSelectTrip';
 import { FilterRoutesBySearcher } from './components/FilterRoutesBySearcher';
@@ -23,13 +24,13 @@ export interface FilterRoutesFormValues {
   arrivalPoint?: { value: string };
   departureTime?: dayjs.Dayjs;
   tripType: RouteOfTicketSale['tripType'];
-  totalPax: number; // FIXME: Search theo cái gì ???
+  totalPax: number;
 }
 
 const getTrips = async (page: number, values: FilterRoutesFormValues): Promise<Awaited<ReturnType<typeof searchRoutes>>['data']> => {
   try {
     const response = await searchRoutes({
-      page: 0,
+      page,
       searcher: {
         tripType: { value: values.tripType, operator: 'eq' },
         departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
@@ -37,6 +38,11 @@ const getTrips = async (page: number, values: FilterRoutesFormValues): Promise<A
         'route.departureTime': {
           value: values.departureTime && dayjsToString(values.departureTime, 'HH:mm'),
           operator: 'eq',
+        },
+        // @ts-ignore
+        quantity: {
+          value: values.totalPax,
+          operator: 'gte',
         },
       },
     });
@@ -122,22 +128,19 @@ export const SelectTripOnCreateTicketSale = () => {
           className={classes.title}
         />
         <Box sx={{ marginBottom: '16px' }}>
-          {data?.routes.map(route => {
+          {data?.routes.map(routeItem => {
             return (
               <CardSelectTrip
-                key={route._id}
-                // FIXME: Cái gì điền ở đây
-                timeStart="08:30"
-                // FIXME: Cái gì điền ở đây
-                timeEnd="10:30"
-                placeStart={route.departurePoint}
-                placeEnd={route.stopPoint}
-                // FIXME: Cái gì điền ở đây
-                price={20}
-                duration={t('ticketSales:duration_minutes', { duration: route.durationTime })}
-                // FIXME: Cái gì điền ở đây
-                vehicle="Mercedes S450"
-                onSelect={() => handleSelect(route)}
+                key={routeItem._id}
+                timeStart={routeItem.route.departureTime}
+                timeEnd={addMinutesToTimeString(routeItem.route.departureTime, routeItem.durationTime)}
+                placeStart={routeItem.departurePoint}
+                placeEnd={routeItem.stopPoint}
+                ECOPrices={routeItem.ECOPrices}
+                VIPPrices={routeItem.VIPPrices}
+                duration={t('ticketSales:duration_minutes', { duration: routeItem.durationTime })}
+                vehicle={routeItem.vehicle}
+                onSelect={() => handleSelect(routeItem)}
               />
             );
           })}

@@ -25,7 +25,7 @@ export const updateVehicle = async ({ data, id }: UpdateVehicle): Promise<Respon
       ...data,
       ECOseats: Number(data.ECOseats),
       VIPseats: Number(data.VIPseats),
-      attach: data.attach._id,
+      attach: data.attach?._id,
       services: data.services.map(service => service._id),
       merchandises: data.merchandises.map(merchandise => merchandise._id),
     },
