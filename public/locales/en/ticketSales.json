@@ -58,5 +58,6 @@
   "total_trips_found": "{{total}} trips found",
   "duration_minutes": "about {{duration}} minutes",
   "send_email_success": "Send email successfully",
-  "send_email_error": "Send email error"
+  "send_email_error": "Send email error",
+  "terms_agree_invalid": "You must agree with our terms"
 }

@@ -32,6 +32,7 @@ export interface TicketDetailFormValues {
   email: string;
   method: PaymentGateway;
   passengers: Passenger[];
+  accept_term: boolean;
 }
 
 const fieldKeys = ['email', 'method'];
@@ -165,7 +166,13 @@ export const TicketDetailOnCreateTicketSale = () => {
               />
             </Grid>
             <Grid item xs={12} md={4}>
-              <Reservation control={control} loading={statusCreateTicketSale === 'loading'} route={route} onSubmit={handleSubmit(onSubmit)} />
+              <Reservation
+                errors={errors}
+                control={control}
+                loading={statusCreateTicketSale === 'loading'}
+                route={route}
+                onSubmit={handleSubmit(onSubmit)}
+              />
             </Grid>
           </Grid>
         </Box>
