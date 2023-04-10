@@ -27,7 +27,7 @@ export interface FilterRoutesFormValues {
   totalPax: number;
 }
 
-const getTrips = async (page: number, values: FilterRoutesFormValues): Promise<Awaited<ReturnType<typeof searchRoutes>>['data']> => {
+export const getTrips = async (page: number, values: FilterRoutesFormValues): Promise<Awaited<ReturnType<typeof searchRoutes>>['data']> => {
   try {
     const response = await searchRoutes({
       page,
@@ -36,7 +36,7 @@ const getTrips = async (page: number, values: FilterRoutesFormValues): Promise<A
         departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
         stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
         'route.departureTime': {
-          value: values.departureTime && dayjsToString(values.departureTime, 'HH:mm'),
+          value: values.departureTime && dayjsToString(values.departureTime, 'DD/MM/YYYY HH:mm'),
           operator: 'eq',
         },
         // @ts-ignore
@@ -94,10 +94,11 @@ export const SelectTripOnCreateTicketSale = () => {
 
   const onSubmit = (values: FilterRoutesFormValues) => {
     setCurrentPage(1);
-    run(1, values);
+    run(0, values);
   };
 
   useEffect(() => {
+    console.log({ currentPage });
     run(currentPage, getValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);

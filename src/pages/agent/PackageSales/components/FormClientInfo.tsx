@@ -1,33 +1,12 @@
-import { Box, Divider, FormControlLabel, Grid, InputBase, InputLabel, Radio, RadioGroup, Stack, Theme, Typography } from '@mui/material';
+import { Box, Divider, Grid, InputBase, InputLabel, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { get } from 'lodash-es';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import Select from 'react-select';
-import VisaPng from 'assets/images/visa.png';
-import { customStyles } from 'components/FilterTicket/customStyles';
-import FormVerticle from 'components/FormVerticle/FormVerticle';
-import { fields4 } from '../constant';
-
-interface StateLocation {
-  merchandise: {
-    title: string;
-    weight: string;
-    price: string;
-  }[];
-}
-
-interface FieldValues {
-  firstName: string;
-  lastName: string;
-  merchandise: StateLocation['merchandise'];
-}
-
-const options = [
-  { key: 'pkg_2', value: 'pkg_2', label: 'Package 2kg' },
-  { key: 'pkg_3', value: 'pkg_3', label: 'Package 3kg' },
-];
+import { fields2, fields3 } from '../constant';
+import FormMerchandise from './FormMerchandise';
+import { Field } from 'models/Field';
 
 const useStyles = makeStyles((theme: Theme) => ({
   label: {
@@ -72,100 +51,86 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 36,
     height: 25,
   },
+  error: {
+    marginTop: '4px !important',
+    color: theme.palette.error.main,
+  },
 }));
 
-export default function FormClientInfo() {
+interface Props {
+  control: any;
+  errors?: any;
+}
+
+export default function FormClientInfo({ control, errors }: Props) {
   const { t } = useTranslation(['packageSales', 'translation', 'account']);
   const location = useLocation();
-  const state: StateLocation = get(location, 'state.merchandise', {});
   const classes = useStyles();
+  console.log('location', location);
 
-  const { control } = useForm<FieldValues>({
-    defaultValues: {
-      merchandise: [{ title: '', weight: '', price: '' }],
-    },
-  });
+  const renderField = (fields: Field[]) => {
+    return (
+      <Grid container spacing="10px" columns={12}>
+        {fields.map(f => (
+          <Grid key={f.id} item xs={12} lg={4}>
+            <Controller
+              name={f.label as any}
+              control={control}
+              render={({ field }) => {
+                return (
+                  <Box>
+                    <InputLabel htmlFor={f.label} className={classes.label}>
+                      {t(`${f.label}`)} <span className={classes.error}>*</span>
+                    </InputLabel>
+                    <InputBase
+                      fullWidth
+                      id={f.label}
+                      {...field}
+                      placeholder={t(`${f.label}`)}
+                      className={classes.input}
+                      error={!!errors}
+                      disabled={f.disabled}
+                    />
+                    {!!errors && (
+                      <Typography component="p" className={classes.error} fontSize={12}>
+                        {get(errors, `${f.label}.message`, '')}
+                      </Typography>
+                    )}
+                  </Box>
+                );
+              }}
+              rules={{
+                required: {
+                  value: f.required ?? false,
+                  message: t('translation:error_required', { name: t(`packageSales:${f.label}`).toLowerCase() }),
+                },
+              }}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  };
 
   return (
     <Box>
-      <FormVerticle fields={fields4} grid isGridHorizon indexGridHorizon={2} control={control} filterKey="passenger" />
+      <Box my="10px">
+        <Typography mb="10px" fontWeight={700}>
+          {t('packageSales:sender')}
+        </Typography>
+        {renderField(fields2)}
+      </Box>
+      <Box my="10px">
+        <Typography fontWeight={700} mb="10px">
+          {t('packageSales:recipent')}
+        </Typography>
+        {renderField(fields3)}
+      </Box>
       <Typography fontSize={12} color="#B2BABE" mt="4px" component="p">
         {t('required_in_order')}
       </Typography>
       <Divider sx={{ margin: '16px 0' }} />
-      <Box>
-        {state.merchandise.map((i, index) => (
-          <Box key={`merchandise_${index}`}>
-            <Typography variant="h5" mb="16px">
-              {t('translation:merchandise')} {index + 1}
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
-                <Controller
-                  control={control}
-                  name={`merchandise.${index}.title`}
-                  render={({ field }) => (
-                    <Box>
-                      <InputLabel htmlFor={`merchandise.${index}.weight`} className={classes.label}>
-                        {t(`weight`)}
-                      </InputLabel>
-                      <Select {...field} id={`merchandise.${index}.title`} options={options} styles={customStyles} placeholder={t(`title`)} />
-                    </Box>
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Controller
-                  control={control}
-                  name={`merchandise.${index}.weight`}
-                  render={({ field }) => (
-                    <Box>
-                      <InputLabel htmlFor={`merchandise.${index}.weight`} className={classes.label}>
-                        {t(`weight`)}
-                      </InputLabel>
-                      <InputBase fullWidth {...field} id={`merchandise.${index}.weight`} placeholder={t(`weight`)} className={classes.input} />
-                    </Box>
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Controller
-                  control={control}
-                  name={`merchandise.${index}.weight`}
-                  render={({ field }) => (
-                    <Box>
-                      <InputLabel htmlFor={`merchandise.${index}.price`} className={classes.label}>
-                        {t(`price`)}
-                      </InputLabel>
-                      <Box className={classes.inputNumberWrap}>
-                        <span className={classes.prefix}>$</span>
-                        <input {...field} id={`merchandise.${index}.price`} min={0} type="number" className={classes.inputNumber} />
-                      </Box>
-                    </Box>
-                  )}
-                />
-              </Grid>
-            </Grid>
-            <Divider sx={{ borderStyle: index === state.merchandise.length - 1 ? 'solid' : 'dashed', margin: '16px 0' }} />
-          </Box>
-        ))}
-      </Box>
-      <Typography variant="h5">{t('account:payment_methods')}</Typography>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <RadioGroup defaultValue="credit" name="method">
-          <FormControlLabel
-            value="credit"
-            control={<Radio />}
-            label="Credit card"
-            sx={{
-              '.MuiFormControlLabel-label': {
-                fontSize: '14px !important',
-              },
-            }}
-          />
-        </RadioGroup>
-        <img src={VisaPng} className={classes.img} />
-      </Stack>
+      <FormMerchandise control={control} />
     </Box>
   );
 }

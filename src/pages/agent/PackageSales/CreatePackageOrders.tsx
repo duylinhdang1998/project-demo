@@ -1,57 +1,116 @@
-import { Box, Typography } from '@mui/material';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import CardWhite from 'components/CardWhite/CardWhite';
-import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
-import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
-import FilterTicket from 'components/FilterTicket/FilterTicket';
 import LayoutDetail from 'layout/LayoutDetail';
-import { fields1, fields2, fields3, KeyFields } from './constant';
+import { Box, Grid, Stack, Theme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { FilterRoutesBySearcher } from '../TicketSales/SelectTripOnCreateTicketSale/components/FilterRoutesBySearcher';
+import { FilterRoutesFormValues, getTrips } from '../TicketSales/SelectTripOnCreateTicketSale/SelectTripOnCreateTicketSale';
+import { useRequest, useUpdateEffect } from 'ahooks';
+import { useState } from 'react';
+import { Pagination } from 'antd';
+import Highlighter from 'react-highlight-words';
+import CardSelectTrip from '../TicketSales/SelectTripOnCreateTicketSale/components/CardSelectTrip';
+import { addMinutesToTimeString } from 'utils/addMinutesToTimeString';
+import { RouteOfTicketSale } from 'services/models/TicketSale';
 
-type Values = Record<typeof KeyFields[number], string>;
+const useStyles = makeStyles((theme: Theme) => ({
+  buttonSearch: {
+    backgroundColor: theme.palette.primary.main,
+    height: '40px',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main + '!important',
+    },
+  },
+  highlightText: {
+    color: theme.palette.primary.main,
+    fontWeight: 'bold',
+    borderWidth: 1,
+    backgroundColor: 'transparent',
+  },
+  title: {
+    fontWeight: '400',
+    fontSize: 12,
+    color: theme.palette.grey[100],
+  },
+}));
 
 export default function CreatePackageOrders() {
-  const { control } = useForm<Values>();
-  const { t } = useTranslation(['packageSales', 'translation']);
+  const classes = useStyles();
+  const { t } = useTranslation(['packageSales', 'translation', 'ticketSales']);
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const [open, setOpen] = useState(false);
+  const { control, handleSubmit, getValues } = useForm<FilterRoutesFormValues>({
+    defaultValues: {
+      arrivalPoint: undefined,
+      departurePoint: undefined,
+      departureTime: undefined,
+      totalPax: 0,
+    },
+  });
 
-  const handleClose = () => {
-    setOpen(false);
+  const { run, loading, data } = useRequest(getTrips, {
+    manual: true,
+  });
+
+  useUpdateEffect(() => {
+    run(currentPage - 1, getValues());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
+
+  const handleSelect = (routeItem: RouteOfTicketSale) => {
+    navigate('client-info', {
+      state: {
+        selectedRoute: routeItem,
+      },
+    });
   };
-  const handleCancel = () => setOpen(true);
-
-  const handleNext = () => {
-    navigate('add-merchandise');
+  const onSubmit = (values: FilterRoutesFormValues) => {
+    setCurrentPage(1);
+    run(0, values);
   };
 
   return (
     <LayoutDetail title={t('create_package_orders')} subTitle={t('package_sales')}>
       <CardWhite title={t('select_your_trip')}>
-        <FilterTicket control={control} fields={fields1} filterKey="packageSales" numberColumns={3} />
-        <Box my="12px">
-          <Typography component="p" variant="textBold" mb="16px">
-            {t('sender')}
-          </Typography>
-          <FilterTicket control={control} fields={fields2} filterKey="packageSales" numberColumns={3} />
-        </Box>
-        <Box my="12px">
-          <Typography component="p" variant="textBold" mb="16px">
-            {t('recipent')}
-          </Typography>
-          <FilterTicket control={control} fields={fields3} filterKey="packageSales" numberColumns={3} />
-        </Box>
-        <ComboButton onCancel={handleCancel} textOk={t('translation:next')} onSave={handleNext} />
+        <FilterRoutesBySearcher control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} />
+        {!!data?.routes.length && (
+          <Box>
+            <Highlighter
+              textToHighlight={t('ticketSales:total_trips_found', { total: data?.routes.length })}
+              highlightClassName={classes.highlightText}
+              searchWords={[data?.routes.length.toString() ?? '']}
+              autoEscape={true}
+              className={classes.title}
+            />
+            <Grid sx={{ marginY: '16px' }} columns={12} container spacing="16px">
+              {data?.routes.map(routeItem => {
+                return (
+                  <Grid xs={12} lg={6} item key={routeItem._id}>
+                    <CardSelectTrip
+                      key={routeItem._id}
+                      timeStart={routeItem.route.departureTime}
+                      timeEnd={addMinutesToTimeString(routeItem.route.departureTime, routeItem.durationTime)}
+                      placeStart={routeItem.departurePoint}
+                      placeEnd={routeItem.stopPoint}
+                      ECOPrices={routeItem.ECOPrices}
+                      VIPPrices={routeItem.VIPPrices}
+                      duration={t('ticketSales:duration_minutes', { duration: routeItem.durationTime })}
+                      vehicle={routeItem.vehicle}
+                      onSelect={() => handleSelect(routeItem)}
+                    />
+                  </Grid>
+                );
+              })}
+            </Grid>
+            <Stack alignItems="flex-end">
+              <Pagination onChange={setCurrentPage} current={currentPage} total={data?.routes.length ?? 1} showLessItems />
+            </Stack>
+          </Box>
+        )}
       </CardWhite>
-      <DialogConfirm
-        openDialog={open}
-        title={t('translation:cancel_type', { type: t('package_order') })}
-        subTitle={t('translation:leave_page')}
-        onClose={handleClose}
-      />
     </LayoutDetail>
   );
 }

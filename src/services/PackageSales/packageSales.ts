@@ -9,6 +9,29 @@ import { getSortParams } from 'services/utils/getSortParams';
 import fetchAPI from 'utils/fetchAPI';
 
 const RECORDS_PER_PAGE = 10;
+export interface PackageSalePayload {
+  route?: string;
+  departurePoint?: string;
+  arrivalPoint?: string;
+  departureTime?: string;
+  sender?: Recipent;
+  email?: string;
+  recipent?: Recipent;
+  merchandises?: Merchandise[];
+}
+
+export interface Merchandise {
+  package?: string;
+  weight?: number;
+  price?: number;
+}
+
+export interface Recipent {
+  firstName?: string;
+  lastName?: string;
+  mobile?: string;
+  type?: string;
+}
 
 export const useGetListPackageSales = (option?: Options<ResponseSuccess<PackageSale>, any>) => {
   const getListPackageSales = async ({ page, sorter, searcher }: ParamsSettings<PackageSale>): Promise<ResponseSuccess<PackageSale>> => {
@@ -78,5 +101,21 @@ export const useGetPackageSale = () => {
 
   return useRequest<PackageSale | null, [PackageSale['orderCode']]>(getPackageSale, {
     manual: true,
+  });
+};
+
+export const useCreatePackageSale = (option?: Options<ResponseSuccess<PackageSale>, any>) => {
+  const createPackageSale = async (data: PackageSalePayload): Promise<ResponseSuccess<PackageSale>> => {
+    const response: AxiosResponse<ResponseSuccess<PackageSale>> = await fetchAPI.request({
+      url: '/v1.0/company/package-sales',
+      method: 'POST',
+      data,
+    });
+    return response.data;
+  };
+
+  return useRequest<ResponseSuccess<PackageSale>, [PackageSalePayload]>(createPackageSale, {
+    manual: true,
+    ...option,
   });
 };

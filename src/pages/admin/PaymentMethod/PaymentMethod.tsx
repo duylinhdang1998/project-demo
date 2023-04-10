@@ -1,7 +1,7 @@
 import { Divider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
-import { Controller, useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
@@ -12,13 +12,11 @@ import { useGetPaymentMethod } from 'services/Company/paymentMethods';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { get } from 'lodash-es';
-import CreditCard from 'components/CreditCard/CreditCard';
 
 export default function PaymentMethod() {
   const { t } = useTranslation(['account', 'translation']);
 
   const { control, handleSubmit } = useForm<{ method: string }>();
-  const methodValue = useWatch({ control, name: 'method' });
 
   const { loading, data } = useGetPaymentMethod();
 
@@ -37,13 +35,6 @@ export default function PaymentMethod() {
     console.log({ values, data });
   };
 
-  const renderCreditValue = () => {
-    return (
-      <Box my="10px" display={methodValue !== 'CREDIT_CARD' ? 'none' : 'block'}>
-        <CreditCard />
-      </Box>
-    );
-  };
   return (
     <Box>
       <HeaderLayout activeSideBarHeader={t('payment_methods')} />
@@ -71,7 +62,6 @@ export default function PaymentMethod() {
                       return <Radio {...field} options={methods} radioName="payment-method" />;
                     }}
                   />
-                  {renderCreditValue()}
                 </Box>
                 <ComboButton onSave={handleSubmit(onSubmit)} onCancel={handleCancel} />
               </Box>

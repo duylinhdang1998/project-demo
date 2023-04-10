@@ -1,6 +1,8 @@
 import { useRequest } from 'ahooks';
 import { AxiosResponse } from 'axios';
-import { ResponseDetailSuccess, ResponseSuccess } from 'services/models/Response';
+import { ParamsSettings, ResponseDetailSuccess, ResponseSuccess } from 'services/models/Response';
+import { getSearchParams } from 'services/utils/getSearchParams';
+import { getSortParams } from 'services/utils/getSortParams';
 import fetchAPI from 'utils/fetchAPI';
 
 export interface ITrackingEvent {
@@ -31,6 +33,7 @@ export interface ITrackingRoute {
     departurePoint: string;
     stopPoint: string;
   };
+  vehicle: ITrackingVehicle;
 }
 
 interface ITrackingVehicle {
@@ -41,6 +44,29 @@ interface ITrackingVehicle {
   ECOseats?: number;
   VIPseats?: number;
 }
+
+const RECORDS_PER_PAGE = 10;
+export const useGetRouteProgramDashboard = () => {
+  const getRouteProgramDashboard = async ({ page, sorter, searcher }: ParamsSettings<ITrackingRoute>) => {
+    try {
+      const response: AxiosResponse<ResponseSuccess<ITrackingRoute>> = await fetchAPI.request({
+        url: 'v1.0/company/tracking/routes',
+        params: {
+          limit: RECORDS_PER_PAGE,
+          offset: page * RECORDS_PER_PAGE,
+          ...getSortParams(sorter),
+          ...getSearchParams(searcher),
+        },
+      });
+      return response.data.code === 0 ? response.data.data : undefined;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  return useRequest(getRouteProgramDashboard, {
+    manual: true,
+  });
+};
 
 export const useGetDashboard = () => {
   const getDashboard = async () => {

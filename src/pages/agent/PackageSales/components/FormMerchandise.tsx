@@ -1,30 +1,15 @@
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Divider, Grid, InputBase, InputLabel, Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { Controller, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import TrashSvg from 'assets/images/trash.svg';
 import Button from 'components/Button/Button';
-import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-
-interface Values {
-  title: string;
-  weight: string;
-  price: string;
-}
-
-interface FieldArrayValues {
-  merchandise: Values[];
-}
-
-const options = [
-  { key: 'pkg_2', value: 'pkg_2', label: 'Package 2kg' },
-  { key: 'pkg_3', value: 'pkg_3', label: 'Package 3kg' },
-];
+import { useMount, useRequest } from 'ahooks';
+import { getPackageSettings } from 'services/PackageSetting/Company/getPackageSettings';
 
 const useStyles = makeStyles((theme: Theme) => ({
   label: {
@@ -83,27 +68,27 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default function FormMerchandise() {
+interface Props {
+  showButton?: boolean;
+  control: any;
+}
+
+export default function FormMerchandise({ control }: Props) {
   const { t } = useTranslation(['packageSales', 'translation']);
   const classes = useStyles();
-  const navigate = useNavigate();
-  const { control, handleSubmit } = useForm<FieldArrayValues>({
-    defaultValues: {
-      merchandise: [{ title: '', weight: '', price: '' }],
-    },
+
+  const { data, run } = useRequest(getPackageSettings, {
+    manual: true,
   });
+
+  useMount(() => {
+    run({ isGetAll: true, searcher: {}, sorter: {}, page: 0 });
+  });
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'merchandise' as never,
   });
-
-  const onSubmit = (values: any) => {
-    navigate('/agent/create-package-orders/client-info', {
-      state: {
-        merchandise: values,
-      },
-    });
-  };
 
   const handleAppend = () => {
     append({ title: '', weight: '', price: '' });
@@ -129,7 +114,16 @@ export default function FormMerchandise() {
                     <InputLabel htmlFor={`merchandise.${index}.title`} className={classes.label}>
                       {t(`title`)}
                     </InputLabel>
-                    <Select {...field} id={`merchandise.${index}.title`} options={options} styles={customStyles} placeholder={t(`title`)} />
+                    <Select
+                      {...field}
+                      id={`merchandise.${index}.title`}
+                      options={data?.data.hits.map(i => ({
+                        value: i._id,
+                        label: i.title,
+                      }))}
+                      styles={customStyles}
+                      placeholder={t(`title`)}
+                    />
                   </Box>
                 )}
               />
@@ -175,7 +169,6 @@ export default function FormMerchandise() {
       <Button variant="outlined" fullWidth className={classes.btn} startIcon={<AddIcon sx={{ color: '#1AA6EE' }} />} onClick={handleAppend}>
         {t('add_new_merchandise')}
       </Button>
-      <ComboButton textOk={t('translation:next')} onSave={handleSubmit(onSubmit)} />
     </Box>
   );
 }

@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import ListButton from './components/ListButton';
 import TableDashboard from './components/TableDashboard';
+import { memo } from 'react';
 
-export default function Dashboard() {
+function Dashboard() {
   const { t } = useTranslation(['dashboard']);
+
   return (
     <Box>
       <HeaderLayout activeSideBarHeader={t('dashboard')} />
@@ -16,3 +18,4 @@ export default function Dashboard() {
     </Box>
   );
 }
+export default memo(Dashboard);
