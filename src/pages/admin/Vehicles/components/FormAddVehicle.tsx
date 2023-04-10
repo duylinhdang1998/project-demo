@@ -82,7 +82,7 @@ function FormAddVehicle() {
 
   const getAttach = (): ImageResource[] => {
     const attach = getValues().attach;
-    return attach ? [attach] : [];
+    return typeof attach === 'object' ? [attach] : [];
   };
 
   const getServices = (): Vehicle['services'] => {

@@ -10,6 +10,8 @@ import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import './styles.css';
 import BusPng from 'assets/images/bus.png';
+import { getUrlImage, getUrlOfResource } from 'utils/getUrlOfResource';
+import classNames from 'classnames';
 
 const useMainStyles = makeStyles(() => ({
   root: {
@@ -20,6 +22,8 @@ const useMainStyles = makeStyles(() => ({
   img: {
     width: 40,
     height: 40,
+    objectFit: 'cover',
+    borderRadius: '50%',
   },
   icon: {
     width: 16,
@@ -51,14 +55,14 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, ECO
     return (
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item flex="1 1 auto">
-          <Grid container spacing={1} alignItems="center">
+          <Grid container spacing={1} alignItems="center" justifyContent="flex-end">
             <Grid item>
               <Box className={blockPricesClasses.ticketTypeIcon} bgcolor="rgba(51, 204, 127, 1)">
                 {t('routers:ECO')}
               </Box>
             </Grid>
             <Grid item>
-              <Box>
+              <Box className={blockPricesClasses.ticketTypePrice}>
                 <Typography component="span" className={blockPricesClasses.ticketTypeTitle}>
                   {t('routers:Adult')}:
                 </Typography>
@@ -68,8 +72,8 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, ECO
                 </Typography>
               </Box>
             </Grid>
-            <Grid item lg={4}>
-              <Box className={blockPricesClasses.ticketTypeDivider}>
+            <Grid item>
+              <Box className={classNames(blockPricesClasses.ticketTypeDivider, blockPricesClasses.ticketTypePrice)}>
                 <Typography component="span" className={blockPricesClasses.ticketTypeTitle}>
                   {t('routers:Student')}:
                 </Typography>
@@ -80,7 +84,7 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, ECO
               </Box>
             </Grid>
             <Grid item>
-              <Box>
+              <Box className={blockPricesClasses.ticketTypePrice}>
                 <Typography component="span" className={blockPricesClasses.ticketTypeTitle}>
                   {t('routers:Children')}:
                 </Typography>
@@ -91,14 +95,14 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, ECO
               </Box>
             </Grid>
           </Grid>
-          <Grid container spacing={1} alignItems="center">
+          <Grid container spacing={1} alignItems="center" justifyContent="flex-end">
             <Grid item>
               <Box bgcolor="rgba(255, 182, 0, 1)" className={blockPricesClasses.ticketTypeIcon}>
                 {t('routers:VIP')}
               </Box>
             </Grid>
             <Grid item>
-              <Box>
+              <Box className={blockPricesClasses.ticketTypePrice}>
                 <Typography component="span" className={blockPricesClasses.ticketTypeTitle}>
                   {t('routers:Adult')}:
                 </Typography>
@@ -108,8 +112,8 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, ECO
                 </Typography>
               </Box>
             </Grid>
-            <Grid item lg={4}>
-              <Box className={blockPricesClasses.ticketTypeDivider}>
+            <Grid item>
+              <Box className={classNames(blockPricesClasses.ticketTypeDivider, blockPricesClasses.ticketTypePrice)}>
                 <Typography component="span" className={blockPricesClasses.ticketTypeTitle}>
                   {t('routers:Student')}:
                 </Typography>
@@ -120,7 +124,7 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, ECO
               </Box>
             </Grid>
             <Grid item>
-              <Box>
+              <Box className={blockPricesClasses.ticketTypePrice}>
                 <Typography component="span" className={blockPricesClasses.ticketTypeTitle}>
                   {t('routers:Children')}:
                 </Typography>
@@ -144,7 +148,7 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, ECO
         spacing={2}
         alignItems={{ xs: 'flex-start', md: 'center' }}
       >
-        <Box flex="35%" className="ticket_sales_custom_timeline_container">
+        <Box className="ticket_sales_custom_timeline_container">
           <Timeline mode="left" className={mainClasses.timeline}>
             <Timeline.Item color="#333" label={timeStart}>
               {placeStart}
@@ -163,13 +167,22 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, ECO
       </Stack>
       <Stack direction="row" justifyContent="space-between" alignItems="center" my="16px">
         <Stack direction="row" alignItems="center" spacing={2}>
-          <img src={vehicle?.attach?.thumbnail ?? BusPng} className={mainClasses.img} />
+          <img
+            src={
+              typeof vehicle?.attach === 'string'
+                ? getUrlImage(vehicle.attach)
+                : vehicle?.attach && typeof vehicle?.attach === 'object'
+                ? getUrlOfResource(vehicle?.attach)
+                : BusPng
+            }
+            className={mainClasses.img}
+          />
           <Typography variant="body2">{vehicle?.brand}</Typography>
         </Stack>
         <Stack spacing={2} direction="row" alignItems="center">
-          <i className={`fas fa-wifi ${mainClasses.icon}`} />
-          <i className={`fas fa-tv-alt ${mainClasses.icon}`} />
-          <i className={`fas fa-tint ${mainClasses.icon}`} />
+          {vehicle?.services.map(service => {
+            return <img key={service._id} alt={service.title} src={getUrlImage(service.icon)} className={mainClasses.icon} />;
+          })}
         </Stack>
       </Stack>
       <Button variant="outlined" fullWidth onClick={onSelect}>

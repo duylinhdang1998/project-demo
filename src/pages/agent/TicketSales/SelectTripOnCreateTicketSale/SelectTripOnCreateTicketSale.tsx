@@ -98,8 +98,7 @@ export const SelectTripOnCreateTicketSale = () => {
   };
 
   useEffect(() => {
-    console.log({ currentPage });
-    run(currentPage, getValues());
+    run(currentPage - 1, getValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 

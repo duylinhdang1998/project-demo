@@ -3,22 +3,26 @@ import { MapPinIcon } from 'assets';
 import ClockSvg from 'assets/images/clock.svg';
 import SnowSvg from 'assets/images/snow.svg';
 import Button from 'components/Button/Button';
+import { useStyles } from 'components/FormVerticle/styles';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { useMemo } from 'react';
-import { useWatch } from 'react-hook-form';
+import { Controller, FieldErrors, useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
+import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { Passenger } from '../TicketDetailOnCreateTicketSale';
 
 export interface ReservationProps {
   control: any;
+  errors: FieldErrors<any>;
   route: RouteOfTicketSale;
   onSubmit: () => void;
   loading: boolean;
 }
 
-export const Reservation = ({ onSubmit, control, route, loading }: ReservationProps) => {
+export const Reservation = ({ onSubmit, control, route, loading, errors }: ReservationProps) => {
   const { t } = useTranslation(['ticketSales', 'translation']);
+  const formVerticleStyles = useStyles();
 
   const passengers = useWatch({
     name: 'passengers',
@@ -85,19 +89,38 @@ export const Reservation = ({ onSubmit, control, route, loading }: ReservationPr
           <TextWithIcon icon={SnowSvg} text={i} color="#45485E" />
         ))}
       </Box>
-      <FormControlLabel
-        control={<Checkbox checked />}
-        // FIXME: Cái gì đây ?
-        label={`${t('ticketSales:policy_privacy')}`}
-        sx={{
-          '.MuiFormControlLabel-label': {
-            fontSize: '14px !important',
-          },
+      <Controller
+        control={control}
+        name="accept_term"
+        rules={{ required: true }}
+        render={({ field }) => {
+          return (
+            <>
+              <FormControlLabel
+                control={<Checkbox {...field} />}
+                // FIXME: Cái gì đây ?
+                label={`${t('ticketSales:policy_privacy')}`}
+                sx={{
+                  '.MuiFormControlLabel-label': {
+                    fontSize: '14px !important',
+                  },
+                }}
+              />
+              {!!errors['accept_term'] && (
+                <Typography component="p" className={formVerticleStyles.error} fontSize={12}>
+                  {t('ticketSales:terms_agree_invalid')}
+                </Typography>
+              )}
+            </>
+          );
         }}
       />
       <Stack direction="row" alignItems="center" spacing={10} marginTop="20px">
         <Typography variant="body2">{t('total_price')}</Typography>
-        <Typography variant="price">${dataDetails.total}</Typography>
+        <Typography variant="price">
+          {getAppCurrencySymbol()}
+          {dataDetails.total}
+        </Typography>
       </Stack>
       <Typography variant="headerTable">{t('all_taxes_and_fees')}</Typography>
       <Button loading={loading} backgroundButton="#1AA6EE" fullWidth sx={{ marginTop: '24px' }} onClick={onSubmit}>

@@ -67,10 +67,13 @@ export const useStyles = makeStyles(() => ({
     color: 'rgba(69, 72, 94, 1) !important',
     fontSize: '12px !important',
   },
+  ticketTypePrice: {},
   ticketTypeDivider: {
     borderRight: '0.5px solid rgba(215, 218, 220, 1) !important',
     borderLeft: '0.5px solid rgba(215, 218, 220, 1) !important',
     textAlign: 'center !important' as any,
+    paddingLeft: '8px',
+    paddingRight: '8px',
   },
   totalRoutesValue: {
     color: 'rgba(71, 84, 97, 1) !important',
@@ -207,7 +210,7 @@ export const SubRoute = ({ route }: DialogMultiStopTripDetailProps) => {
         return (
           <Box key={routePoint.routeCode} padding="16px" className={classes.routePointContainer}>
             <Grid container spacing={2}>
-              <Grid item lg={4}>
+              <Grid item xs={4}>
                 <Typography className={classes.routePointTitle} component="p">
                   {t('routers:start_point')}
                 </Typography>
@@ -215,10 +218,10 @@ export const SubRoute = ({ route }: DialogMultiStopTripDetailProps) => {
                   {routePoint.departurePoint}
                 </Typography>
               </Grid>
-              <Grid item lg={4}>
+              <Grid item xs={4}>
                 <ArrowIcon />
               </Grid>
-              <Grid item lg={4}>
+              <Grid item xs={4}>
                 <Typography className={classes.routePointTitle} component="p">
                   {t('routers:finish_point')}
                 </Typography>
@@ -248,7 +251,7 @@ export const SubRoute = ({ route }: DialogMultiStopTripDetailProps) => {
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item lg={4}>
+                    <Grid item xs={4}>
                       <Box className={classes.ticketTypeDivider}>
                         <Typography component="span" className={classes.ticketTypeTitle}>
                           {t('routers:Student')}:
@@ -288,7 +291,7 @@ export const SubRoute = ({ route }: DialogMultiStopTripDetailProps) => {
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item lg={4}>
+                    <Grid item xs={4}>
                       <Box className={classes.ticketTypeDivider}>
                         <Typography component="span" className={classes.ticketTypeTitle}>
                           {t('routers:Student')}:
