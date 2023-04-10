@@ -94,11 +94,11 @@ export const SelectTripOnCreateTicketSale = () => {
 
   const onSubmit = (values: FilterRoutesFormValues) => {
     setCurrentPage(1);
-    run(1, values);
+    run(0, values);
   };
 
   useEffect(() => {
-    run(currentPage, getValues());
+    run(currentPage - 1, getValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 

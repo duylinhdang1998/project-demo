@@ -5,8 +5,13 @@ import { DialogMultiStopTripDetailProps } from './DialogMultiStopTripDetail';
 
 const useStyles = makeStyles(() => ({
   borderDivider: {
+    sx: {
+      borderLeft: 'none',
+    },
+    sm: {
+      borderLeft: `0.5px solid rgba(215, 218, 220, 1)`,
+    },
     borderRight: `0.5px solid rgba(215, 218, 220, 1)`,
-    borderLeft: `0.5px solid rgba(215, 218, 220, 1)`,
   },
   infomationName: {
     fontSize: 12,
@@ -30,7 +35,7 @@ export const GeneralInfomation = ({ route }: DialogMultiStopTripDetailProps) => 
 
   return (
     <Grid container spacing={2} style={{ marginBottom: '24px' }}>
-      <Grid lg={4} item flex="auto" textAlign="center">
+      <Grid xs={12} sx={{ flex: '100%' }} sm={4} item flex="auto" textAlign="center">
         <Box>
           <Typography component="p" className={classes.infomationName}>
             {t('routers:vehicle')}:
@@ -40,7 +45,7 @@ export const GeneralInfomation = ({ route }: DialogMultiStopTripDetailProps) => 
           </Typography>
         </Box>
       </Grid>
-      <Grid lg={4} item flex="auto" textAlign="center">
+      <Grid xs={6} sm={4} item flex="auto" textAlign="center">
         <Box className={classes.borderDivider}>
           <Typography component="p" className={classes.infomationName}>
             {t('routers:VIPseats')}:
@@ -50,7 +55,7 @@ export const GeneralInfomation = ({ route }: DialogMultiStopTripDetailProps) => 
           </Typography>
         </Box>
       </Grid>
-      <Grid lg={4} item flex="auto" textAlign="center">
+      <Grid xs={6} sm={4} item flex="auto" textAlign="center">
         <Box>
           <Typography component="p" className={classes.infomationName}>
             {t('routers:ECOseats')}:
