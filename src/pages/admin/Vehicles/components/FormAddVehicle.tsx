@@ -11,7 +11,6 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { ImageResource } from 'services/models/Resource';
 import { Vehicle } from 'services/models/Vehicle';
 import { CreateVehicle } from 'services/Vehicle/Company/createVehicle';
 import { selectAuth } from 'store/auth/selectors';
@@ -39,7 +38,6 @@ function FormAddVehicle() {
     control,
     formState: { errors },
     handleSubmit,
-    getValues,
     setValue,
     watch,
     reset,
@@ -51,6 +49,10 @@ function FormAddVehicle() {
       services: [],
     },
   });
+  const attach = watch('attach');
+  const services = watch('services');
+  const merchandises = watch('merchandises');
+
   const { t } = useTranslation(['vehicles', 'translation']);
 
   const navigate = useNavigate();
@@ -79,19 +81,6 @@ function FormAddVehicle() {
 
   const handleClose = () => setOpen(false);
   const handleCancel = () => setOpen(true);
-
-  const getAttach = (): ImageResource[] => {
-    const attach = getValues().attach;
-    return typeof attach === 'object' ? [attach] : [];
-  };
-
-  const getServices = (): Vehicle['services'] => {
-    return getValues().services ?? [];
-  };
-
-  const getMerchandises = (): Vehicle['merchandises'] => {
-    return getValues().merchandises ?? [];
-  };
 
   const onSubmit = (formValues: Values) => {
     if (isEditAction && vehicleId) {
@@ -148,11 +137,6 @@ function FormAddVehicle() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusGetVehicle, vehicle, isEditAction]);
 
-  useEffect(() => {
-    watch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watch]);
-
   return (
     <Box>
       <Grid container spacing={2}>
@@ -162,7 +146,7 @@ function FormAddVehicle() {
         <Grid item xs={12} md={6}>
           <ServiceSettings
             control={control}
-            services={getServices()}
+            services={services}
             errors={errors}
             messages={messages}
             onChange={values => {
@@ -171,7 +155,7 @@ function FormAddVehicle() {
           />
           <Merchandises
             control={control}
-            merchandises={getMerchandises()}
+            merchandises={merchandises}
             errors={errors}
             messages={messages}
             onChange={values => {
@@ -188,7 +172,7 @@ function FormAddVehicle() {
                 label: 'attach',
                 required: true,
                 multiple: false,
-                resources: getAttach(),
+                resources: typeof attach === 'object' ? [attach] : [],
                 onChange: resources => {
                   const lastResource = resources[resources.length - 1];
                   setValue('attach', lastResource);

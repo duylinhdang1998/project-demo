@@ -6,7 +6,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { Option } from 'models/Field';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
@@ -52,7 +52,6 @@ export const TicketDetailOnCreateTicketSale = () => {
     formState: { errors },
     handleSubmit,
     setValue,
-    getValues,
     watch,
   } = useForm<TicketDetailFormValues>({
     defaultValues: {
@@ -64,6 +63,7 @@ export const TicketDetailOnCreateTicketSale = () => {
     control,
     name: 'passengers',
   });
+  const method = watch('method');
 
   const isAgent = userInfo?.role === 'agent';
   const route = location.state as RouteOfTicketSale | undefined;
@@ -75,10 +75,6 @@ export const TicketDetailOnCreateTicketSale = () => {
       };
     }, {});
   }, [t]);
-
-  const getPaymentMethod = (): TicketDetailFormValues['method'] => {
-    return getValues().method;
-  };
 
   const onSubmit = (values: TicketDetailFormValues) => {
     if (route) {
@@ -128,10 +124,6 @@ export const TicketDetailOnCreateTicketSale = () => {
     }
   };
 
-  useEffect(() => {
-    watch();
-  }, [watch]);
-
   if (!route) {
     return <Navigate to={isAgent ? '/agent/ticket-sales' : '/admin/ticket-sales'} />;
   }
@@ -159,7 +151,7 @@ export const TicketDetailOnCreateTicketSale = () => {
                 errors={errors}
                 messages={messages}
                 label="method"
-                method={getPaymentMethod()}
+                method={method}
                 onChange={value => {
                   setValue('method', value);
                 }}

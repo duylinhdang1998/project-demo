@@ -10,7 +10,6 @@ import { Profile } from 'models/Profile';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
-import { ImageResource } from 'services/models/Resource';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useToastStyle } from 'theme/toastStyles';
@@ -30,12 +29,15 @@ export default function AccountSetting() {
   const {
     control,
     formState: { errors },
-    getValues,
     reset,
     resetField,
     setValue,
     handleSubmit,
+    watch,
   } = useForm<Values>();
+  const profileImage = watch('profileImage');
+  const logoImage = watch('logoImage');
+
   const [open, setOpen] = useState(false);
   const { t } = useTranslation(['account', 'translation']);
   const toastClass = useToastStyle();
@@ -51,16 +53,6 @@ export default function AccountSetting() {
       };
     }, {});
   }, [t]);
-
-  const getProfileImage = (): ImageResource[] => {
-    const attach = getValues().profileImage;
-    return attach ? [attach] : [];
-  };
-
-  const getLogoImage = (): ImageResource[] => {
-    const attach = getValues().logoImage;
-    return attach ? [attach] : [];
-  };
 
   const handleClose = () => {
     setOpen(false);
@@ -183,7 +175,7 @@ export default function AccountSetting() {
                           setValue('profileImage', undefined as any);
                         }
                       },
-                      resources: getProfileImage(),
+                      resources: profileImage ? [profileImage] : [],
                     },
                     {
                       id: 'logoImage',
@@ -201,7 +193,7 @@ export default function AccountSetting() {
                           setValue('logoImage', undefined as any);
                         }
                       },
-                      resources: getLogoImage(),
+                      resources: logoImage ? [logoImage] : [],
                     },
                   ]}
                   filterKey="account"

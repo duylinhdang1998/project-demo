@@ -18,9 +18,11 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { DayInWeekMappingToString } from 'services/models/DayInWeek';
 import { selectStaffs } from 'store/staffs/selectors';
 import { staffsActions } from 'store/staffs/staffsSlice';
 import { useToastStyle } from 'theme/toastStyles';
+import { createArrayDateFromRange } from 'utils/createArrayDateFromRange';
 import { dateClamp } from 'utils/dateClamp';
 import { isTimestampEqualDayInYear } from 'utils/handleTimestampWithDayInYear';
 import './styles.scss';
@@ -194,7 +196,8 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         onSelecting={() => false}
         onSelectSlot={event => {
           const selected = event.slots[0];
-          if (isDateClampStaffPeriod(selected.getTime())) {
+          const isWorkingDay = staff.presenceDay.includes(DayInWeekMappingToString[selected.getDay()]);
+          if (isWorkingDay && isDateClampStaffPeriod(selected.getTime())) {
             const isDeleteDayOffAction = staff.dayOff.find(item => isTimestampEqualDayInYear(item, selected.getTime()));
             dispatch(
               staffsActions.updateDayOffLocal({
@@ -203,6 +206,8 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
                   : staff.dayOff.concat(selected.getTime()),
               }),
             );
+          } else {
+            console.log('Ngày nghỉ và muốn đi làm');
           }
         }}
         dayPropGetter={date => {
@@ -220,6 +225,20 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             allDay: true,
             title: t('translation:off'),
           })),
+          ...(typeof staff.periodFrom === 'number' && typeof staff.periodTo === 'number'
+            ? createArrayDateFromRange({
+                start: staff.periodFrom,
+                end: staff.periodTo,
+                isNeedIgnore(date) {
+                  return staff.presenceDay.includes(DayInWeekMappingToString[date.getDay()]);
+                },
+              }).map(item => ({
+                start: new Date(item),
+                end: new Date(item),
+                allDay: true,
+                title: t('translation:off'),
+              }))
+            : []),
         ]}
       />
       <ComboButton

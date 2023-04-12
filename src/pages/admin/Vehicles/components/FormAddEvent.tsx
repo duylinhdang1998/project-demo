@@ -12,7 +12,6 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { PDFResource } from 'services/models/Resource';
 import { VehicleEvent } from 'services/models/Vehicle';
 import { CreateVehicleEvent } from 'services/Vehicle/Company/createVehicleEvent';
 import { selectAuth } from 'store/auth/selectors';
@@ -51,10 +50,11 @@ function FormAddEvent() {
     control,
     formState: { errors },
     handleSubmit,
-    getValues,
     resetField,
     setValue,
+    watch,
   } = useForm<Values>();
+  const attach = watch('attach_document');
 
   const [open, setOpen] = useState(false);
 
@@ -76,11 +76,6 @@ function FormAddEvent() {
   }, [vehicleEventId]);
 
   const isAgent = userInfo?.role === 'agent';
-
-  const getAttach = (): PDFResource[] => {
-    const attach = getValues().attach_document;
-    return attach ? [attach] : [];
-  };
 
   const handleCancel = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -181,7 +176,7 @@ function FormAddEvent() {
               label: 'attach_document',
               required: true,
               multiple: false,
-              resources: getAttach(),
+              resources: attach ? [attach] : [],
               onChange: resources => {
                 const lastResource = resources[resources.length - 1];
                 if (lastResource) {
