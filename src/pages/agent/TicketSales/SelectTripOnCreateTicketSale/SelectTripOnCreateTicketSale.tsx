@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { searchRoutes } from 'services/TicketSale/searchRoutes';
 import { addMinutesToTimeString } from 'utils/addMinutesToTimeString';
-import { dayjsToString } from 'utils/dayjsToString';
 import CardSelectTrip from './components/CardSelectTrip';
 import { FilterRoutesBySearcher } from './components/FilterRoutesBySearcher';
 import { FilterByTripTypeFormValues, FilterRoutesByTripType } from './components/FilterRoutesByTripType';
@@ -22,7 +21,7 @@ import { useStyles } from './styles';
 export interface FilterRoutesFormValues {
   departurePoint?: { value: string };
   arrivalPoint?: { value: string };
-  departureTime?: dayjs.Dayjs;
+  departureTime?: number;
   tripType: RouteOfTicketSale['tripType'];
   totalPax: number;
 }
@@ -36,7 +35,7 @@ export const getTrips = async (page: number, values: FilterRoutesFormValues): Pr
         departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
         stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
         'route.departureTime': {
-          value: values.departureTime && dayjsToString(values.departureTime, 'DD/MM/YYYY HH:mm'),
+          value: values.departureTime && dayjs(values.departureTime).valueOf(),
           operator: 'eq',
         },
         // @ts-ignore

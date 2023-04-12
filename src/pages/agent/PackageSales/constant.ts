@@ -17,7 +17,11 @@ export const fields3: Field[] = [
   { id: uuidv4(), label: 'recipent_last_name', type: 'text', required: true },
   { id: uuidv4(), label: 'recipent_mobile', type: 'text' },
 ];
-
+export const fields4: Field[] = [
+  { id: uuidv4(), label: 'firstName', type: 'text', required: true },
+  { id: uuidv4(), label: 'lastName', type: 'text', required: true },
+  { id: uuidv4(), label: 'email', type: 'email', required: true },
+];
 export const KeyFields = [
   'departures_point',
   'arrival_points',

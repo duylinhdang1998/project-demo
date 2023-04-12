@@ -10,6 +10,7 @@ import { subscriptionsReducer } from './subscriptions/subscriptionsSlice';
 import { vehicleEventsReducer } from './vehicles/vehicleEventsSlice';
 import { vehiclesReducer } from './vehicles/vehiclesSlice';
 import { ticketSalesReducer } from './ticketSales/ticketSalesSlice';
+import packageSaleReducer from './packageSales/packageSalesSlice';
 
 const reducers = {
   auth: authReducer,
@@ -24,6 +25,7 @@ const reducers = {
   profile: profileReducer,
   passengers: passengersReducer,
   ticketSales: ticketSalesReducer,
+  packageSales: packageSaleReducer,
 };
 
 export default reducers;

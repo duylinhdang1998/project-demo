@@ -59,14 +59,7 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  {
-    path: 'create-package-orders/add-merchandise',
-    element: (
-      <RequiredAuth role="agent">
-        <Page.Agent.AddMerchandise />
-      </RequiredAuth>
-    ),
-  },
+
   {
     path: 'create-package-orders/client-info',
     element: (
@@ -80,6 +73,14 @@ const AgentRoutes: RouteObject[] = [
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.OrderConfirm />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'create-package-orders/order-detail-confirm',
+    element: (
+      <RequiredAuth role="agent">
+        <Page.Agent.OrderDetailConfirm />
       </RequiredAuth>
     ),
   },

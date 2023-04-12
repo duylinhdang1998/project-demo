@@ -31,5 +31,6 @@
   "select_your_trip": "Select your trip",
   "package_order": "package order",
   "confirm_title": "Confirm status",
-  "confirm_description": "Are you sure merchandise had been delivered to recipient?"
+  "confirm_description": "Are you sure merchandise had been delivered to recipient?",
+  "order_infomation": "Order infomation"
 }

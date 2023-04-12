@@ -10,6 +10,7 @@ import { customStyles } from 'components/FilterTicket/customStyles';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { useMount, useRequest } from 'ahooks';
 import { getPackageSettings } from 'services/PackageSetting/Company/getPackageSettings';
+import { isEmpty } from 'lodash-es';
 
 const useStyles = makeStyles((theme: Theme) => ({
   label: {
@@ -71,9 +72,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface Props {
   showButton?: boolean;
   control: any;
+  errors?: any;
 }
 
-export default function FormMerchandise({ control }: Props) {
+export default function FormMerchandise({ control, errors }: Props) {
   const { t } = useTranslation(['packageSales', 'translation']);
   const classes = useStyles();
 
@@ -100,15 +102,18 @@ export default function FormMerchandise({ control }: Props) {
         <Box key={i.id} my="16px">
           <Stack direction="row" alignItems="center" justifyContent="space-between">
             <Typography variant="textBold" mb="16px">
-              {t('translation:merchandise')} {index + 1}
+              {t('translation:merchandise')} {index + 1} <span style={{ color: '#FF2727' }}>*</span>
             </Typography>
-            <TextWithIcon icon={TrashSvg} text={t('translation:delete')} color="#FF2727" onClick={remove} />
+            {fields.length > 1 && <TextWithIcon icon={TrashSvg} text={t('translation:delete')} color="#FF2727" onClick={remove} />}
           </Stack>
           <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
               <Controller
                 control={control}
                 name={`merchandise.${index}.title`}
+                rules={{
+                  required: true,
+                }}
                 render={({ field }) => (
                   <Box>
                     <InputLabel htmlFor={`merchandise.${index}.title`} className={classes.label}>
@@ -132,6 +137,9 @@ export default function FormMerchandise({ control }: Props) {
               <Controller
                 name={`merchandise.${index}.weight`}
                 control={control}
+                rules={{
+                  required: true,
+                }}
                 render={({ field }) => (
                   <Box>
                     <InputLabel htmlFor={`merchandise.${index}.weight`} className={classes.label}>
@@ -146,6 +154,9 @@ export default function FormMerchandise({ control }: Props) {
               <Controller
                 name={`merchandise.${index}.price`}
                 control={control}
+                rules={{
+                  required: true,
+                }}
                 render={({ field }) => (
                   <Box>
                     <InputLabel htmlFor={`merchandise.${index}.price`} className={classes.label}>
@@ -160,6 +171,11 @@ export default function FormMerchandise({ control }: Props) {
               />
             </Grid>
           </Grid>
+          {!isEmpty(errors.merchandise) && (
+            <Typography fontSize={12} paddingY="8px" color="#FF2727">
+              {t('translation:error_required', { name: t(`merchandise`).toLowerCase() })}
+            </Typography>
+          )}
           <Typography fontSize={12} component="p" my="16px" color="#858C93">
             Admin description: Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.
           </Typography>

@@ -3,7 +3,6 @@ import { makeStyles } from '@mui/styles';
 import { get } from 'lodash-es';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
 import { fields2, fields3 } from '../constant';
 import FormMerchandise from './FormMerchandise';
 import { Field } from 'models/Field';
@@ -64,9 +63,7 @@ interface Props {
 
 export default function FormClientInfo({ control, errors }: Props) {
   const { t } = useTranslation(['packageSales', 'translation', 'account']);
-  const location = useLocation();
   const classes = useStyles();
-  console.log('location', location);
 
   const renderField = (fields: Field[]) => {
     return (
@@ -80,7 +77,7 @@ export default function FormClientInfo({ control, errors }: Props) {
                 return (
                   <Box>
                     <InputLabel htmlFor={f.label} className={classes.label}>
-                      {t(`${f.label}`)} <span className={classes.error}>*</span>
+                      {t(`${f.label}`)} {f.required && <span className={classes.error}>*</span>}
                     </InputLabel>
                     <InputBase
                       fullWidth
@@ -130,7 +127,7 @@ export default function FormClientInfo({ control, errors }: Props) {
         {t('required_in_order')}
       </Typography>
       <Divider sx={{ margin: '16px 0' }} />
-      <FormMerchandise control={control} />
+      <FormMerchandise control={control} errors={errors} />
     </Box>
   );
 }

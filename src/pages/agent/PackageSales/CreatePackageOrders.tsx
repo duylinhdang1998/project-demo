@@ -7,13 +7,16 @@ import { Box, Grid, Stack, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { FilterRoutesBySearcher } from '../TicketSales/SelectTripOnCreateTicketSale/components/FilterRoutesBySearcher';
 import { FilterRoutesFormValues, getTrips } from '../TicketSales/SelectTripOnCreateTicketSale/SelectTripOnCreateTicketSale';
-import { useRequest, useUpdateEffect } from 'ahooks';
-import { useState } from 'react';
-import { Pagination } from 'antd';
+import { useMount, useRequest, useUpdateEffect } from 'ahooks';
+import { useMemo, useState } from 'react';
+import { Empty, Pagination } from 'antd';
 import Highlighter from 'react-highlight-words';
 import CardSelectTrip from '../TicketSales/SelectTripOnCreateTicketSale/components/CardSelectTrip';
 import { addMinutesToTimeString } from 'utils/addMinutesToTimeString';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
+import { isEmpty } from 'lodash-es';
+import { useDispatch } from 'react-redux';
+import { resetOrderInformation } from 'store/packageSales/packageSalesSlice';
 
 const useStyles = makeStyles((theme: Theme) => ({
   buttonSearch: {
@@ -41,6 +44,7 @@ export default function CreatePackageOrders() {
   const { t } = useTranslation(['packageSales', 'translation', 'ticketSales']);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useDispatch();
 
   const { control, handleSubmit, getValues } = useForm<FilterRoutesFormValues>({
     defaultValues: {
@@ -53,6 +57,16 @@ export default function CreatePackageOrders() {
 
   const { run, loading, data } = useRequest(getTrips, {
     manual: true,
+  });
+
+  const totalPages = useMemo(() => {
+    return data?.counts.reduce((s, item) => {
+      return (s += item.count);
+    }, 0);
+  }, [data?.counts]);
+
+  useMount(() => {
+    dispatch(resetOrderInformation());
   });
 
   useUpdateEffect(() => {
@@ -76,6 +90,8 @@ export default function CreatePackageOrders() {
     <LayoutDetail title={t('create_package_orders')} subTitle={t('package_sales')}>
       <CardWhite title={t('select_your_trip')}>
         <FilterRoutesBySearcher control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} />
+        {isEmpty(data?.routes) ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /> : null}
+
         {!!data?.routes.length && (
           <Box>
             <Highlighter
@@ -106,7 +122,7 @@ export default function CreatePackageOrders() {
               })}
             </Grid>
             <Stack alignItems="flex-end">
-              <Pagination onChange={setCurrentPage} current={currentPage} total={data?.routes.length ?? 1} showLessItems />
+              <Pagination onChange={setCurrentPage} current={currentPage} total={totalPages ?? 1} showLessItems />
             </Stack>
           </Box>
         )}

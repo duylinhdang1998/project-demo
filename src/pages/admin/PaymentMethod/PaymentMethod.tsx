@@ -12,11 +12,12 @@ import { useGetPaymentMethod } from 'services/Company/paymentMethods';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { get } from 'lodash-es';
+import { PayPalButtons } from '@paypal/react-paypal-js';
 
 export default function PaymentMethod() {
   const { t } = useTranslation(['account', 'translation']);
 
-  const { control, handleSubmit } = useForm<{ method: string }>();
+  const { control, handleSubmit, getValues } = useForm<{ method: string }>();
 
   const { loading, data } = useGetPaymentMethod();
 
@@ -27,12 +28,25 @@ export default function PaymentMethod() {
   const handleCancel = () => setOpen(true);
 
   const methods = [
-    { id: uuid(), label: t('credit_card'), value: 'CREDIT_CARD' },
+    { id: uuid(), label: t('stripe'), value: 'STRIPE' },
     { id: uuid(), label: t('paypal'), value: 'PAYPAL' },
   ];
 
   const onSubmit = (values: any) => {
     console.log({ values, data });
+  };
+
+  const renderButton = () => {
+    if (getValues().method === 'PAYPAL') {
+      return (
+        <PayPalButtons
+          style={{
+            layout: 'vertical',
+          }}
+          disabled={false}
+        />
+      );
+    }
   };
 
   return (
@@ -62,6 +76,7 @@ export default function PaymentMethod() {
                       return <Radio {...field} options={methods} radioName="payment-method" />;
                     }}
                   />
+                  {renderButton()}
                 </Box>
                 <ComboButton onSave={handleSubmit(onSubmit)} onCancel={handleCancel} />
               </Box>

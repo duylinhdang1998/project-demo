@@ -1,14 +1,11 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useLocation } from 'react-router-dom';
 import { MapPinIcon } from 'assets';
 import ClockSvg from 'assets/images/clock.svg';
 import Button from 'components/Button/Button';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
-import { useToastStyle } from 'theme/toastStyles';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { get } from 'lodash-es';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
@@ -34,8 +31,6 @@ interface Props {
 
 function ReserveInfo({ onBook, loading }: Props) {
   const { t } = useTranslation(['ticketSales', 'translation']);
-  const navigate = useNavigate();
-  const toastClass = useToastStyle();
   const location = useLocation();
   const selectedRoute: RouteOfTicketSale = get(location, 'state.selectedRoute', undefined);
 
@@ -46,7 +41,8 @@ function ReserveInfo({ onBook, loading }: Props) {
   };
 
   const handleBook = () => {
-    setOpen(true);
+    onBook?.();
+    // setOpen(true);
     // navigate('/agent/create-package-orders/order-confirm');
     // toast(<ToastCustom type="success" text="Order ticket successfully!" />, {
     //   className: toastClass.toastSuccess,
@@ -54,9 +50,9 @@ function ReserveInfo({ onBook, loading }: Props) {
   };
   return (
     <Box p="24px" bgcolor="#FAFDFF">
-      <Typography marginBottom="24px" variant="h5">
+      {/* <Typography marginBottom="24px" variant="h5">
         {t('your_reservation')}
-      </Typography>
+      </Typography> */}
       <Typography variant="body2" component="p" marginBottom="16px">
         {t('date')}
       </Typography>
@@ -86,8 +82,8 @@ function ReserveInfo({ onBook, loading }: Props) {
         <Typography variant="price">${dataDetails.total}</Typography>
       </Stack>
       <Typography variant="headerTable">{t('all_taxes_and_fees')}</Typography>
-      <Button backgroundButton="#1AA6EE" fullWidth sx={{ marginTop: '24px' }} onClick={handleBook}>
-        {t('translation:book')}
+      <Button backgroundButton="#1AA6EE" fullWidth sx={{ marginTop: '24px' }} onClick={handleBook} loading={loading}>
+        {t('translation:next')}
       </Button>
       <DialogConfirm
         openDialog={open}
