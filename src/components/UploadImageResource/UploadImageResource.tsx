@@ -16,6 +16,8 @@ import { handleCheckRequirements } from './utils/handleCheckRequirements';
 import './styles.css';
 import 'antd/lib/upload/style/css';
 import 'antd/lib/image/style/css';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { ServiceException } from 'services/utils/ServiceException';
 
 interface FileBase {
   uid: UploadFile['uid'];
@@ -122,7 +124,9 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
         setFileListState(state => {
           return state.filter(item => item.uid !== sessionId);
         });
-        toast.error(`${file.name} file upload failed.`);
+        toast(<ToastCustom description={ServiceException.getMessageError(error)} text={`${file.name} file upload failed.`} type="error" />, {
+          className: 'toast-error',
+        });
       } finally {
         setLoading(false);
       }

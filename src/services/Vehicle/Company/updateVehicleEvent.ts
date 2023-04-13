@@ -33,5 +33,5 @@ export const updateVehicleEvent = async ({ data, id }: UpdateVehicleEvent): Prom
     return response.data as ResponseDetailSuccess<ResponseData>;
   }
   const response_ = response as AxiosResponse<ResponseFailure>;
-  throw new ServiceException(response_.data.message, { cause: response_.data });
+  throw new ServiceException(response_.data.message, response_.data);
 };

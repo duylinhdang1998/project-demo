@@ -16,5 +16,5 @@ export const createPackageSetting = async (data: CreatePackageSetting): Promise<
     return response.data as ResponseDetailSuccess<PackageSetting>;
   }
   const response_ = response as AxiosResponse<ResponseFailure>;
-  throw new ServiceException(response_.data.message, { cause: response_.data });
+  throw new ServiceException(response_.data.message, response_.data);
 };

@@ -70,8 +70,8 @@ export default function AddOfficeManager() {
             title: values.title,
             zipCode: values.zipCode,
           },
-          onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:office') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:office') })} description={message} />, {
               className: toastClass.toastError,
             });
           },
@@ -95,8 +95,8 @@ export default function AddOfficeManager() {
             title: values.title,
             zipCode: values.zipCode,
           },
-          onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('account:office') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('account:office') })} description={message} />, {
               className: toastClass.toastError,
             });
           },

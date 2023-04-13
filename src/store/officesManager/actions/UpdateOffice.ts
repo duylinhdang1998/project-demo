@@ -3,7 +3,7 @@ import { UpdateOffice } from 'services/OfficesManager/Company/updateOffice';
 
 export type UpdateOfficeRequest = UpdateOffice & {
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 };
 
 export interface UpdateOfficeSuccess {
