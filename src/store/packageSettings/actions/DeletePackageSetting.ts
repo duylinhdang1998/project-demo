@@ -3,7 +3,7 @@ import { DeletePackageSetting } from 'services/PackageSetting/Company/deletePack
 
 export type DeletePackageSettingRequest = DeletePackageSetting & {
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 };
 
 export interface DeletePackageSettingSuccess {

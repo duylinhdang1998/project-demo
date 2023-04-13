@@ -159,12 +159,14 @@ function TablePackageSettings() {
                         );
                         handleCloseDialogDelete();
                       },
-                      onFailure: () => {
+                      onFailure: message => {
                         toast(
-                          <ToastCustom type="error" text={t('translation:delete_type_error', { type: t('packageSettings:package_settings') })} />,
-                          {
-                            className: toastClass.toastError,
-                          },
+                          <ToastCustom
+                            type="error"
+                            text={t('translation:delete_type_error', { type: t('packageSettings:package_settings') })}
+                            description={message}
+                          />,
+                          { className: toastClass.toastError },
                         );
                       },
                     }),

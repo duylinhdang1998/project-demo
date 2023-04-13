@@ -4,7 +4,7 @@ import { CreatePackageSetting } from 'services/PackageSetting/Company/createPack
 export interface CreatePackageSettingRequest {
   data: CreatePackageSetting;
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface CreatePackageSettingSuccess {
