@@ -4,7 +4,7 @@ export interface LoginRequest {
   email: string;
   password: string;
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface LoginSuccess {

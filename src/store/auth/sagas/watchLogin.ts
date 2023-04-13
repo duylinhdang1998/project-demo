@@ -1,5 +1,6 @@
 import { put, retry, SagaReturnType, takeLatest } from 'redux-saga/effects';
 import { login } from 'services/Auth/Company/login';
+import { ServiceException } from 'services/utils/ServiceException';
 import { authActions } from '../authSlice';
 function* handleLogin({ payload }: ReturnType<typeof authActions.loginRequest>) {
   const { password, email, onFailure, onSuccess } = payload;
@@ -18,7 +19,7 @@ function* handleLogin({ payload }: ReturnType<typeof authActions.loginRequest>) 
   } catch (error) {
     console.log('watchLogin.ts', error);
     yield put(authActions.loginFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 
