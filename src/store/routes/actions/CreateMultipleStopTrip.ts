@@ -4,7 +4,7 @@ import { CreateMultipleStopTrip } from 'services/Route/Company/createMultipleSto
 export interface CreateMultipleStopTripRequest {
   data: CreateMultipleStopTrip;
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface CreateMultipleStopTripSuccess {

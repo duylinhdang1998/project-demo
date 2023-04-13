@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
@@ -6,14 +7,14 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { Route } from 'services/models/Route';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
 import StepForm from './components/StepForm';
 
 export default function CreateMultiStopTrip() {
-  const { t } = useTranslation(['routers', 'translation']);
+  const { t } = useTranslation(['routers', 'translation', 'message_error']);
 
   const { routeCode } = useParams();
   const location = useLocation();
@@ -38,7 +39,7 @@ export default function CreateMultiStopTrip() {
   }
 
   if (isEditAction && (statusGetRoute === 'failure' || (!route && statusGetRoute === 'success'))) {
-    return <Navigate to="/404" />;
+    return <EmptyScreen description={t('message_error:ROUTE_NOT_FOUND')} />;
   }
 
   return (

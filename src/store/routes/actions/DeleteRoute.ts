@@ -3,7 +3,7 @@ import { DeleteRoute } from 'services/Route/Company/deleteRoute';
 
 export type DeleteRouteRequest = DeleteRoute & {
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 };
 
 export interface DeleteRouteSuccess {

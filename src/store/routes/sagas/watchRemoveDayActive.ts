@@ -1,6 +1,7 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { getRoute } from 'services/Route/Company/getRoute';
 import { removeDayActive } from 'services/Route/Company/removeDayActive';
+import { ServiceException } from 'services/utils/ServiceException';
 import { routesActions } from '../routesSlice';
 
 function* handleRemoveDayActive({ payload }: ReturnType<typeof routesActions.removeDayActiveRequest>) {
@@ -17,7 +18,7 @@ function* handleRemoveDayActive({ payload }: ReturnType<typeof routesActions.rem
   } catch (error) {
     console.log('watchRemoveDayActive.ts', error);
     yield put(routesActions.removeDayActiveFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

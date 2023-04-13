@@ -6,7 +6,7 @@ export interface RemoveDayActiveRequest {
   data: RemoveDayActive;
   routeCode: Route['routeCode'];
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface RemoveDayActiveSuccess {

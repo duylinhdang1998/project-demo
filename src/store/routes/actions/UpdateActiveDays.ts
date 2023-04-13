@@ -4,7 +4,7 @@ import { UpdateActiveDays } from 'services/Route/Company/updateActiveDays';
 export interface UpdateActiveDaysRequest {
   data: UpdateActiveDays;
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface UpdateActiveDaysSuccess {

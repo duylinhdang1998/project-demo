@@ -261,10 +261,13 @@ function TableRoutes() {
                         });
                         handleCloseDialogDelete();
                       },
-                      onFailure: () => {
-                        toast(<ToastCustom type="error" text={t('translation:delete_type_error', { type: t('routers:route') })} />, {
-                          className: toastClass.toastError,
-                        });
+                      onFailure: message => {
+                        toast(
+                          <ToastCustom type="error" text={t('translation:delete_type_error', { type: t('routers:route') })} description={message} />,
+                          {
+                            className: toastClass.toastError,
+                          },
+                        );
                       },
                     }),
                   );
