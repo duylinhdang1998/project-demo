@@ -42,7 +42,7 @@ export default function OrderConfirm() {
         error: t('error'),
         onSuccess: () => {
           reset();
-          navigate('/agent/order-detail-confirm', {
+          navigate('/agent/package-sales/create-package-orders/order-confirm', {
             state: {
               data: dataCode,
             },

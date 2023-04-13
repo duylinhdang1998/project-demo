@@ -82,7 +82,7 @@ export default function TicketSales() {
   };
 
   const handleAddTicket = () => {
-    navigate('/agent/create-ticket-order');
+    navigate('/agent/ticket-sales/create-ticket-order');
   };
 
   useEffect(() => {

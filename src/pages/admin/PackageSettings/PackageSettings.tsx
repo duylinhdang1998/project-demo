@@ -17,7 +17,7 @@ export default function PackageSettings() {
   const { currentSearcher } = useAppSelector(selectPackageSettings);
 
   const handleAdd = () => {
-    navigate('/admin/add-package-setting');
+    navigate('/admin/package-settings/add-package-setting');
   };
 
   useEffect(() => {

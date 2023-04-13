@@ -88,7 +88,7 @@ export default function ClientInfo() {
       merchandise: values.merchandise,
     };
     dispatch(setOrderInfomation(payload));
-    navigate('/agent/create-package-orders/order-confirm', {
+    navigate('/agent/package-sales/create-package-orders/order-confirm', {
       state: {
         payloadClient: payload,
       },

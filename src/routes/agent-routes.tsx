@@ -11,14 +11,7 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  {
-    path: 'ticket-sales',
-    element: (
-      <RequiredAuth role="agent">
-        <Page.TicketSales />
-      </RequiredAuth>
-    ),
-  },
+  // Ticket sales
   {
     path: 'ticket-sales/:orderCode',
     element: (
@@ -28,7 +21,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'create-ticket-order',
+    path: 'ticket-sales/create-ticket-order',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.SelectTripOnCreateTicketSale />
@@ -36,10 +29,51 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'traveller-contact-details',
+    path: 'ticket-sales/traveller-contact-details',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.TicketDetailOnCreateTicketSale />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'ticket-sales',
+    element: (
+      <RequiredAuth role="agent">
+        <Page.TicketSales />
+      </RequiredAuth>
+    ),
+  },
+  // Package sales
+  {
+    path: 'package-sales/create-package-orders',
+    element: (
+      <RequiredAuth role="agent">
+        <Page.Agent.CreatePackageOrders />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'package-sales/create-package-orders/client-info',
+    element: (
+      <RequiredAuth role="agent">
+        <Page.Agent.ClientInfo />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'package-sales/create-package-orders/order-confirm',
+    element: (
+      <RequiredAuth role="agent">
+        <Page.Agent.OrderConfirm />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'package-sales/create-package-orders/order-detail-confirm',
+    element: (
+      <RequiredAuth role="agent">
+        <Page.Agent.OrderDetailConfirm />
       </RequiredAuth>
     ),
   },
@@ -51,40 +85,7 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  {
-    path: 'create-package-orders',
-    element: (
-      <RequiredAuth role="agent">
-        <Page.Agent.CreatePackageOrders />
-      </RequiredAuth>
-    ),
-  },
-
-  {
-    path: 'create-package-orders/client-info',
-    element: (
-      <RequiredAuth role="agent">
-        <Page.Agent.ClientInfo />
-      </RequiredAuth>
-    ),
-  },
-  {
-    path: 'create-package-orders/order-confirm',
-    element: (
-      <RequiredAuth role="agent">
-        <Page.Agent.OrderConfirm />
-      </RequiredAuth>
-    ),
-  },
-  {
-    path: 'create-package-orders/order-detail-confirm',
-    element: (
-      <RequiredAuth role="agent">
-        <Page.Agent.OrderDetailConfirm />
-      </RequiredAuth>
-    ),
-  },
-  // List vehicles
+  // Vehicles
   {
     path: 'vehicles',
     element: (
@@ -93,7 +94,7 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // Update vehicle event
+  // Vehicle events
   {
     path: 'vehicles/:vehicleId/update-event/:vehicleEventId',
     element: (
@@ -102,7 +103,6 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // Add vehicle event
   {
     path: 'vehicles/:vehicleId/add-new-event',
     element: (
@@ -111,7 +111,6 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // List vehicle events
   {
     path: 'vehicles/:vehicleId/list-events',
     element: (
@@ -120,21 +119,20 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // List passengers
-  {
-    path: 'passengers',
-    element: (
-      <RequiredAuth role="agent">
-        <Page.Passengers />
-      </RequiredAuth>
-    ),
-  },
-  // Update passenger
+  // Passengers
   {
     path: 'passengers/:passengerId',
     element: (
       <RequiredAuth role="agent">
         <Page.PassengerDetail />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'passengers',
+    element: (
+      <RequiredAuth role="agent">
+        <Page.Passengers />
       </RequiredAuth>
     ),
   },
@@ -162,7 +160,7 @@ const AgentRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // List routers
+  // Routers
   {
     path: 'routers',
     element: (

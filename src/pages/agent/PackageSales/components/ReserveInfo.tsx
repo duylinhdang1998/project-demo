@@ -43,7 +43,7 @@ function ReserveInfo({ onBook, loading }: Props) {
   const handleBook = () => {
     onBook?.();
     // setOpen(true);
-    // navigate('/agent/create-package-orders/order-confirm');
+    // navigate('/agent/package-sales/create-package-orders/order-confirm');
     // toast(<ToastCustom type="success" text="Order ticket successfully!" />, {
     //   className: toastClass.toastSuccess,
     // });
