@@ -1,3 +1,5 @@
+import { TicketSale } from './TicketSale';
+
 export interface Passenger {
   _id: string;
   company: string;
@@ -11,5 +13,5 @@ export interface Passenger {
   updatedAt: string;
   __v: number;
   orderCounts: number;
-  orders: []; // FIXME: Chưa có type
+  orders: TicketSale[];
 }
