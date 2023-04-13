@@ -1,16 +1,14 @@
 import { Box, Stack, Typography } from '@mui/material';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useLocation } from 'react-router-dom';
 import { MapPinIcon } from 'assets';
 import ClockSvg from 'assets/images/clock.svg';
-import PhoneSvg from 'assets/images/phone.svg';
-import UserSvg from 'assets/images/user.svg';
 import Button from 'components/Button/Button';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
-import { useToastStyle } from 'theme/toastStyles';
+import { RouteOfTicketSale } from 'services/models/TicketSale';
+import { get } from 'lodash-es';
+import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 
 const dataDetails = {
   date: '27/02/2022 - 10:30 AM',
@@ -26,61 +24,73 @@ const dataDetails = {
   total: 20,
 };
 
-function ReserveInfo() {
+interface Props {
+  onBook?: () => void;
+  loading?: boolean;
+}
+
+function ReserveInfo({ onBook, loading }: Props) {
   const { t } = useTranslation(['ticketSales', 'translation']);
-  const navigate = useNavigate();
-  const toastClass = useToastStyle();
+  const location = useLocation();
+  const selectedRoute: RouteOfTicketSale = get(location, 'state.selectedRoute', undefined);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleBook = () => {
-    navigate('/agent/create-package-orders/order-confirm');
-    toast(<ToastCustom type="success" text="Order ticket successfully!" />, {
-      className: toastClass.toastSuccess,
-    });
+    onBook?.();
+    // setOpen(true);
+    // navigate('/agent/create-package-orders/order-confirm');
+    // toast(<ToastCustom type="success" text="Order ticket successfully!" />, {
+    //   className: toastClass.toastSuccess,
+    // });
   };
   return (
     <Box p="24px" bgcolor="#FAFDFF">
-      <Typography marginBottom="24px" variant="h5">
+      {/* <Typography marginBottom="24px" variant="h5">
         {t('your_reservation')}
-      </Typography>
+      </Typography> */}
       <Typography variant="body2" component="p" marginBottom="16px">
         {t('date')}
       </Typography>
-      <TextWithIcon icon={ClockSvg} color="#45485E" text={dataDetails.date} />
+      <TextWithIcon icon={ClockSvg} color="#45485E" text={selectedRoute.route.departureTime} />
       <Typography variant="body2" component="p" margin="16px 0">
         {t('trip')}
       </Typography>
-      {dataDetails.trip.map((i, index) => (
-        <TextWithIcon
-          key={index}
-          text={i}
-          icon={MapPinIcon}
-          color="#1AA6EE"
-          typography={{
-            fontSize: '14px',
-          }}
-        />
-      ))}
-      <Typography variant="body2" component="p" margin="16px 0">
-        {t('translation:sender')}
-      </Typography>
-      <Box mb="16px">
-        <TextWithIcon text={dataDetails.sender.name} icon={UserSvg} />
-        <TextWithIcon text={dataDetails.sender.phone} icon={PhoneSvg} />
-      </Box>
+      <TextWithIcon
+        text={selectedRoute.departurePoint}
+        icon={MapPinIcon}
+        color="#1AA6EE"
+        typography={{
+          fontSize: '14px',
+        }}
+      />
+      <TextWithIcon
+        text={selectedRoute.stopPoint}
+        icon={MapPinIcon}
+        color="#1AA6EE"
+        typography={{
+          fontSize: '14px',
+        }}
+      />
 
-      <Typography variant="body2">{t('translation:recipent')}</Typography>
-      <Box mb="16px">
-        <TextWithIcon text={dataDetails.recipient.name} icon={UserSvg} />
-        <TextWithIcon text={dataDetails.recipient.phone} icon={PhoneSvg} />
-      </Box>
       <Stack direction="row" alignItems="center" spacing={10} marginTop="20px">
         <Typography variant="body2">{t('total_price')}</Typography>
         <Typography variant="price">${dataDetails.total}</Typography>
       </Stack>
       <Typography variant="headerTable">{t('all_taxes_and_fees')}</Typography>
-      <Button backgroundButton="#1AA6EE" fullWidth sx={{ marginTop: '24px' }} onClick={handleBook}>
-        {t('translation:book')}
+      <Button backgroundButton="#1AA6EE" fullWidth sx={{ marginTop: '24px' }} onClick={handleBook} loading={loading}>
+        {t('translation:next')}
       </Button>
+      <DialogConfirm
+        openDialog={open}
+        title={t('translation:cancel_type', { type: t('package_order') })}
+        subTitle={t('translation:leave_page')}
+        onClose={handleClose}
+      />
     </Box>
   );
 }

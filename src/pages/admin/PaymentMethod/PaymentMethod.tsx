@@ -1,7 +1,7 @@
 import { Divider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useState } from 'react';
-import { Controller, useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
@@ -12,13 +12,12 @@ import { useGetPaymentMethod } from 'services/Company/paymentMethods';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { get } from 'lodash-es';
-import CreditCard from 'components/CreditCard/CreditCard';
+import { PayPalButtons } from '@paypal/react-paypal-js';
 
 export default function PaymentMethod() {
   const { t } = useTranslation(['account', 'translation']);
 
-  const { control, handleSubmit } = useForm<{ method: string }>();
-  const methodValue = useWatch({ control, name: 'method' });
+  const { control, handleSubmit, getValues } = useForm<{ method: string }>();
 
   const { loading, data } = useGetPaymentMethod();
 
@@ -29,7 +28,7 @@ export default function PaymentMethod() {
   const handleCancel = () => setOpen(true);
 
   const methods = [
-    { id: uuid(), label: t('credit_card'), value: 'CREDIT_CARD' },
+    { id: uuid(), label: t('stripe'), value: 'STRIPE' },
     { id: uuid(), label: t('paypal'), value: 'PAYPAL' },
   ];
 
@@ -37,13 +36,19 @@ export default function PaymentMethod() {
     console.log({ values, data });
   };
 
-  const renderCreditValue = () => {
-    return (
-      <Box my="10px" display={methodValue !== 'CREDIT_CARD' ? 'none' : 'block'}>
-        <CreditCard />
-      </Box>
-    );
+  const renderButton = () => {
+    if (getValues().method === 'PAYPAL') {
+      return (
+        <PayPalButtons
+          style={{
+            layout: 'vertical',
+          }}
+          disabled={false}
+        />
+      );
+    }
   };
+
   return (
     <Box>
       <HeaderLayout activeSideBarHeader={t('payment_methods')} />
@@ -71,7 +76,7 @@ export default function PaymentMethod() {
                       return <Radio {...field} options={methods} radioName="payment-method" />;
                     }}
                   />
-                  {renderCreditValue()}
+                  {renderButton()}
                 </Box>
                 <ComboButton onSave={handleSubmit(onSubmit)} onCancel={handleCancel} />
               </Box>

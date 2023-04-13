@@ -2,22 +2,21 @@ import ControlMerchandiseChecking from './ControlMerchandise/ControlMerchandiseC
 import { ControlMerchandiseDetail } from './ControlMerchandise/ControlMerchandiseDetail';
 import ControlTicket from './ControlTicket/ControlTicket';
 import Dashboard from './Dashboard/Dashboard';
-import AddMerchandise from './PackageSales/AddMerchandise';
 import ClientInfo from './PackageSales/ClientInfo';
 import CreatePackageOrders from './PackageSales/CreatePackageOrders';
-import OrderConfirm from './PackageSales/OrderConfirm';
+import OrderDetailConfirm from './PackageSales/OrderDetailConfirm';
 import { SelectTripOnCreateTicketSale } from './TicketSales/SelectTripOnCreateTicketSale';
 import { TicketDetailOnCreateTicketSale } from './TicketSales/TicketDetailOnCreateTicketSale';
-
+import OrderConfirm from './PackageSales/OrderConfirm';
 export {
   Dashboard,
   SelectTripOnCreateTicketSale,
   TicketDetailOnCreateTicketSale,
   CreatePackageOrders,
-  AddMerchandise,
   ClientInfo,
-  OrderConfirm,
+  OrderDetailConfirm,
   ControlTicket,
   ControlMerchandiseChecking,
   ControlMerchandiseDetail,
+  OrderConfirm,
 };

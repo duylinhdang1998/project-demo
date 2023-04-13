@@ -4,8 +4,12 @@ import { ForgetPassword, LoginPage, NotFound, SignUp } from 'pages';
 import { AccountRoutes } from './account-routes';
 import { AdminRoutes } from './admin-routes';
 import { AgentRoutes } from './agent-routes';
+import { RouteObject } from 'react-router-dom';
+import ErrorBoundary2 from 'components/ErrorBoundary/ErrorBoundary2';
 
-export const getRoutes = () => {
+const production = process.env.NODE_ENV === 'production';
+
+export const getRoutes = (): RouteObject[] => {
   return [
     {
       path: '/',
@@ -21,21 +25,25 @@ export const getRoutes = () => {
           element: <ForgetPassword />,
         },
       ],
+      errorElement: !!production ? <ErrorBoundary2 /> : null,
     },
     {
       path: '/admin',
       element: <Layout />,
       children: AdminRoutes,
+      errorElement: !!production ? <ErrorBoundary2 /> : null,
     },
     {
       path: '/agent',
       element: <Layout />,
       children: AgentRoutes,
+      errorElement: !!production ? <ErrorBoundary2 /> : null,
     },
     {
       path: '/account',
       element: <Layout />,
       children: AccountRoutes,
+      errorElement: !!production ? <ErrorBoundary2 /> : null,
     },
     { path: '*', element: <NotFound /> },
   ];

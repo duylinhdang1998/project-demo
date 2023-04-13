@@ -61,7 +61,7 @@ export default function FormVerticle<T extends FieldValues>({
               return (
                 <Box>
                   <InputLabel htmlFor={i.label} className={classes.label}>
-                    {t(`${i.label}`)}
+                    {t(`${i.label}`)} {i.required && <span className={classes.error}>*</span>}
                   </InputLabel>
                   <InputBase
                     fullWidth

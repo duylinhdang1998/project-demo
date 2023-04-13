@@ -1,70 +1,147 @@
-import { Box, Grid, Stack } from '@mui/material';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { v4 as uuid } from 'uuid';
-import Button from 'components/Button/Button';
-import MerchandiseDetailView from 'components/MerchandiseDetailView/MerchandiseDetailView';
-import OrderDetailView from 'components/OrderDetailView/OrderDetailView';
-import PrintIcon from 'components/SvgIcon/PrintIcon';
-import SendIcon from 'components/SvgIcon/SendIcon';
 import LayoutDetail from 'layout/LayoutDetail';
+import { Box, Divider, Grid, Typography } from '@mui/material';
+import FormVerticle from 'components/FormVerticle/FormVerticle';
+import { fields4 } from './constant';
+import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { orderConfirmSelector } from 'store/passengers/selectors';
+import { isEmpty } from 'lodash-es';
+import ReserveBooking from './components/ReserveBooking';
+import { omit } from 'ramda';
+import { useCreatePackageSale } from 'services/PackageSales/packageSales';
+import { getNotifcation } from 'utils/getNotification';
+import { useNavigate } from 'react-router-dom';
 
-const dataDetails = {
-  order_id: '023232-0023',
-  departures_point: 'Lyon Gare Perrache',
-  date: '02/27/2022 - 10H30',
-  sender_name: 'Payoun Samia',
-  sender_mobile: '0123456789',
-  recipent_name: 'Payoun Samia',
-  recipent_mobile: '0123456789',
-  quantity: 2,
-  weight: '4kg',
-  price: '$10',
-  payment_status: 'Paid',
-};
-
-const merchandises = [
-  { title: 'Package 2kg', weight: '2kg', price: '$2', id: uuid() },
-  { title: 'Package 2kg', weight: '2kg', price: '$2', id: uuid() },
-];
+interface Values {
+  firtName: string;
+  lastName: string;
+  email: string;
+}
+const fieldKeys = ['firstName', 'lastName', 'email'];
 
 export default function OrderConfirm() {
   const { t } = useTranslation(['packageSales', 'translation', 'ticketSales']);
+  const orderConfirmData = useSelector(orderConfirmSelector);
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<Values>({
+    defaultValues: {},
+  });
+  const navigate = useNavigate();
+
+  const { run: createPackageSale, loading } = useCreatePackageSale({
+    onSuccess: dataCode => {
+      getNotifcation({
+        code: dataCode.code,
+        success: t('success'),
+        error: t('error'),
+        onSuccess: () => {
+          reset();
+          navigate('/agent/order-detail-confirm', {
+            state: {
+              data: dataCode,
+            },
+          });
+        },
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (isEmpty(orderConfirmData)) {
+      throw 'Some thing went wrong';
+    }
+  }, [orderConfirmData]);
+
+  const messages = useMemo(() => {
+    return fieldKeys.reduce<Record<string, string>>((res, key) => {
+      return {
+        ...res,
+        [key]: t('translation:error_required', { name: t(`translation:${key}`).toLowerCase() }),
+      };
+    }, {});
+  }, [t]);
+
+  const onCreate = (values: Values) => {
+    const payload = {
+      email: values.email,
+      ...omit(['merchandise'], orderConfirmData),
+      merchandises: orderConfirmData.merchandise?.map(i => ({
+        package: i.title.value,
+        weight: parseInt(i.weight),
+        price: parseInt(i.price),
+      })),
+      returnUrl: 'aaa',
+      cancelUrl: 'bbb',
+      paymentMethod: 'PAYPAL',
+    };
+    createPackageSale(payload);
+  };
 
   return (
     <LayoutDetail title={t('create_package_orders')} subTitle={t('package_sales')}>
-      <Box width="100%" display="flex" justifyContent="center">
-        <Box padding="24px" borderRadius={4} bgcolor="white" width={{ xs: '100%', md: '90%' }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={8}>
-              <OrderDetailView data={dataDetails} />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Box bgcolor="#FAFDFF" borderRadius={4} padding="24px" height="100%">
-                <MerchandiseDetailView merchandises={merchandises} />
+      <Grid container spacing="24px">
+        <Grid item xs={12} md={8}>
+          <Box bgcolor="#fff" borderRadius="4px" width="100%" padding="24px">
+            <Typography color="#0c1132" fontWeight={700}>
+              {t('order_infomation')}
+            </Typography>
+            <Divider sx={{ margin: '16px 0' }} />
+            <FormVerticle
+              fields={fields4}
+              grid
+              isGridHorizon
+              indexGridHorizon={2}
+              filterKey="translation"
+              control={control}
+              errors={errors}
+              messages={messages}
+            />
+            <Divider sx={{ margin: '16px 0' }} />
+            {orderConfirmData?.merchandise?.map((i, index) => (
+              <Box key={(i.weight + index).toString()}>
+                <Typography fontSize={14} fontWeight={600} paddingY="10px">
+                  {t('translation:merchandise')} {index + 1}
+                </Typography>
+                <Grid container spacing="10px">
+                  <Grid item xs={12} lg={4}>
+                    <Typography fontSize={14} marginBottom="5px">
+                      {t('title')}
+                    </Typography>
+                    <Typography fontSize={14} padding="10px 14px" border="1px solid #F7F7F7">
+                      {i.title.label}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} lg={4}>
+                    <Typography fontSize={14} marginBottom="5px">
+                      {t('weight')}
+                    </Typography>
+                    <Typography fontSize={14} padding="10px 14px" border="1px solid #F7F7F7">
+                      {i.weight}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} lg={4}>
+                    <Typography fontSize={14} marginBottom="5px">
+                      {t('price')}
+                    </Typography>
+                    <Typography fontSize={14} padding="10px 14px" border="1px solid #F7F7F7">
+                      {i.price}
+                    </Typography>
+                  </Grid>
+                </Grid>
               </Box>
-            </Grid>
-          </Grid>
-          <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={2} my="24px">
-            <Button
-              variant="outlined"
-              sx={{
-                padding: '12px 16px',
-                backgroundColor: '#fff',
-                '&:hover': {
-                  backgroundColor: '#fff',
-                  color: '#1AA6EE',
-                },
-              }}
-              startIcon={<SendIcon fillColor="#1AA6EE" />}
-            >
-              {t('ticketSales:email_ticket')}
-            </Button>
-            <Button variant="contained" backgroundButton="#1AA6EE" sx={{ padding: '12px 16px' }} startIcon={<PrintIcon />}>
-              {t('ticketSales:print_ticket')}
-            </Button>
-          </Stack>
-        </Box>
-      </Box>
+            ))}
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <ReserveBooking onBook={handleSubmit(onCreate)} loading={loading} />
+        </Grid>
+      </Grid>
     </LayoutDetail>
   );
 }

@@ -1,33 +1,33 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { ColumnsType } from 'antd/es/table';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MapPinIcon, StopCircleSvg } from 'assets';
 import AntTable from 'components/AntTable/AntTable';
 import Button from 'components/Button/Button';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import { RoutePrograms } from 'models/RoutePrograms';
-
-const dataSource: RoutePrograms[] = [];
-
-for (let i = 0; i < 13; i++) {
-  dataSource.push({
-    id: i.toString(),
-    route: ['Lyon Gare Perrache', '5 arrets', 'Lyon Gare Perrache'],
-    departure_time: '02/27/2022 - 10H30',
-    arrival_time: '02/27/2022 - 14H30',
-    vehicle: 'Mercedes',
-    VIPseats: i + 1,
-    ECOseats: i + 1,
-  });
-}
+import { ITrackingRoute, useGetRouteProgramDashboard } from 'services/Dashboard/dashboard';
+import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
+import { useMount } from 'ahooks';
+import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 
 function TableDashboard() {
   const { t } = useTranslation(['dashboard']);
-  const columns: ColumnsType<RoutePrograms> = [
+  const { data, loading, run } = useGetRouteProgramDashboard();
+  const [currentPage, setCurrentPage] = useState(0);
+
+  useMount(() => {
+    run({
+      page: 0,
+      sorter: {},
+      searcher: {},
+    });
+  });
+
+  const columns: ColumnsType<ITrackingRoute> = [
     {
       key: 'id',
-      dataIndex: 'id',
+      dataIndex: '_id',
       title: () => <Typography variant="headerTable">{t('id')}</Typography>,
       sorter: true,
       render: (value: string) => <Typography variant="body2">{value}</Typography>,
@@ -39,13 +39,12 @@ function TableDashboard() {
       dataIndex: 'route',
       title: () => <Typography variant="headerTable">{t('route')}</Typography>,
       sorter: true,
-      render: (value: string[]) => {
-        return value.map((v, index) =>
-          index !== 1 ? (
-            <TextWithIcon key={index.toString()} text={v} icon={MapPinIcon} color="#2D9AFF" />
-          ) : (
-            <TextWithIcon text={v} key={index.toString()} icon={StopCircleSvg} color="#33CC7F" />
-          ),
+      render: (_, item) => {
+        return (
+          <Box>
+            <TextWithIcon text={item.route.departurePoint} icon={MapPinIcon} color="#2D9AFF" />
+            <TextWithIcon text={item.route.stopPoint} icon={StopCircleSvg} color="#33CC7F" />
+          </Box>
         );
       },
     },
@@ -54,24 +53,24 @@ function TableDashboard() {
       dataIndex: 'departure_time',
       title: () => <Typography variant="headerTable">{t('departure_time')}</Typography>,
       sorter: true,
-      render: (value: string) => <Typography variant="body2">{value}</Typography>,
+      render: () => <Typography variant="body2">Chưa có field</Typography>,
     },
     {
       key: 'arrival_time',
       dataIndex: 'arrival_time',
       title: () => <Typography variant="headerTable">{t('arrival_time')}</Typography>,
       sorter: true,
-      render: (value: string) => <Typography variant="body2">{value}</Typography>,
+      render: () => <Typography variant="body2">Chưa có field</Typography>,
     },
     {
       key: 'vehicle',
       dataIndex: 'vehicle',
       title: () => <Typography variant="headerTable">{t('vehicles')}</Typography>,
       sorter: true,
-      render: (value: string) => (
+      render: (vehicle: ITrackingRoute['vehicle']) => (
         <Box>
-          <Typography variant="body2">{value}</Typography>
-          <Typography variant="body2">DX728AM</Typography>
+          <Typography variant="body2">{vehicle.brand}</Typography>
+          <Typography variant="body2">{vehicle.model}</Typography>
         </Box>
       ),
       align: 'center',
@@ -79,19 +78,23 @@ function TableDashboard() {
     },
     {
       key: 'VIPseats',
-      dataIndex: 'VIPseats',
+      dataIndex: 'seatsAvailable',
       title: () => <Typography variant="headerTable">{t('VIPseats')}</Typography>,
-      render: (value: number) => <Typography variant="body2">{value}</Typography>,
+      render: (value: ITrackingRoute['seatsAvailable'], item) => (
+        <Typography variant="body2" color={value?.VIP === item.vehicle.VIPseats ? '#FF2727' : 'inherit'}>
+          {value?.VIP === item.vehicle.VIPseats ? 'Full' : value?.VIP}
+        </Typography>
+      ),
       width: 120,
       align: 'center',
     },
     {
       key: 'ECOseats',
-      dataIndex: 'ECOseats',
+      dataIndex: 'seatsAvailable',
       title: () => <Typography variant="headerTable">{t('ECOseats')}</Typography>,
-      render: (value: number) => (
-        <Typography variant="body2" color={value === 12 ? '#FF2727' : 'inherit'}>
-          {value === 12 ? 'Full' : value}
+      render: (value: ITrackingRoute['seatsAvailable'], item) => (
+        <Typography variant="body2" color={value?.ECO === item.vehicle.ECOseats ? '#FF2727' : 'inherit'}>
+          {value?.ECO === item.vehicle.ECOseats ? 'Full' : value?.ECO}
         </Typography>
       ),
       width: 120,
@@ -102,9 +105,25 @@ function TableDashboard() {
   return (
     <Box my="30px">
       <AntTable
-        dataSource={dataSource}
+        dataSource={data?.hits ?? []}
         columns={columns}
-        rowKey={r => r.id}
+        loading={loading}
+        rowKey={r => r._id ?? ''}
+        pagination={{
+          total: data?.pagination.totalRows,
+          showLessItems: true,
+          showSizeChanger: false,
+          pageSize: 10,
+          current: currentPage + 1,
+        }}
+        onChange={(pagination, _, sorter, extra) => {
+          setCurrentPage(getPaginationFromAntdTable({ pagination, extra }));
+          run({
+            page: getPaginationFromAntdTable({ pagination, extra }),
+            sorter: getSorterParamsFromAntdTable({ sorter }),
+            searcher: {},
+          });
+        }}
         title={() => (
           <Stack direction="row" alignItems="center" justifyContent="space-between">
             <Typography variant="h6">{t('route_program')}</Typography>
