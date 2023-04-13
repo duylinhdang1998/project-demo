@@ -1,5 +1,6 @@
 import { put, retry, takeLeading } from 'redux-saga/effects';
 import { deleteStaff } from 'services/Staff/Company/deleteStaff';
+import { ServiceException } from 'services/utils/ServiceException';
 import { staffsActions } from '../staffsSlice';
 
 function* handleDeleteStaff({ payload }: ReturnType<typeof staffsActions.deleteStaffRequest>) {
@@ -11,7 +12,7 @@ function* handleDeleteStaff({ payload }: ReturnType<typeof staffsActions.deleteS
   } catch (error) {
     console.log('watchDeleteStaff.ts', error);
     yield put(staffsActions.deleteStaffFailure({ id }));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

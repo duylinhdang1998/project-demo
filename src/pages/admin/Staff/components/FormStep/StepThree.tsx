@@ -7,6 +7,7 @@ import { Alert } from 'antd';
 import 'antd/lib/alert/style/css';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import enUS from 'date-fns/locale/en-US';
@@ -16,7 +17,7 @@ import { useState } from 'react';
 import { Calendar, dateFnsLocalizer, Event, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { DayInWeekMappingToString } from 'services/models/DayInWeek';
 import { selectStaffs } from 'store/staffs/selectors';
@@ -72,7 +73,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
 
   const navigate = useNavigate();
 
-  const { t } = useTranslation(['staffs', 'translation']);
+  const { t } = useTranslation(['staffs', 'translation', 'message_error']);
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -102,8 +103,8 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             });
             navigate('/admin/staffs');
           },
-          onFailure() {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('staff:staff') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('staff:staff') })} description={message} />, {
               className: toastClass.toastError,
             });
           },
@@ -139,7 +140,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   };
 
   if (!staff) {
-    return <Navigate to="/404" />;
+    return <EmptyScreen description={t('message_error:STAFF_NOT_FOUND')} />;
   }
 
   return (

@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
@@ -6,13 +7,13 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { selectStaffs } from 'store/staffs/selectors';
 import { staffsActions } from 'store/staffs/staffsSlice';
 import StepForm from './components/StepForm';
 
 export default function AddStaff() {
-  const { t } = useTranslation(['translation, staff']);
+  const { t } = useTranslation(['translation, staff', 'message_error']);
 
   const { staffId } = useParams();
   const location = useLocation();
@@ -35,8 +36,8 @@ export default function AddStaff() {
     return <LoadingScreen />;
   }
 
-  if (isEditAction && !staff && statusGetStaff === 'success') {
-    return <Navigate to="/404" />;
+  if (isEditAction && (statusGetStaff === 'failure' || (!staff && statusGetStaff === 'success'))) {
+    return <EmptyScreen description={t('message_error:STAFF_NOT_FOUND')} />;
   }
 
   return (
