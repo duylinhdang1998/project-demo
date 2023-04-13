@@ -3,7 +3,7 @@ import { Content } from 'services/models/Content';
 
 export interface UpdateContentRequest extends UpdateContent {
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface UpdateContentSuccess {
