@@ -35,7 +35,7 @@
   "PACKAGE_SETTING_NOT_FOUND": "The requested package settings could not be found. Please ensure that the package settings exist and the provided URL is correct",
   "SERVICE_SETTING_MANAGER_UPDATE_ERROR": 1900,
   "SERVICE_SETTING_NOT_FOUND": 1901,
-  "PASSENGER_NOT_FOUND": 2000,
+  "PASSENGER_NOT_FOUND": "Passenger not found or they have been previously blocked.",
   "PASSENGER_REGISTER_ERROR": 2001,
   "PASSENGER_VALIDATE_EMAIL_INVALID": 2002,
   "PASSENGER_FORGOT_PASS_SESSION_INVALID": 2003,

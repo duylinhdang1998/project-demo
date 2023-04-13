@@ -3,7 +3,7 @@ import { UpdatePassenger } from 'services/Passenger/updatePassenger';
 
 export interface UpdatePassengerRequest extends UpdatePassenger {
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface UpdatePassengerSuccess {

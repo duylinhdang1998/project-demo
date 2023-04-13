@@ -188,10 +188,15 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
                         });
                         handleCloseDialogConfirmBlock();
                       },
-                      onFailure: () => {
-                        toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('passenger:passenger') })} />, {
-                          className: toastClass.toastError,
-                        });
+                      onFailure: message => {
+                        toast(
+                          <ToastCustom
+                            type="error"
+                            text={t('translation:edit_type_error', { type: t('passenger:passenger') })}
+                            description={message}
+                          />,
+                          { className: toastClass.toastError },
+                        );
                       },
                     }),
                   );

@@ -27,7 +27,7 @@ type Values = Pick<Passenger, 'country' | 'email' | 'firstName' | 'lastName' | '
 
 const fieldKeys: Array<keyof Values> = ['country', 'email', 'firstName', 'lastName', 'phone'];
 export default function PassengerDetail() {
-  const { t } = useTranslation(['passenger', 'translation']);
+  const { t } = useTranslation(['passenger', 'translation', 'message_error']);
   const toastClass = useToastStyle();
   const {
     control,
@@ -82,8 +82,8 @@ export default function PassengerDetail() {
             });
             navigate(route);
           },
-          onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('passenger:passenger') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('passenger:passenger') })} description={message} />, {
               className: toastClass.toastError,
             });
           },
@@ -123,7 +123,7 @@ export default function PassengerDetail() {
   }
 
   if (statusGetPassenger === 'success' && !passenger) {
-    return <EmptyScreen description={t('passenger:passenger_notfound')} />;
+    return <EmptyScreen description={t('message_error:PASSENGER_NOT_FOUND')} />;
   }
 
   return (

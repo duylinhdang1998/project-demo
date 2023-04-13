@@ -24,6 +24,5 @@
   "description": "Description",
   "total_users_selected": "{{total}} users selected",
   "send_email_success": "Send email successfully",
-  "send_email_error": "Send email error",
-  "passenger_notfound": "Passenger not found or they have been previously blocked."
+  "send_email_error": "Send email error"
 }
