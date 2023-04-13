@@ -34,11 +34,10 @@ export const getTrips = async (page: number, values: FilterRoutesFormValues): Pr
         tripType: { value: values.tripType, operator: 'eq' },
         departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
         stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
-        'route.departureTime': {
+        departureTime: {
           value: values.departureTime && dayjs(values.departureTime).valueOf(),
           operator: 'eq',
         },
-        // @ts-ignore
         quantity: {
           value: values.totalPax,
           operator: 'gte',

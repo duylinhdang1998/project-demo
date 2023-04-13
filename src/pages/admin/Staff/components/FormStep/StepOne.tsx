@@ -6,7 +6,6 @@ import { isEmpty } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { ImageResource } from 'services/models/Resource';
 import { Staff } from 'services/models/Staff';
 import { getFieldsStepOne } from '../../constants';
 
@@ -32,16 +31,13 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
     resetField,
     reset,
     setValue,
+    watch,
   } = useForm<StepOneValues>();
+  const office = watch('office');
+  const role = watch('role');
+  const attach = watch('attach');
 
   const [open, setOpen] = useState(false);
-
-  const getOffice = () => getValues().office;
-  const getRole = () => getValues().role;
-  const getAttach = (): ImageResource[] => {
-    const attach = getValues().attach;
-    return attach ? [attach] : [];
-  };
 
   const handleClose = () => setOpen(false);
   const handleCancel = () => {
@@ -82,7 +78,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             label: 'role',
             disabled: isEdit,
             required: true,
-            role: getRole(),
+            role,
             onChange: role => {
               resetField('role', { defaultValue: role });
             },
@@ -92,7 +88,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             id: 'office',
             label: 'office',
             required: true,
-            office: getOffice(),
+            office,
             onChange: office => {
               resetField('office', { defaultValue: office });
             },
@@ -114,7 +110,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             label: 'attach',
             required: true,
             multiple: false,
-            resources: getAttach(),
+            resources: attach ? [attach] : [],
             onChange: resources => {
               const lastResource = resources[resources.length - 1] as Staff['attach'] | undefined;
               if (lastResource) {

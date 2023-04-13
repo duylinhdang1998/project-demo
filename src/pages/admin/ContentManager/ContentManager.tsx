@@ -29,17 +29,15 @@ const fieldKeys: Array<keyof Values> = ['city', 'email', 'phone', 'content', 'fo
 
 function ContentManager() {
   const { t } = useTranslation(['account', 'translation']);
-  const { control, getValues, handleSubmit, setValue } = useForm<Values>();
   const toastClass = useToastStyle();
+
+  const { control, handleSubmit, setValue, watch } = useForm<Values>();
+  const contentValueOfForm = watch('content');
 
   const [open, setOpen] = useState(false);
 
   const { statusGetContent, statusUpdateContent, content } = useAppSelector(selectContentManager);
   const dispatch = useAppDispatch();
-
-  const getContent = () => {
-    return getValues().content;
-  };
 
   const handleClose = () => setOpen(false);
   const handleCancel = () => setOpen(true);
@@ -92,7 +90,7 @@ function ContentManager() {
             <Box my="20px">
               <Editor
                 apiKey={env.tinyMCEApiKey}
-                initialValue={getContent()}
+                initialValue={contentValueOfForm}
                 onChange={e => {
                   const data = e.target.getContent();
                   setValue('content', data);

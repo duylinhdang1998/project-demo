@@ -54,6 +54,7 @@ export default function Passengers() {
 
   const searchForm = useForm<SearchFormValues>();
   const emailEditorForm = useForm<BatchMailFormValues>();
+  const emailDescriptionValue = emailEditorForm.watch('description');
 
   const messages = useMemo(() => {
     return ['subject', 'description'].reduce<Record<string, string>>((res, key) => {
@@ -139,7 +140,7 @@ export default function Passengers() {
             label="description"
             control={emailEditorForm.control}
             errors={emailEditorForm.formState.errors}
-            description={emailEditorForm.getValues().description}
+            description={emailDescriptionValue}
             messages={messages}
             required
             onChange={value => {

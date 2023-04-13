@@ -120,6 +120,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
     getValues,
     setValue,
     reset,
+    watch,
   } = useForm<StepOneValuesForMultipleStopTrip>({
     defaultValues: {
       routePoints: [],
@@ -129,18 +130,14 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
     control,
     name: 'routePoints',
   });
+  const routePoints = watch('routePoints');
+  const vehicle = watch('vehicle');
+  const departurePoint = watch('departurePoint');
 
   const [open, setOpen] = useState(false);
   const [openDeleteRoutePoint, setOpenDeleteRoutePoint] = useState<number | null>(null);
 
-  const isAddable = getValues().routePoints.length < 5;
-
-  const getVehicle = () => {
-    return getValues().vehicle;
-  };
-  const getDeparturePoint = () => {
-    return getValues().departurePoint;
-  };
+  const isAddable = routePoints.length < 5;
 
   const handleClose = () => setOpen(false);
 
@@ -247,7 +244,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
             type: 'controlSelectVehicle',
             label: 'vehicle',
             id: 'vehicle',
-            vehicle: getVehicle(),
+            vehicle,
             onChange: vehicle => {
               setValue('vehicle', vehicle as StepOneValuesForMultipleStopTrip['vehicle']);
             },
@@ -257,7 +254,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
             type: 'controlSelectDestination',
             label: 'departurePoint',
             id: 'departurePoint',
-            destination: getDeparturePoint(),
+            destination: departurePoint,
             onChange: departurePoint => {
               setValue('departurePoint', departurePoint as StepOneValuesForMultipleStopTrip['departurePoint']);
             },

@@ -13,7 +13,7 @@ interface ResponseData {
 
 export interface SearchRoutes {
   page: Pagination;
-  searcher: Searcher<RouteOfTicketSale>;
+  searcher: Searcher<RouteOfTicketSale, 'quantity' | 'departureTime'>;
 }
 
 const RECORDS_PER_PAGE = 4;

@@ -47,18 +47,11 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
     watch,
     resetField,
   } = useForm<StepOneValuesForOneStopTrip>();
+  const vehicle = watch('vehicle');
+  const departurePoint = watch('departurePoint');
+  const arrivalPoint = watch('arrivalPoint');
 
   const [open, setOpen] = useState(false);
-
-  const getVehicle = () => {
-    return getValues().vehicle;
-  };
-  const getDeparturePoint = () => {
-    return getValues().departurePoint;
-  };
-  const getArrivalPoint = () => {
-    return getValues().arrivalPoint;
-  };
 
   const handleClose = () => setOpen(false);
   const handleCancel = () => {
@@ -90,10 +83,6 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
 
-  useEffect(() => {
-    watch();
-  }, [watch]);
-
   return (
     <Box my="24px">
       <FormVerticle
@@ -109,7 +98,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             type: 'controlSelectVehicle',
             label: 'vehicle',
             id: 'vehicle',
-            vehicle: getVehicle(),
+            vehicle,
             onChange: vehicle => {
               resetField('vehicle', {
                 defaultValue: vehicle as StepOneValuesForOneStopTrip['vehicle'],
@@ -121,7 +110,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             type: 'controlSelectDestination',
             label: 'departurePoint',
             id: 'departurePoint',
-            destination: getDeparturePoint(),
+            destination: departurePoint,
             onChange: departurePoint => {
               resetField('departurePoint', {
                 defaultValue: departurePoint as StepOneValuesForOneStopTrip['departurePoint'],
@@ -142,7 +131,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             id: 'arrivalPoint',
             label: 'arrivalPoint',
             type: 'controlSelectDestination',
-            destination: getArrivalPoint(),
+            destination: arrivalPoint,
             onChange: arrivalPoint => {
               resetField('arrivalPoint', {
                 defaultValue: arrivalPoint as StepOneValuesForOneStopTrip['arrivalPoint'],

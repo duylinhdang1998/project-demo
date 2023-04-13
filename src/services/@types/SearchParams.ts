@@ -39,15 +39,12 @@ export type Sorter<T extends AnyObject> = Partial<Record<Path<T>, 'desc' | 'asc'
 
 export type SearcherOperator = 'gte' | 'lte' | 'eq' | 'in' | 'contains' | 'or';
 
-export type Searcher<T extends AnyObject> = Partial<
-  Record<
-    Path<T>,
-    {
-      operator: SearcherOperator;
-      value?: string | number | boolean;
-    }
-  >
->;
+interface SearcherValue {
+  operator: SearcherOperator;
+  value?: any;
+}
+export type Searcher<T extends AnyObject, AdditionalKeys extends string = string> = Partial<Record<AdditionalKeys, SearcherValue>> &
+  Partial<Record<Path<T>, SearcherValue>>;
 
 // Bắt đầu từ 0
 export type Pagination = number;
