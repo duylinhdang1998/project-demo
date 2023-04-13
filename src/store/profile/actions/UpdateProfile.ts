@@ -4,7 +4,7 @@ import { UpdateProfile } from 'services/Company/updateProfile';
 export interface UpdateProfileRequest {
   data: UpdateProfile;
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface UpdateProfileSuccess {

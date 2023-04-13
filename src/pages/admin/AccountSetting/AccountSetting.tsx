@@ -69,8 +69,8 @@ export default function AccountSetting() {
             className: toastClass.toastSuccess,
           });
         },
-        onFailure: () => {
-          toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:profile') })} />, {
+        onFailure: message => {
+          toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:profile') })} description={message} />, {
             className: toastClass.toastError,
           });
         },
@@ -100,6 +100,7 @@ export default function AccountSetting() {
     return <LoadingScreen />;
   }
 
+  // FIXME: Liệu cần empty screen như bao cái khác hay không ?
   if (!profile) {
     return null;
   }
