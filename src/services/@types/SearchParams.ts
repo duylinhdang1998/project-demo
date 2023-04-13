@@ -41,7 +41,7 @@ export type SearcherOperator = 'gte' | 'lte' | 'eq' | 'in' | 'contains' | 'or';
 
 interface SearcherValue {
   operator: SearcherOperator;
-  value?: string | number | boolean;
+  value?: any;
 }
 export type Searcher<T extends AnyObject, AdditionalKeys extends string = string> = Partial<Record<AdditionalKeys, SearcherValue>> &
   Partial<Record<Path<T>, SearcherValue>>;
