@@ -53,8 +53,8 @@ function ContentManager() {
             className: toastClass.toastSuccess,
           });
         },
-        onFailure: () => {
-          toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:content_manager') })} />, {
+        onFailure: message => {
+          toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:content_manager') })} description={message} />, {
             className: toastClass.toastError,
           });
         },
