@@ -4,6 +4,7 @@ import { Progress } from 'antd';
 import 'antd/lib/progress/style/css';
 import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
@@ -13,7 +14,7 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { isEmpty } from 'lodash-es';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
@@ -23,7 +24,7 @@ import { getTotalTrialDays } from './utils/getTotalTrialDays';
 import { getCheckoutNotification, setCheckoutNotification } from './utils/handleCheckoutNotification';
 
 export default function Subscription() {
-  const { t } = useTranslation(['account', 'translation']);
+  const { t } = useTranslation(['account', 'translation', 'message_error']);
 
   const { statusGetCurrentSubscription, statusGetSubscriptions, currentSubscription, subscriptions } = useAppSelector(selectSubscriptions);
   const dispatch = useAppDispatch();
@@ -86,8 +87,12 @@ export default function Subscription() {
     return <LoadingScreen />;
   }
 
-  if ((statusGetCurrentSubscription === 'success' && !currentSubscription) || (statusGetSubscriptions === 'success' && isEmpty(subscriptions))) {
-    return <Navigate to="/404" />;
+  if (statusGetSubscriptions === 'failure' || (statusGetSubscriptions === 'success' && isEmpty(subscriptions))) {
+    return <EmptyScreen description={t('message_error:SUBSCRIPTION_NOT_FOUND')} />;
+  }
+
+  if (statusGetCurrentSubscription === 'failure' || (statusGetCurrentSubscription === 'success' && !currentSubscription)) {
+    return <EmptyScreen description={t('message_error:SUBSCRIPTION_NOT_FOUND')} />;
   }
 
   return (
