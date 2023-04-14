@@ -3,9 +3,9 @@ import { makeStyles } from '@mui/styles';
 import dayjs from 'dayjs';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { v4 as uuid } from 'uuid';
 import { MapPinIcon } from 'assets';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
+import { TicketSale } from 'services/models/TicketSale';
 
 const useStyles = makeStyles(() => ({
   tableCell: {
@@ -17,14 +17,12 @@ const useStyles = makeStyles(() => ({
     borderTop: '1px solid #f7f7f7',
   },
 }));
-const data = [
-  { id: uuid(), trip: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], date: new Date() },
-  { id: uuid(), trip: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], date: new Date() },
-  { id: uuid(), trip: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], date: new Date() },
-  { id: uuid(), trip: ['Lyon Gare Perrache', 'Lyon Gare Perrache'], date: new Date() },
-];
 
-function TableOrdersOfPassenger() {
+interface TableOrdersOfPassengerProps {
+  orders: TicketSale[];
+}
+
+function TableOrdersOfPassenger({ orders }: TableOrdersOfPassengerProps) {
   const { t } = useTranslation('passenger');
   const classes = useStyles();
   return (
@@ -32,10 +30,10 @@ function TableOrdersOfPassenger() {
       <TableContainer>
         <Box display="flex" justifyContent="center" alignItems="center" padding="10px 16px" bgcolor="#1AA6EE" borderRadius="4px">
           <Typography color="#fff" fontWeight="bold">
-            {t('order_total')}: {data.length}
+            {t('order_total')}: {orders.length}
           </Typography>
         </Box>
-        <Table sx={{ minWidth: 650 }}>
+        <Table>
           <TableHead>
             <TableRow>
               <TableCell className={classes.tableCell}>{t('trip')}</TableCell>
@@ -45,10 +43,10 @@ function TableOrdersOfPassenger() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map(row => (
-              <TableRow key={row.id}>
+            {orders.map(({ _id, departurePoint, arrivalPoint, createdAt }) => (
+              <TableRow key={_id}>
                 <TableCell align="left" className={classes.tableCell}>
-                  {row.trip.map((val, index) => (
+                  {[departurePoint, arrivalPoint].map((val, index) => (
                     <TextWithIcon
                       key={index}
                       text={val}
@@ -61,7 +59,7 @@ function TableOrdersOfPassenger() {
                   ))}
                 </TableCell>
                 <TableCell className={classes.tableCell} align="center">
-                  {dayjs(row.date).format('MM/DD/YYYY')}
+                  {dayjs(createdAt).format('MM/DD/YYYY')}
                 </TableCell>
               </TableRow>
             ))}

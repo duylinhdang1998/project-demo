@@ -1,3 +1,4 @@
+import { PaymentStatus } from 'models/PaymentStatus';
 import { PaymentGateway } from './PaymentGateway';
 
 export type SubscriptionType = 'TRIAL' | 'STANDARD' | 'PRO' | 'ENTERPRISE';
@@ -41,9 +42,9 @@ export interface SubscriptionOrder {
   payment: {
     company: string;
     paymentCode: string;
-    orderType: 'SUBCRIPTION'; // FIXME: enum
+    orderType: 'SUBCRIPTION';
     paymentGateWay: PaymentGateway;
-    paymentStatus: 'PENDING'; // FIXME: enum
+    paymentStatus: PaymentStatus;
     _id: string;
     createdAt: string;
     updatedAt: string;

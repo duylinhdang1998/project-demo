@@ -178,6 +178,7 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
                   dispatch(
                     passengersActions.updateStatusPassengerRequest({
                       id: openDialogConfirmBlock._id,
+                      passenger: openDialogConfirmBlock,
                       data: {
                         status: isBlocking ? 'ACTIVE' : 'BLOCK',
                       },

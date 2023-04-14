@@ -10,7 +10,7 @@ export const fieldsSearch: Field[] = [
 export const fieldDetails: Field[] = [
   { id: uuidv4(), label: 'lastName', type: 'text' },
   { id: uuidv4(), label: 'firstName', type: 'text' },
-  { id: uuidv4(), label: 'email', type: 'text' },
+  { id: uuidv4(), label: 'email', type: 'text', disabled: true },
   { id: uuidv4(), label: 'phone', type: 'text' },
   { id: uuidv4(), label: 'country', type: 'text' },
 ];

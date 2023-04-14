@@ -1,26 +1,28 @@
-import { Box, Divider, Grid, Typography } from '@mui/material';
+import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
+import { Empty } from 'antd';
+import Button from 'components/Button/Button';
+import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
+import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import { FadeIn } from 'components/FadeIn/FadeIn';
+import FormVerticle from 'components/FormVerticle/FormVerticle';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
 import dayjs from 'dayjs';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
-import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
-import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
-import FormVerticle from 'components/FormVerticle/FormVerticle';
-import LayoutDetail from 'layout/LayoutDetail';
-import TableOrdersOfPassenger from './components/TableOrdersOfPassenger';
-import { fieldDetails } from './constants';
-import { useAppSelector } from 'hooks/useAppSelector';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { selectPassengers } from 'store/passengers/selectors';
-import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
-import { passengersActions } from 'store/passengers/passengersSlice';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Passenger } from 'services/models/Passenger';
 import { selectAuth } from 'store/auth/selectors';
-import { toast } from 'react-toastify';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { passengersActions } from 'store/passengers/passengersSlice';
+import { selectPassengers } from 'store/passengers/selectors';
 import { useToastStyle } from 'theme/toastStyles';
-import { FadeIn } from 'components/FadeIn/FadeIn';
+import TableOrdersOfPassenger from './components/TableOrdersOfPassenger';
+import { fieldDetails } from './constants';
 
 type Values = Pick<Passenger, 'country' | 'email' | 'firstName' | 'lastName' | 'phone'>;
 
@@ -122,7 +124,14 @@ export default function PassengerDetail() {
   }
 
   if (statusGetPassenger === 'success' && !passenger) {
-    return <Navigate to="/404" />;
+    return (
+      <Stack sx={{ paddingTop: '40px' }} justifyContent="center" alignItems="center">
+        <Empty description={t('passenger:passenger_notfound')} />
+        <Button backgroundButton="#1aa6ee" onClick={() => navigate(-1)}>
+          Go back
+        </Button>
+      </Stack>
+    );
   }
 
   return (
@@ -151,8 +160,7 @@ export default function PassengerDetail() {
                 />
               </Grid>
               <Grid item xs={12} lg={6}>
-                {/* FIXME: Chưa có type */}
-                <TableOrdersOfPassenger />
+                <TableOrdersOfPassenger orders={passenger?.orders ?? []} />
               </Grid>
             </Grid>
             {isEditAction && (

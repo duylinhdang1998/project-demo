@@ -4,6 +4,7 @@ import { UpdateStatusPassenger } from 'services/Passenger/updateStatusPassenger'
 export interface UpdateStatusPassengerRequest extends UpdateStatusPassenger {
   onSuccess: () => void;
   onFailure: () => void;
+  passenger: Passenger;
 }
 
 export interface UpdateStatusPassengerSuccess {
