@@ -1,5 +1,6 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { sendEmail } from 'services/TicketSale/sendEmail';
+import { ServiceException } from 'services/utils/ServiceException';
 import { ticketSalesActions } from '../ticketSalesSlice';
 
 function* handleSendEmail({ payload }: ReturnType<typeof ticketSalesActions.sendEmailRequest>) {
@@ -11,7 +12,7 @@ function* handleSendEmail({ payload }: ReturnType<typeof ticketSalesActions.send
   } catch (error) {
     console.log('watchSendEmail.ts', error);
     yield put(ticketSalesActions.sendEmailFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

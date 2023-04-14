@@ -1,5 +1,6 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { createTicketSale } from 'services/TicketSale/createTicketSale';
+import { ServiceException } from 'services/utils/ServiceException';
 import { ticketSalesActions } from '../ticketSalesSlice';
 
 function* handleCreateTicketSale({ payload }: ReturnType<typeof ticketSalesActions.createTicketSaleRequest>) {
@@ -11,7 +12,7 @@ function* handleCreateTicketSale({ payload }: ReturnType<typeof ticketSalesActio
   } catch (error) {
     console.log('watchCreateTicketSale.ts', error);
     yield put(ticketSalesActions.createTicketSaleFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

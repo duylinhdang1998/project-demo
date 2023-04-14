@@ -75,7 +75,7 @@
   "PACKAGE_SALE_PACKAGE_NOT_FOUND": 2602,
   "PACKAGE_SALE_UPDATE_PAYMENT_ERROR": 2603,
   "PACKAGE_SALE_ORDER_NOT_FOUND": 2604,
-  "TICKET_SALE_NOT_FOUND": 2700,
+  "TICKET_SALE_NOT_FOUND": "The requested ticket sale could not be found. Please ensure that the ticket sale exists and the provided URL is correct",
   "TICKET_SALE_UPDATE_PAYMENT_ERROR": 2701,
   "TICKET_SALE_CREATE_ERROR": 2702,
   "UNKNOWN": "Something went wrong"

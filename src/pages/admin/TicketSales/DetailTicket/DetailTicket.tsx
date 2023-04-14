@@ -1,6 +1,7 @@
 import { Grid, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import Button from 'components/Button/Button';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import PrintIcon from 'components/SvgIcon/PrintIcon';
 import SendIcon from 'components/SvgIcon/SendIcon';
@@ -10,7 +11,7 @@ import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import { toast } from 'react-toastify';
 import { selectTicketSales } from 'store/ticketSales/selectors';
@@ -22,7 +23,7 @@ import { PaymentDetail } from './components/PaymentDetail';
 import { PrintPDF } from './components/PrintPDF';
 
 export default function DetailTicketPage() {
-  const { t } = useTranslation(['ticketSales']);
+  const { t } = useTranslation(['ticketSales', 'message_error']);
 
   const location = useLocation();
   const { orderCode } = useParams();
@@ -52,8 +53,8 @@ export default function DetailTicketPage() {
               className: 'toast-success',
             });
           },
-          onFailure() {
-            toast(<ToastCustom type="error" text={t('ticketSales:send_email_error')} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('ticketSales:send_email_error')} description={message} />, {
               className: 'toast-error',
             });
           },
@@ -69,8 +70,8 @@ export default function DetailTicketPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderCode]);
 
-  if (!orderCode || (!record && statusGetTicketSale === 'failure')) {
-    return <Navigate to="/404" />;
+  if (!orderCode || (!record && statusGetTicketSale === 'success') || statusGetTicketSale === 'failure') {
+    return <EmptyScreen description={t('message_error:TICKET_SALE_NOT_FOUND')} />;
   }
 
   if (!record) {

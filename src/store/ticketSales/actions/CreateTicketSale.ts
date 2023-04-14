@@ -4,7 +4,7 @@ import { CreateTicketSale } from 'services/TicketSale/createTicketSale';
 export interface CreateTicketSaleRequest {
   data: CreateTicketSale;
   onSuccess: (ticketSaleOrderCode: TicketSale['orderCode']) => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface CreateTicketSaleSuccess {

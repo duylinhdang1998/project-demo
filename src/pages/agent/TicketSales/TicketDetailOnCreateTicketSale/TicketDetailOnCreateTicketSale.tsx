@@ -108,13 +108,14 @@ export const TicketDetailOnCreateTicketSale = () => {
             );
             navigate(isAgent ? `/agent/ticket-sales/${ticketSaleOrderCode}` : `/admin/ticket-sales/${ticketSaleOrderCode}`);
           },
-          onFailure() {
+          onFailure: message => {
             toast(
               <ToastCustom
                 type="error"
                 text={t('translation:add_type_error', {
                   type: t('ticketSales:ticket'),
                 })}
+                description={message}
               />,
               { className: 'toast-error' },
             );
