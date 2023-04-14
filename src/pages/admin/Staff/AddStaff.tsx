@@ -54,7 +54,7 @@ export default function AddStaff() {
       >
         <Box width="100%" display="flex" justifyContent="center">
           <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
-            <StepForm isEditAction={isEditAction} startStep={location.state?.isConsultSchedule ? 2 : 1} />
+            <StepForm isEditAction={isEditAction} startStep={location.state?.isConsultSchedule ? 2 : 0} />
           </Box>
         </Box>
       </LayoutDetail>
