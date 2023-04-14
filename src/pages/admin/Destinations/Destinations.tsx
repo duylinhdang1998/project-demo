@@ -24,7 +24,7 @@ export default function Destinations() {
   });
 
   const handleAdd = () => {
-    navigate('/admin/add-new-destinations');
+    navigate('/admin/destination/add-new-destinations');
   };
 
   return (

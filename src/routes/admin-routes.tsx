@@ -11,6 +11,7 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Ticket sales
   {
     path: 'ticket-sales',
     element: (
@@ -27,11 +28,29 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  // Package sales
   {
     path: 'package-sales',
     element: (
       <RequiredAuth role="admin">
         <Page.PackageSales />
+      </RequiredAuth>
+    ),
+  },
+  // Service settings
+  {
+    path: 'services-settings/:id',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.AddService />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'services-settings/add-service',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.AddService />
       </RequiredAuth>
     ),
   },
@@ -43,23 +62,7 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  {
-    path: 'services-settings/:id/edit',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.AddService />
-      </RequiredAuth>
-    ),
-  },
-  {
-    path: 'add-service',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.AddService />
-      </RequiredAuth>
-    ),
-  },
-  // Update package setting
+  // Package settings
   {
     path: 'package-settings/:packageSettingId',
     element: (
@@ -68,7 +71,14 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // List package settings
+  {
+    path: 'package-settings/add-package-setting',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.AddPackageSettings />
+      </RequiredAuth>
+    ),
+  },
   {
     path: 'package-settings',
     element: (
@@ -77,16 +87,7 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // Add package setting
-  {
-    path: 'add-package-setting',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.AddPackageSettings />
-      </RequiredAuth>
-    ),
-  },
-  // Update vehicle
+  // Vehicles
   {
     path: 'vehicles/:vehicleId',
     element: (
@@ -95,16 +96,6 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // List vehicle
-  {
-    path: 'vehicles',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.Vehicles />
-      </RequiredAuth>
-    ),
-  },
-  // Add vehicle
   {
     path: 'vehicles/add-new-vehicles',
     element: (
@@ -113,7 +104,15 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // Update vehicle event
+  {
+    path: 'vehicles',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.Vehicles />
+      </RequiredAuth>
+    ),
+  },
+  // Vehicle events
   {
     path: 'vehicles/:vehicleId/update-event/:vehicleEventId',
     element: (
@@ -122,7 +121,6 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // Add vehicle event
   {
     path: 'vehicles/:vehicleId/add-new-event',
     element: (
@@ -131,7 +129,6 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // List vehicle events
   {
     path: 'vehicles/:vehicleId/list-events',
     element: (
@@ -140,7 +137,7 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // Add staff
+  // Staff
   {
     path: 'staffs/add-new-staff',
     element: (
@@ -149,7 +146,6 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // Update staff
   {
     path: 'staffs/:staffId',
     element: (
@@ -158,7 +154,6 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // List staffs
   {
     path: 'staffs',
     element: (
@@ -167,7 +162,15 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // List passengers
+  // Passengers
+  {
+    path: 'passengers/:passengerId',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.PassengerDetail />
+      </RequiredAuth>
+    ),
+  },
   {
     path: 'passengers',
     element: (
@@ -176,12 +179,20 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // Update passenger
+  // Destinations
   {
-    path: 'passengers/:passengerId',
+    path: 'destination/:id',
     element: (
       <RequiredAuth role="admin">
-        <Page.PassengerDetail />
+        <Page.AddNewDestinations />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'destination/add-new-destinations',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.AddNewDestinations />
       </RequiredAuth>
     ),
   },
@@ -193,41 +204,7 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  {
-    path: 'destination/:id/edit',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.AddNewDestinations />
-      </RequiredAuth>
-    ),
-  },
-  {
-    path: 'add-new-destinations',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.AddNewDestinations />
-      </RequiredAuth>
-    ),
-  },
-  // Update router one stop
-  {
-    path: 'routers/update-oneway/:routeCode',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.CreateOneWay />
-      </RequiredAuth>
-    ),
-  },
-  // Update router multi stop
-  {
-    path: 'routers/update-multi/:routeCode',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.CreateMultiStopWay />
-      </RequiredAuth>
-    ),
-  },
-  // List routers
+  // Routers
   {
     path: 'routers',
     element: (
@@ -236,7 +213,6 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // Add one stop
   {
     path: 'routers/create-oneway',
     element: (
@@ -245,9 +221,24 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
-  // Add multi stop
   {
     path: 'routers/create-multi',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.CreateMultiStopWay />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'routers/update-oneway/:routeCode',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.CreateOneWay />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'routers/update-multi/:routeCode',
     element: (
       <RequiredAuth role="admin">
         <Page.CreateMultiStopWay />

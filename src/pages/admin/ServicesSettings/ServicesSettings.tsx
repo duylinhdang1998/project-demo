@@ -37,7 +37,7 @@ function ServicesSettings() {
   }, [searchValue]);
 
   const handleAdd = () => {
-    navigate('/admin/add-service');
+    navigate('/admin/service-settings/add-service');
   };
 
   return (

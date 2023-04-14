@@ -14,11 +14,11 @@ function ListButton() {
   const navigate = useNavigate();
 
   const handleCreateTicketOrder = () => {
-    navigate('/agent/create-ticket-order');
+    navigate('/agent/ticket-sales/create-ticket-order');
   };
 
   const handleCreateMerchandise = () => {
-    navigate('/agent/create-package-orders');
+    navigate('/agent/package-sales/create-package-orders');
   };
 
   const handleControlTicket = () => {

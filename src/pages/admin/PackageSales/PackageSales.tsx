@@ -85,7 +85,7 @@ export default function PackageSales() {
   };
 
   const handleAdd = () => {
-    navigate('/agent/create-package-orders');
+    navigate('/agent/package-sales/create-package-orders');
   };
 
   return (

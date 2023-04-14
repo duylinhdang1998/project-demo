@@ -49,7 +49,7 @@ function CustomLink({ item }: CustomLinkProps) {
   const classes = useStyles();
   const { t } = useTranslation('sidebar');
   const resolved = useResolvedPath(item.path);
-  const match = useMatch({ path: resolved.pathname, end: true });
+  const match = useMatch({ path: resolved.pathname, end: item.isRouteStrict });
 
   return (
     <div>

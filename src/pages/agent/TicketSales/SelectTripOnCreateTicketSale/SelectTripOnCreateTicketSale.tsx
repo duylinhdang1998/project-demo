@@ -87,7 +87,7 @@ export const SelectTripOnCreateTicketSale = () => {
   };
 
   const handleSelect = (route: RouteOfTicketSale) => {
-    navigate('/agent/traveller-contact-details', { state: route });
+    navigate('/agent/ticket-sales/traveller-contact-details', { state: route });
   };
 
   const onSubmit = (values: FilterRoutesFormValues) => {

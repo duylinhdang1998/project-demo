@@ -74,7 +74,7 @@ export default function TableDestinations({ dataSource = [], isLoading, paginati
       label: 'edit',
       icon: <EditIcon />,
       onClick: row => {
-        navigate(`/admin/destination/${row?._id}/edit`, {
+        navigate(`/admin/destination/${row?._id}`, {
           state: {
             destination: row,
           },
