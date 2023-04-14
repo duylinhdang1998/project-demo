@@ -1,5 +1,6 @@
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { toast } from 'react-toastify';
+import { ServiceException } from 'services/utils/ServiceException';
 
 interface Params {
   code: number;
@@ -16,7 +17,7 @@ export const getNotifcation = ({ code, success, error, onSuccess }: Params) => {
     });
     onSuccess?.();
   } else {
-    toast(<ToastCustom type="error" text={error ?? ''} />, {
+    toast(<ToastCustom type="error" text={error ?? ''} description={ServiceException.getMessageError(code)} />, {
       className: 'toast-error',
       autoClose: 2000,
     });

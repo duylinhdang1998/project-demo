@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { updateDeliveryStatus } from 'services/PackageSales/updateDeliveryStatus';
+import { ServiceException } from 'services/utils/ServiceException';
 import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { getAppWeightSymbol } from 'utils/getAppWeightSymbol';
 import { packageSaleToDataDetail } from './utils/packageSaleToDataDetail';
@@ -68,13 +69,14 @@ export function ControlMerchandiseDetail() {
             className: 'toast-success',
           },
         );
-      } catch {
+      } catch (error) {
         toast(
           <ToastCustom
             type="error"
             text={t('translation:edit_type_error', {
               type: t('packageSales:package_order'),
             })}
+            description={ServiceException.getMessageError(error)}
           />,
           {
             className: 'toast-error',

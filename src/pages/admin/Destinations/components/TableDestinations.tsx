@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import { useDeleteDestination } from 'services/Destinations/destinations';
 import { Destination } from 'services/models/Destination';
 import { ParamsSettings } from 'services/models/Response';
+import { ServiceException } from 'services/utils/ServiceException';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 import { v4 as uuid } from 'uuid';
@@ -43,9 +44,16 @@ export default function TableDestinations({ dataSource = [], isLoading, paginati
         });
         onRefresh?.();
       } else {
-        toast(<ToastCustom type="error" text={t('translation: delete_type_error', { type: t('destination').toLowerCase() })} />, {
-          className: 'toast-error',
-        });
+        toast(
+          <ToastCustom
+            type="error"
+            text={t('translation: delete_type_error', { type: t('destination').toLowerCase() })}
+            description={ServiceException.getMessageError(data.code)}
+          />,
+          {
+            className: 'toast-error',
+          },
+        );
       }
     },
   });

@@ -12,6 +12,7 @@ import { useToastStyle } from 'theme/toastStyles';
 import { toast } from 'react-toastify';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { forgotPasswordRequest } from 'services/Auth/Company/forgotPasswordRequest';
+import { ServiceException } from 'services/utils/ServiceException';
 
 export interface StepOneValues {
   email: string;
@@ -45,8 +46,8 @@ export const StepOne = ({ onNext }: StepOneProps) => {
         email: values.email,
         session: data.session,
       });
-    } catch {
-      toast(<ToastCustom type="error" text={t('auth:request_reset_password_error')} />, {
+    } catch (error) {
+      toast(<ToastCustom type="error" text={t('auth:request_reset_password_error')} description={ServiceException.getMessageError(error)} />, {
         className: toastClass.toastError,
       });
     } finally {

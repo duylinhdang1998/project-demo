@@ -105,7 +105,7 @@ export const UploadPDFResource = ({
         setFileListState(state => {
           return state.filter(item => item.uid !== sessionId);
         });
-        toast(<ToastCustom description={ServiceException.getMessageError(error)} text={`${file.name} file upload failed.`} type="error" />, {
+        toast(<ToastCustom type="error" description={ServiceException.getMessageError(error)} text={`${file.name} file upload failed.`} />, {
           className: 'toast-error',
         });
       }

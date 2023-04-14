@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { forgotPasswordSetNewPassword } from 'services/Auth/Company/forgotPasswordSetNewPassword';
+import { ServiceException } from 'services/utils/ServiceException';
 import { useToastStyle } from 'theme/toastStyles';
 import { useStyles } from './styles';
 
@@ -48,8 +49,8 @@ export const StepThree = ({ session }: StepThreeProps) => {
         className: toastClass.toastSuccess,
       });
       navigate('/login');
-    } catch {
-      toast(<ToastCustom type="error" text={t('auth:reset_password_error')} />, {
+    } catch (error) {
+      toast(<ToastCustom type="error" text={t('auth:reset_password_error')} description={ServiceException.getMessageError(error)} />, {
         className: toastClass.toastError,
       });
     } finally {

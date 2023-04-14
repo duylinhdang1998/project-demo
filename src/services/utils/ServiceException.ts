@@ -4,7 +4,7 @@ import { StatusCodeMappingToString, StringMappingToStatusCode } from 'services/m
 
 export class ServiceException extends Error {
   cause: ResponseFailure;
-  static getMessageError: (error: unknown) => string;
+  static getMessageError: (error: unknown | keyof typeof StatusCodeMappingToString) => string;
   constructor(message: string, cause: ResponseFailure) {
     super(message);
     this.name = 'ServiceException';
@@ -12,8 +12,11 @@ export class ServiceException extends Error {
   }
 }
 
-ServiceException.getMessageError = (error: unknown) => {
+ServiceException.getMessageError = (error: unknown | keyof typeof StatusCodeMappingToString) => {
   const i18n = getI18n();
+  if (typeof error === 'number') {
+    return i18n.t(`message_error:${StatusCodeMappingToString[error]}`);
+  }
   const errorCode = error instanceof ServiceException ? error.cause.code : StringMappingToStatusCode.UNKNOWN;
   return i18n.t(`message_error:${StatusCodeMappingToString[errorCode]}`);
 };
