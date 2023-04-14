@@ -137,7 +137,6 @@ export default function AddPackageSettings() {
   }
 
   if (statusGetPackageSetting === 'failure' || (statusGetPackageSetting === 'success' && !packageSetting)) {
-    // FIXME: Có cần thả message chi tiết ?
     return <EmptyScreen description={t('message_error:PACKAGE_SETTING_NOT_FOUND')} />;
   }
 

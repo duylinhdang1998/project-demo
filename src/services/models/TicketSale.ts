@@ -8,6 +8,7 @@ export interface PassengerInTicketSale {
   lastName: string;
   typeTicket: RoutePointPriceType;
   seatsType: 'ECO' | 'VIP';
+  price?: number;
 }
 
 export interface TicketSale {
@@ -17,6 +18,7 @@ export interface TicketSale {
   VIPseated: number;
   arrivalPoint: string;
   company: string;
+  passengerPresent?: string;
   createdAt: string;
   creator: string;
   creatorType: UserRole;
@@ -26,7 +28,10 @@ export interface TicketSale {
   email: string;
   orderCode: string;
   passengers: PassengerInTicketSale[];
-  payment: string;
+  payment: {
+    _id: string;
+    paymentStatus: PaymentStatus;
+  };
   paymentStatus: PaymentStatus;
   paymentType: PaymentGateway;
   route: string;

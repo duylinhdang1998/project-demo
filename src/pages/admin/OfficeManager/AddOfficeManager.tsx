@@ -136,7 +136,6 @@ export default function AddOfficeManager() {
   }
 
   if (statusGetOffice === 'failure' || (statusGetOffice === 'success' && !office)) {
-    // FIXME: Có cần thả message chi tiết ?
     return <EmptyScreen description={t('message_error:OFFICE_MANAGER_NOT_FOUND')} />;
   }
 

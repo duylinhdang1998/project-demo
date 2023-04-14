@@ -81,7 +81,6 @@ function ContentManager() {
   }
 
   if (statusGetContent === 'failure' || (statusGetContent === 'success' && !content)) {
-    // FIXME: Có cần thả message chi tiết ?
     return <EmptyScreen description={t('message_error:CONTENT_MANAGER_NOT_FOUND')} />;
   }
 

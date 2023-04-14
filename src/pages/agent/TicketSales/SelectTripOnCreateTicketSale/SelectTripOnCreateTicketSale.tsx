@@ -108,7 +108,7 @@ export const SelectTripOnCreateTicketSale = () => {
         </Stack>
       );
     }
-    if (!data) {
+    if (!data?.routes.length) {
       return (
         <Stack alignItems="center" justifyContent="center">
           <Empty />

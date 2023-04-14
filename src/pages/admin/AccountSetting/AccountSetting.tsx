@@ -100,7 +100,6 @@ export default function AccountSetting() {
     return <LoadingScreen />;
   }
 
-  // FIXME: Liệu cần empty screen như bao cái khác hay không ?
   if (!profile) {
     return null;
   }
