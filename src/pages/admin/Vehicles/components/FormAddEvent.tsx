@@ -101,8 +101,8 @@ function FormAddEvent() {
               });
               navigate(isAgent ? `/agent/vehicles/${vehicleId}/list-events` : `/admin/vehicles/${vehicleId}/list-events`);
             },
-            onFailure() {
-              toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('vehicles:event') })} />, {
+            onFailure: message => {
+              toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('vehicles:event') })} description={message} />, {
                 className: 'toast-error',
               });
             },
@@ -128,8 +128,8 @@ function FormAddEvent() {
               });
               navigate(isAgent ? `/agent/vehicles/${vehicleId}/list-events` : `/admin/vehicles/${vehicleId}/list-events`);
             },
-            onFailure() {
-              toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('vehicles:event') })} />, {
+            onFailure: message => {
+              toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('vehicles:event') })} description={message} />, {
                 className: 'toast-error',
               });
             },

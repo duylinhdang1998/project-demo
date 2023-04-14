@@ -1,4 +1,5 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { ServiceException } from 'services/utils/ServiceException';
 import { createVehicleEvent } from 'services/Vehicle/Company/createVehicleEvent';
 import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
 
@@ -11,7 +12,7 @@ function* handleCreateVehicleEvent({ payload }: ReturnType<typeof vehicleEventsA
   } catch (error) {
     console.log('watchCreateVehicleEvent.ts', error);
     yield put(vehicleEventsActions.createVehicleEventFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

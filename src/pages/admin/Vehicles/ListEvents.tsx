@@ -1,19 +1,20 @@
-import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+import { selectAuth } from 'store/auth/selectors';
 import { selectVehicleEvents, selectVehicles } from 'store/vehicles/selectors';
 import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 import TableEvents from './components/TableEvents';
-import { selectAuth } from 'store/auth/selectors';
 
 export default function ListEvents() {
-  const { t } = useTranslation(['vehicles', 'translation']);
+  const { t } = useTranslation(['vehicles', 'translation', 'message_error']);
 
   const navigate = useNavigate();
   const { vehicleId } = useParams();
@@ -50,8 +51,8 @@ export default function ListEvents() {
     return <LoadingScreen />;
   }
 
-  if (statusGetVehicle === 'success' && !vehicle) {
-    return <Navigate to="/404" />;
+  if (statusGetVehicle === 'failure' || (statusGetVehicle === 'success' && !vehicle)) {
+    return <EmptyScreen description={t('message_error:VEHICLE_NOT_FOUND')} />;
   }
 
   return (

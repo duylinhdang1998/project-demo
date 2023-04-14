@@ -1,18 +1,19 @@
 import { Box, Divider, Typography } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import LayoutDetail from 'layout/LayoutDetail';
-import FormAddVehicle from './components/FormAddVehicle';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
-import { Navigate, useParams } from 'react-router-dom';
-import { useEffect, useMemo } from 'react';
-import { useAppSelector } from 'hooks/useAppSelector';
-import { selectVehicles } from 'store/vehicles/selectors';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import LayoutDetail from 'layout/LayoutDetail';
+import { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { selectVehicles } from 'store/vehicles/selectors';
+import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
+import FormAddVehicle from './components/FormAddVehicle';
 
 export default function AddNewVehicles() {
-  const { t } = useTranslation(['vehicles', 'translation']);
+  const { t } = useTranslation(['vehicles', 'translation', 'message_error']);
 
   const { statusGetVehicle, vehicle } = useAppSelector(selectVehicles);
   const dispatch = useAppDispatch();
@@ -34,9 +35,10 @@ export default function AddNewVehicles() {
     return <LoadingScreen />;
   }
 
-  if (statusGetVehicle === 'success' && !vehicle) {
-    return <Navigate to="/404" />;
+  if (statusGetVehicle === 'failure' || (statusGetVehicle === 'success' && !vehicle)) {
+    return <EmptyScreen description={t('message_error:VEHICLE_NOT_FOUND')} />;
   }
+
   return (
     <FadeIn>
       <LayoutDetail

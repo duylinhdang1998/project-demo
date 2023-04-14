@@ -3,7 +3,7 @@ import { DeleteVehicleEvent } from 'services/Vehicle/Company/deleteVehicleEvent'
 
 export type DeleteVehicleEventRequest = DeleteVehicleEvent & {
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 };
 
 export interface DeleteVehicleEventSuccess {

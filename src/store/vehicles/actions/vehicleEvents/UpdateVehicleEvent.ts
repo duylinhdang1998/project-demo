@@ -3,7 +3,7 @@ import { UpdateVehicleEvent } from 'services/Vehicle/Company/updateVehicleEvent'
 
 export type UpdateVehicleEventRequest = UpdateVehicleEvent & {
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 };
 
 export interface UpdateVehicleEventSuccess {

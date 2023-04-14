@@ -94,8 +94,8 @@ function FormAddVehicle() {
             });
             navigate(isAgent ? '/agent/vehicles' : '/admin/vehicles', { replace: true });
           },
-          onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('vehicles:vehicle') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('vehicles:vehicle') })} description={message} />, {
               className: 'toast-error',
             });
           },
@@ -111,8 +111,8 @@ function FormAddVehicle() {
             });
             navigate(isAgent ? '/agent/vehicles' : '/admin/vehicles', { replace: true });
           },
-          onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('vehicles:vehicle') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('vehicles:vehicle') })} description={message} />, {
               className: 'toast-error',
             });
           },
