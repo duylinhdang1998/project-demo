@@ -2,9 +2,6 @@ import { Box } from '@mui/material';
 import React from 'react';
 import { useRouteError } from 'react-router-dom';
 
-const production = process.env.NODE_ENV === 'production';
-console.log({ production });
-
 export default function ErrorBoundary2() {
   const error = useRouteError();
   return error ? (

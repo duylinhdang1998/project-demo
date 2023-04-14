@@ -49,3 +49,4 @@ config-overrides.js
 webpack-plugins
 tailwind.config.js
 assets
+vite.config.ts

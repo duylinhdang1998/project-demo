@@ -7,7 +7,7 @@ import { AgentRoutes } from './agent-routes';
 import { RouteObject } from 'react-router-dom';
 import ErrorBoundary2 from 'components/ErrorBoundary/ErrorBoundary2';
 
-const production = process.env.NODE_ENV === 'production';
+const production = import.meta.env.PROD;
 
 export const getRoutes = (): RouteObject[] => {
   return [

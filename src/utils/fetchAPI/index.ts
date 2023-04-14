@@ -2,6 +2,7 @@ import qs from 'qs';
 import env from 'env';
 import { RootState } from 'store/configureStore';
 import ConfigureAxios from './fetchApi';
+import { store } from 'store/configureStore';
 
 const axiosConfig = new ConfigureAxios({
   configure: {
@@ -12,7 +13,6 @@ const axiosConfig = new ConfigureAxios({
   },
   setAccessToken() {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { store } = require('store/configureStore');
     const authState = store.getState() as RootState;
     return authState.auth.token;
   },
