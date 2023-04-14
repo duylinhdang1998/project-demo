@@ -1,13 +1,14 @@
 import { Box, Grid, Stack, Typography } from '@mui/material';
-import { get, isEmpty } from 'lodash-es';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import Button from 'components/Button/Button';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
+import { get, isEmpty } from 'lodash-es';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
 import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
@@ -15,10 +16,9 @@ import { PlanDuration } from './@types/PlanDuration';
 import SubscriptionItem from './components/SubscriptionItem';
 import { planDurations } from './constants';
 import { getPlanDurationsFromSubscription } from './utils/getPlanDurationsFromSubscription';
-import { Navigate } from 'react-router-dom';
 
 export default function SubscriptionPackage() {
-  const { t } = useTranslation(['account', 'translation']);
+  const { t } = useTranslation(['account', 'translation', 'message_error']);
 
   const { statusGetSubscriptions, statusGetCurrentSubscription, subscriptions, currentSubscription } = useAppSelector(selectSubscriptions);
   const dispatch = useAppDispatch();
@@ -84,8 +84,12 @@ export default function SubscriptionPackage() {
     return <LoadingScreen />;
   }
 
-  if ((statusGetCurrentSubscription === 'success' && !currentSubscription) || (statusGetSubscriptions === 'success' && isEmpty(subscriptions))) {
-    return <Navigate to="/404" />;
+  if (statusGetSubscriptions === 'failure' || (statusGetSubscriptions === 'success' && isEmpty(subscriptions))) {
+    return <EmptyScreen description={t('message_error:SUBSCRIPTION_NOT_FOUND')} />;
+  }
+
+  if (statusGetCurrentSubscription === 'failure' || (statusGetCurrentSubscription === 'success' && !currentSubscription)) {
+    return <EmptyScreen description={t('message_error:SUBSCRIPTION_NOT_FOUND')} />;
   }
 
   return (

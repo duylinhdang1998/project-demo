@@ -1,6 +1,7 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { createMultipleStopTrip } from 'services/Route/Company/createMultipleStopTrip';
 import { getRoute } from 'services/Route/Company/getRoute';
+import { ServiceException } from 'services/utils/ServiceException';
 import { routesActions } from '../routesSlice';
 
 function* handleCreateMultipleStopTrip({ payload }: ReturnType<typeof routesActions.createMultipleStopTripRequest>) {
@@ -15,7 +16,7 @@ function* handleCreateMultipleStopTrip({ payload }: ReturnType<typeof routesActi
   } catch (error) {
     console.log('watchCreateMultipleStopTrip.ts', error);
     yield put(routesActions.createMultipleStopTripFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

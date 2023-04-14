@@ -3,7 +3,7 @@ import { DeleteOffice } from 'services/OfficesManager/Company/deleteOffice';
 
 export type DeleteOfficeRequest = DeleteOffice & {
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 };
 
 export interface DeleteOfficeSuccess {

@@ -1,6 +1,7 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { getStaff } from 'services/Staff/Company/getStaff';
 import { updateStaffInfo } from 'services/Staff/Company/updateStaff';
+import { ServiceException } from 'services/utils/ServiceException';
 import { staffsActions } from '../staffsSlice';
 
 function* handleUpdateStaffInfo({ payload }: ReturnType<typeof staffsActions.updateStaffInfoRequest>) {
@@ -20,7 +21,7 @@ function* handleUpdateStaffInfo({ payload }: ReturnType<typeof staffsActions.upd
   } catch (error) {
     console.log('watchUpdateStaffInfo.ts', error);
     yield put(staffsActions.updateStaffInfoFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

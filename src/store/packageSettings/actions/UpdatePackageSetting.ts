@@ -3,7 +3,7 @@ import { UpdatePackageSetting } from 'services/PackageSetting/Company/updatePack
 
 export type UpdatePackageSettingRequest = UpdatePackageSetting & {
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 };
 
 export interface UpdatePackageSettingSuccess {

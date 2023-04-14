@@ -1,8 +1,7 @@
-import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
-import { Empty } from 'antd';
-import Button from 'components/Button/Button';
+import { Box, Divider, Grid, Typography } from '@mui/material';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
@@ -28,7 +27,7 @@ type Values = Pick<Passenger, 'country' | 'email' | 'firstName' | 'lastName' | '
 
 const fieldKeys: Array<keyof Values> = ['country', 'email', 'firstName', 'lastName', 'phone'];
 export default function PassengerDetail() {
-  const { t } = useTranslation(['passenger', 'translation']);
+  const { t } = useTranslation(['passenger', 'translation', 'message_error']);
   const toastClass = useToastStyle();
   const {
     control,
@@ -83,8 +82,8 @@ export default function PassengerDetail() {
             });
             navigate(route);
           },
-          onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('passenger:passenger') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('passenger:passenger') })} description={message} />, {
               className: toastClass.toastError,
             });
           },
@@ -124,14 +123,7 @@ export default function PassengerDetail() {
   }
 
   if (statusGetPassenger === 'success' && !passenger) {
-    return (
-      <Stack sx={{ paddingTop: '40px' }} justifyContent="center" alignItems="center">
-        <Empty description={t('passenger:passenger_notfound')} />
-        <Button backgroundButton="#1aa6ee" onClick={() => navigate(-1)}>
-          Go back
-        </Button>
-      </Stack>
-    );
+    return <EmptyScreen description={t('message_error:PASSENGER_NOT_FOUND')} />;
   }
 
   return (

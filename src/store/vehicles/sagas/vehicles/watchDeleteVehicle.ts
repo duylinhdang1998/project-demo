@@ -1,4 +1,5 @@
 import { put, retry, takeLeading } from 'redux-saga/effects';
+import { ServiceException } from 'services/utils/ServiceException';
 import { deleteVehicle } from 'services/Vehicle/Company/deleteVehicle';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 
@@ -11,7 +12,7 @@ function* handleDeleteVehicle({ payload }: ReturnType<typeof vehiclesActions.del
   } catch (error) {
     console.log('watchDeleteVehicle.ts', error);
     yield put(vehiclesActions.deleteVehicleFailure({ id }));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

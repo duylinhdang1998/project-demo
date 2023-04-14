@@ -3,7 +3,7 @@ import { UpdateStaffInfo } from 'services/Staff/Company/updateStaff';
 
 export type UpdateStaffInfoRequest = UpdateStaffInfo & {
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 };
 
 export interface UpdateStaffInfoSuccess {

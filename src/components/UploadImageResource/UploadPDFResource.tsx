@@ -15,6 +15,8 @@ import FileIcon from 'components/SvgIcon/FileIcon';
 import { PDFResource } from 'services/models/Resource';
 import { uploadPDFResource } from 'services/Resource/uploadPDFResource';
 import './styles.css';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { ServiceException } from 'services/utils/ServiceException';
 interface FileBase {
   uid: UploadFile['uid'];
   name: UploadFile['name'];
@@ -103,7 +105,9 @@ export const UploadPDFResource = ({
         setFileListState(state => {
           return state.filter(item => item.uid !== sessionId);
         });
-        toast.error(`${file.name} file upload failed.`);
+        toast(<ToastCustom type="error" description={ServiceException.getMessageError(error)} text={`${file.name} file upload failed.`} />, {
+          className: 'toast-error',
+        });
       }
     } else {
       if (error === 'INVALID_FILE_SIZE') {

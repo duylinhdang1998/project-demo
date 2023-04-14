@@ -1,4 +1,5 @@
 import { AnyObject, Pagination, Searcher, Sorter } from 'services/@types/SearchParams';
+import { StringMappingToStatusCode } from './StatusCode';
 
 export interface ResponseSuccess<T> {
   code: number;
@@ -17,7 +18,7 @@ export interface ResponseDetailSuccess<T> {
 }
 
 export interface ResponseFailure {
-  code: number;
+  code: (typeof StringMappingToStatusCode)[keyof typeof StringMappingToStatusCode];
   timestamp: string;
   path: string;
   message: string;

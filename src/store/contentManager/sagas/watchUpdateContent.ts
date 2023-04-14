@@ -1,5 +1,6 @@
 import { put, retry, SagaReturnType, takeLatest } from 'redux-saga/effects';
 import { updateContent } from 'services/ContentManager/Company/updateContent';
+import { ServiceException } from 'services/utils/ServiceException';
 import { contentManagerActions } from '../contentManagerSlice';
 
 function* handleUpdateContent({ payload }: ReturnType<typeof contentManagerActions.updateContentRequest>) {
@@ -11,7 +12,7 @@ function* handleUpdateContent({ payload }: ReturnType<typeof contentManagerActio
   } catch (error) {
     console.log('watchUpdateContent', error);
     yield put(contentManagerActions.updateContentFailure);
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

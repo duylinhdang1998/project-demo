@@ -1,6 +1,7 @@
 import { put, retry, SagaReturnType, select, takeLeading } from 'redux-saga/effects';
 import { getRoute } from 'services/Route/Company/getRoute';
 import { updateActiveDays } from 'services/Route/Company/updateActiveDays';
+import { ServiceException } from 'services/utils/ServiceException';
 import { routesActions } from '../routesSlice';
 import { selectRoutes } from '../selectors';
 
@@ -33,7 +34,7 @@ function* handleUpdateActiveDays({ payload }: ReturnType<typeof routesActions.up
   } catch (error) {
     console.log('watchUpdateActiveDays.ts', error);
     yield put(routesActions.updateActiveDaysFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

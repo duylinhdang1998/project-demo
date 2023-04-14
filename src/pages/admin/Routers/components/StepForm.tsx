@@ -90,8 +90,8 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             });
             nextStep();
           },
-          onFailure() {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:route') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:route') })} description={message} />, {
               className: toastClass.toastError,
             });
           },
@@ -132,8 +132,8 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             });
             nextStep();
           },
-          onFailure() {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:route') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:route') })} description={message} />, {
               className: toastClass.toastError,
             });
           },
@@ -158,8 +158,8 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             });
             nextStep();
           },
-          onFailure() {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} description={message} />, {
               className: toastClass.toastError,
             });
           },

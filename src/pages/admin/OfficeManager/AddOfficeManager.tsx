@@ -18,6 +18,7 @@ import { officesManagerActions } from 'store/officesManager/officesManagerSlice'
 import { selectOfficesManager } from 'store/officesManager/selectors';
 import { useToastStyle } from 'theme/toastStyles';
 import { fieldsAddOffice1, fieldsAddOffice2, fieldsAddOffice3 } from './constants';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 
 const fieldKeys: Array<keyof CreateOffice> = ['title', 'address', 'zipCode', 'country', 'city', 'phone', 'email'];
 
@@ -25,7 +26,7 @@ type Values = Record<keyof CreateOffice, string>;
 
 export default function AddOfficeManager() {
   const toastClass = useToastStyle();
-  const { t } = useTranslation(['translation', 'account']);
+  const { t } = useTranslation(['translation', 'account', 'message_error']);
   const {
     control,
     formState: { errors },
@@ -70,8 +71,8 @@ export default function AddOfficeManager() {
             title: values.title,
             zipCode: values.zipCode,
           },
-          onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:office') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:office') })} description={message} />, {
               className: toastClass.toastError,
             });
           },
@@ -95,8 +96,8 @@ export default function AddOfficeManager() {
             title: values.title,
             zipCode: values.zipCode,
           },
-          onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('account:office') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('account:office') })} description={message} />, {
               className: toastClass.toastError,
             });
           },
@@ -127,14 +128,16 @@ export default function AddOfficeManager() {
         });
       });
     }
-    if (isEditAction && !office && statusGetOffice === 'success') {
-      navigate('/404');
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusGetOffice, office, isEditAction]);
 
   if (statusGetOffice === 'loading') {
     return <LoadingScreen />;
+  }
+
+  if (statusGetOffice === 'failure' || (statusGetOffice === 'success' && !office)) {
+    // FIXME: Có cần thả message chi tiết ?
+    return <EmptyScreen description={t('message_error:OFFICE_MANAGER_NOT_FOUND')} />;
   }
 
   return (

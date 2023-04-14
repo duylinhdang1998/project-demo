@@ -23,12 +23,14 @@ import { uploadImageResource } from 'services/Resource/uploadImageResource';
 import { getUrlOfResource } from 'utils/getUrlOfResource';
 import { blobToFile } from 'utils/blobToFile';
 import env from 'env';
+import { ServiceException } from 'services/utils/ServiceException';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 
 type Values = Pick<Content, 'city' | 'email' | 'phone' | 'content' | 'footerText' | 'postalAddress' | 'zipCode'>;
 const fieldKeys: Array<keyof Values> = ['city', 'email', 'phone', 'content', 'footerText', 'postalAddress', 'zipCode'];
 
 function ContentManager() {
-  const { t } = useTranslation(['account', 'translation']);
+  const { t } = useTranslation(['account', 'translation', 'message_error']);
   const toastClass = useToastStyle();
 
   const { control, handleSubmit, setValue, watch } = useForm<Values>();
@@ -51,8 +53,8 @@ function ContentManager() {
             className: toastClass.toastSuccess,
           });
         },
-        onFailure: () => {
-          toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:content_manager') })} />, {
+        onFailure: message => {
+          toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:content_manager') })} description={message} />, {
             className: toastClass.toastError,
           });
         },
@@ -78,6 +80,11 @@ function ContentManager() {
     return <LoadingScreen />;
   }
 
+  if (statusGetContent === 'failure' || (statusGetContent === 'success' && !content)) {
+    // FIXME: Có cần thả message chi tiết ?
+    return <EmptyScreen description={t('message_error:CONTENT_MANAGER_NOT_FOUND')} />;
+  }
+
   return (
     <FadeIn>
       <Box>
@@ -101,11 +108,17 @@ function ContentManager() {
                   plugins: ['link', 'lists', 'table', 'image', 'media', 'advlist', 'paste', 'undo', 'redo', 'blockquote'],
                   toolbar: 'blocks bold italic link bullist numlist outdent indent image blockquote table media undo redo',
                   images_upload_handler: async blobInfo => {
+                    const file = blobToFile(blobInfo.blob(), blobInfo.filename());
                     try {
-                      const file = blobToFile(blobInfo.blob(), blobInfo.filename());
                       const response = await uploadImageResource({ file });
                       return Promise.resolve(getUrlOfResource(response.data));
                     } catch (error) {
+                      toast(
+                        <ToastCustom description={ServiceException.getMessageError(error)} text={`${file.name} file upload failed.`} type="error" />,
+                        {
+                          className: 'toast-error',
+                        },
+                      );
                       return Promise.reject(error);
                     }
                   },

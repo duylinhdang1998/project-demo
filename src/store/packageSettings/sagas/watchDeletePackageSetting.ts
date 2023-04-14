@@ -1,5 +1,6 @@
 import { put, retry, takeLeading } from 'redux-saga/effects';
 import { deletePackageSetting } from 'services/PackageSetting/Company/deletePackageSetting';
+import { ServiceException } from 'services/utils/ServiceException';
 import { packageSettingsActions } from '../packageSettingsSlice';
 
 function* handleDeletePackageSetting({ payload }: ReturnType<typeof packageSettingsActions.deletePackageSettingRequest>) {
@@ -11,7 +12,7 @@ function* handleDeletePackageSetting({ payload }: ReturnType<typeof packageSetti
   } catch (error) {
     console.log('watchDeletePackageSetting.ts', error);
     yield put(packageSettingsActions.deletePackageSettingFailure({ id }));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

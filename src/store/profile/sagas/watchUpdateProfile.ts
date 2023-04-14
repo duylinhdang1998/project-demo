@@ -1,6 +1,7 @@
 import { put, retry, SagaReturnType, takeLatest } from 'redux-saga/effects';
 import { getProfile } from 'services/Company/getProfile';
 import { updateProfile } from 'services/Company/updateProfile';
+import { ServiceException } from 'services/utils/ServiceException';
 import { profileActions } from '../../profile/profileSlice';
 
 function* handleUpdateProfile({ payload }: ReturnType<typeof profileActions.updateProfileRequest>) {
@@ -12,9 +13,9 @@ function* handleUpdateProfile({ payload }: ReturnType<typeof profileActions.upda
     });
     yield put(profileActions.updateProfileSuccess({ data: response.data }));
     onSuccess();
-  } catch {
+  } catch (error) {
     yield put(profileActions.updateProfileFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

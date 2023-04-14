@@ -1,6 +1,7 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { createDayOff } from 'services/Staff/Company/createDayOff';
 import { getStaff } from 'services/Staff/Company/getStaff';
+import { ServiceException } from 'services/utils/ServiceException';
 import { staffsActions } from '../staffsSlice';
 
 function* handleUpdateDayOff({ payload }: ReturnType<typeof staffsActions.updateDayOffRequest>) {
@@ -21,7 +22,7 @@ function* handleUpdateDayOff({ payload }: ReturnType<typeof staffsActions.update
   } catch (error) {
     console.log('watchUpdateDayOff.ts', error);
     yield put(staffsActions.updateDayOffFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

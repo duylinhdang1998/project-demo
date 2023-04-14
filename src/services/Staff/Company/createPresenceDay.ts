@@ -22,5 +22,5 @@ export const createPresenceDay = async (data: CreatePresenceDay) => {
     return response.data as ResponseDetailSuccess<Staff>;
   }
   const response_ = response as AxiosResponse<ResponseFailure>;
-  throw new ServiceException(response_.data.message, { cause: response_.data });
+  throw new ServiceException(response_.data.message, response_.data);
 };

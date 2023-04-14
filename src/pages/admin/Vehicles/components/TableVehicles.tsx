@@ -204,10 +204,15 @@ function TableVehicles() {
                         });
                         handleCloseDialogDelete();
                       },
-                      onFailure: () => {
-                        toast(<ToastCustom type="error" text={t('translation:delete_type_error', { type: t('vehicles:vehicle') })} />, {
-                          className: 'toast-error',
-                        });
+                      onFailure: message => {
+                        toast(
+                          <ToastCustom
+                            type="error"
+                            text={t('translation:delete_type_error', { type: t('vehicles:vehicle') })}
+                            description={message}
+                          />,
+                          { className: 'toast-error' },
+                        );
                       },
                     }),
                   );

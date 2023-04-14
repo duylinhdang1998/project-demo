@@ -153,10 +153,13 @@ function TableOfficesManager() {
                         });
                         handleCloseDialogDelete();
                       },
-                      onFailure: () => {
-                        toast(<ToastCustom type="error" text={t('translation:delete_type_error', { type: t('account:office') })} />, {
-                          className: toastClass.toastError,
-                        });
+                      onFailure: message => {
+                        toast(
+                          <ToastCustom type="error" text={t('translation:delete_type_error', { type: t('account:office') })} description={message} />,
+                          {
+                            className: toastClass.toastError,
+                          },
+                        );
                       },
                     }),
                   );

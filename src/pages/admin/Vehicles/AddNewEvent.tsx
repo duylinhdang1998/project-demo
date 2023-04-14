@@ -1,19 +1,20 @@
 import { Box, Divider, Typography } from '@mui/material';
-import { useEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
+import { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 import { selectVehicleEvents, selectVehicles } from 'store/vehicles/selectors';
 import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 import FormAddEvent from './components/FormAddEvent';
 
 export default function AddNewEvent() {
-  const { t } = useTranslation(['vehicles', 'translation']);
+  const { t } = useTranslation(['vehicles', 'translation', 'message_error']);
 
   const { statusGetVehicle, vehicle } = useAppSelector(selectVehicles);
   const { statusGetVehicleEvent } = useAppSelector(selectVehicleEvents);
@@ -42,8 +43,8 @@ export default function AddNewEvent() {
     return <LoadingScreen />;
   }
 
-  if (statusGetVehicle === 'success' && !vehicle) {
-    return <Navigate to="/404" />;
+  if (statusGetVehicle === 'failure' || (statusGetVehicle === 'success' && !vehicle)) {
+    return <EmptyScreen description={t('message_error:VEHICLE_EVENT_NOT_FOUND')} />;
   }
 
   return (

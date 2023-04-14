@@ -1,5 +1,6 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { createOffice } from 'services/OfficesManager/Company/createOffice';
+import { ServiceException } from 'services/utils/ServiceException';
 import { officesManagerActions } from '../officesManagerSlice';
 
 function* handleCreateOffice({ payload }: ReturnType<typeof officesManagerActions.createOfficeRequest>) {
@@ -11,7 +12,7 @@ function* handleCreateOffice({ payload }: ReturnType<typeof officesManagerAction
   } catch (error) {
     console.log('watchCreateOffice.ts', error);
     yield put(officesManagerActions.createOfficeFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

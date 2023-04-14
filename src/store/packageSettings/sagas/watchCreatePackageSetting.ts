@@ -1,5 +1,6 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { createPackageSetting } from 'services/PackageSetting/Company/createPackageSetting';
+import { ServiceException } from 'services/utils/ServiceException';
 import { packageSettingsActions } from '../packageSettingsSlice';
 
 function* handleCreatePackageSetting({ payload }: ReturnType<typeof packageSettingsActions.createPackageSettingRequest>) {
@@ -11,7 +12,7 @@ function* handleCreatePackageSetting({ payload }: ReturnType<typeof packageSetti
   } catch (error) {
     console.log('watchCreatePackageSetting.ts', error);
     yield put(packageSettingsActions.createPackageSettingFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

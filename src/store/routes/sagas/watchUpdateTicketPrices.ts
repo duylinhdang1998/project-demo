@@ -1,6 +1,7 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { getRoute } from 'services/Route/Company/getRoute';
 import { updateParticular } from 'services/Route/Company/updateParticular';
+import { ServiceException } from 'services/utils/ServiceException';
 import { routesActions } from '../routesSlice';
 
 function* handleUpdateTicketPrices({ payload }: ReturnType<typeof routesActions.updateTicketPricesRequest>) {
@@ -17,7 +18,7 @@ function* handleUpdateTicketPrices({ payload }: ReturnType<typeof routesActions.
   } catch (error) {
     console.log('watchUpdateTicketPrices.ts', error);
     yield put(routesActions.updateTicketPricesFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

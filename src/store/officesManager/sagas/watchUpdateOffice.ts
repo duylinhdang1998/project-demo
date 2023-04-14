@@ -1,6 +1,7 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { getOffice } from 'services/OfficesManager/Company/getOffice';
 import { updateOffice } from 'services/OfficesManager/Company/updateOffice';
+import { ServiceException } from 'services/utils/ServiceException';
 import { officesManagerActions } from '../officesManagerSlice';
 
 function* handleUpdateOffice({ payload }: ReturnType<typeof officesManagerActions.updateOfficeRequest>) {
@@ -17,7 +18,7 @@ function* handleUpdateOffice({ payload }: ReturnType<typeof officesManagerAction
   } catch (error) {
     console.log('watchUpdateOffice.ts', error);
     yield put(officesManagerActions.updateOfficeFailure({ id }));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

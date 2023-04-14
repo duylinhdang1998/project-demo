@@ -83,8 +83,8 @@ export default function Passengers() {
           setSelectedPassengers([]);
           emailEditorForm.reset({ description: '', subject: '' });
         },
-        onFailure() {
-          toast(<ToastCustom type="error" text={t('passenger:send_email_error')} />, { className: 'toast-error' });
+        onFailure: message => {
+          toast(<ToastCustom type="error" text={t('passenger:send_email_error')} description={message} />, { className: 'toast-error' });
         },
       }),
     );

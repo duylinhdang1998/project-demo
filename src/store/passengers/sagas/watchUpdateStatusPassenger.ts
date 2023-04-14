@@ -1,5 +1,6 @@
 import { put, retry, takeLeading } from 'redux-saga/effects';
 import { updateStatusPassenger } from 'services/Passenger/updateStatusPassenger';
+import { ServiceException } from 'services/utils/ServiceException';
 import { passengersActions } from '../passengersSlice';
 
 function* handleUpdateStatusPassenger({ payload }: ReturnType<typeof passengersActions.updateStatusPassengerRequest>) {
@@ -18,7 +19,7 @@ function* handleUpdateStatusPassenger({ payload }: ReturnType<typeof passengersA
   } catch (error) {
     console.log('watchUpdatePassenger.ts', error);
     yield put(passengersActions.updatePassengerFailure({ id }));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

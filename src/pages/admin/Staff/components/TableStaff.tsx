@@ -177,10 +177,11 @@ function TableStaff() {
                         });
                         handleCloseDialogDelete();
                       },
-                      onFailure: () => {
-                        toast(<ToastCustom type="error" text={t('translation:delete_type_error', { type: t('staff:staff') })} />, {
-                          className: toastClass.toastError,
-                        });
+                      onFailure: message => {
+                        toast(
+                          <ToastCustom type="error" text={t('translation:delete_type_error', { type: t('staff:staff') })} description={message} />,
+                          { className: toastClass.toastError },
+                        );
                       },
                     }),
                   );

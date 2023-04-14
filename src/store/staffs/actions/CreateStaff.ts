@@ -4,7 +4,7 @@ import { CreateStaff } from 'services/Staff/Company/createStaff';
 export interface CreateStaffRequest {
   data: CreateStaff;
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface CreateStaffSuccess {

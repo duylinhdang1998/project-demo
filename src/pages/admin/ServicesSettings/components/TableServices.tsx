@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { ImageResource } from 'services/models/Resource';
 import { ServiceSetting } from 'services/models/ServiceSetting';
 import { useDeleteService } from 'services/ServiceSetting/Company/getServiceSettings';
+import { ServiceException } from 'services/utils/ServiceException';
 import { useToastStyle } from 'theme/toastStyles';
 import { getUrlOfResource } from 'utils/getUrlOfResource';
 import ActionService from './ActionService';
@@ -41,7 +42,7 @@ function TableServices({ dataSource, onRefresh, loading }: Props) {
         });
         onRefresh?.();
       } else {
-        toast(<ToastCustom type="error" text={t('delete_service_error)')} />, {
+        toast(<ToastCustom type="error" text={t('delete_service_error)')} description={ServiceException.getMessageError(data.code)} />, {
           className: toastClass.toastError,
         });
       }

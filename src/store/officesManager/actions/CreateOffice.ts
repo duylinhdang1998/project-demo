@@ -4,7 +4,7 @@ import { CreateOffice } from 'services/OfficesManager/Company/createOffice';
 export interface CreateOfficeRequest {
   data: CreateOffice;
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface CreateOfficeSuccess {

@@ -20,6 +20,7 @@ import { packageSettingsActions } from 'store/packageSettings/packageSettingsSli
 import { selectPackageSettings } from 'store/packageSettings/selectors';
 import { useToastStyle } from 'theme/toastStyles';
 import { fieldsAddPackageSetting } from './constant';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 
 const fieldKeys: Array<keyof CreatePackageSetting> = ['title', 'description'];
 
@@ -27,7 +28,7 @@ type Values = Record<keyof CreatePackageSetting, string>;
 
 export default function AddPackageSettings() {
   const toastClass = useToastStyle();
-  const { t } = useTranslation(['packageSettings', 'translation']);
+  const { t } = useTranslation(['packageSettings', 'translation', 'message_error']);
   const {
     control,
     formState: { errors },
@@ -66,10 +67,15 @@ export default function AddPackageSettings() {
             title: values.title,
             description: values.description,
           },
-          onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('packageSettings:package_settings') })} />, {
-              className: toastClass.toastError,
-            });
+          onFailure: message => {
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:edit_type_error', { type: t('packageSettings:package_settings') })}
+                description={message}
+              />,
+              { className: toastClass.toastError },
+            );
           },
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('packageSettings:package_settings') })} />, {
@@ -86,10 +92,15 @@ export default function AddPackageSettings() {
             title: values.title,
             description: values.description,
           },
-          onFailure: () => {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('packageSettings:package_settings') })} />, {
-              className: toastClass.toastError,
-            });
+          onFailure: message => {
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:add_type_error', { type: t('packageSettings:package_settings') })}
+                description={message}
+              />,
+              { className: toastClass.toastError },
+            );
           },
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('packageSettings:package_settings') })} />, {
@@ -118,14 +129,16 @@ export default function AddPackageSettings() {
         });
       });
     }
-    if (isEditAction && !packageSetting && statusGetPackageSetting === 'success') {
-      navigate('/404');
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusGetPackageSetting, packageSetting, isEditAction]);
 
   if (statusGetPackageSetting === 'loading') {
     return <LoadingScreen />;
+  }
+
+  if (statusGetPackageSetting === 'failure' || (statusGetPackageSetting === 'success' && !packageSetting)) {
+    // FIXME: Có cần thả message chi tiết ?
+    return <EmptyScreen description={t('message_error:PACKAGE_SETTING_NOT_FOUND')} />;
   }
 
   return (

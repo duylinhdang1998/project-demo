@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { forgotPasswordRequest } from 'services/Auth/Company/forgotPasswordRequest';
 import { forgotPasswordVerifyOtp } from 'services/Auth/Company/forgotPasswordVerifyOtp';
+import { ServiceException } from 'services/utils/ServiceException';
 import { useToastStyle } from 'theme/toastStyles';
 import { useStyles } from './styles';
 
@@ -48,8 +49,8 @@ export const StepTwo = ({ onNext, session, email }: StepTwoProps) => {
         otp: values.otp,
       });
       onNext({ session: data.session });
-    } catch {
-      toast(<ToastCustom type="error" text={t('auth:verify_otp_error')} />, {
+    } catch (error) {
+      toast(<ToastCustom type="error" text={t('auth:verify_otp_error')} description={ServiceException.getMessageError(error)} />, {
         className: toastClass.toastError,
       });
     } finally {
@@ -65,8 +66,8 @@ export const StepTwo = ({ onNext, session, email }: StepTwoProps) => {
       toast(<ToastCustom type="success" text={t('auth:resend_otp_success')} />, {
         className: toastClass.toastSuccess,
       });
-    } catch {
-      toast(<ToastCustom type="error" text={t('auth:resend_otp_error')} />, {
+    } catch (error) {
+      toast(<ToastCustom type="error" text={t('auth:resend_otp_error')} description={ServiceException.getMessageError(error)} />, {
         className: toastClass.toastError,
       });
     } finally {

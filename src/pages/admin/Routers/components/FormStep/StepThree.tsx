@@ -8,6 +8,7 @@ import { Alert } from 'antd';
 import Button from 'components/Button/Button';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import CalendarIcon from 'components/SvgIcon/CalendarIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
@@ -20,7 +21,7 @@ import { Calendar, dateFnsLocalizer, Event, SlotInfo, Views } from 'react-big-ca
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
@@ -90,7 +91,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
 
   const navigate = useNavigate();
 
-  const { t } = useTranslation(['routers', 'translation']);
+  const { t } = useTranslation(['routers', 'translation', 'message_error']);
   const classes = useStyles();
 
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo['slots']>([]);
@@ -123,8 +124,8 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             });
             handleCloseDialogEdit();
           },
-          onFailure() {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} description={message} />, {
               className: toastClass.toastError,
             });
           },
@@ -161,8 +162,8 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             });
             handleCloseDialogEdit();
           },
-          onFailure() {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} />, {
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} description={message} />, {
               className: toastClass.toastError,
             });
           },
@@ -286,7 +287,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   };
 
   if (!route) {
-    return <Navigate to="/404" />;
+    return <EmptyScreen description={t('message_error:ROUTE_NOT_FOUND')} />;
   }
 
   return (

@@ -1,4 +1,5 @@
 import CardWhite from 'components/CardWhite/CardWhite';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
@@ -7,7 +8,7 @@ import LayoutDetail from 'layout/LayoutDetail';
 import { isEmpty } from 'lodash-es';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useLocation, useNavigate, useParams } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import { SubscriptionType } from 'services/models/Subscription';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
@@ -19,7 +20,7 @@ import { RadioPlanDuration } from './components/RadioPlanDuration';
 import { defaultPaymentMethod, defaultPlanDuration, paymentGateWayMapping, planDurationsValue, STATUS } from './constants';
 
 const SubscriptionPayment: FC = () => {
-  const { t } = useTranslation(['account', 'translation']);
+  const { t } = useTranslation(['account', 'translation', 'message_error']);
 
   const navigate = useNavigate();
   const { subscriptionType } = useParams();
@@ -74,8 +75,12 @@ const SubscriptionPayment: FC = () => {
     return <LoadingScreen />;
   }
 
-  if ((statusGetSubscriptions === 'success' && isEmpty(subscriptions)) || (statusGetPlans === 'success' && !plans.length)) {
-    return <Navigate to="/404" />;
+  if (statusGetSubscriptions === 'failure' || (statusGetSubscriptions === 'success' && isEmpty(subscriptions))) {
+    return <EmptyScreen description={t('message_error:SUBSCRIPTION_NOT_FOUND')} />;
+  }
+
+  if (statusGetPlans === 'failure' || (statusGetPlans === 'success' && !plans.length)) {
+    return <EmptyScreen description={t('message_error:SUBSCRIPTION_PLAN_NOT_FOUND')} />;
   }
 
   return (

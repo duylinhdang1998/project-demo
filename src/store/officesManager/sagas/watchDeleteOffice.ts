@@ -1,5 +1,6 @@
 import { put, retry, takeLeading } from 'redux-saga/effects';
 import { deleteOffice } from 'services/OfficesManager/Company/deleteOffice';
+import { ServiceException } from 'services/utils/ServiceException';
 import { officesManagerActions } from '../officesManagerSlice';
 
 function* handleDeleteOffice({ payload }: ReturnType<typeof officesManagerActions.deleteOfficeRequest>) {
@@ -11,7 +12,7 @@ function* handleDeleteOffice({ payload }: ReturnType<typeof officesManagerAction
   } catch (error) {
     console.log('watchDeleteOffice.ts', error);
     yield put(officesManagerActions.deleteOfficeFailure({ id }));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

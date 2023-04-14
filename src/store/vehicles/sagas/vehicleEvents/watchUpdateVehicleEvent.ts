@@ -1,4 +1,5 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { ServiceException } from 'services/utils/ServiceException';
 import { getVehicleEvent } from 'services/Vehicle/Company/getVehicleEvent';
 import { updateVehicleEvent } from 'services/Vehicle/Company/updateVehicleEvent';
 import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
@@ -17,7 +18,7 @@ function* handleUpdateVehicleEvent({ payload }: ReturnType<typeof vehicleEventsA
   } catch (error) {
     console.log('watchUpdateVehicleEvent.ts', error);
     yield put(vehicleEventsActions.updateVehicleEventFailure({ id }));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

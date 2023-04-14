@@ -19,13 +19,17 @@ const useStyles = makeStyles(() => ({
     lineHeight: '20px',
     marginLeft: '10px !important',
   },
+  description: {
+    fontSize: 13,
+  },
 }));
 interface ToastCustomProps {
   type: 'success' | 'error';
   text: string;
+  description?: string;
 }
 
-function ToastCustom({ type, text }: ToastCustomProps) {
+function ToastCustom({ type, text, description }: ToastCustomProps) {
   const classes = useStyles();
   return (
     <Box className={classes.root}>
@@ -34,8 +38,11 @@ function ToastCustom({ type, text }: ToastCustomProps) {
       ) : (
         <CancelOutlinedIcon sx={{ color: '#fff', fontSize: '18px' }} />
       )}
-      <Typography component="span" className={classes.text}>
+      <Typography component="p" className={classes.text}>
         {text}
+      </Typography>
+      <Typography component="p" className={classes.description}>
+        {description}
       </Typography>
     </Box>
   );

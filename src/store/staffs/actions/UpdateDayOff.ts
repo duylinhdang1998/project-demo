@@ -9,7 +9,7 @@ export interface UpdateDayOffLocal {
 export interface UpdateDayOffRequest {
   data: CreateDayOff;
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface UpdateDayOffSuccess {

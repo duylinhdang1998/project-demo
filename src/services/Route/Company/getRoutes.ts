@@ -28,5 +28,5 @@ export const getRoutes = async ({ page, sorter, searcher }: GetRoutes): Promise<
     return response.data as ResponseSuccess<Route>;
   }
   const response_ = response as AxiosResponse<ResponseFailure>;
-  throw new ServiceException(response_.data.message, { cause: response_.data });
+  throw new ServiceException(response_.data.message, response_.data);
 };

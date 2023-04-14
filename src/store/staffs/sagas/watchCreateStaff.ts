@@ -1,5 +1,6 @@
 import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { createStaff } from 'services/Staff/Company/createStaff';
+import { ServiceException } from 'services/utils/ServiceException';
 import { staffsActions } from '../staffsSlice';
 
 function* handleCreateStaff({ payload }: ReturnType<typeof staffsActions.createStaffRequest>) {
@@ -11,7 +12,7 @@ function* handleCreateStaff({ payload }: ReturnType<typeof staffsActions.createS
   } catch (error) {
     console.log('watchCreateStaff.ts', error);
     yield put(staffsActions.createStaffFailure({}));
-    onFailure();
+    onFailure(ServiceException.getMessageError(error));
   }
 }
 

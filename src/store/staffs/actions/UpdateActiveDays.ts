@@ -4,7 +4,7 @@ import { CreatePresenceDay } from 'services/Staff/Company/createPresenceDay';
 export interface UpdateActiveDaysRequest {
   data: CreatePresenceDay;
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface UpdateActiveDaysSuccess {

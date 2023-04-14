@@ -15,7 +15,7 @@ interface PaymentButtonProps {
 }
 
 export const PaymentButton = ({ variant }: PaymentButtonProps) => {
-  const { t } = useTranslation(['account']);
+  const { t } = useTranslation(['account', 'message_error']);
 
   const navigate = useNavigate();
 
@@ -28,9 +28,22 @@ export const PaymentButton = ({ variant }: PaymentButtonProps) => {
 
   useEffect(() => {
     if (statusCreateSubscriptionOrder === 'failure') {
-      toast(<ToastCustom type="error" text={t('account:create_subscription_order_failure')} />, {
-        className: 'toast-error',
-      });
+      toast(
+        <ToastCustom
+          type="error"
+          text={t('account:create_subscription_order_failure')}
+          description={
+            variant === 'PayPal'
+              ? t('message_error:PAYMENT_PAYPAL_CREATE_ORDER_ERROR')
+              : variant === 'Stripe'
+              ? t('message_error:PAYMENT_STRIPE_CREATE_CHECK_OUT_ERROR')
+              : ''
+          }
+        />,
+        {
+          className: 'toast-error',
+        },
+      );
       setTimeout(() => {
         navigate(0);
       }, 2000);

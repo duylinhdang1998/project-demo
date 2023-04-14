@@ -5,7 +5,7 @@ export interface UpdateTicketPricesRequest {
   data: UpdateParticular;
   routeCode: Route['routeCode'];
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 }
 
 export interface UpdateTicketPricesSuccess {

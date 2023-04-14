@@ -3,7 +3,7 @@ import { DeleteStaff } from 'services/Staff/Company/deleteStaff';
 
 export type DeleteStaffRequest = DeleteStaff & {
   onSuccess: () => void;
-  onFailure: () => void;
+  onFailure: OnFailureWithMessageOfStatusCode;
 };
 
 export interface DeleteStaffSuccess {
