@@ -1,5 +1,5 @@
 import { FormControlLabel, Radio as MuiRadio, RadioGroup } from '@mui/material';
-import { ChangeEvent, memo } from 'react';
+import { ChangeEvent, memo, useEffect } from 'react';
 import { Option } from 'models/Field';
 
 interface RadioProps {
@@ -14,12 +14,18 @@ function Radio({ options, onChange, radioName, value }: RadioProps) {
     const { value: valueRadio } = event.target;
     onChange?.(valueRadio);
   };
+
+  useEffect(() => {
+    console.log({ value });
+  }, [value]);
+
   return (
     <RadioGroup value={value} aria-labelledby="demo-row-radio-buttons-group-label" name={radioName} onChange={handleChange}>
       {options.map(o => (
         <FormControlLabel
+          key={o.value}
           value={o.value}
-          control={<MuiRadio />}
+          control={<MuiRadio checked={o.value === value} />}
           label={o.label}
           sx={{
             '.MuiFormControlLabel-label': {

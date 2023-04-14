@@ -7,6 +7,11 @@ interface MethodPayload {
   method: string[];
 }
 
+interface SettingPayload {
+  refreshUrl: string;
+  returnUrl: string;
+}
+
 interface MethodPaymentResponse {
   code: number;
   data: MethodPayload;
@@ -23,7 +28,21 @@ export const useGetPaymentMethod = () => {
   return useRequest(getPaymentMethod);
 };
 
-export const useUpdateOrderSettings = (option: Options<MethodPaymentResponse, any>) => {
+export const useLoginPaymentGateway = () => {
+  const loginPaymentGateway = async (url: string, data: SettingPayload) => {
+    const response: AxiosResponse<MethodPaymentResponse> = await fetchAPI.request({
+      url,
+      method: 'post',
+      data,
+    });
+    return response.data.code === 0 ? response.data.data : undefined;
+  };
+  return useRequest(loginPaymentGateway, {
+    manual: true,
+  });
+};
+
+export const useUpdatePaymentSettings = (option: Options<MethodPaymentResponse, any>) => {
   const updateOrderSettings = async (data: any) => {
     const response: AxiosResponse<MethodPaymentResponse> = await fetchAPI.request({
       url: '/v1.0/company/payment/settings',

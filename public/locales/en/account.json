@@ -28,6 +28,7 @@
   "cash": "Cash",
   "offline": "Offline (agents)",
   "paypal": "PayPal",
+  "stripe": "Stripe",
   "credit_card": "Credit card",
   "mobile_money": "Mobile money",
   "define_method": "Define Payment methods in frontoffice",
@@ -75,5 +76,9 @@
   "connect_with_payment": "Connect with",
   "create_subscription_order_failure": "Something went wrong. Please wait for the browser to reload and try again!",
   "upgrade_subscription_success": "Upgrade subscription successfully!",
-  "upgrade_subscription_cancelled": "Subscription order cancelled!"
+  "upgrade_subscription_cancelled": "Subscription order cancelled!",
+  "login_paypal": "Connect with Paypal",
+  "click_button_description_paypal": "Click the PayPal button to log in.",
+  "subtext_2": "You'll be prompted for your PayPal account email and password through a secure PayPal login form.",
+  "login_stripe": "Connect with Stripe"
 }
