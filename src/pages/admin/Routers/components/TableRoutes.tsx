@@ -23,7 +23,6 @@ import { RECORDS_PER_PAGE } from 'services/Route/Company/getRoutes';
 import { selectAuth } from 'store/auth/selectors';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
-import { useToastStyle } from 'theme/toastStyles';
 import { addMinutesToTimeString } from 'utils/addMinutesToTimeString';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
@@ -33,7 +32,6 @@ import ToolTipAddress from './ToolTipAddress';
 
 function TableRoutes() {
   const { t } = useTranslation(['routers', 'translation']);
-  const toastClass = useToastStyle();
 
   const navigate = useNavigate();
 
@@ -257,7 +255,7 @@ function TableRoutes() {
                       id: openDeleteRoute._id,
                       onSuccess: () => {
                         toast(<ToastCustom type="success" text={t('translation:delete_type_success', { type: t('routers:route') })} />, {
-                          className: toastClass.toastSuccess,
+                          className: 'toast-success',
                         });
                         handleCloseDialogDelete();
                       },
@@ -265,7 +263,7 @@ function TableRoutes() {
                         toast(
                           <ToastCustom type="error" text={t('translation:delete_type_error', { type: t('routers:route') })} description={message} />,
                           {
-                            className: toastClass.toastError,
+                            className: 'toast-error',
                           },
                         );
                       },

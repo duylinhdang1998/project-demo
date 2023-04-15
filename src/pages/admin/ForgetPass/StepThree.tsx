@@ -12,7 +12,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { forgotPasswordSetNewPassword } from 'services/Auth/Company/forgotPasswordSetNewPassword';
 import { ServiceException } from 'services/utils/ServiceException';
-import { useToastStyle } from 'theme/toastStyles';
 import { useStyles } from './styles';
 
 export interface StepThreeValues {
@@ -26,7 +25,6 @@ interface StepThreeProps {
 export const StepThree = ({ session }: StepThreeProps) => {
   const { t } = useTranslation('auth');
   const classes = useStyles();
-  const toastClass = useToastStyle();
 
   const {
     control,
@@ -46,12 +44,12 @@ export const StepThree = ({ session }: StepThreeProps) => {
     try {
       await forgotPasswordSetNewPassword({ password: values.password, session });
       toast(<ToastCustom type="success" text={t('auth:reset_password_success')} />, {
-        className: toastClass.toastSuccess,
+        className: 'toast-success',
       });
       navigate('/login');
     } catch (error) {
       toast(<ToastCustom type="error" text={t('auth:reset_password_error')} description={ServiceException.getMessageError(error)} />, {
-        className: toastClass.toastError,
+        className: 'toast-error',
       });
     } finally {
       setIsLoading(false);

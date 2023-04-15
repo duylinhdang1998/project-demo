@@ -25,7 +25,6 @@ import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
-import { useToastStyle } from 'theme/toastStyles';
 import { dateClamp } from 'utils/dateClamp';
 import EditPriceTrip from '../EditPriceTrip';
 import './styles.scss';
@@ -87,8 +86,6 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     reset,
   } = useForm<StepThreeValues>();
 
-  const toastClass = useToastStyle();
-
   const navigate = useNavigate();
 
   const { t } = useTranslation(['routers', 'translation', 'message_error']);
@@ -120,13 +117,13 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           data: { routeCode: route.routeCode, dayoff: selectedSlot[0].setHours(12) },
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             handleCloseDialogEdit();
           },
           onFailure: message => {
             toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} description={message} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
         }),
@@ -158,13 +155,13 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           },
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             handleCloseDialogEdit();
           },
           onFailure: message => {
             toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} description={message} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
         }),
@@ -383,7 +380,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         onCancel={handleCancel}
         onSave={() => {
           toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
-            className: toastClass.toastSuccess,
+            className: 'toast-success',
           });
           navigate('/admin/routers');
         }}

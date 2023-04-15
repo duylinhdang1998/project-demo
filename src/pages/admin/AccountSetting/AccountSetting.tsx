@@ -12,7 +12,6 @@ import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
-import { useToastStyle } from 'theme/toastStyles';
 import { toast } from 'react-toastify';
 import { omit } from 'lodash-es';
 import { selectProfile } from 'store/profile/selectors';
@@ -40,7 +39,6 @@ export default function AccountSetting() {
 
   const [open, setOpen] = useState(false);
   const { t } = useTranslation(['account', 'translation']);
-  const toastClass = useToastStyle();
 
   const { profile, statusGetProfile, statusUpdateProfile } = useAppSelector(selectProfile);
   const dispatch = useAppDispatch();
@@ -66,12 +64,12 @@ export default function AccountSetting() {
         data: omit(values, ['email']),
         onSuccess() {
           toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('account:profile') })} />, {
-            className: toastClass.toastSuccess,
+            className: 'toast-success',
           });
         },
         onFailure: message => {
           toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:profile') })} description={message} />, {
-            className: toastClass.toastError,
+            className: 'toast-error',
           });
         },
       }),

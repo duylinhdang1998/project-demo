@@ -19,14 +19,12 @@ import { PackageSetting } from 'services/models/PackageSetting';
 import { RECORDS_PER_PAGE } from 'services/PackageSetting/Company/getPackageSettings';
 import { packageSettingsActions } from 'store/packageSettings/packageSettingsSlice';
 import { selectPackageSettings } from 'store/packageSettings/selectors';
-import { useToastStyle } from 'theme/toastStyles';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 
 const PROPERTIES_IN_DIALOG: Array<keyof Pick<PackageSetting, 'title' | 'description'>> = ['title', 'description'];
 
 function TablePackageSettings() {
-  const toastClass = useToastStyle();
   const { t } = useTranslation(['packageSettings', 'translation']);
   const [openPackageSettingDetail, setOpenPackageSettingDetail] = useState<PackageSetting | null>(null);
   const [openDeletePackageSetting, setOpenDeletePackageSetting] = useState<PackageSetting | null>(null);
@@ -154,7 +152,7 @@ function TablePackageSettings() {
                         toast(
                           <ToastCustom type="success" text={t('translation:delete_type_success', { type: t('packageSettings:package_settings') })} />,
                           {
-                            className: toastClass.toastSuccess,
+                            className: 'toast-success',
                           },
                         );
                         handleCloseDialogDelete();
@@ -166,7 +164,7 @@ function TablePackageSettings() {
                             text={t('translation:delete_type_error', { type: t('packageSettings:package_settings') })}
                             description={message}
                           />,
-                          { className: toastClass.toastError },
+                          { className: 'toast-error' },
                         );
                       },
                     }),

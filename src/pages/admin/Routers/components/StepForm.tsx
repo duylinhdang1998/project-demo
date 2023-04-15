@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 import { Route } from 'services/models/Route';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
-import { useToastStyle } from 'theme/toastStyles';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { dayjsToString } from 'utils/dayjsToString';
 import { toDayjs } from 'utils/toDayjs';
@@ -40,7 +39,6 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
 
   const { t } = useTranslation(['translation']);
   const classes = useStyles();
-  const toastClass = useToastStyle();
 
   const { statusCreateRoute, statusUpdateRoute, statusUpdateDayActive, route } = useAppSelector(selectRoutes);
   const dispatch = useAppDispatch();
@@ -86,13 +84,13 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
           },
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('routers:route') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             nextStep();
           },
           onFailure: message => {
             toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:route') })} description={message} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
         }),
@@ -128,13 +126,13 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
           },
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('routers:route') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             nextStep();
           },
           onFailure: message => {
             toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:route') })} description={message} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
         }),
@@ -154,13 +152,13 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
           },
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             nextStep();
           },
           onFailure: message => {
             toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} description={message} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
         }),

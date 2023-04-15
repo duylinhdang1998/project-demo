@@ -16,7 +16,6 @@ import LayoutDetail from 'layout/LayoutDetail';
 import { CreateOffice } from 'services/OfficesManager/Company/createOffice';
 import { officesManagerActions } from 'store/officesManager/officesManagerSlice';
 import { selectOfficesManager } from 'store/officesManager/selectors';
-import { useToastStyle } from 'theme/toastStyles';
 import { fieldsAddOffice1, fieldsAddOffice2, fieldsAddOffice3 } from './constants';
 import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 
@@ -25,7 +24,6 @@ const fieldKeys: Array<keyof CreateOffice> = ['title', 'address', 'zipCode', 'co
 type Values = Record<keyof CreateOffice, string>;
 
 export default function AddOfficeManager() {
-  const toastClass = useToastStyle();
   const { t } = useTranslation(['translation', 'account', 'message_error']);
   const {
     control,
@@ -73,12 +71,12 @@ export default function AddOfficeManager() {
           },
           onFailure: message => {
             toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:office') })} description={message} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('account:office') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             navigate('/account/offices-manager', { replace: true });
           },
@@ -98,12 +96,12 @@ export default function AddOfficeManager() {
           },
           onFailure: message => {
             toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('account:office') })} description={message} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('account:office') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             navigate('/account/offices-manager');
           },

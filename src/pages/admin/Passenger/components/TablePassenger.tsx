@@ -18,7 +18,6 @@ import { RECORDS_PER_PAGE } from 'services/Passenger/getPassengers';
 import { selectAuth } from 'store/auth/selectors';
 import { passengersActions } from 'store/passengers/passengersSlice';
 import { selectPassengers } from 'store/passengers/selectors';
-import { useToastStyle } from 'theme/toastStyles';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 import { v4 } from 'uuid';
@@ -32,7 +31,6 @@ const passengerIsBlocking = (passenger: Passenger) => passenger.status === 'BLOC
 
 function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
   const { t } = useTranslation(['passenger', 'translation']);
-  const toastClass = useToastStyle();
 
   const [openDialogConfirmBlock, setOpenDialogConfirmBlock] = useState<Passenger | null>(null);
 
@@ -184,7 +182,7 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
                       },
                       onSuccess: () => {
                         toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('passenger:passenger') })} />, {
-                          className: toastClass.toastSuccess,
+                          className: 'toast-success',
                         });
                         handleCloseDialogConfirmBlock();
                       },
@@ -195,7 +193,7 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
                             text={t('translation:edit_type_error', { type: t('passenger:passenger') })}
                             description={message}
                           />,
-                          { className: toastClass.toastError },
+                          { className: 'toast-error' },
                         );
                       },
                     }),

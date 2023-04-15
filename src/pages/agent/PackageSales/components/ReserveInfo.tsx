@@ -45,7 +45,7 @@ function ReserveInfo({ onBook, loading }: Props) {
     // setOpen(true);
     // navigate('/agent/package-sales/create-package-orders/order-confirm');
     // toast(<ToastCustom type="success" text="Order ticket successfully!" />, {
-    //   className: toastClass.toastSuccess,
+    //   className: 'toast-success',
     // });
   };
   return (

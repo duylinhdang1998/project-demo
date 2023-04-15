@@ -18,14 +18,12 @@ import { Office } from 'services/models/Office';
 import { RECORDS_PER_PAGE } from 'services/OfficesManager/Company/getOffices';
 import { officesManagerActions } from 'store/officesManager/officesManagerSlice';
 import { selectOfficesManager } from 'store/officesManager/selectors';
-import { useToastStyle } from 'theme/toastStyles';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 
 const PROPERTIES_IN_DIALOG: Array<keyof Pick<Office, 'address' | 'zipCode' | 'city' | 'country'>> = ['address', 'zipCode', 'city', 'country'];
 
 function TableOfficesManager() {
-  const toastClass = useToastStyle();
   const { t } = useTranslation(['account', 'translation', 'destinations']);
   const [openOfficeDetail, setOpenOfficeDetail] = useState<Office | null>(null);
   const [openDeleteOffice, setOpenDeleteOffice] = useState<Office | null>(null);
@@ -149,7 +147,7 @@ function TableOfficesManager() {
                       id: openDeleteOffice._id,
                       onSuccess: () => {
                         toast(<ToastCustom type="success" text={t('translation:delete_type_success', { type: t('account:office') })} />, {
-                          className: toastClass.toastSuccess,
+                          className: 'toast-success',
                         });
                         handleCloseDialogDelete();
                       },
@@ -157,7 +155,7 @@ function TableOfficesManager() {
                         toast(
                           <ToastCustom type="error" text={t('translation:delete_type_error', { type: t('account:office') })} description={message} />,
                           {
-                            className: toastClass.toastError,
+                            className: 'toast-error',
                           },
                         );
                       },

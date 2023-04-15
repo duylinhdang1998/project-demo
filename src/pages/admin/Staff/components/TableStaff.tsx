@@ -19,13 +19,11 @@ import { Staff } from 'services/models/Staff';
 import { RECORDS_PER_PAGE } from 'services/Staff/Company/getStaffs';
 import { selectStaffs } from 'store/staffs/selectors';
 import { staffsActions } from 'store/staffs/staffsSlice';
-import { useToastStyle } from 'theme/toastStyles';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 import { v4 as uuid } from 'uuid';
 
 function TableStaff() {
-  const toastClass = useToastStyle();
   const { t } = useTranslation(['staff', 'translation']);
 
   const [openDeleteStaff, setOpenDeleteStaff] = useState<Staff | null>(null);
@@ -173,14 +171,14 @@ function TableStaff() {
                       id: openDeleteStaff._id,
                       onSuccess: () => {
                         toast(<ToastCustom type="success" text={t('translation:delete_type_success', { type: t('staff:staff') })} />, {
-                          className: toastClass.toastSuccess,
+                          className: 'toast-success',
                         });
                         handleCloseDialogDelete();
                       },
                       onFailure: message => {
                         toast(
                           <ToastCustom type="error" text={t('translation:delete_type_error', { type: t('staff:staff') })} description={message} />,
-                          { className: toastClass.toastError },
+                          { className: 'toast-error' },
                         );
                       },
                     }),

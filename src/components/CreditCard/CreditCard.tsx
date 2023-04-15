@@ -9,7 +9,6 @@ import { v4 as uuid } from 'uuid';
 import Button from 'components/Button/Button';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { SimpleField } from 'models/Field';
-import { useToastStyle } from 'theme/toastStyles';
 import { formatCreditCardNumber, formatCVC, formatExpirationDate } from 'utils/formatText';
 import './styles.css';
 
@@ -51,7 +50,6 @@ const fields: SimpleField[] = [
 ];
 
 function CreditCard() {
-  const toastClass = useToastStyle();
   const { t } = useTranslation(['account', 'translation']);
   const classes = useStyles();
 
@@ -107,7 +105,7 @@ function CreditCard() {
 
   const handleClick = () => {
     toast(<ToastCustom type="success" text="Payment Pro version successfully!" />, {
-      className: toastClass.toastSuccess,
+      className: 'toast-success',
     });
     navigate('/account/subscription');
   };

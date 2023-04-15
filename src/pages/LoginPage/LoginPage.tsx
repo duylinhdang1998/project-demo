@@ -17,7 +17,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { authActions } from 'store/auth/authSlice';
 import { selectAuth } from 'store/auth/selectors';
-import { useToastStyle } from 'theme/toastStyles';
 import { useStyles } from './styles';
 
 interface Values {
@@ -29,7 +28,6 @@ function LoginPage() {
   const { statusLogin } = useAppSelector(selectAuth);
   const { t } = useTranslation('auth');
   const classes = useStyles();
-  const toastClass = useToastStyle();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const {
@@ -56,7 +54,7 @@ function LoginPage() {
         onSuccess: () => {},
         onFailure: message => {
           toast(<ToastCustom type="error" text={t('login_failure')} description={message} />, {
-            className: toastClass.toastError,
+            className: 'toast-error',
           });
         },
       }),

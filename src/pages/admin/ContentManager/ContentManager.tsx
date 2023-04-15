@@ -16,7 +16,6 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { Content } from 'services/models/Content';
 import { contentManagerActions } from 'store/contentManager/contentManagerSlice';
 import { selectContentManager } from 'store/contentManager/selectors';
-import { useToastStyle } from 'theme/toastStyles';
 import { footerFields, sidebarFields } from './constants';
 import { Editor } from '@tinymce/tinymce-react';
 import { uploadImageResource } from 'services/Resource/uploadImageResource';
@@ -31,7 +30,6 @@ const fieldKeys: Array<keyof Values> = ['city', 'email', 'phone', 'content', 'fo
 
 function ContentManager() {
   const { t } = useTranslation(['account', 'translation', 'message_error']);
-  const toastClass = useToastStyle();
 
   const { control, handleSubmit, setValue, watch } = useForm<Values>();
   const contentValueOfForm = watch('content');
@@ -50,12 +48,12 @@ function ContentManager() {
         data: values,
         onSuccess: () => {
           toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('account:content_manager') })} />, {
-            className: toastClass.toastSuccess,
+            className: 'toast-success',
           });
         },
         onFailure: message => {
           toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:content_manager') })} description={message} />, {
-            className: toastClass.toastError,
+            className: 'toast-error',
           });
         },
       }),

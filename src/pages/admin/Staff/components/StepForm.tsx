@@ -10,7 +10,6 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { staffsActions } from 'store/staffs/staffsSlice';
 import { toast } from 'react-toastify';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
-import { useToastStyle } from 'theme/toastStyles';
 import { useTranslation } from 'react-i18next';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { toDayjs } from 'utils/toDayjs';
@@ -38,7 +37,6 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
 
   const { t } = useTranslation(['translation']);
   const classes = useStyles();
-  const toastClass = useToastStyle();
 
   const { statusCreateStaff, statusUpdateStaffInfo, statusUpdateDayActive, staff } = useAppSelector(selectStaffs);
   const dispatch = useAppDispatch();
@@ -62,13 +60,13 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
           data: omit(formValues, ['role', 'email', 'office']),
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('staff:staff') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             nextStep();
           },
           onFailure: message => {
             toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('staff:staff') })} description={message} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
         }),
@@ -79,13 +77,13 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
           data: formValues,
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('staff:staff') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             nextStep();
           },
           onFailure: message => {
             toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('staff:staff') })} description={message} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
         }),
@@ -105,13 +103,13 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
           },
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('staff:staff') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             nextStep();
           },
           onFailure: message => {
             toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('staff:staff') })} description={message} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
         }),

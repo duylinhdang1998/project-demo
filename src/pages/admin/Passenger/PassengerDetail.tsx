@@ -19,7 +19,6 @@ import { Passenger } from 'services/models/Passenger';
 import { selectAuth } from 'store/auth/selectors';
 import { passengersActions } from 'store/passengers/passengersSlice';
 import { selectPassengers } from 'store/passengers/selectors';
-import { useToastStyle } from 'theme/toastStyles';
 import TableOrdersOfPassenger from './components/TableOrdersOfPassenger';
 import { fieldDetails } from './constants';
 
@@ -28,7 +27,6 @@ type Values = Pick<Passenger, 'country' | 'email' | 'firstName' | 'lastName' | '
 const fieldKeys: Array<keyof Values> = ['country', 'email', 'firstName', 'lastName', 'phone'];
 export default function PassengerDetail() {
   const { t } = useTranslation(['passenger', 'translation', 'message_error']);
-  const toastClass = useToastStyle();
   const {
     control,
     formState: { errors },
@@ -78,13 +76,13 @@ export default function PassengerDetail() {
           },
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('passenger:passenger') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             navigate(route);
           },
           onFailure: message => {
             toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('passenger:passenger') })} description={message} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
         }),
