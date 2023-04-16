@@ -171,7 +171,7 @@ function TableVehicles() {
             {t('translation:delete_record_title')}
           </Typography>
           <Typography marginBottom="30px" fontSize="14px" fontWeight={400}>
-            {t('translation:delete_record_message')}
+            {t('vehicles:delete_vehicle_message')}
           </Typography>
           <Stack direction="row" alignItems="center">
             <Button

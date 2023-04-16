@@ -1497,6 +1497,13 @@ ansi-styles@^5.0.0:
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-5.2.0.tgz#07449690ad45777d1924ac2abb2fc8895dba836b"
   integrity sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA==
 
+antd-dayjs-vite-plugin@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/antd-dayjs-vite-plugin/-/antd-dayjs-vite-plugin-1.2.2.tgz#576ad1a14af2084eb92311b78e331cb43a516c16"
+  integrity sha512-4VzXso1OlRFAz5wccSLt4tCMafWFTfu5tWduBCzfbiTfW8w5rAUN8R72Nb47sPu3sfQQJInmuOgDQz+xkGtIfg==
+  dependencies:
+    antd-dayjs-webpack-plugin "^1.0.6"
+
 antd-dayjs-webpack-plugin@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/antd-dayjs-webpack-plugin/-/antd-dayjs-webpack-plugin-1.0.6.tgz#7d98bcb51422248b8cd4a32e352a0425a3bffa3a"

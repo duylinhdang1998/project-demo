@@ -332,25 +332,28 @@ export default function FormVerticle<T extends FieldValues>({
           <Controller
             control={control}
             name={i.label as Path<T>}
-            render={({ field }) => (
-              <Box>
-                <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                <DatePicker
-                  disabled={i.disabled}
-                  picker={i.picker}
-                  showTime={i.showTime}
-                  value={field.value as any}
-                  onChange={field.onChange}
-                  className={cx(classes.datePicker, !!error ? classes.inputError : '')}
-                  format={i.format}
-                />
-                {!!error && (
-                  <Typography component="p" className={classes.error} fontSize={12}>
-                    {messageErr}
-                  </Typography>
-                )}
-              </Box>
-            )}
+            render={({ field }) => {
+              console.log(333, field);
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <DatePicker
+                    disabled={i.disabled}
+                    picker={i.picker}
+                    showTime={i.showTime}
+                    value={field.value as any}
+                    onChange={field.onChange}
+                    className={cx(classes.datePicker, !!error ? classes.inputError : '')}
+                    format={i.format}
+                  />
+                  {!!error && (
+                    <Typography component="p" className={classes.error} fontSize={12}>
+                      {messageErr}
+                    </Typography>
+                  )}
+                </Box>
+              );
+            }}
             rules={{
               required: {
                 value: i.required ?? false,
