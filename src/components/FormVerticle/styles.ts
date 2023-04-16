@@ -34,27 +34,20 @@ export const useStyles = makeStyles((theme: Theme) => ({
     height: '40px',
     position: 'relative',
   },
-  inputNumberWrap: {
+  inputNumber: {
+    width: '100%',
     border: '1px solid #F7F7F7',
     backgroundColor: '#fff',
     borderRadius: '4px',
-    height: '40px',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    padding: '0 10px',
-  },
-  inputNumber: {
-    width: '100%',
-    height: '35px',
-    borderColor: 'transparent',
-    '&:focus-visible': {
-      outline: 'none',
+    '&.ant-input-number': {
+      height: '40px',
     },
-  },
-  prefix: {
-    fontSize: '14px',
+    '& .ant-input-number-input-wrap': {
+      height: '100% !important',
+    },
+    '& .ant-input-number-input-wrap input': {
+      height: '100% !important',
+    },
   },
   datePicker: {
     width: '100%',
