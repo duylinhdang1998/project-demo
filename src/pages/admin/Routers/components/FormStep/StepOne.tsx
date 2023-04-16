@@ -139,7 +139,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             },
             required: true,
           },
-          { id: 'arrivalDuration', label: 'arrivalDuration', type: 'number', showTime: true, required: true },
+          { id: 'arrivalDuration', label: 'arrivalDuration', type: 'number', required: true },
         ]}
       />
       <Typography fontSize={14} color="#45485e" fontWeight={500} py="16px">

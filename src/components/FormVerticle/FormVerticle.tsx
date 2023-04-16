@@ -110,6 +110,8 @@ export default function FormVerticle<T extends FieldValues>({
                 </InputLabel>
                 <InputNumber
                   {...field}
+                  parser={i.parser}
+                  formatter={i.formatter}
                   status={!!error ? 'error' : undefined}
                   className={classes.inputNumber}
                   prefix={i.prefix}
