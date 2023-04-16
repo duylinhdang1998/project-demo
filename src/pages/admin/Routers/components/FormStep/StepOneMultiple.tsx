@@ -2,6 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { Button, Dialog, Grid, InputLabel, Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
+import { InputNumber } from 'antd';
 import TrashSvg from 'assets/images/trash.svg';
 import cx from 'classnames';
 import Button2 from 'components/Button/Button';
@@ -24,6 +25,7 @@ import EditPriceTrip from '../EditPriceTrip';
 
 export interface RoutePointValues {
   stop_point: string;
+  // FIXME: Chuyển sang datepicker antd
   duration: number;
   ecoAdult: number;
   vipAdult: number;
@@ -35,6 +37,7 @@ export interface RoutePointValues {
 export interface StepOneValuesForMultipleStopTrip {
   vehicle: Vehicle;
   departurePoint: string;
+  // FIXME: Sửa format MM-DD-YYYY HH:mm
   departureTime: dayjs.Dayjs;
   routePoints: RoutePointValues[];
 }
@@ -72,10 +75,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   inputNumber: {
     width: '100%',
-    height: '35px',
-    borderColor: 'transparent',
-    '&:focus-visible': {
-      outline: 'none',
+    border: '1px solid #F7F7F7',
+    backgroundColor: '#fff',
+    borderRadius: '4px',
+    '&.ant-input-number': {
+      height: '40px',
+    },
+    '& .ant-input-number-input-wrap': {
+      height: '100% !important',
+    },
+    '& .ant-input-number-input-wrap input': {
+      height: '100% !important',
     },
   },
   inputError: {
@@ -349,7 +359,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
                               {labelTranslated}
                             </InputLabel>
                             <Box className={cx(classes.inputNumberWrap, !!error ? classes.inputError : '')}>
-                              <input {...field} id={`duration-${f.id}`} min={0} type="number" className={classes.inputNumber} />
+                              <InputNumber {...field} id={`duration-${f.id}`} min={0} className={classes.inputNumber} />
                             </Box>
                             {!!error && (
                               <Typography component="p" className={classes.error} fontSize={12}>

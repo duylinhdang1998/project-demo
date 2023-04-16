@@ -1,5 +1,5 @@
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box, Dialog, DialogTitle, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
+import { Box, Dialog, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
 import { ColumnsType } from 'antd/es/table';
 import { Fragment, memo, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +20,7 @@ import { officesManagerActions } from 'store/officesManager/officesManagerSlice'
 import { selectOfficesManager } from 'store/officesManager/selectors';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
+import { DialogTitle } from 'components/DialogTitle/DialogTitle';
 
 const PROPERTIES_IN_DIALOG: Array<keyof Pick<Office, 'address' | 'zipCode' | 'city' | 'country'>> = ['address', 'zipCode', 'city', 'country'];
 
@@ -180,7 +181,7 @@ function TableOfficesManager() {
       <Dialog open onClose={handleCloseDialogDetail}>
         <Box padding="24px">
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <DialogTitle sx={{ padding: '0 !important' }}>{openOfficeDetail?.title}</DialogTitle>
+            <DialogTitle>{openOfficeDetail?.title}</DialogTitle>
             <IconButton onClick={handleCloseDialogDetail}>
               <ClearIcon />
             </IconButton>

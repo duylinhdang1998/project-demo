@@ -18,7 +18,9 @@ export interface StepOneValuesForOneStopTrip {
   vehicle: Vehicle;
   departurePoint: string;
   arrivalPoint: string;
+  // FIXME: Sửa format thành MM-DD-YYYY HH:mm
   departureTime: dayjs.Dayjs;
+  // FIXME: Chuyển sang datepicker antd
   arrivalDuration: number;
   ecoAdult: number;
   vipAdult: number;
@@ -77,7 +79,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
       reset({
         ...values,
         arrivalDuration: values.arrivalDuration,
-        departureTime: toDayjs({ value: values.departureTime, format: 'HH:mm' }),
+        departureTime: toDayjs({ value: values.departureTime, format: 'MM-DD-YYY HH:mm' }),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -124,8 +126,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             type: 'datetime',
             showTime: true,
             required: true,
-            picker: 'time',
-            format: 'HH:mm',
+            format: 'MM-DD-YYYY HH:mm',
           },
           {
             id: 'arrivalPoint',

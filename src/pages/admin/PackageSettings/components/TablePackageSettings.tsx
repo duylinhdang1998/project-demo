@@ -1,5 +1,5 @@
 import ClearIcon from '@mui/icons-material/Clear';
-import { Dialog, DialogTitle, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
+import { Dialog, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/lib/table';
 import { memo, useMemo, useState, Fragment } from 'react';
@@ -21,6 +21,7 @@ import { packageSettingsActions } from 'store/packageSettings/packageSettingsSli
 import { selectPackageSettings } from 'store/packageSettings/selectors';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
+import { DialogTitle } from 'components/DialogTitle/DialogTitle';
 
 const PROPERTIES_IN_DIALOG: Array<keyof Pick<PackageSetting, 'title' | 'description'>> = ['title', 'description'];
 
@@ -188,7 +189,7 @@ function TablePackageSettings() {
       <Dialog open onClose={handleCloseDialogDetail}>
         <Box padding="24px">
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <DialogTitle sx={{ padding: '0 !important' }}>{openPackageSettingDetail.title}</DialogTitle>
+            <DialogTitle>{openPackageSettingDetail.title}</DialogTitle>
             <IconButton onClick={handleCloseDialogDetail}>
               <ClearIcon />
             </IconButton>

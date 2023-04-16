@@ -24,6 +24,15 @@ const useStyles = makeStyles(() => ({
   textStep: {
     fill: '#fff !important',
   },
+  iconRoot: {
+    marginTop: '100%',
+  },
+  stepContainer: {
+    padding: '0px !important',
+    '& > span > span': {
+      padding: '0px !important',
+    },
+  },
 }));
 
 interface StepFormProps {
@@ -83,13 +92,13 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             vehicle: formValues.vehicle,
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('routers:route') })} />, {
+            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('routers:new_trip') })} />, {
               className: 'toast-success',
             });
             nextStep();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:route') })} description={message} />, {
+            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:new_trip') })} description={message} />, {
               className: 'toast-error',
             });
           },
@@ -125,15 +134,28 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             vehicle: formValues.vehicle,
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('routers:route') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:add_type_success', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             nextStep();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:route') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:add_type_error', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );
@@ -151,15 +173,28 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             startPeriod: dayjsToNumber(formValues.fromDate),
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:edit_type_success', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             nextStep();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:edit_type_error', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );
@@ -316,19 +351,25 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
 
   return (
     <Box>
-      <Stepper activeStep={activeStep} sx={{ my: '24px', maxWidth: '500px', mx: 'auto' }}>
+      <Stepper activeStep={activeStep} sx={{ marginBottom: '28px', marginTop: '10px', maxWidth: '500px', mx: 'auto' }}>
         {steps.map((label, index) => {
           return (
-            <Step key={label}>
+            <Step key={label} classes={{ root: classes.stepContainer }}>
               <StepLabel
                 StepIconProps={{
                   classes: {
                     text: classes.textStep,
+                    root: classes.iconRoot,
                   },
                 }}
                 sx={{ flexDirection: 'column', color: '#fff' }}
                 optional={
-                  <Typography variant="caption" color={activeStep === index ? '#1AA6EE' : 'inherit'}>
+                  <Typography
+                    variant="caption"
+                    fontSize="12px"
+                    textAlign="center"
+                    color={activeStep === index ? '#1AA6EE' : 'rgba(174, 177, 197, 1)'}
+                  >
                     {label}
                   </Typography>
                 }

@@ -4,13 +4,16 @@ import { Timeline } from 'antd';
 import 'antd/lib/timeline/style/css';
 import { LocationIcon } from 'components/SvgIcon/LocationIcon';
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { DialogMultiStopTripDetailProps } from './DialogMultiStopTripDetail';
+import { addMinutesToTimeString } from 'utils/addMinutesToTimeString';
 
 const useStyles = makeStyles(() => ({
   container: {
     minWidth: 200,
     flex: '1 0 auto',
+    '& .ant-timeline-item-tail': {
+      borderLeftStyle: 'dashed !important',
+    },
   },
   specialMark: {
     display: 'flex',
@@ -24,7 +27,6 @@ const useStyles = makeStyles(() => ({
 
 export const MainRoute = ({ route }: DialogMultiStopTripDetailProps) => {
   const classes = useStyles();
-  const { t } = useTranslation(['routers']);
 
   const mainRoutePoints = useMemo(() => {
     return route.routePoints.filter(routePoint => routePoint.routeType === 'MAIN_ROUTE');
@@ -39,8 +41,12 @@ export const MainRoute = ({ route }: DialogMultiStopTripDetailProps) => {
           </Box>
         }
       >
-        <Typography component="p">{route.departurePoint}</Typography>
-        <Typography component="p">{route.departureTime}</Typography>
+        <Typography component="p" color="rgba(69, 72, 94, 1)" fontSize="14px">
+          {route.departurePoint}
+        </Typography>
+        <Typography component="p" color="rgba(133, 140, 147, 1)" fontSize="10px">
+          {route.departureTime}
+        </Typography>
       </Timeline.Item>
     );
   };
@@ -50,14 +56,16 @@ export const MainRoute = ({ route }: DialogMultiStopTripDetailProps) => {
     return (
       <Timeline.Item
         dot={
-          <Box className={classes.specialMark} bgcolor="rgba(45, 154, 255, 1)">
+          <Box className={classes.specialMark} bgcolor="rgba(255, 39, 39, 1)">
             <LocationIcon />
           </Box>
         }
       >
-        <Typography component="p">{lastPoint.stopPoint}</Typography>
-        <Typography component="p">
-          {lastPoint.durationTime} {t('routers:minutes')}
+        <Typography component="p" color="rgba(69, 72, 94, 1)" fontSize="14px">
+          {lastPoint.stopPoint}
+        </Typography>
+        <Typography component="p" color="rgba(133, 140, 147, 1)" fontSize="10px">
+          {addMinutesToTimeString(route.departureTime, lastPoint.durationTime)}
         </Typography>
       </Timeline.Item>
     );

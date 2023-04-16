@@ -254,17 +254,27 @@ function TableRoutes() {
                     routesActions.deleteRouteRequest({
                       id: openDeleteRoute._id,
                       onSuccess: () => {
-                        toast(<ToastCustom type="success" text={t('translation:delete_type_success', { type: t('routers:route') })} />, {
-                          className: 'toast-success',
-                        });
+                        toast(
+                          <ToastCustom
+                            type="success"
+                            text={t('translation:delete_type_success', {
+                              type: t('routers:trip').toLowerCase(),
+                            })}
+                          />,
+                          { className: 'toast-success' },
+                        );
                         handleCloseDialogDelete();
                       },
                       onFailure: message => {
                         toast(
-                          <ToastCustom type="error" text={t('translation:delete_type_error', { type: t('routers:route') })} description={message} />,
-                          {
-                            className: 'toast-error',
-                          },
+                          <ToastCustom
+                            type="error"
+                            text={t('translation:delete_type_error', {
+                              type: t('routers:trip').toLowerCase(),
+                            })}
+                            description={message}
+                          />,
+                          { className: 'toast-error' },
                         );
                       },
                     }),

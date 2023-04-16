@@ -333,7 +333,6 @@ export default function FormVerticle<T extends FieldValues>({
             control={control}
             name={i.label as Path<T>}
             render={({ field }) => {
-              console.log(333, field);
               return (
                 <Box>
                   <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>

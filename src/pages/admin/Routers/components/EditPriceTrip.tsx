@@ -1,11 +1,11 @@
-import { InputBase, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import cx from 'classnames';
+import { InputNumber } from 'antd';
+import { default as classNames, default as cx } from 'classnames';
 import { get } from 'lodash-es';
 import { useMemo } from 'react';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 
 interface EditPriceTripProps {
   control: Control;
@@ -16,19 +16,26 @@ interface EditPriceTripProps {
 
 const useStyles = makeStyles((theme: Theme) => ({
   cell: {
-    border: '1px solid #F7F7F7',
-    padding: '8px',
+    width: 'calc(100% / 3)',
+    border: '1px solid #F7F7F7 !important',
+    padding: '8px 14px !important',
+  },
+  cellTitle: {
+    fontSize: '14px !important',
+    color: 'rgba(133, 140, 147, 1) !important',
   },
   input: {
-    textAlign: 'center',
     width: '100% !important',
-  },
-  inputError: {
-    border: `1px solid ${theme.palette.error.main} !important`,
+    '& .ant-input-number-input-wrap input': {
+      textAlign: 'center',
+      fontWeight: 500,
+      fontSize: 14,
+      color: 'rgba(12, 17, 50, 1)',
+    },
   },
   error: {
     marginTop: '4px !important',
-    color: theme.palette.error.main,
+    color: `${theme.palette.error.main} !important`,
   },
 }));
 
@@ -64,12 +71,12 @@ export default function EditPriceTrip({ control, errors, isMulti, index }: EditP
       <Table sx={{ borderCollapse: 'collapse' }}>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ border: '1px solid #F7F7F7', width: 'calc(100% / 3)' }}></TableCell>
-            <TableCell component="th" sx={{ border: '1px solid #F7F7F7', width: 'calc(100% / 3)' }} align="center">
-              {t('routers:eco_tickets')} ({getAppCurrencySymbol()})
+            <TableCell className={classNames(classes.cell, classes.cellTitle)}></TableCell>
+            <TableCell component="th" className={classNames(classes.cell, classes.cellTitle)} align="center">
+              {t('routers:eco_tickets')}
             </TableCell>
-            <TableCell component="th" align="center" sx={{ border: '1px solid #F7F7F7', width: 'calc(100% / 3)' }}>
-              {t('routers:vip_tickets')} ({getAppCurrencySymbol()})
+            <TableCell component="th" className={classNames(classes.cell, classes.cellTitle)} align="center">
+              {t('routers:vip_tickets')}
             </TableCell>
           </TableRow>
         </TableHead>
@@ -77,23 +84,29 @@ export default function EditPriceTrip({ control, errors, isMulti, index }: EditP
           {rows.map(row => {
             return (
               <TableRow key={row.value}>
-                <TableCell className={classes.cell} component="th" scope="row" align="center">
+                <TableCell className={classNames(classes.cell, classes.cellTitle)} component="th" scope="row">
                   {row.title}
                 </TableCell>
                 {inputs.map(input => {
                   return (
-                    <TableCell key={input.value} className={classes.cell}>
+                    <TableCell key={input.value} className={classNames(classes.cell)}>
                       <Controller
                         control={control}
                         name={getNameInput(`${input.value}${row.value}`)}
-                        render={({ field }) => (
-                          <InputBase
-                            {...field}
-                            type="number"
-                            placeholder={t('routers:input_price')}
-                            className={cx(classes.input, !!error ? classes.inputError : '')}
-                          />
-                        )}
+                        render={({ field }) => {
+                          return (
+                            <InputNumber
+                              {...field}
+                              min={0}
+                              formatter={value => (value ? `${value}$` : '')}
+                              parser={value => (value ? value.replace('$', '') : 0)}
+                              placeholder={t('routers:input_price')}
+                              className={cx(classes.input)}
+                              status={!!error ? 'error' : undefined}
+                              bordered={false}
+                            />
+                          );
+                        }}
                         rules={{
                           required: {
                             value: true,

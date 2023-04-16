@@ -3,8 +3,11 @@
   "route": "Route",
   "routers": "Routers",
   "vehicle": "Vehicle",
+  "vehicleName": "Vehicle name",
   "departurePoint": "Departure point",
-  "arrivalPoint": "Arrival points",
+  "departurePoints": "Departure points",
+  "arrivalPoint": "Arrival point",
+  "arrivalPoints": "Arrival points",
   "departureTime": "Departure time",
   "add_new_trip": "Add new trip",
   "one_way_trip": "One way trip",
@@ -30,6 +33,7 @@
   "add_new_stop": "Add new stops",
   "registrationId": "Registration ID",
   "trip": "Trip",
+  "new_trip": "new trip",
   "prices": "prices",
   "input_price": "Input price",
   "edit_ticket_prices": "Edit ticket prices",
@@ -37,7 +41,6 @@
   "sub_routes": "sub-routes",
   "VIPseats": "VIP seats",
   "ECOseats": "ECO seats",
-  "minutes": "minutes",
   "Sub_routes": "Sub-routes",
   "start_point": "Start point",
   "finish_point": "Finish point",
@@ -49,5 +52,6 @@
   "edit_price": "Edit price",
   "alert_title": "Your programing is saved",
   "alert__description_1": "You can delete the days when the trip is not active.",
-  "alert__description_2": "You can change prices for a day by selecting that day"
+  "alert__description_2": "You can change prices for a day by selecting that day",
+  "routes": "Routes"
 }

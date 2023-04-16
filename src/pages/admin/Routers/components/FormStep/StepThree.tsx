@@ -1,13 +1,14 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Dialog, DialogTitle, IconButton, Stack, Typography } from '@mui/material';
+import { Dialog, IconButton, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { Alert } from 'antd';
 import Button from 'components/Button/Button';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import { DialogTitle } from 'components/DialogTitle/DialogTitle';
 import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import CalendarIcon from 'components/SvgIcon/CalendarIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
@@ -116,15 +117,28 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           routeCode: route.routeCode,
           data: { routeCode: route.routeCode, dayoff: selectedSlot[0].setHours(12) },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:edit_type_success', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             handleCloseDialogEdit();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:edit_type_error', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );
@@ -154,15 +168,28 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             })),
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:edit_type_success', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             handleCloseDialogEdit();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:edit_type_error', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );
@@ -201,7 +228,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
       <Dialog open onClose={handleCloseDialogEdit}>
         <Box padding="24px">
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <DialogTitle sx={{ padding: '0 !important' }}>{t('routers:edit_ticket_prices')}</DialogTitle>
+            <DialogTitle>{t('routers:edit_ticket_prices')}</DialogTitle>
             <IconButton onClick={handleCloseDialogEdit}>
               <ClearIcon />
             </IconButton>
@@ -379,9 +406,15 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         textCancel={t('translation:back')}
         onCancel={handleCancel}
         onSave={() => {
-          toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
-            className: 'toast-success',
-          });
+          toast(
+            <ToastCustom
+              type="success"
+              text={t('translation:edit_type_success', {
+                type: t('routers:trip').toLowerCase(),
+              })}
+            />,
+            { className: 'toast-success' },
+          );
           navigate('/admin/routers');
         }}
       />
