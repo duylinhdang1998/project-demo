@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
   item: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     border: '0.5px solid #D7DADC',
     borderRadius: 4,
     width: '100%',
@@ -61,7 +61,7 @@ export const RadioPlanDuration = ({ planDurationState, setPlanDurationState }: R
                     {getAppCurrencySymbol}/{t(`translation:${planDuration}`)}
                   </Typography>
                 </Box>
-                <Radio value={planDuration} id={planDuration} />
+                <Radio sx={{ padding: '0px' }} value={planDuration} id={planDuration} />
               </Box>
             </label>
           );

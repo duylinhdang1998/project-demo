@@ -37,20 +37,29 @@ export default function SubscriptionPackage() {
 
   const renderTab = () => {
     return (
-      <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} my="24px">
-        {planDurations.map(planDuration => {
-          const isActive = planDurationState === planDuration;
-          return (
-            <Button
-              key={planDuration}
-              onClick={() => setPlanDurationState(planDuration)}
-              backgroundButton={isActive ? '#1AA6EE' : 'F7F7F7'}
-              sx={{ padding: '10px 14px', color: isActive ? undefined : '#45485E' }}
-            >
-              {t(`account:${planDuration}_payment`)}
-            </Button>
-          );
-        })}
+      <Stack direction="row" alignItems="center" justifyContent="center">
+        <Stack
+          sx={{ padding: '4px', background: '#F7F7F7', display: 'inline-flex', borderRadius: '24px' }}
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+          spacing={1}
+          my="24px"
+        >
+          {planDurations.map(planDuration => {
+            const isActive = planDurationState === planDuration;
+            return (
+              <Button
+                key={planDuration}
+                onClick={() => setPlanDurationState(planDuration)}
+                backgroundButton={isActive ? '#1AA6EE' : 'F7F7F7'}
+                sx={{ padding: '8px 24px', color: isActive ? undefined : '#45485E', borderRadius: '24px' }}
+              >
+                {t(`account:${planDuration}_payment`)}
+              </Button>
+            );
+          })}
+        </Stack>
       </Stack>
     );
   };
