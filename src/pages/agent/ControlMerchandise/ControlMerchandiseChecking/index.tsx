@@ -1,17 +1,16 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Empty } from 'antd';
 import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import Qrcode from 'components/Qrcode/Qrcode';
 import Tag from 'components/Tag/Tag';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useGetPackageSale } from 'services/PackageSales/packageSales';
-import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
-import { Empty } from 'antd';
+import { PaymentStatus, PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping } from 'models/PaymentStatus';
 import { useMemo } from 'react';
-import { getPaymentStatusTag } from 'pages/admin/TicketSales/utils/getPaymentStatusTag';
-import { PaymentStatus } from 'models/PaymentStatus';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { useGetPackageSale } from 'services/PackageSales/packageSales';
 
 export default function ControlMerchandiseChecking() {
   const { t } = useTranslation(['dashboard', 'translation']);
@@ -33,8 +32,13 @@ export default function ControlMerchandiseChecking() {
   const renderText = (i: string) => {
     switch (i) {
       case 'payment_status': {
-        const { backgroundColor, color } = getPaymentStatusTag(dataDetails[i] as PaymentStatus);
-        return <Tag text={dataDetails[i]} backgroundColor={backgroundColor} color={color} />;
+        return (
+          <Tag
+            text={dataDetails[i]}
+            backgroundColor={PaymentStatusBackgroundColorMapping[dataDetails[i]]}
+            color={PaymentStatusColorMapping[dataDetails[i]]}
+          />
+        );
       }
       default:
         return <Typography variant="body2">{dataDetails[i]}</Typography>;

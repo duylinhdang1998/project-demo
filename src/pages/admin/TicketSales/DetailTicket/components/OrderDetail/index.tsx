@@ -4,8 +4,8 @@ import { MapPinIcon } from 'assets';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import dayjs from 'dayjs';
-import { getPaymentStatusTag } from 'pages/admin/TicketSales/utils/getPaymentStatusTag';
-import { memo, useMemo } from 'react';
+import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ColumnTicket } from '../../../components/ColumnTicket';
 import { Infomation } from './Infomation';
@@ -17,10 +17,6 @@ export interface OrderDetailsProps {
 function OrderDetails({ record }: OrderDetailsProps) {
   const theme = useTheme();
   const { t } = useTranslation(['ticketSales']);
-
-  const { backgroundColor, color } = useMemo(() => {
-    return getPaymentStatusTag(record.paymentStatus);
-  }, [record.paymentStatus]);
 
   return (
     <Box padding="24px" bgcolor="#fff" borderRadius="4px">
@@ -80,7 +76,13 @@ function OrderDetails({ record }: OrderDetailsProps) {
         />
         <Infomation
           left={t('ticketSales:payment_status')}
-          right={<Tag color={color} backgroundColor={backgroundColor} text={record.paymentStatus} />}
+          right={
+            <Tag
+              color={PaymentStatusColorMapping[record.paymentStatus]}
+              backgroundColor={PaymentStatusBackgroundColorMapping[record.paymentStatus]}
+              text={PaymentStatusLabelMapping[record.paymentStatus]}
+            />
+          }
         />
         <Infomation
           left={t('ticketSales:createdBy')}

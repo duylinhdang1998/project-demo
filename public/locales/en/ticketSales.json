@@ -48,6 +48,7 @@
   "route": "Route",
   "date_time": "Date time",
   "number_of_passengers": "Number of passengers",
+  "number_of_pax": "Number of pax",
   "ticket_sales": "Ticket sales",
   "passenger": "Passenger",
   "payment_methods": "Payment methods",
@@ -59,5 +60,14 @@
   "duration_minutes": "about {{duration}} minutes",
   "send_email_success": "Send email successfully",
   "send_email_error": "Send email error",
-  "terms_agree_invalid": "You must agree with our terms"
+  "terms_agree_invalid": "You must agree with our terms",
+  "created_by": "Created by",
+  "order": "Order",
+  "ticket_cancelled": "CANCALLED",
+  "ticket_used": "USED",
+  "ticket_pending": "PENDING",
+  "ticketType": "Ticket type",
+  "passengers_show_detail": "Detail",
+  "passengers_show_less": "Show less",
+  "confirm_checkin": "Confirm checkin"
 }

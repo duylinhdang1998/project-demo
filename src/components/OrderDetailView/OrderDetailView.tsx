@@ -1,11 +1,10 @@
 import { Divider, Grid, Typography } from '@mui/material';
-import { memo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { MapPinIcon } from 'assets';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import { getPaymentStatusTag } from 'pages/admin/TicketSales/utils/getPaymentStatusTag';
-import { PaymentStatus } from 'models/PaymentStatus';
+import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping } from 'models/PaymentStatus';
+import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface OrderDetailViewProps {
   data: any;
@@ -19,8 +18,7 @@ function OrderDetailView({ data }: OrderDetailViewProps) {
       case 'departure_point':
         return <TextWithIcon text={data[key]} icon={MapPinIcon} color="#1AA6EE" />;
       case 'payment_status': {
-        const { backgroundColor, color } = getPaymentStatusTag(data[key] as PaymentStatus);
-        return <Tag text={data[key]} backgroundColor={backgroundColor} color={color} />;
+        return <Tag text={data[key]} backgroundColor={PaymentStatusBackgroundColorMapping[data[key]]} color={PaymentStatusColorMapping[data[key]]} />;
       }
       default:
         return <Typography variant="body2">{data[key]}</Typography>;

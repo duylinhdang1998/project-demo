@@ -7,6 +7,7 @@ import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -16,12 +17,13 @@ import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
-import { getPaymentStatusTag } from '../utils/getPaymentStatusTag';
 import { ticketSaleModelToColumnTicket } from '../utils/ticketSaleModelToColumnTicket';
 import { ColumnTicket } from './ColumnTicket';
+import { useStyles } from './styles';
 
 export const TableTicketSales = () => {
   const { t } = useTranslation(['ticketSales', 'translation']);
+  const classes = useStyles();
 
   const navigate = useNavigate();
 
@@ -39,11 +41,7 @@ export const TableTicketSales = () => {
         width: 90,
         title: () => t('ticketSales:lastName'),
         render: (_, row) => {
-          return (
-            <Typography sx={{ cursor: 'pointer' }} fontSize="14px">
-              {row.lastName}
-            </Typography>
-          );
+          return <Typography fontSize="14px">{row.lastName}</Typography>;
         },
       },
       {
@@ -52,11 +50,7 @@ export const TableTicketSales = () => {
         width: 90,
         title: () => t('ticketSales:firstName'),
         render: (_, row) => {
-          return (
-            <Typography sx={{ cursor: 'pointer' }} fontSize="14px">
-              {row.firstName}
-            </Typography>
-          );
+          return <Typography fontSize="14px">{row.firstName}</Typography>;
         },
       },
       {
@@ -102,8 +96,13 @@ export const TableTicketSales = () => {
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
-          const { color, backgroundColor } = getPaymentStatusTag(row.paymentStatus);
-          return <Tag color={color} backgroundColor={backgroundColor} text={row.paymentStatus} />;
+          return (
+            <Tag
+              color={PaymentStatusColorMapping[row.paymentStatus]}
+              backgroundColor={PaymentStatusBackgroundColorMapping[row.paymentStatus]}
+              text={PaymentStatusLabelMapping[row.paymentStatus]}
+            />
+          );
         },
       },
       {
@@ -172,6 +171,7 @@ export const TableTicketSales = () => {
             }),
           );
         }}
+        rowClassName={classes.cursor}
       />
     </Box>
   );

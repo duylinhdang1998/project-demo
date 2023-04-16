@@ -12,7 +12,7 @@ export const Infomation = ({ left, right }: InformationProps) => {
       <Grid item xs={3}>
         <Typography variant="body2">{left}</Typography>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={9}>
         {right}
       </Grid>
     </Grid>
