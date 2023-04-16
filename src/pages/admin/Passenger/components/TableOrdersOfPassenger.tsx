@@ -6,15 +6,21 @@ import { useTranslation } from 'react-i18next';
 import { MapPinIcon } from 'assets';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { TicketSale } from 'services/models/TicketSale';
+import classNames from 'classnames';
 
 const useStyles = makeStyles(() => ({
   tableCell: {
+    borderLeft: '1px solid rgba(247, 247, 247, 1)',
+    borderRight: '1px solid rgba(247, 247, 247, 1)',
+    borderBottom: '1px solid rgba(247, 247, 247, 1) !important',
+    borderTop: '1px solid rgba(247, 247, 247, 1)',
     fontSize: '14px',
-    color: '#475461',
-    borderLeft: '1px solid #f7f7f7',
-    borderRight: '1px solid #f7f7f7',
-    borderBottom: '1px solid #f7f7f7 !important',
-    borderTop: '1px solid #f7f7f7',
+  },
+  tableCellTitle: {
+    color: 'rgba(133, 140, 147, 1) !important',
+  },
+  tableCellValue: {
+    color: 'rgba(71, 84, 97, 1) !important',
   },
 }));
 
@@ -23,29 +29,36 @@ interface TableOrdersOfPassengerProps {
 }
 
 function TableOrdersOfPassenger({ orders }: TableOrdersOfPassengerProps) {
-  const { t } = useTranslation('passenger');
+  const { t } = useTranslation(['passenger']);
   const classes = useStyles();
   return (
     <Box>
       <TableContainer>
-        <Box display="flex" justifyContent="center" alignItems="center" padding="10px 16px" bgcolor="#1AA6EE" borderRadius="4px">
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          padding="10px 16px"
+          bgcolor="#1AA6EE"
+          sx={{ borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }}
+        >
           <Typography color="#fff" fontWeight="bold">
-            {t('order_total')}: {orders.length}
+            {t('passenger:order_total')}: {orders.length}
           </Typography>
         </Box>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tableCell}>{t('trip')}</TableCell>
-              <TableCell className={classes.tableCell} align="center">
-                {t('date')}
+              <TableCell className={classNames(classes.tableCell, classes.tableCellTitle)}>{t('passenger:trip')}</TableCell>
+              <TableCell className={classNames(classes.tableCell, classes.tableCellTitle)} align="center">
+                {t('passenger:date')}
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {orders.map(({ _id, departurePoint, arrivalPoint, createdAt }) => (
               <TableRow key={_id}>
-                <TableCell align="left" className={classes.tableCell}>
+                <TableCell align="left" className={classNames(classes.tableCell, classes.tableCellValue)}>
                   {[departurePoint, arrivalPoint].map((val, index) => (
                     <TextWithIcon
                       key={index}
@@ -58,8 +71,8 @@ function TableOrdersOfPassenger({ orders }: TableOrdersOfPassengerProps) {
                     />
                   ))}
                 </TableCell>
-                <TableCell className={classes.tableCell} align="center">
-                  {dayjs(createdAt).format('MM/DD/YYYY')}
+                <TableCell className={classNames(classes.tableCell, classes.tableCellValue)} align="center">
+                  {dayjs(createdAt).format('MM/DD/YYYY HH:mm')}
                 </TableCell>
               </TableRow>
             ))}

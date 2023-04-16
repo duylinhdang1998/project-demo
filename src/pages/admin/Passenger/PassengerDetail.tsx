@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, Typography } from '@mui/material';
+import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
@@ -129,19 +129,24 @@ export default function PassengerDetail() {
       <LayoutDetail title={t('passenger:details')} subTitle={t('passenger:passengers')}>
         <Box width="100%" display="flex" justifyContent="center">
           <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
-            <Typography color="#0c1132" fontWeight={700}>
-              {isEditAction ? t('translation:edit_type', { type: t('passenger:passenger') }) : t('passenger:details')}
-            </Typography>
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
+              <Typography color="rgba(12, 17, 50, 1)" fontWeight={700} fontSize="16px">
+                {isEditAction ? t('translation:edit_type', { type: t('passenger:passenger') }) : t('passenger:details')}
+              </Typography>
+              <Typography color="rgba(71, 84, 97, 1)" fontSize="14px">
+                {t('passenger:account_created')} {dayjs(new Date(passenger?.createdAt as string)).format('MM/DD/YYYY')}
+              </Typography>
+            </Stack>
             <Divider sx={{ margin: '16px 0' }} />
             <Grid container spacing={2}>
               <Grid item xs={12} lg={6}>
-                <Typography fontSize="14px" fontWeight="bold" marginBottom="16px">
-                  {t('passenger:account_created')} {dayjs(new Date(passenger?.createdAt as string)).format('MM/DD/YYYY')}
+                <Typography color="rgba(12, 17, 50, 1)" fontSize="14px" fontWeight="bold" marginBottom="16px">
+                  {t('passenger:passenger_infomation')}
                 </Typography>
                 <FormVerticle
                   errors={errors}
                   messages={messages}
-                  fields={fieldDetails}
+                  fields={fieldDetails(isEditAction)}
                   control={control}
                   filterKey={'passenger'}
                   inputProps={{
@@ -164,7 +169,7 @@ export default function PassengerDetail() {
         </Box>
         <DialogConfirm
           openDialog={open}
-          title={t('translation:cancel_type', { type: t('passenger').toLowerCase() })}
+          title={t('translation:cancel_type', { type: t('edit').toLowerCase() })}
           subTitle={t('translation:leave_page')}
           onClose={handleClose}
         />

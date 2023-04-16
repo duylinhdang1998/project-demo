@@ -23,6 +23,7 @@
   "subject": "Subject",
   "description": "Description",
   "total_users_selected": "{{total}} users selected",
-  "send_email_success": "Send email successfully",
-  "send_email_error": "Send email error"
+  "send_email_success": "Send email successfully!",
+  "send_email_error": "Send email error",
+  "passenger_infomation": "Passenger Information"
 }

@@ -26,6 +26,7 @@ interface BaseField {
   id?: string;
   label: string;
   disabled?: boolean;
+  readOnly?: boolean;
 }
 
 export interface SimpleField extends BaseField {

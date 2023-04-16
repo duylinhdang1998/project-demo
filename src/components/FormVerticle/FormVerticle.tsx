@@ -73,6 +73,7 @@ export default function FormVerticle<T extends FieldValues>({
                     className={classes.input}
                     error={!!error}
                     disabled={i.disabled}
+                    readOnly={i.readOnly}
                   />
                   {!!error && (
                     <Typography component="p" className={classes.error} fontSize={12}>
@@ -116,6 +117,7 @@ export default function FormVerticle<T extends FieldValues>({
                   className={classes.inputNumber}
                   prefix={i.prefix}
                   disabled={i.disabled}
+                  readOnly={i.readOnly}
                   id={i.label}
                   min={0}
                 />
@@ -404,6 +406,7 @@ export default function FormVerticle<T extends FieldValues>({
                   {/* @ts-ignore */}
                   <TextareaAutosize
                     disabled={i.disabled}
+                    readOnly={i.readOnly}
                     minRows={3}
                     maxRows={10}
                     id={i.label}
