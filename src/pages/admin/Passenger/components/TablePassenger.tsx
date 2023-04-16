@@ -155,22 +155,23 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
             <Button
               variant="outlined"
               sx={{
-                margin: '0 6px',
+                marginRight: '12px',
                 color: '#1AA6EE',
                 padding: '10px 40px',
+                flex: 1,
               }}
               onClick={handleCloseDialogConfirmBlock}
             >
-              {t('translation:cancel')}
+              {t('translation:no')}
             </Button>
             <Button
               loading={queueUpdatePassenger.includes(openDialogConfirmBlock._id)}
               sx={{
-                margin: '0 8px',
                 color: '#FFFFFF',
                 padding: '10px 40px',
+                flex: 1,
               }}
-              backgroundButton="rgba(255, 39, 39, 1)"
+              backgroundButton="rgba(26, 166, 238, 1)"
               onClick={() => {
                 if (openDialogConfirmBlock) {
                   dispatch(
@@ -201,7 +202,7 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
                 }
               }}
             >
-              {isBlocking ? t('passenger:unblock') : t('passenger:block')}
+              {t('translation:yes')}
             </Button>
           </Stack>
         </Box>
