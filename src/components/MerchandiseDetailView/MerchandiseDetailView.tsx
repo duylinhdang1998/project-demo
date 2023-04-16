@@ -3,25 +3,31 @@ import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface MerchandiseDetailViewProps {
-  merchandises?: any;
+  merchandises?: Array<{
+    title: string | undefined;
+    weight: string;
+    price: string;
+    id: string | undefined;
+  }>;
 }
 
 function MerchandiseDetailView({ merchandises }: MerchandiseDetailViewProps) {
   const { t } = useTranslation(['packageSales', 'translation']);
   return (
     <div>
-      <Typography variant="h5" mb="16px">
+      <Typography variant="h5" mb="14px">
         {t('merchandise_details')}
       </Typography>
+      <Divider />
       {merchandises?.map((i, index) => (
-        <Box my="16px" key={i.id}>
-          <Typography variant="body2">
+        <Box my="24px" key={i.id}>
+          <Typography variant="body2" marginBottom="12px">
             {t('translation:merchandise')} {index + 1}
           </Typography>
           {Object.keys(i).map(
             k =>
               k !== 'id' && (
-                <Grid key={k} container spacing={2}>
+                <Grid key={k} container spacing={2} marginBottom="12px">
                   <Grid item xs={4}>
                     <Typography variant="body2">{t(`${k}`)}:</Typography>
                   </Grid>

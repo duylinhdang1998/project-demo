@@ -1,11 +1,9 @@
-import { Box, Dialog, Divider, Grid, Stack, Typography } from '@mui/material';
-import Button from 'components/Button/Button';
+import { Box, Grid, Stack } from '@mui/material';
 import MerchandiseDetailView from 'components/MerchandiseDetailView/MerchandiseDetailView';
-import OrderDetailView from 'components/OrderDetailView/OrderDetailView';
-import CheckCircle from 'components/SvgIcon/CheckCircle';
+import OrderDetailView, { OrderDetailViewProps } from 'components/OrderDetailView/OrderDetailView';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import LayoutDetail from 'layout/LayoutDetail';
-import { PackageSale } from 'models/PackageSales';
+import { DeliveryStatus, PackageSale } from 'models/PackageSales';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -14,6 +12,9 @@ import { updateDeliveryStatus } from 'services/PackageSales/updateDeliveryStatus
 import { ServiceException } from 'services/utils/ServiceException';
 import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { getAppWeightSymbol } from 'utils/getAppWeightSymbol';
+import { ControlDelivertStatus } from '../components/ControlDelivertStatus';
+import { DialogConfirmChangeStatusToCancel } from '../components/DialogConfirmChangeStatusToCancel';
+import { DialogConfirmChangeStatusToDeliveriedNArrived } from '../components/DialogConfirmChangeStatusToDeliveriedNArrived';
 import { packageSaleToDataDetail } from './utils/packageSaleToDataDetail';
 
 export function ControlMerchandiseDetail() {
@@ -28,7 +29,7 @@ export function ControlMerchandiseDetail() {
     return location.state as PackageSale | null | undefined;
   }, [location.state]);
 
-  const [dataDetail, setDataDetail] = useState(() => {
+  const [dataDetail, setDataDetail] = useState<OrderDetailViewProps['data']>(() => {
     return packageSaleToDataDetail(locationState);
   });
 
@@ -43,8 +44,10 @@ export function ControlMerchandiseDetail() {
     });
   }, [locationState]);
 
-  const handleOpenDialogConfirm = (val: string) => () => {
-    setOpenDialogConfirm(val);
+  const handleOpenDialogConfirm = (val: DeliveryStatus) => {
+    if (val !== dataDetail.delivery_status) {
+      setOpenDialogConfirm(val);
+    }
   };
 
   const handleCloseDialogConfirm = () => {
@@ -55,7 +58,6 @@ export function ControlMerchandiseDetail() {
     if (dataDetail.order_id && openDialogConfirm) {
       setIsUpdaing(true);
       try {
-        // FIXME: API lỗi nên chưa test đc
         const response = await updateDeliveryStatus({ orderCode: dataDetail.order_id, status: openDialogConfirm });
         setDataDetail(packageSaleToDataDetail(response.data));
         toast(
@@ -101,45 +103,32 @@ export function ControlMerchandiseDetail() {
     if (!openDialogConfirm) {
       return null;
     }
-    return (
-      <Dialog open onClose={handleCloseDialogConfirm}>
-        <Box padding="24px" style={{ maxWidth: 311, textAlign: 'center' }}>
-          <Typography marginBottom="24px" fontSize="16px" fontWeight={700}>
-            {t('packageSales:confirm_title')}
-          </Typography>
-          <Typography marginBottom="30px" fontSize="14px" fontWeight={400}>
-            {t('packageSales:confirm_description')}
-          </Typography>
-          <Stack direction="row" alignItems="center">
-            <Button
-              variant="outlined"
-              sx={{
-                margin: '0 6px',
-                color: '#1AA6EE',
-                padding: '10px 40px',
-                flex: '1 1 50%',
-              }}
-              onClick={handleCloseDialogConfirm}
-            >
-              {t('translation:no')}
-            </Button>
-            <Button
-              loading={isUpdating}
-              sx={{
-                margin: '0 8px',
-                color: '#FFFFFF',
-                padding: '10px 40px',
-                flex: '1 1 50%',
-              }}
-              backgroundButton="#1AA6EE"
-              onClick={handleUpdateDeliveryStatus}
-            >
-              {t('translation:yes')}
-            </Button>
-          </Stack>
-        </Box>
-      </Dialog>
-    );
+    // FIXME: Mapping status
+    if (openDialogConfirm === 'fulfilment') {
+      return (
+        <DialogConfirmChangeStatusToDeliveriedNArrived
+          isUpdating={isUpdating}
+          onCancel={handleCloseDialogConfirm}
+          onOk={handleUpdateDeliveryStatus}
+          variant="deliveried"
+        />
+      );
+    }
+    // FIXME: Mapping status
+    if (openDialogConfirm === 'unfulfilment') {
+      return (
+        <DialogConfirmChangeStatusToDeliveriedNArrived
+          isUpdating={isUpdating}
+          onCancel={handleCloseDialogConfirm}
+          onOk={handleUpdateDeliveryStatus}
+          variant="arrived"
+        />
+      );
+    }
+
+    if (openDialogConfirm === 'schedule') {
+      return <DialogConfirmChangeStatusToCancel isUpdating={isUpdating} onCancel={handleCloseDialogConfirm} onOk={handleUpdateDeliveryStatus} />;
+    }
   };
 
   return (
@@ -153,22 +142,7 @@ export function ControlMerchandiseDetail() {
           </Grid>
           <Grid item xs={12} md={3}>
             <Stack direction="column" spacing="24px">
-              <Box bgcolor="#fff" borderRadius="4px" padding="24px">
-                <Typography variant="h5">{t('delivery_status')}</Typography>
-                <Divider sx={{ margin: '16px 0' }} />
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography variant="body2">{t('arrived_destination')}</Typography>
-                  <Button onClick={handleOpenDialogConfirm('unfulfilment')}>
-                    <CheckCircle success={dataDetail.deliverStatus === 'unfulfilment'} />
-                  </Button>
-                </Stack>
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography variant="body2">{t('delivered_recipient')}</Typography>
-                  <Button onClick={handleOpenDialogConfirm('schedule')}>
-                    <CheckCircle success={status === 'schedule'} />
-                  </Button>
-                </Stack>
-              </Box>
+              <ControlDelivertStatus deliveryStatus={dataDetail.delivery_status} onChange={handleOpenDialogConfirm} />
               <Box bgcolor="#fff" borderRadius="4px" padding="24px">
                 <MerchandiseDetailView merchandises={merchandises} />
               </Box>

@@ -75,5 +75,7 @@
   "left": "left",
   "days": "days",
   "send": "Send",
-  "count_trip_found": "{{count}} trips found"
+  "count_trip_found": "{{count}} trips found",
+  "show_detail": "Show detail",
+  "confirm": "Confirm"
 }

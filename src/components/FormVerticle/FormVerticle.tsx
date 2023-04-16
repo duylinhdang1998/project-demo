@@ -69,7 +69,7 @@ export default function FormVerticle<T extends FieldValues>({
                     id={i.label}
                     {...inputProps}
                     {...field}
-                    placeholder={t(`${i.label}`)}
+                    placeholder={i.placeholder ?? t(`${i.label}`)}
                     className={classes.input}
                     error={!!error}
                     disabled={i.disabled}
@@ -404,11 +404,11 @@ export default function FormVerticle<T extends FieldValues>({
                   {/* @ts-ignore */}
                   <TextareaAutosize
                     disabled={i.disabled}
-                    minRows={10}
+                    minRows={3}
                     maxRows={10}
                     id={i.label}
                     {...field}
-                    placeholder={t(`${i.label}`)}
+                    placeholder={i.placeholder ?? t(`${i.label}`)}
                     className={cx(classes.inputArea, !!error ? classes.inputError : '')}
                   />
                   {!!error && (

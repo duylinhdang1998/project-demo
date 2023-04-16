@@ -1,12 +1,27 @@
+import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-export const useStyles = makeStyles(() => ({
+export const useStyles = makeStyles((theme: Theme) => ({
+  clearButton: {
+    width: '14px',
+    height: '14px',
+    backgroundColor: 'rgba(178, 186, 190, 0.4)',
+    color: 'rgba(174, 177, 197, 1)',
+    marginRight: '14px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '4px',
+    fontSize: '12px',
+  },
   inputSearch: {
     backgroundColor: '#fff',
     border: '1px solid #F7F7F7',
     borderRadius: '4px',
     fontSize: '14px !important',
-    padding: '10px',
+    padding: '12px 4px 12px 14px',
+    color: theme.palette.grey[100],
     height: '40px',
   },
   scanme: {

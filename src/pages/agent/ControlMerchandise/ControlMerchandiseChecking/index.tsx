@@ -1,16 +1,17 @@
-import { Box, Divider, Grid, Typography } from '@mui/material';
-import { Empty } from 'antd';
+import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
 import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import { MerchandiseStatus } from 'components/MerchandiseStatus/MerchandiseStatus';
 import Qrcode from 'components/Qrcode/Qrcode';
 import Tag from 'components/Tag/Tag';
 import LayoutDetail from 'layout/LayoutDetail';
-import { PaymentStatus, PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping } from 'models/PaymentStatus';
+import { PaymentStatus, PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useGetPackageSale } from 'services/PackageSales/packageSales';
+import Empty from 'assets/images/empty-result.svg';
 
 export default function ControlMerchandiseChecking() {
   const { t } = useTranslation(['dashboard', 'translation']);
@@ -24,7 +25,7 @@ export default function ControlMerchandiseChecking() {
       lastName_recipent: data?.recipent.lastName,
       firstName_recipent: data?.recipent.firstName,
       firstName_sender: data?.sender?.firstName,
-      number_of_merchandise: data?.totalQuantity,
+      number_of_merchandise: data?.merchandises.length,
       payment_status: PaymentStatus.APPROVED,
     };
   }, [data]);
@@ -34,7 +35,7 @@ export default function ControlMerchandiseChecking() {
       case 'payment_status': {
         return (
           <Tag
-            text={dataDetails[i]}
+            text={PaymentStatusLabelMapping[dataDetails[i]]}
             backgroundColor={PaymentStatusBackgroundColorMapping[dataDetails[i]]}
             color={PaymentStatusColorMapping[dataDetails[i]]}
           />
@@ -49,10 +50,10 @@ export default function ControlMerchandiseChecking() {
     navigate('/agent/control-merchandise-details', { state: data });
   };
 
-  const renderLeft = () => {
+  const renderRight = () => {
     if (loading) {
       return (
-        <Box display="flex" alignItems="center" justifyContent="center">
+        <Box sx={{ position: 'relative' }} display="flex" alignItems="center" justifyContent="center">
           <LoadingScreen />
         </Box>
       );
@@ -60,13 +61,21 @@ export default function ControlMerchandiseChecking() {
     if (!data) {
       return (
         <Box display="flex" alignItems="center" justifyContent="center">
-          <Empty />
+          <img src={Empty} alt="Empty" />
         </Box>
       );
     }
     return (
       <>
-        <Typography variant="h5">{t('merchandise_order')} #6969</Typography>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Typography variant="h5">
+            {t('merchandise_order')} #{data.orderCode}
+          </Typography>
+          {/* FIXME: Đâu ra cái này */}
+          <MerchandiseStatus
+            status={data.deliveryStatus === 'schedule' ? 'NOT_DELIVERIED' : data.deliveryStatus === 'fulfilment' ? 'DELIVERIED' : 'DELIVERING'}
+          />
+        </Stack>
         <Divider sx={{ margin: '16px 0' }} />
         <Box>
           {Object.keys(dataDetails).map(i => (
@@ -93,12 +102,12 @@ export default function ControlMerchandiseChecking() {
           </Grid>
           <Grid item xs={12} md={8}>
             <Box bgcolor="#FAFDFF" borderRadius="4px" padding="24px">
-              {renderLeft()}
+              {renderRight()}
             </Box>
           </Grid>
         </Grid>
         <Button backgroundButton="#1AA6EE" sx={{ float: 'right', padding: '10px 30px !important' }} onClick={handleNext}>
-          {t('translation:next')}
+          {t('translation:show_detail')}
         </Button>
       </CardWhite>
     </LayoutDetail>

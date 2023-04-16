@@ -11,7 +11,7 @@ interface UpdateDeliveryStatus {
 export const updateDeliveryStatus = async ({ orderCode, status }: UpdateDeliveryStatus) => {
   const response: AxiosResponse<ResponseDetailSuccess<PackageSale> | ResponseFailure> = await fetchAPI.request({
     method: 'POST',
-    url: `/v1.0/company/package-sale/${orderCode}/delivery-status`,
+    url: `/v1.0/company/package-sales/${orderCode}/delivery-status`,
     data: { status },
   });
   if (response.data.code === 0) {
