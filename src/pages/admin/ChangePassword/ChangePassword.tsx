@@ -52,6 +52,7 @@ export default function ChangePassword() {
     mode: 'all',
   });
 
+  // FIXME: BE đang trả về lỗi 1003 khi "Old password is wrong"
   const { run: changePasswordRequest, loading } = useChangePassWord({
     onSuccess: data => {
       getNotifcation({
@@ -114,7 +115,7 @@ export default function ChangePassword() {
       </Box>
       <DialogConfirm
         openDialog={open}
-        title={t('translation:cancel_type', { type: t('newPassword').toLowerCase() })}
+        title={t('translation:cancel_type', { type: t('account:change_pasword_action').toLowerCase() })}
         subTitle={t('translation:leave_page')}
         onClose={handleClose}
       />

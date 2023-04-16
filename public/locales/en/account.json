@@ -60,7 +60,7 @@
   "buy_now": "Buy now",
   "popular_choice": "POPULAR CHOICE",
   "error_required": "Please enter your {{name}}",
-  "change_pass_success": "Password changed successfully",
+  "change_pass_success": "Change password successfully!",
   "change_pass_error": "Password change failed",
   "profile": "profile",
   "update_success": "Update successfully",
@@ -80,5 +80,6 @@
   "login_paypal": "Connect with Paypal",
   "click_button_description_paypal": "Click the PayPal button to log in.",
   "subtext_2": "You'll be prompted for your PayPal account email and password through a secure PayPal login form.",
-  "login_stripe": "Connect with Stripe"
+  "login_stripe": "Connect with Stripe",
+  "change_pasword_action": "change password action"
 }
