@@ -12,15 +12,18 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
+  box: {
+    marginLeft: '10px !important',
+  },
   text: {
     color: '#fff',
     fontWeight: 'bold !important',
     fontSize: 16,
     lineHeight: '20px',
-    marginLeft: '10px !important',
   },
   description: {
-    fontSize: 13,
+    color: '#fff',
+    fontSize: '13px !important',
   },
 }));
 interface ToastCustomProps {
@@ -38,12 +41,14 @@ function ToastCustom({ type, text, description }: ToastCustomProps) {
       ) : (
         <CancelOutlinedIcon sx={{ color: '#fff', fontSize: '18px' }} />
       )}
-      <Typography component="p" className={classes.text}>
-        {text}
-      </Typography>
-      <Typography component="p" className={classes.description}>
-        {description}
-      </Typography>
+      <Box className={classes.box}>
+        <Typography component="p" className={classes.text}>
+          {text}
+        </Typography>
+        <Typography component="p" className={classes.description}>
+          {description}
+        </Typography>
+      </Box>
     </Box>
   );
 }
