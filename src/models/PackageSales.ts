@@ -1,5 +1,7 @@
 import { PaymentStatus } from './PaymentStatus';
 
+export type DeliveryStatus = 'unfulfilment' | 'schedule' | 'fulfilment';
+
 export interface PackageSale {
   _id: string;
   company: string;
@@ -12,7 +14,7 @@ export interface PackageSale {
   email: string;
   recipent: Recipent;
   merchandises: Merchandise[];
-  deliveryStatus: string; // FIXME: Enum
+  deliveryStatus: DeliveryStatus;
   createdAt: string;
   updatedAt: string;
   __v: number;

@@ -7,10 +7,10 @@ export const fieldsSearch: Field[] = [
   { id: uuidv4(), label: 'phone', type: 'text' },
 ];
 
-export const fieldDetails: Field[] = [
-  { id: uuidv4(), label: 'lastName', type: 'text' },
-  { id: uuidv4(), label: 'firstName', type: 'text' },
-  { id: uuidv4(), label: 'email', type: 'text', disabled: true },
-  { id: uuidv4(), label: 'phone', type: 'text' },
-  { id: uuidv4(), label: 'country', type: 'text' },
+export const fieldDetails = (isEditAction: boolean): Field[] => [
+  { id: uuidv4(), label: 'lastName', type: 'text', readOnly: !isEditAction },
+  { id: uuidv4(), label: 'firstName', type: 'text', readOnly: !isEditAction },
+  { id: uuidv4(), label: 'email', type: 'text', readOnly: !isEditAction, disabled: isEditAction },
+  { id: uuidv4(), label: 'phone', type: 'text', readOnly: !isEditAction },
+  { id: uuidv4(), label: 'country', type: 'text', readOnly: !isEditAction },
 ];

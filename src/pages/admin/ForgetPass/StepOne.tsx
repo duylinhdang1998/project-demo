@@ -8,7 +8,6 @@ import { useStyles } from './styles';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { LoadingButton } from '@mui/lab';
-import { useToastStyle } from 'theme/toastStyles';
 import { toast } from 'react-toastify';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { forgotPasswordRequest } from 'services/Auth/Company/forgotPasswordRequest';
@@ -25,7 +24,6 @@ export interface StepOneProps {
 
 // Request forgot password
 export const StepOne = ({ onNext }: StepOneProps) => {
-  const toastClass = useToastStyle();
   const { t } = useTranslation(['auth']);
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +46,7 @@ export const StepOne = ({ onNext }: StepOneProps) => {
       });
     } catch (error) {
       toast(<ToastCustom type="error" text={t('auth:request_reset_password_error')} description={ServiceException.getMessageError(error)} />, {
-        className: toastClass.toastError,
+        className: 'toast-error',
       });
     } finally {
       setIsLoading(false);

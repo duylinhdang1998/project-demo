@@ -1,43 +1,82 @@
-import { Box, Divider, Grid, Typography } from '@mui/material';
-import { Empty } from 'antd';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { Box, Divider, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { MapPinIcon } from 'assets';
+import Empty from 'assets/images/empty-result.svg';
+import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import Qrcode from 'components/Qrcode/Qrcode';
+import Tag from 'components/Tag/Tag';
+import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
+import { TicketStatus } from 'components/TicketStatus/TicketStatus';
+import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { get } from 'lodash-es';
+import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
+import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { Infomation } from './Infomation';
-import { MapPinIcon } from 'assets';
-import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import dayjs from 'dayjs';
-import { useMemo } from 'react';
-import { getPaymentStatusTag } from 'pages/admin/TicketSales/utils/getPaymentStatusTag';
-import Tag from 'components/Tag/Tag';
+import { useStyles } from './styles';
 
 export default function ControlTicket() {
   const { t } = useTranslation(['dashboard', 'ticketSales']);
+  const classes = useStyles();
+
+  const [showPassengersDetail, setShowPassengersDetail] = useState(false);
 
   const { statusGetTicketSale, ticketSale } = useAppSelector(selectTicketSales);
   const dispatch = useAppDispatch();
 
-  const { backgroundColor, color } = useMemo(() => {
-    if (ticketSale?.paymentStatus) {
-      return getPaymentStatusTag(ticketSale?.paymentStatus);
+  const renderTablePassenger = () => {
+    if (!showPassengersDetail) {
+      return null;
     }
-    return {
-      backgroundColor: 'transparent',
-      color: 'transparent',
-    };
-  }, [ticketSale?.paymentStatus]);
+    return (
+      <TableContainer className={classes.tableContainer}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell className={classes.recordTitle}>{t('ticketSales:lastName')}</TableCell>
+              <TableCell className={classes.recordTitle}>{t('ticketSales:firstName')}</TableCell>
+              <TableCell className={classes.recordTitle} align="center">
+                {t('ticketSales:ticketType')}
+              </TableCell>
+              <TableCell className={classes.recordTitle} align="center">
+                {t('ticketSales:price')}
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {ticketSale?.passengers.map(({ lastName, firstName, typeTicket, price }, index) => (
+              <TableRow key={index}>
+                <TableCell align="left" className={classes.recordValue}>
+                  {lastName}
+                </TableCell>
+                <TableCell className={classes.recordValue}>{firstName}</TableCell>
+                <TableCell className={classes.recordValue} align="center">
+                  {typeTicket}
+                </TableCell>
+                <TableCell className={classes.recordValue} align="center">
+                  {price}
+                  {getAppCurrencySymbol()}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
+  };
 
-  const renderLeft = () => {
+  const renderRight = () => {
     if (statusGetTicketSale === 'loading') {
       return (
-        <Box display="flex" alignItems="center" justifyContent="center">
+        <Box sx={{ position: 'relative' }} display="flex" alignItems="center" justifyContent="center">
           <LoadingScreen />
         </Box>
       );
@@ -46,22 +85,24 @@ export default function ControlTicket() {
     if (!ticketSale) {
       return (
         <Box display="flex" alignItems="center" justifyContent="center">
-          <Empty />
+          <img src={Empty} alt="Empty" />
         </Box>
       );
     }
 
     return (
       <>
-        <Typography variant="h5">
-          {t('ticketSales:ticket')} {ticketSale?.orderCode}
-        </Typography>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Typography variant="h5">
+            {t('ticketSales:order')} #{ticketSale?.orderCode}
+          </Typography>
+          {/* FIXME: Đâu ra cái này */}
+          <TicketStatus status="CANCELLED" />
+        </Stack>
         <Divider sx={{ margin: '16px 0' }} />
-        <Box>
-          <Infomation left={t('ticketSales:lastName')} right={get(ticketSale?.passengers, 0)?.lastName} />
-          <Infomation left={t('ticketSales:firstName')} right={get(ticketSale?.passengers, 0)?.firstName} />
+        <Box marginBottom="24px">
           <Infomation
-            left={t('ticketSales:route')}
+            left={t('ticketSales:trip')}
             right={
               <>
                 <Box my="2px">
@@ -73,13 +114,42 @@ export default function ControlTicket() {
               </>
             }
           />
-          <Infomation left={t('ticketSales:date_time')} right={dayjs(ticketSale?.createdAt).format('MM/DD/YYYY - HH:mm')} />
-          <Infomation left={t('ticketSales:number_of_passengers')} right={ticketSale?.passengers.length} />
+          <Infomation left={t('ticketSales:lastName')} right={get(ticketSale?.passengers, 0)?.lastName} />
+          <Infomation left={t('ticketSales:firstName')} right={get(ticketSale?.passengers, 0)?.firstName} />
+          <Infomation left={t('ticketSales:date_time')} right={dayjs(ticketSale?.departureTime).format('MM/DD/YYYY - HH[H]mm')} />
+          <Infomation
+            left={t('ticketSales:number_of_pax')}
+            right={
+              <Stack direction="row" alignItems="center" justifyContent="space-between">
+                <Box>{ticketSale?.passengers.length}</Box>
+                <Box className={classes.detailButton} onClick={() => setShowPassengersDetail(state => !state)}>
+                  <Typography marginRight="4px" fontSize="12px">
+                    {showPassengersDetail ? t('ticketSales:passengers_show_less') : t('ticketSales:passengers_show_detail')}
+                  </Typography>
+                  <ArrowDownwardIcon fontSize="inherit" />
+                </Box>
+              </Stack>
+            }
+          />
+          {renderTablePassenger()}
           <Infomation
             left={t('ticketSales:payment_status')}
-            right={<Tag color={color} backgroundColor={backgroundColor} text={ticketSale?.paymentStatus} />}
+            right={
+              <Tag
+                color={PaymentStatusColorMapping[ticketSale?.paymentStatus]}
+                backgroundColor={PaymentStatusBackgroundColorMapping[ticketSale?.paymentStatus]}
+                text={PaymentStatusLabelMapping[ticketSale?.paymentStatus]}
+              />
+            }
           />
+          <Infomation left={t('ticketSales:created_by')} right={ticketSale.creator} />
+          <Infomation left={t('ticketSales:created_on')} right={dayjs(ticketSale?.createdAt).format('MM/DD/YYYY - HH[H]mm')} />
+          <Infomation left={t('ticketSales:total')} right={`${ticketSale?.totalPrice}${getAppCurrencySymbol()}`} />
         </Box>
+        {/* FIXME: Lắp api */}
+        <Button fullWidth backgroundButton="rgba(26, 166, 238, 1)">
+          {t('ticketSales:confirm_checkin')}
+        </Button>
       </>
     );
   };
@@ -93,7 +163,7 @@ export default function ControlTicket() {
           </Grid>
           <Grid item xs={12} md={8}>
             <Box bgcolor="#FAFDFF" borderRadius="4px" padding="24px">
-              {renderLeft()}
+              {renderRight()}
             </Box>
           </Grid>
         </Grid>

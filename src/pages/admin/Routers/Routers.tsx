@@ -22,9 +22,10 @@ import TableRoutes from './components/TableRoutes';
 import { fieldsSearch } from './constants';
 
 interface Values {
-  vehicle?: Vehicle;
-  departurePoint?: { value: string };
-  arrivalPoint?: { value: string };
+  vehicleName?: Vehicle;
+  departurePoints?: { value: string };
+  arrivalPoints?: { value: string };
+  // FIXME: Chuyển qua range picker
   departureTime?: dayjs.Dayjs;
 }
 
@@ -64,25 +65,24 @@ export default function Routers() {
   );
 
   const onSubmit = (values: Values) => {
-    console.log(values);
     dispatch(
       routesActions.getRoutesRequest({
         page: 0,
         searcher: {
-          departurePoint: {
-            value: values.departurePoint?.value,
+          departurePoints: {
+            value: values.departurePoints?.value,
             operator: 'eq',
           },
           'routePoints.stopPoint': {
-            value: values.arrivalPoint?.value,
+            value: values.arrivalPoints?.value,
             operator: 'eq',
           },
           departureTime: {
             value: values.departureTime ? dayjsToString(values.departureTime, 'HH:mm') : undefined,
             operator: 'eq',
           },
-          'vehicle._id': {
-            value: values.vehicle?._id,
+          'vehicle.brand': {
+            value: values.vehicleName?.brand,
             operator: 'eq',
           },
         },

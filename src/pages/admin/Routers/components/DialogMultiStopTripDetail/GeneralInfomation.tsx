@@ -1,31 +1,29 @@
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useTranslation } from 'react-i18next';
 import { DialogMultiStopTripDetailProps } from './DialogMultiStopTripDetail';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   borderDivider: {
-    sx: {
-      borderLeft: 'none',
-    },
-    sm: {
-      borderLeft: `0.5px solid rgba(215, 218, 220, 1)`,
-    },
+    borderLeft: 'none',
     borderRight: `0.5px solid rgba(215, 218, 220, 1)`,
+    [theme.breakpoints.up('sm')]: {
+      borderLeft: `0.5px solid rgba(215, 218, 220, 1) !important`,
+    },
   },
   infomationName: {
-    fontSize: 12,
+    fontSize: '12px !important',
     color: 'rgba(133, 140, 147, 1)',
   },
   infomationValue: {
-    fontWeight: 500,
+    fontWeight: '500 !important',
     color: 'rgba(69, 72, 94, 1)',
-    fontSize: 14,
+    fontSize: '14px !important',
   },
   danger: {
     fontWeight: 500,
     color: 'rgba(255, 39, 39, 1)',
-    fontSize: 14,
+    fontSize: '14px !important',
   },
 }));
 

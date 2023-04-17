@@ -16,7 +16,7 @@ export interface DialogConfirmProps {
 
 const useStyles = makeStyles((theme: Theme) => ({
   dialogContainer: {
-    padding: '24px',
+    padding: '20px',
     borderRadius: '8px !important',
     maxWidth: '350px !important',
   },
@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.grey[100],
     textAlign: 'center',
     fontWeight: '700 !important',
+    fontSize: '16px',
   },
   dialogContent: {
     padding: '24px 0',
@@ -71,9 +72,9 @@ function DialogConfirm({ openDialog, okButtonText, cancelButtonText, title, subT
         <Button
           variant="outlined"
           sx={{
-            margin: '0 8px',
+            marginRight: '4px',
             color: '#1AA6EE',
-            width: 120,
+            flex: 1,
           }}
           onClick={handleClose}
         >
@@ -81,8 +82,7 @@ function DialogConfirm({ openDialog, okButtonText, cancelButtonText, title, subT
         </Button>
         <Button
           sx={{
-            margin: '0 8px',
-            width: 120,
+            flex: 1,
           }}
           variant="contained"
           backgroundButton="#1aa6ee"

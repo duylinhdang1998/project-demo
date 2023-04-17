@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
   text: {
     color: '#fff',
     fontWeight: 'bold !important',
-    fontSize: 16,
+    fontSize: '16px',
     lineHeight: '20px',
   },
   description: {

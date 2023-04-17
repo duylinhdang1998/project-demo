@@ -10,7 +10,7 @@ import { FilterRoutesFormValues } from '../SelectTripOnCreateTicketSale';
 const fields: Field[] = [
   { id: v4(), label: 'departurePoint', type: 'departurePoint' },
   { id: v4(), label: 'arrivalPoint', type: 'arrivalPoint' },
-  { id: v4(), label: 'departureTime', type: 'datetime', showTime: true },
+  { id: v4(), label: 'departureTime', type: 'datetime', showTime: true, format: 'HH:mm MM-DD-YYYY' },
 ];
 
 export interface FilterRoutesBySearcherProps {

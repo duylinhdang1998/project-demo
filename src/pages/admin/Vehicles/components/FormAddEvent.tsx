@@ -81,6 +81,7 @@ function FormAddEvent() {
   const handleClose = () => setOpen(false);
 
   const onSubmit = (value: Values) => {
+    console.log(value);
     if (isEditAction && vehicleEventId && vehicleId) {
       if (value.attach_document) {
         dispatch(
@@ -179,13 +180,7 @@ function FormAddEvent() {
               resources: attach ? [attach] : [],
               onChange: resources => {
                 const lastResource = resources[resources.length - 1];
-                if (lastResource) {
-                  resetField('attach_document', {
-                    defaultValue: lastResource ? lastResource : undefined,
-                  });
-                } else {
-                  setValue('attach_document', undefined as any);
-                }
+                setValue('attach_document', lastResource);
               },
               buttonText: t('vehicles:attach_document'),
             },

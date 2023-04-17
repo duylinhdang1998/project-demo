@@ -1,8 +1,9 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import { Box, Dialog, DialogTitle, Divider, Grid, IconButton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Dialog, Divider, Grid, IconButton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Button from 'components/Button/Button';
+import { DialogTitle } from 'components/DialogTitle/DialogTitle';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
@@ -123,7 +124,7 @@ export default function Passengers() {
       <Dialog open onClose={() => setOpenEmailEditor(false)}>
         <Box minWidth={500} padding="24px">
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <DialogTitle sx={{ padding: '0 !important' }}>{t('translation:batch_email')}</DialogTitle>
+            <DialogTitle>{t('translation:batch_email')}</DialogTitle>
             <IconButton onClick={() => setOpenEmailEditor(false)}>
               <ClearIcon />
             </IconButton>

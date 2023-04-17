@@ -1,7 +1,8 @@
 import { Checkbox, FormControlLabel, Grid, InputBase, InputBaseProps, InputLabel, Stack, TextareaAutosize, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { DatePicker } from 'antd';
+import { DatePicker, InputNumber } from 'antd';
 import 'antd/lib/date-picker/style/css';
+import 'antd/lib/input-number/style/css';
 import cx from 'classnames';
 import { CheckboxGroup } from 'components/CheckboxGroup/CheckboxGroup';
 import { customStyles } from 'components/FilterTicket/customStyles';
@@ -68,10 +69,11 @@ export default function FormVerticle<T extends FieldValues>({
                     id={i.label}
                     {...inputProps}
                     {...field}
-                    placeholder={t(`${i.label}`)}
+                    placeholder={i.placeholder ?? t(`${i.label}`)}
                     className={classes.input}
                     error={!!error}
                     disabled={i.disabled}
+                    readOnly={i.readOnly}
                   />
                   {!!error && (
                     <Typography component="p" className={classes.error} fontSize={12}>
@@ -107,10 +109,18 @@ export default function FormVerticle<T extends FieldValues>({
                 <InputLabel htmlFor={i.label} className={classes.label}>
                   {t(`${i.label}`)}
                 </InputLabel>
-                <Box className={cx(classes.inputNumberWrap, !!error ? classes.inputError : '')}>
-                  {!!i.prefix && <span className={classes.prefix}>{i.prefix}</span>}
-                  <input {...field} disabled={i.disabled} id={i.label} min={0} type="number" className={classes.inputNumber} />
-                </Box>
+                <InputNumber
+                  {...field}
+                  parser={i.parser}
+                  formatter={i.formatter}
+                  status={!!error ? 'error' : undefined}
+                  className={classes.inputNumber}
+                  prefix={i.prefix}
+                  disabled={i.disabled}
+                  readOnly={i.readOnly}
+                  id={i.label}
+                  min={0}
+                />
                 {!!error && (
                   <Typography component="p" className={classes.error} fontSize={12}>
                     {messageErr}
@@ -322,25 +332,27 @@ export default function FormVerticle<T extends FieldValues>({
           <Controller
             control={control}
             name={i.label as Path<T>}
-            render={({ field }) => (
-              <Box>
-                <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
-                <DatePicker
-                  disabled={i.disabled}
-                  picker={i.picker}
-                  showTime={i.showTime}
-                  value={field.value as any}
-                  onChange={field.onChange}
-                  className={cx(classes.datePicker, !!error ? classes.inputError : '')}
-                  format={i.format}
-                />
-                {!!error && (
-                  <Typography component="p" className={classes.error} fontSize={12}>
-                    {messageErr}
-                  </Typography>
-                )}
-              </Box>
-            )}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <DatePicker
+                    disabled={i.disabled}
+                    picker={i.picker}
+                    showTime={i.showTime}
+                    value={field.value as any}
+                    onChange={field.onChange}
+                    className={cx(classes.datePicker, !!error ? classes.inputError : '')}
+                    format={i.format}
+                  />
+                  {!!error && (
+                    <Typography component="p" className={classes.error} fontSize={12}>
+                      {messageErr}
+                    </Typography>
+                  )}
+                </Box>
+              );
+            }}
             rules={{
               required: {
                 value: i.required ?? false,
@@ -396,11 +408,12 @@ export default function FormVerticle<T extends FieldValues>({
                   {/* @ts-ignore */}
                   <TextareaAutosize
                     disabled={i.disabled}
-                    minRows={10}
+                    readOnly={i.readOnly}
+                    minRows={3}
                     maxRows={10}
                     id={i.label}
                     {...field}
-                    placeholder={t(`${i.label}`)}
+                    placeholder={i.placeholder ?? t(`${i.label}`)}
                     className={cx(classes.inputArea, !!error ? classes.inputError : '')}
                   />
                   {!!error && (

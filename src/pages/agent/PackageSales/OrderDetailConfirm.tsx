@@ -7,10 +7,11 @@ import OrderDetailView from 'components/OrderDetailView/OrderDetailView';
 import PrintIcon from 'components/SvgIcon/PrintIcon';
 import SendIcon from 'components/SvgIcon/SendIcon';
 import LayoutDetail from 'layout/LayoutDetail';
+import { PaymentStatus } from 'models/PaymentStatus';
 
 const dataDetails = {
   order_id: '023232-0023',
-  departures_point: 'Lyon Gare Perrache',
+  trip: ['Lyon Gare Perrache', 'Lyon Gare Perrache'] as [string, string],
   date: '02/27/2022 - 10H30',
   sender_name: 'Payoun Samia',
   sender_mobile: '0123456789',
@@ -19,7 +20,7 @@ const dataDetails = {
   quantity: 2,
   weight: '4kg',
   price: '$10',
-  payment_status: 'Paid',
+  payment_status: 'Paid' as PaymentStatus,
 };
 
 const merchandises = [

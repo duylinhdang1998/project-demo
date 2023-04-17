@@ -149,7 +149,6 @@ export const UploadPDFResource = ({
         }, []),
       );
     }
-    isStateChangedByResourcesProps.current = false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileListState]);
 

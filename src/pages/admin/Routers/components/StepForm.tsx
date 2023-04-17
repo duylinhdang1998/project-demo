@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 import { Route } from 'services/models/Route';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
-import { useToastStyle } from 'theme/toastStyles';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { dayjsToString } from 'utils/dayjsToString';
 import { toDayjs } from 'utils/toDayjs';
@@ -24,6 +23,15 @@ const steps = ['Step 1', 'Step 2', 'Step 3'];
 const useStyles = makeStyles(() => ({
   textStep: {
     fill: '#fff !important',
+  },
+  iconRoot: {
+    marginTop: '100%',
+  },
+  stepContainer: {
+    padding: '0px !important',
+    '& > span > span': {
+      padding: '0px !important',
+    },
   },
 }));
 
@@ -40,7 +48,6 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
 
   const { t } = useTranslation(['translation']);
   const classes = useStyles();
-  const toastClass = useToastStyle();
 
   const { statusCreateRoute, statusUpdateRoute, statusUpdateDayActive, route } = useAppSelector(selectRoutes);
   const dispatch = useAppDispatch();
@@ -85,14 +92,14 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             vehicle: formValues.vehicle,
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('routers:route') })} />, {
-              className: toastClass.toastSuccess,
+            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('routers:new_trip') })} />, {
+              className: 'toast-success',
             });
             nextStep();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:route') })} description={message} />, {
-              className: toastClass.toastError,
+            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:new_trip') })} description={message} />, {
+              className: 'toast-error',
             });
           },
         }),
@@ -127,15 +134,28 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             vehicle: formValues.vehicle,
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('routers:route') })} />, {
-              className: toastClass.toastSuccess,
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:add_type_success', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             nextStep();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:route') })} description={message} />, {
-              className: toastClass.toastError,
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:add_type_error', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );
@@ -153,15 +173,28 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             startPeriod: dayjsToNumber(formValues.fromDate),
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
-              className: toastClass.toastSuccess,
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:edit_type_success', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             nextStep();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} description={message} />, {
-              className: toastClass.toastError,
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:edit_type_error', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );
@@ -318,19 +351,25 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
 
   return (
     <Box>
-      <Stepper activeStep={activeStep} sx={{ my: '24px', maxWidth: '500px', mx: 'auto' }}>
+      <Stepper activeStep={activeStep} sx={{ marginBottom: '28px', marginTop: '10px', maxWidth: '500px', mx: 'auto' }}>
         {steps.map((label, index) => {
           return (
-            <Step key={label}>
+            <Step key={label} classes={{ root: classes.stepContainer }}>
               <StepLabel
                 StepIconProps={{
                   classes: {
                     text: classes.textStep,
+                    root: classes.iconRoot,
                   },
                 }}
                 sx={{ flexDirection: 'column', color: '#fff' }}
                 optional={
-                  <Typography variant="caption" color={activeStep === index ? '#1AA6EE' : 'inherit'}>
+                  <Typography
+                    variant="caption"
+                    fontSize="12px"
+                    textAlign="center"
+                    color={activeStep === index ? '#1AA6EE' : 'rgba(174, 177, 197, 1)'}
+                  >
                     {label}
                   </Typography>
                 }

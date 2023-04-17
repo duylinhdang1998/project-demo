@@ -1,12 +1,13 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, InputAdornment, InputBase, Typography } from '@mui/material';
+import { Box, InputAdornment, InputBase, Typography, useTheme } from '@mui/material';
 import cx from 'classnames';
+import Button from 'components/Button/Button';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import QRCode from 'react-qr-code';
 import { isMobile } from 'utils/isMobile';
 import { useStyles } from './styles';
-
+import ClearIcon from '@mui/icons-material/Clear';
 interface QrcodeProps {
   code: string;
   onSearch?: (id: string) => void;
@@ -15,6 +16,7 @@ interface QrcodeProps {
 export default function Qrcode({ code, onSearch }: QrcodeProps) {
   const { t } = useTranslation(['dashboard']);
   const classes = useStyles();
+  const theme = useTheme();
 
   const [searchValue, setSearchValue] = useState('');
 
@@ -30,11 +32,37 @@ export default function Qrcode({ code, onSearch }: QrcodeProps) {
       <InputBase
         placeholder={t('dashboard:type_orderid')}
         endAdornment={
-          <InputAdornment onClick={() => onSearch?.(searchValue)} sx={{ cursor: 'pointer' }} position="end">
-            <SearchIcon />
+          <InputAdornment position="end">
+            {searchValue && (
+              <Box className={classes.clearButton}>
+                <ClearIcon
+                  fontSize="inherit"
+                  onClick={() => {
+                    setSearchValue('');
+                    onSearch?.('');
+                  }}
+                />
+              </Box>
+            )}
+            <Button
+              sx={{
+                minWidth: '32px',
+                minHeight: '32px',
+                width: '32px',
+                height: '32px',
+                borderRadius: '4px',
+                padding: '0px',
+                fontSize: '18px',
+              }}
+              backgroundButton={theme.palette.primary.main}
+              onClick={() => onSearch?.(searchValue)}
+            >
+              <SearchIcon fontSize="inherit" />
+            </Button>
           </InputAdornment>
         }
         fullWidth
+        value={searchValue}
         className={classes.inputSearch}
         onChange={e => setSearchValue(e.target.value)}
       />

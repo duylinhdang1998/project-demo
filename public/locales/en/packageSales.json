@@ -30,7 +30,19 @@
   "departure_time": "Departure time",
   "select_your_trip": "Select your trip",
   "package_order": "package order",
-  "confirm_title": "Confirm status",
-  "confirm_description": "Are you sure merchandise had been delivered to recipient?",
-  "order_infomation": "Order infomation"
+  "confirm_title_to_change_non_cancel": "Confirm status",
+  "confirm_title_to_change_cancel": "Confirm to cancel",
+  "confirm_description_to_change_cancel": "Please enter a reason for cancellation",
+  "confirm_description_to_change_delivertied": "Are you sure merchandise had been delivered to recipient?",
+  "confirm_description_to_change_arrived": "Are you sure merchandise had been arrived to recipient?",
+  "order_infomation": "Order infomation",
+  "merchandise_cancelled": "CANCALLED",
+  "merchandise_not_deliveried": "NOT DELIVERIED",
+  "merchandise_deliveried": "DELIVERIED",
+  "merchandise_delivering": "DELIVERING",
+  "arrived_destination": "Arrived at destination",
+  "delivered_recipient": "Delivered to recipient",
+  "cancel_to_delivery": "Cancel to delivery",
+  "reason": "Reason",
+  "delivery_status": "Delivery status"
 }

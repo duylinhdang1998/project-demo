@@ -22,7 +22,6 @@ import { toast } from 'react-toastify';
 import { DayInWeekMappingToString } from 'services/models/DayInWeek';
 import { selectStaffs } from 'store/staffs/selectors';
 import { staffsActions } from 'store/staffs/staffsSlice';
-import { useToastStyle } from 'theme/toastStyles';
 import { createArrayDateFromRange } from 'utils/createArrayDateFromRange';
 import { dateClamp } from 'utils/dateClamp';
 import { isTimestampEqualDayInYear } from 'utils/handleTimestampWithDayInYear';
@@ -69,8 +68,6 @@ interface StepThreeProps {
 }
 
 export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
-  const toastClass = useToastStyle();
-
   const navigate = useNavigate();
 
   const { t } = useTranslation(['staffs', 'translation', 'message_error']);
@@ -99,13 +96,13 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           },
           onSuccess() {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('staff:staff') })} />, {
-              className: toastClass.toastSuccess,
+              className: 'toast-success',
             });
             navigate('/admin/staffs');
           },
           onFailure: message => {
             toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('staff:staff') })} description={message} />, {
-              className: toastClass.toastError,
+              className: 'toast-error',
             });
           },
         }),

@@ -12,7 +12,6 @@ import { ImageResource } from 'services/models/Resource';
 import { ServiceSetting } from 'services/models/ServiceSetting';
 import { useDeleteService } from 'services/ServiceSetting/Company/getServiceSettings';
 import { ServiceException } from 'services/utils/ServiceException';
-import { useToastStyle } from 'theme/toastStyles';
 import { getUrlOfResource } from 'utils/getUrlOfResource';
 import ActionService from './ActionService';
 
@@ -31,19 +30,18 @@ interface Props {
 
 function TableServices({ dataSource, onRefresh, loading }: Props) {
   const { t } = useTranslation('serviceSetting');
-  const toastClass = useToastStyle();
   const classes = useStyles();
   const navigate = useNavigate();
   const { run: deleteService } = useDeleteService({
     onSuccess: data => {
       if (data.code === 0) {
         toast(<ToastCustom type="success" text={t('delete_service_success')} />, {
-          className: toastClass.toastSuccess,
+          className: 'toast-success',
         });
         onRefresh?.();
       } else {
         toast(<ToastCustom type="error" text={t('delete_service_error)')} description={ServiceException.getMessageError(data.code)} />, {
-          className: toastClass.toastError,
+          className: 'toast-error',
         });
       }
     },

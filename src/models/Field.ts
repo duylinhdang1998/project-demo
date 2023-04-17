@@ -1,4 +1,4 @@
-import { DatePickerProps } from 'antd';
+import { DatePickerProps, InputNumberProps } from 'antd';
 import { CheckboxGroupProps, Option as CheckboxGroupOption } from 'components/CheckboxGroup/CheckboxGroup';
 import { SelectArrivalPointProps } from 'components/SelectDecouplingData/SelectArrivalPoint';
 import { SelectDeparturePointProps } from 'components/SelectDecouplingData/SelectDeparturePoint';
@@ -26,17 +26,15 @@ interface BaseField {
   id?: string;
   label: string;
   disabled?: boolean;
+  readOnly?: boolean;
 }
 
-export interface SimpleField {
-  id?: string;
-  label?: string;
+export interface SimpleField extends BaseField {
   type?:
     | 'email'
     | 'text'
     | 'select'
     | 'datetime'
-    | 'number'
     | 'file'
     | 'image'
     | 'checkbox'
@@ -50,13 +48,16 @@ export interface SimpleField {
   placeholder?: string;
   options?: Option[];
   prefix?: string;
-  required?: boolean;
   showTime?: boolean;
-  messageErr?: string;
   picker?: DatePickerProps['picker'];
   format?: DatePickerProps['format'];
-  disabled?: boolean;
   isClearable?: boolean;
+}
+
+export interface NumberField extends BaseField {
+  type: 'number';
+  parser?: InputNumberProps['parser'];
+  formatter?: InputNumberProps['formatter'];
 }
 
 export interface CheckboxField extends BaseField {
@@ -134,6 +135,7 @@ export interface ControlSelectDestination extends BaseField {
 }
 export type Field =
   | SimpleField
+  | NumberField
   | UploadPDFResourceField
   | UploadImageResourceField
   | CheckboxField

@@ -18,7 +18,6 @@ import { RECORDS_PER_PAGE } from 'services/Passenger/getPassengers';
 import { selectAuth } from 'store/auth/selectors';
 import { passengersActions } from 'store/passengers/passengersSlice';
 import { selectPassengers } from 'store/passengers/selectors';
-import { useToastStyle } from 'theme/toastStyles';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 import { v4 } from 'uuid';
@@ -32,7 +31,6 @@ const passengerIsBlocking = (passenger: Passenger) => passenger.status === 'BLOC
 
 function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
   const { t } = useTranslation(['passenger', 'translation']);
-  const toastClass = useToastStyle();
 
   const [openDialogConfirmBlock, setOpenDialogConfirmBlock] = useState<Passenger | null>(null);
 
@@ -157,22 +155,23 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
             <Button
               variant="outlined"
               sx={{
-                margin: '0 6px',
+                marginRight: '12px',
                 color: '#1AA6EE',
                 padding: '10px 40px',
+                flex: 1,
               }}
               onClick={handleCloseDialogConfirmBlock}
             >
-              {t('translation:cancel')}
+              {t('translation:no')}
             </Button>
             <Button
               loading={queueUpdatePassenger.includes(openDialogConfirmBlock._id)}
               sx={{
-                margin: '0 8px',
                 color: '#FFFFFF',
                 padding: '10px 40px',
+                flex: 1,
               }}
-              backgroundButton="rgba(255, 39, 39, 1)"
+              backgroundButton="rgba(26, 166, 238, 1)"
               onClick={() => {
                 if (openDialogConfirmBlock) {
                   dispatch(
@@ -184,7 +183,7 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
                       },
                       onSuccess: () => {
                         toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('passenger:passenger') })} />, {
-                          className: toastClass.toastSuccess,
+                          className: 'toast-success',
                         });
                         handleCloseDialogConfirmBlock();
                       },
@@ -195,7 +194,7 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
                             text={t('translation:edit_type_error', { type: t('passenger:passenger') })}
                             description={message}
                           />,
-                          { className: toastClass.toastError },
+                          { className: 'toast-error' },
                         );
                       },
                     }),
@@ -203,7 +202,7 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
                 }
               }}
             >
-              {isBlocking ? t('passenger:unblock') : t('passenger:block')}
+              {t('translation:yes')}
             </Button>
           </Stack>
         </Box>

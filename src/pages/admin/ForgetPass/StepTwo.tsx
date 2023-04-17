@@ -12,7 +12,6 @@ import { toast } from 'react-toastify';
 import { forgotPasswordRequest } from 'services/Auth/Company/forgotPasswordRequest';
 import { forgotPasswordVerifyOtp } from 'services/Auth/Company/forgotPasswordVerifyOtp';
 import { ServiceException } from 'services/utils/ServiceException';
-import { useToastStyle } from 'theme/toastStyles';
 import { useStyles } from './styles';
 
 export interface StepTwoValues {
@@ -27,7 +26,6 @@ export interface StepTwoProps {
 
 // Verify otp
 export const StepTwo = ({ onNext, session, email }: StepTwoProps) => {
-  const toastClass = useToastStyle();
   const { t } = useTranslation(['auth']);
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +49,7 @@ export const StepTwo = ({ onNext, session, email }: StepTwoProps) => {
       onNext({ session: data.session });
     } catch (error) {
       toast(<ToastCustom type="error" text={t('auth:verify_otp_error')} description={ServiceException.getMessageError(error)} />, {
-        className: toastClass.toastError,
+        className: 'toast-error',
       });
     } finally {
       setIsLoading(false);
@@ -64,11 +62,11 @@ export const StepTwo = ({ onNext, session, email }: StepTwoProps) => {
       const { data } = await forgotPasswordRequest({ email });
       setValue('session', data.session);
       toast(<ToastCustom type="success" text={t('auth:resend_otp_success')} />, {
-        className: toastClass.toastSuccess,
+        className: 'toast-success',
       });
     } catch (error) {
       toast(<ToastCustom type="error" text={t('auth:resend_otp_error')} description={ServiceException.getMessageError(error)} />, {
-        className: toastClass.toastError,
+        className: 'toast-error',
       });
     } finally {
       setIsLoading(false);

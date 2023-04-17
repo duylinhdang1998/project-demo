@@ -1,10 +1,11 @@
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box, Dialog, DialogTitle, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
+import { Box, Dialog, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Pagination } from 'antd';
 import 'antd/lib/pagination/style/css';
 import Button from 'components/Button/Button';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
+import { DialogTitle } from 'components/DialogTitle/DialogTitle';
 import { ArrowIcon } from 'components/SvgIcon/ArrowIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
@@ -56,6 +57,7 @@ export const useStyles = makeStyles(() => ({
     borderRadius: '4px !important',
     fontSize: '10px !important',
     color: 'rgba(255, 255, 255, 1) !important',
+    fontWeight: '700 !important',
   },
   ticketTypeTitle: {
     fontSize: '12px !important',
@@ -160,15 +162,28 @@ export const SubRoute = ({ route }: DialogMultiStopTripDetailProps) => {
             ],
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('routers:route') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:edit_type_success', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             handleCloseDialogEditPrice();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('routers:route') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:edit_type_error', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );
@@ -183,7 +198,7 @@ export const SubRoute = ({ route }: DialogMultiStopTripDetailProps) => {
       <Dialog open onClose={handleCloseDialogEditPrice}>
         <Box padding="24px">
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <DialogTitle sx={{ padding: '0 !important' }}>{t('routers:edit_price')}</DialogTitle>
+            <DialogTitle>{t('routers:edit_price')}</DialogTitle>
             <IconButton onClick={handleCloseDialogEditPrice}>
               <ClearIcon />
             </IconButton>
