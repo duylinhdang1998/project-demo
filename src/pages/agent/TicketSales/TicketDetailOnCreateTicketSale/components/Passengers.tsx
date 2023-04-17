@@ -12,13 +12,17 @@ import { Control, Controller, FieldArrayWithId, FieldErrors, UseFieldArrayAppend
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
 import { Passenger, TicketDetailFormValues } from '../TicketDetailOnCreateTicketSale';
+import { RouteOfTicketSale } from 'services/models/TicketSale';
+import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
+import { InputNumber } from 'antd';
 
 export interface PassengersProps {
   control: Control<TicketDetailFormValues>;
   errors: FieldErrors<TicketDetailFormValues>;
-  passengers: FieldArrayWithId<TicketDetailFormValues['passengers']>[];
+  passengers: Array<TicketDetailFormValues['passengers'][number] & FieldArrayWithId>;
   append: UseFieldArrayAppend<TicketDetailFormValues, 'passengers'>;
   remove: UseFieldArrayRemove;
+  route: RouteOfTicketSale;
 }
 
 const typeTicketOptions: Array<Passenger['typeTicket']> = [
@@ -99,13 +103,17 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
 
   return (
     <>
-      {passengers.map((f, index) => {
+      {passengers.map((passenger, index) => {
         const firstNamePathInFormValues: `passengers.${number}.firstName` = `passengers.${index}.firstName`;
         const lastNamePathInFormValues: `passengers.${number}.lastName` = `passengers.${index}.lastName`;
         const typeTicketPathInFormValues: `passengers.${number}.typeTicket` = `passengers.${index}.typeTicket`;
         const seatsTypePathInFormValues: `passengers.${number}.seatsType` = `passengers.${index}.seatsType`;
+        // const seatsTypePricesKey = passenger.seatsType && `${passenger.seatsType}Prices`;
+        // const ticketTypePriceKey = passenger.typeTicket.value;
+        // const seatsTypePrices = seatsTypePricesKey && route[seatsTypePricesKey];
+        // const ticketTypePrice = seatsTypePrices && ticketTypePriceKey ? seatsTypePrices[ticketTypePriceKey] : 0;
         return (
-          <Box key={f.id} borderTop="1px dashed #ddd" py="24px">
+          <Box key={passenger.id} borderTop="1px dashed #ddd" py="24px">
             <Stack direction="row" alignItems="center" justifyContent="space-between" my="10px">
               <Typography fontSize={14} fontWeight={700}>
                 {t('ticketSales:passenger')} {index + 1}
@@ -114,7 +122,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
             </Stack>
             <Box my="10px">
               <Grid container spacing={2}>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={6}>
                   <Controller
                     control={control}
                     name={firstNamePathInFormValues}
@@ -140,7 +148,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={6}>
                   <Controller
                     control={control}
                     name={lastNamePathInFormValues}
@@ -166,7 +174,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={6}>
                   <Controller
                     control={control}
                     name={typeTicketPathInFormValues}
@@ -207,6 +215,21 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                               {messageErr}
                             </Typography>
                           )}
+                        </Box>
+                      );
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Controller
+                    control={control}
+                    name={seatsTypePathInFormValues}
+                    render={() => {
+                      const labelTranslated = `${t('ticketSales:price')} (${getAppCurrencySymbol()})`;
+                      return (
+                        <Box>
+                          <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
+                          <InputNumber className={classes.inputNumber} value={0} disabled readOnly />
                         </Box>
                       );
                     }}

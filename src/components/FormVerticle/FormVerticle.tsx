@@ -75,6 +75,7 @@ export default function FormVerticle<T extends FieldValues>({
                     disabled={i.disabled}
                     readOnly={i.readOnly}
                   />
+                  {i.description && <Typography sx={{ fontSize: '12px', color: 'rgba(178, 186, 190, 1)' }}>{i.description}</Typography>}
                   {!!error && (
                     <Typography component="p" className={classes.error} fontSize={12}>
                       {messageErr}

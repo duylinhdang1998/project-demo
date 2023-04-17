@@ -1,4 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
 import { Button, Grid, Stack, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
@@ -18,7 +19,7 @@ import { selectAuth } from 'store/auth/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { TableTicketSales } from './components/TableTicketSales';
-import { fieldsSearch, fieldsSearch2 } from './constants';
+import { fieldsSearch } from './constants';
 
 const useStyles = makeStyles((theme: Theme) => ({
   buttonSearch: {
@@ -30,10 +31,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface Values {
+export interface FormSearchValues {
   departurePoint?: { value: string };
   arrivalPoint?: { value: string };
-  order_date?: dayjs.Dayjs;
+  departureTime?: [dayjs.Dayjs, dayjs.Dayjs];
   order_id?: string;
   payment_status?: Option<PaymentStatus>;
 }
@@ -42,7 +43,7 @@ export default function TicketSales() {
   const { t } = useTranslation(['ticketSales', 'translation']);
   const classes = useStyles();
 
-  const { control, handleSubmit } = useForm<Values>();
+  const { control, handleSubmit } = useForm<FormSearchValues>();
 
   const { userInfo } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
@@ -50,7 +51,8 @@ export default function TicketSales() {
   const navigate = useNavigate();
 
   const isAgent = userInfo?.role === 'agent';
-  const onSubmit = (values: Values) => {
+
+  const onSubmit = (values: FormSearchValues) => {
     dispatch(
       ticketSalesActions.getTicketSalesRequest({
         page: 0,
@@ -63,8 +65,8 @@ export default function TicketSales() {
             value: values.arrivalPoint?.value,
             operator: 'eq',
           },
-          createdAt: {
-            value: values.order_date && dayjsToNumber(values.order_date),
+          departureTime: {
+            value: values.departureTime?.[0] && dayjsToNumber(values.departureTime[0]),
             operator: 'gte',
           },
           orderCode: {
@@ -82,7 +84,7 @@ export default function TicketSales() {
   };
 
   const handleAddTicket = () => {
-    navigate('/agent/ticket-sales/create-ticket-order');
+    navigate(isAgent ? '/agent/ticket-sales/create-ticket-order' : '/admin/ticket-sales/create-ticket-order');
   };
 
   useEffect(() => {
@@ -100,32 +102,31 @@ export default function TicketSales() {
     <Box>
       <HeaderLayout activeSideBarHeader={t('ticket_sales')} />
       <Box p="24px">
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={isAgent ? 8 : 11}>
+        <Grid container spacing="14px">
+          <Grid item xs={12} md={9.5}>
             <FilterTicket
+              gap="14px"
               control={control}
-              fields={isAgent ? fieldsSearch2 : fieldsSearch}
+              fields={fieldsSearch}
               filterKey="ticketSales"
-              numberColumns={isAgent ? 2.5 : 2}
+              numberColumns={2.5}
+              flexWrap={{ xs: 'wrap', md: 'nowrap' }}
             />
           </Grid>
-          <Grid
-            item
-            xs={12}
-            md={isAgent ? 4 : 1}
-            sx={{
-              alignSelf: 'flex-end',
-            }}
-          >
-            <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" justifyContent="center" spacing={2}>
-              <Button variant="contained" fullWidth className={classes.buttonSearch} onClick={handleSubmit(onSubmit)}>
-                {t('translation:search')}
+          <Grid item xs={12} md={2.5} sx={{ alignSelf: 'flex-end' }}>
+            <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
+              <Button
+                sx={{ width: '40px', height: '40px', minWidth: 'initial', fontSize: '18px' }}
+                variant="contained"
+                fullWidth
+                className={classes.buttonSearch}
+                onClick={handleSubmit(onSubmit)}
+              >
+                <SearchIcon fontSize="inherit" />
               </Button>
-              {userInfo?.role === 'agent' && (
-                <MyButton variant="contained" fullWidth backgroundButton="#33CC7F" onClick={handleAddTicket} startIcon={<AddIcon />}>
-                  {t('add_ticket_order')}
-                </MyButton>
-              )}
+              <MyButton variant="contained" fullWidth backgroundButton="#33CC7F" onClick={handleAddTicket} startIcon={<AddIcon />}>
+                {t('add_ticket_order')}
+              </MyButton>
             </Stack>
           </Grid>
         </Grid>

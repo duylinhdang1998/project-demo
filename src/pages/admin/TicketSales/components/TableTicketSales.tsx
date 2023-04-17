@@ -1,7 +1,10 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { ColumnsType } from 'antd/es/table';
 import { MapPinIcon } from 'assets';
+import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
+import { AntTableColumnDisplayAsTypograph } from 'components/AntTableColumnTitle/AntTableColumnDisplayAsTypograph';
+import { AntTableColumnTitle } from 'components/AntTableColumnTitle/AntTableColumnTitle';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import dayjs from 'dayjs';
@@ -17,6 +20,7 @@ import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
+import { v4 } from 'uuid';
 import { ticketSaleModelToColumnTicket } from '../utils/ticketSaleModelToColumnTicket';
 import { ColumnTicket } from './ColumnTicket';
 import { useStyles } from './styles';
@@ -38,26 +42,26 @@ export const TableTicketSales = () => {
       {
         key: 'passengers.lastName',
         dataIndex: 'passengers.lastName',
-        width: 90,
-        title: () => t('ticketSales:lastName'),
+        width: 85,
+        title: () => <AntTableColumnTitle>{t('ticketSales:lastName')}</AntTableColumnTitle>,
         render: (_, row) => {
-          return <Typography fontSize="14px">{row.lastName}</Typography>;
+          return <AntTableColumnDisplayAsTypograph>{row.lastName}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
         key: 'passengers.firstName',
         dataIndex: 'passengers.firstName',
-        width: 90,
-        title: () => t('ticketSales:firstName'),
+        width: 88,
+        title: () => <AntTableColumnTitle>{t('ticketSales:firstName')}</AntTableColumnTitle>,
         render: (_, row) => {
-          return <Typography fontSize="14px">{row.firstName}</Typography>;
+          return <AntTableColumnDisplayAsTypograph>{row.firstName}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
         key: 'trip',
         dataIndex: 'trip',
-        width: 180,
-        title: () => t('ticketSales:trip'),
+        width: 140,
+        title: () => <AntTableColumnTitle>{t('ticketSales:trip')}</AntTableColumnTitle>,
         render: (_, row) => {
           return (
             <>
@@ -68,30 +72,30 @@ export const TableTicketSales = () => {
         },
       },
       {
-        key: 'createdAt',
-        dataIndex: 'createdAt',
-        title: () => t('ticketSales:dateTime'),
-        width: 140,
+        key: 'departureTime',
+        dataIndex: 'departureTime',
+        title: () => <AntTableColumnTitle>{t('ticketSales:departureTime')}</AntTableColumnTitle>,
+        width: 145,
         sorter: () => 0,
         render: (_, row) => {
-          return <Typography>{dayjs(row.dateTime).format('MM/DD/YYYY - HH:mm')}</Typography>;
+          return <AntTableColumnDisplayAsTypograph>{dayjs(row.departureTime).format('MM/DD/YYYY - HH[H]mm')}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
         key: 'totalPax',
         dataIndex: 'totalPax',
-        title: () => t('ticketSales:paxCount'),
-        width: 120,
+        title: () => <AntTableColumnTitle>{t('ticketSales:paxCount')}</AntTableColumnTitle>,
+        width: 110,
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
-          return <Typography>{row.rawData.totalPax}</Typography>;
+          return <AntTableColumnDisplayAsTypograph>{row.rawData.totalPax}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
         key: 'paymentStatus',
         dataIndex: 'paymentStatus',
-        title: () => t('ticketSales:payment_status'),
+        title: () => <AntTableColumnTitle>{t('ticketSales:payment_status')}</AntTableColumnTitle>,
         width: 120,
         align: 'center',
         sorter: () => 0,
@@ -108,24 +112,42 @@ export const TableTicketSales = () => {
       {
         key: 'orderCode',
         dataIndex: 'orderCode',
-        title: () => t('ticketSales:order_id'),
-        width: 80,
+        title: () => <AntTableColumnTitle>{t('ticketSales:order_id')}</AntTableColumnTitle>,
+        width: 100,
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
-          return <Typography>{row.orderId}</Typography>;
+          return <AntTableColumnDisplayAsTypograph>{row.orderId}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
         key: 'creator',
         dataIndex: 'creator',
-        title: () => t('ticketSales:createdBy'),
+        title: () => <AntTableColumnTitle>{t('ticketSales:createdBy')}</AntTableColumnTitle>,
         width: 120,
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
-          return <Typography>{row.createdBy}</Typography>;
+          return <AntTableColumnDisplayAsTypograph>{row.createdBy}</AntTableColumnDisplayAsTypograph>;
         },
+      },
+      {
+        key: 'creator',
+        dataIndex: 'creator',
+        title: () => <AntTableColumnTitle>{t('ticketSales:createdBy')}</AntTableColumnTitle>,
+        width: 120,
+        align: 'center',
+        sorter: () => 0,
+        render: (_, row) => {
+          return <AntTableColumnDisplayAsTypograph>{row.createdBy}</AntTableColumnDisplayAsTypograph>;
+        },
+      },
+      {
+        key: 'action',
+        title: () => <AntTableColumnTitle>{t('translation:action')}</AntTableColumnTitle>,
+        render: (_, row) => <ActionTable actions={[]} row={row} />,
+        align: 'center',
+        width: 70,
       },
     ];
   }, [t]);
@@ -146,7 +168,7 @@ export const TableTicketSales = () => {
         loading={statusGetTicketSales === 'loading'}
         columns={columns}
         dataSource={dataSource}
-        rowKey={record => record._id}
+        rowKey={() => v4()}
         onRow={record => {
           return {
             onClick: () => {

@@ -27,6 +27,7 @@ interface BaseField {
   label: string;
   disabled?: boolean;
   readOnly?: boolean;
+  description?: string;
 }
 
 export interface SimpleField extends BaseField {
@@ -52,6 +53,13 @@ export interface SimpleField extends BaseField {
   picker?: DatePickerProps['picker'];
   format?: DatePickerProps['format'];
   isClearable?: boolean;
+}
+
+export interface DatePickerRange extends BaseField {
+  type: 'date_range';
+  showTime?: boolean;
+  picker?: DatePickerProps['picker'];
+  format?: DatePickerProps['format'];
 }
 
 export interface NumberField extends BaseField {
@@ -146,4 +154,5 @@ export type Field =
   | ControlSelectOfficeField
   | ControlSelectRoleField
   | ControlSelectPackageSettings
-  | ControlSelectDestination;
+  | ControlSelectDestination
+  | DatePickerRange;

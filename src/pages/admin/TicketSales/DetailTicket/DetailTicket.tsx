@@ -8,19 +8,18 @@ import SendIcon from 'components/SvgIcon/SendIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
-import ReactToPrint from 'react-to-print';
 import { toast } from 'react-toastify';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { ColumnTicket } from '../components/ColumnTicket';
 import { ticketSaleModelToColumnTicket } from '../utils/ticketSaleModelToColumnTicket';
+import { ModalPrintTicket } from './components/ModalPrintTicket/ModalPrintTicket';
 import OrderDetails from './components/OrderDetail';
 import { PaymentDetail } from './components/PaymentDetail';
-import { PrintPDF } from './components/PrintPDF';
 
 export default function DetailTicketPage() {
   const { t } = useTranslation(['ticketSales', 'message_error']);
@@ -31,6 +30,8 @@ export default function DetailTicketPage() {
   const { statusGetTicketSale, statusSendEmail, ticketSale } = useAppSelector(selectTicketSales);
   const dispatch = useDispatch();
 
+  const [openModalPrint, setOpenModalPrint] = useState(false);
+
   const record: ColumnTicket | undefined = useMemo(() => {
     if (location.state) {
       return location.state as ColumnTicket;
@@ -40,8 +41,6 @@ export default function DetailTicketPage() {
     }
     return undefined;
   }, [location.state, ticketSale]);
-
-  const printPDFRef = useRef<PrintPDF | null>(null);
 
   const handleSendEmail = () => {
     if (orderCode) {
@@ -79,18 +78,16 @@ export default function DetailTicketPage() {
   }
 
   return (
-    <LayoutDetail title={`Order ${record.orderId}`} subTitle={t('ticketSales:ticket_sales')}>
+    <LayoutDetail title={`${t('ticketSales:order')} ${record.orderId}`} subTitle={t('ticketSales:ticket_sales')}>
       <Box width="100%">
-        <PrintPDF ref={printPDFRef}>
-          <Grid container spacing="24px">
-            <Grid item xs={12} sm={6}>
-              <OrderDetails record={record} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <PaymentDetail record={record} />
-            </Grid>
+        <Grid container spacing="24px">
+          <Grid item xs={12} sm={6}>
+            <OrderDetails record={record} />
           </Grid>
-        </PrintPDF>
+          <Grid item xs={12} sm={6}>
+            <PaymentDetail record={record} />
+          </Grid>
+        </Grid>
         <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={2} my="24px">
           <Button
             onClick={handleSendEmail}
@@ -108,18 +105,18 @@ export default function DetailTicketPage() {
           >
             {t('ticketSales:email_ticket')}
           </Button>
-          <ReactToPrint
-            trigger={() => {
-              return (
-                <Button variant="contained" backgroundButton="#1AA6EE" sx={{ padding: '12px 16px' }} startIcon={<PrintIcon />}>
-                  {t('ticketSales:print_ticket')}
-                </Button>
-              );
-            }}
-            content={() => printPDFRef.current}
-          />
+          <Button
+            onClick={() => setOpenModalPrint(true)}
+            variant="contained"
+            backgroundButton="#1AA6EE"
+            sx={{ padding: '12px 16px' }}
+            startIcon={<PrintIcon />}
+          >
+            {t('ticketSales:print_ticket')}
+          </Button>
         </Stack>
       </Box>
+      <ModalPrintTicket open={openModalPrint} onClose={() => setOpenModalPrint(false)} record={record} />
     </LayoutDetail>
   );
 }

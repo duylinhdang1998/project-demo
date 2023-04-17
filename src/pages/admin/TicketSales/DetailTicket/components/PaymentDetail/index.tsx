@@ -10,6 +10,7 @@ const columnsPassengers = [
   { field: 'lastName', width: 80 },
   { field: 'firstName', width: 80 },
   { field: 'typeTicket', width: 80 },
+  { field: 'price', width: 80 },
 ];
 
 export interface PaymentDetailProps {
@@ -29,18 +30,18 @@ export const PaymentDetail = ({ record }: PaymentDetailProps) => {
         </Typography>
         <Divider sx={{ borderColor: '#D7DADC' }} />
         <Box display="flex" justifyContent="space-between" alignItems="center" pt="24px">
-          <Typography fontSize={14} color={theme.palette.grey[300]} fontWeight="400">
+          <Typography fontSize={14} color={theme.palette.grey[300]} fontWeight="400" mb="8px">
             {t('ticketSales:created_on')}
           </Typography>
           <Typography fontSize={14} color={theme.palette.grey[300]} fontWeight="400">
-            {dayjs(record.dateTime).format('MM/DD/YYYY - HH:mm')}
+            {dayjs(record.createdOn).format('MM/DD/YYYY - HH[H]mm')}
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography color={theme.palette.grey[300]} fontWeight="700">
             {t('ticketSales:total')}
           </Typography>
-          <Typography fontSize={24} color={'#FF2727'} fontWeight="700">
+          <Typography fontSize={24} color="#FF2727" fontWeight="700">
             {record.rawData.totalPrice}
             {getAppCurrencySymbol()}
           </Typography>
@@ -58,7 +59,7 @@ export const PaymentDetail = ({ record }: PaymentDetailProps) => {
                 key={`columns_${c.field}`}
                 sx={{ minWidth: c.width }}
                 className={classes.headerText}
-                align={c.field === 'typeTicket' ? 'center' : 'left'}
+                align={c.field === 'typeTicket' || c.field === 'price' ? 'center' : 'left'}
               >
                 {t(`${c.field}`)}
               </TableCell>
@@ -74,6 +75,10 @@ export const PaymentDetail = ({ record }: PaymentDetailProps) => {
                   </TableCell>
                   <TableCell align="center" className={classes.cell}>
                     {passenger.typeTicket}
+                  </TableCell>
+                  <TableCell align="center" className={classes.cell}>
+                    {passenger.price}
+                    {getAppCurrencySymbol()}
                   </TableCell>
                 </TableRow>
               ))}

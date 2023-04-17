@@ -1,10 +1,10 @@
-import { Grid, InputBase, InputBaseProps, InputLabel, Theme } from '@mui/material';
+import { Grid, GridProps, InputBase, InputBaseProps, InputLabel, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
-import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import { labelOfRole } from 'components/SelectDecouplingData/SelectRole';
+import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import { Field } from 'models/Field';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -17,13 +17,15 @@ import { getListDepartures } from 'services/Route/Company/getListDepartures';
 import { getVehicles } from 'services/Vehicle/Company/getVehicles';
 import { customStyles } from './customStyles';
 
-interface FilterTicketProps<T extends FieldValues> {
-  fields?: Field[];
+export interface FilterTicketProps<T extends FieldValues> {
+  fields?: Array<Field & { numberColumn?: number }>;
   inputProps?: InputBaseProps;
   selectProps?: SelectProps;
   filterKey?: string;
   control: Control<T>;
   numberColumns?: number;
+  gap?: string | number;
+  flexWrap?: GridProps['flexWrap'];
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -72,6 +74,8 @@ export default function FilterTicket<T extends FieldValues>({
   filterKey,
   control,
   numberColumns = 2,
+  gap = '24px',
+  flexWrap = 'wrap',
 }: FilterTicketProps<T>) {
   const classes = useStyles();
   const { t } = useTranslation(filterKey);
@@ -352,6 +356,30 @@ export default function FilterTicket<T extends FieldValues>({
             }}
           />
         );
+      case 'date_range':
+        return (
+          <Controller
+            control={control}
+            name={i.label as Path<T>}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <DatePicker.RangePicker
+                    allowClear
+                    inputReadOnly
+                    showTime={i.showTime}
+                    format={i.format}
+                    picker={i.picker}
+                    value={field.value as any}
+                    onChange={field.onChange}
+                    className={classes.datePicker}
+                  />
+                </Box>
+              );
+            }}
+          />
+        );
       default:
         return null;
     }
@@ -359,9 +387,9 @@ export default function FilterTicket<T extends FieldValues>({
 
   return (
     <Box className="filter-ticket" width="100%">
-      <Grid container spacing="24px" columns={10}>
+      <Grid container spacing={gap} columns={10} flexWrap={flexWrap}>
         {fields?.map(i => (
-          <Grid key={i.id} item xs={10} sm={5} md={numberColumns}>
+          <Grid key={i.id} item xs={10} sm={5} md={i.numberColumn ? i.numberColumn : numberColumns}>
             {renderUIFields(i)}
           </Grid>
         ))}

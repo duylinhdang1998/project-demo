@@ -10,12 +10,15 @@ export const ticketSaleModelToColumnTicket = (ticketSale: TicketSale, passenger?
     arrivalPoint: ticketSale.arrivalPoint,
     departurePoint: ticketSale.departurePoint,
     createdBy: ticketSale.creator,
-    dateTime: new Date(ticketSale.createdAt),
+    departureTime: ticketSale.departureTime,
     firstName: passenger_?.firstName ?? '',
     lastName: passenger_?.lastName ?? '',
     orderId: ticketSale.orderCode,
     paymentStatus: ticketSale.paymentStatus,
     totalPax: ticketSale.totalPax,
+    createdOn: ticketSale.createdAt,
+    // FIXME: BE chưa có field này
+    cancelReason: 'Change other trip',
     rawData: ticketSale,
   };
 };
