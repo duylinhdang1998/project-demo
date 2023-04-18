@@ -1,17 +1,23 @@
-import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { put, retry, takeLeading } from 'redux-saga/effects';
 import { ServiceException } from 'services/utils/ServiceException';
-import { getVehicleEvent } from 'services/Vehicle/Company/getVehicleEvent';
 import { updateVehicleEvent } from 'services/Vehicle/Company/updateVehicleEvent';
 import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
 
 function* handleUpdateVehicleEvent({ payload }: ReturnType<typeof vehicleEventsActions.updateVehicleEventRequest>) {
-  const { id, data, onFailure, onSuccess } = payload;
+  const { id, data, targetVehicleEvent, onFailure, onSuccess } = payload;
   try {
     yield retry(3, 1000, updateVehicleEvent, { data, id });
-    const response: SagaReturnType<typeof getVehicleEvent> = yield retry(3, 1000, getVehicleEvent, { id });
     yield put(
       vehicleEventsActions.updateVehicleEventSuccess({
-        data: response.data,
+        data: {
+          ...targetVehicleEvent,
+          reminderDate: data.reminderDate,
+          fuelFees: data.fuelFees,
+          extraFees: data.extraFees,
+          totalKilometers: data.totalKilometers,
+          description: data.description,
+          attach: data.attach,
+        },
       }),
     );
     onSuccess();

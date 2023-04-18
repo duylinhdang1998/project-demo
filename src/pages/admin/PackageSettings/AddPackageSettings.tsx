@@ -57,10 +57,11 @@ export default function AddPackageSettings() {
   const handleCancel = () => setOpenDialog(true);
 
   const onSubmit = (values: Values) => {
-    if (isEditAction && packageSettingId) {
+    if (isEditAction && packageSetting && packageSettingId) {
       dispatch(
         packageSettingsActions.updatePackageSettingRequest({
           id: packageSettingId,
+          targetPackageSetting: packageSetting,
           data: {
             title: values.title,
             description: values.description,

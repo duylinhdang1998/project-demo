@@ -83,11 +83,12 @@ function FormAddVehicle() {
   const handleCancel = () => setOpen(true);
 
   const onSubmit = (formValues: Values) => {
-    if (isEditAction && vehicleId) {
+    if (isEditAction && vehicle && vehicleId) {
       dispatch(
         vehiclesActions.updateVehicleRequest({
           data: formValues,
           id: vehicleId,
+          targetVehicle: vehicle,
           onSuccess: () => {
             toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('vehicles:vehicle') })} />, {
               className: 'toast-success',

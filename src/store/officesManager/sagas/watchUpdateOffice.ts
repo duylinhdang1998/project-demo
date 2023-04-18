@@ -1,17 +1,24 @@
-import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
-import { getOffice } from 'services/OfficesManager/Company/getOffice';
+import { put, retry, takeLeading } from 'redux-saga/effects';
 import { updateOffice } from 'services/OfficesManager/Company/updateOffice';
 import { ServiceException } from 'services/utils/ServiceException';
 import { officesManagerActions } from '../officesManagerSlice';
 
 function* handleUpdateOffice({ payload }: ReturnType<typeof officesManagerActions.updateOfficeRequest>) {
-  const { id, data, onFailure, onSuccess } = payload;
+  const { id, data, targetOffice, onFailure, onSuccess } = payload;
   try {
     yield retry(3, 1000, updateOffice, { data, id });
-    const response: SagaReturnType<typeof getOffice> = yield retry(3, 1000, getOffice, { id });
     yield put(
       officesManagerActions.updateOfficeSuccess({
-        data: response.data,
+        data: {
+          ...targetOffice,
+          title: data.title,
+          address: data.address,
+          zipCode: data.zipCode,
+          country: data.country,
+          city: data.city,
+          phone: data.phone,
+          email: data.email,
+        },
       }),
     );
     onSuccess();

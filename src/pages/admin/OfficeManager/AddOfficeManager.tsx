@@ -56,10 +56,11 @@ export default function AddOfficeManager() {
   const handleCancel = () => setOpenDialog(true);
 
   const onSubmit = (values: Values) => {
-    if (isEditAction && officeId) {
+    if (isEditAction && office && officeId) {
       dispatch(
         officesManagerActions.updateOfficeRequest({
           id: officeId,
+          targetOffice: office,
           data: {
             address: values.address,
             city: values.city,

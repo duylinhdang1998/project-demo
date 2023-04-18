@@ -82,11 +82,12 @@ function FormAddEvent() {
 
   const onSubmit = (value: Values) => {
     console.log(value);
-    if (isEditAction && vehicleEventId && vehicleId) {
+    if (isEditAction && vehicleEvent && vehicleEventId && vehicleId) {
       if (value.attach_document) {
         dispatch(
           vehicleEventsActions.updateVehicleEventRequest({
             id: vehicleEventId,
+            targetVehicleEvent: vehicleEvent,
             data: {
               attach: value.attach_document,
               description: value.description,
@@ -94,7 +95,6 @@ function FormAddEvent() {
               fuelFees: value.fuelFees,
               reminderDate: dayjsToNumber(value.reminderDate),
               totalKilometers: value.totalKilometers,
-              vehicle: vehicleId,
             },
             onSuccess() {
               toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('vehicles:event') })} />, {

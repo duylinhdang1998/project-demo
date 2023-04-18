@@ -59,21 +59,24 @@ export default function AccountSetting() {
   const handleCancel = () => setOpen(true);
 
   const onSubmit = (values: Values) => {
-    dispatch(
-      profileActions.updateProfileRequest({
-        data: omit(values, ['email']),
-        onSuccess() {
-          toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('account:profile') })} />, {
-            className: 'toast-success',
-          });
-        },
-        onFailure: message => {
-          toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:profile') })} description={message} />, {
-            className: 'toast-error',
-          });
-        },
-      }),
-    );
+    if (profile) {
+      dispatch(
+        profileActions.updateProfileRequest({
+          data: omit(values, ['email']),
+          targetProfile: profile,
+          onSuccess() {
+            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('account:profile') })} />, {
+              className: 'toast-success',
+            });
+          },
+          onFailure: message => {
+            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:profile') })} description={message} />, {
+              className: 'toast-error',
+            });
+          },
+        }),
+      );
+    }
   };
 
   useEffect(() => {
