@@ -24,8 +24,10 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
+import { DayInWeekMappingToString } from 'services/models/DayInWeek';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
+import { createArrayDateFromRange } from 'utils/createArrayDateFromRange';
 import { dateClamp } from 'utils/dateClamp';
 import EditPriceTrip from '../EditPriceTrip';
 import './styles.scss';
@@ -399,6 +401,20 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             end: new Date(particularDay),
             title: t('translation:edited'),
           })),
+          ...(typeof route.startPeriod === 'number' && typeof route.endPeriod === 'number'
+            ? createArrayDateFromRange({
+                start: route.startPeriod,
+                end: route.endPeriod,
+                isNeedIgnore(date) {
+                  return route.dayActives.includes(DayInWeekMappingToString[date.getDay()]);
+                },
+              }).map(item => ({
+                start: new Date(item),
+                end: new Date(item),
+                allDay: true,
+                title: t('translation:off'),
+              }))
+            : []),
         ]}
       />
       <ComboButton

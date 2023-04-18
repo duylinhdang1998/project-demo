@@ -8,6 +8,7 @@ import { GetRouteFailure, GetRouteRequest, GetRouteSuccess } from './actions/Get
 import { GetRoutesFailure, GetRoutesRequest, GetRoutesSuccess } from './actions/GetRoutes';
 import { RemoveDayActiveFailure, RemoveDayActiveRequest, RemoveDayActiveSuccess } from './actions/RemoveDayActive';
 import { UpdateActiveDaysFailure, UpdateActiveDaysRequest, UpdateActiveDaysSuccess } from './actions/UpdateActiveDays';
+import { UpdateTripFailure, UpdateTripRequest, UpdateTripSuccess } from './actions/UpdateTrip';
 import { UpdateTicketPricesFailure, UpdateTicketPricesRequest, UpdateTicketPricesSuccess } from './actions/UpdateTicketPrices';
 
 interface RoutesManagerState {
@@ -125,6 +126,28 @@ export const routesSlice = createSlice({
       };
     },
 
+    /** <---------- update trip ----------> */
+    updateTripRequest: (state, _action: PayloadAction<UpdateTripRequest>) => {
+      return {
+        ...state,
+        statusUpdateRoute: 'loading',
+      };
+    },
+    updateTripSuccess: (state, action: PayloadAction<UpdateTripSuccess>) => {
+      const { data } = action.payload;
+      return {
+        ...state,
+        route: data,
+        statusUpdateRoute: 'success',
+      };
+    },
+    updateTripFailure: (state, _action: PayloadAction<UpdateTripFailure>) => {
+      return {
+        ...state,
+        statusUpdateRoute: 'failure',
+      };
+    },
+
     /** <---------- create multiple stop trip ----------> */
     createMultipleStopTripRequest: (state, _action: PayloadAction<CreateMultipleStopTripRequest>) => {
       return {
@@ -217,25 +240,25 @@ export const routesSlice = createSlice({
 
     /** <---------- delete route ----------> */
     deleteRouteRequest: (state, action: PayloadAction<DeleteRouteRequest>) => {
-      const { id } = action.payload;
+      const { routeCode } = action.payload;
       return {
         ...state,
-        queueDeleteRoute: state.queueDeleteRoute.concat(id),
+        queueDeleteRoute: state.queueDeleteRoute.concat(routeCode),
       };
     },
     deleteRouteSuccess: (state, action: PayloadAction<DeleteRouteSuccess>) => {
-      const { id } = action.payload;
+      const { routeCode } = action.payload;
       return {
         ...state,
-        routes: state.routes.filter(office => office._id !== id),
-        queueDeleteRoute: state.queueDeleteRoute.filter(item => item !== id),
+        routes: state.routes.filter(route => route.routeCode !== routeCode),
+        queueDeleteRoute: state.queueDeleteRoute.filter(item => item !== routeCode),
       };
     },
     deleteRouteFailure: (state, action: PayloadAction<DeleteRouteFailure>) => {
-      const { id } = action.payload;
+      const { routeCode } = action.payload;
       return {
         ...state,
-        queueDeleteRoute: state.queueDeleteRoute.filter(item => item !== id),
+        queueDeleteRoute: state.queueDeleteRoute.filter(item => item !== routeCode),
       };
     },
   },

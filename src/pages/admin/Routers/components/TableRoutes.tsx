@@ -241,7 +241,7 @@ function TableRoutes() {
               {t('translation:cancel')}
             </Button>
             <Button
-              loading={queueDeleteRoute.includes(openDeleteRoute?._id)}
+              loading={queueDeleteRoute.includes(openDeleteRoute?.routeCode)}
               sx={{
                 margin: '0 8px',
                 color: '#FFFFFF',
@@ -252,7 +252,7 @@ function TableRoutes() {
                 if (openDeleteRoute) {
                   dispatch(
                     routesActions.deleteRouteRequest({
-                      id: openDeleteRoute._id,
+                      routeCode: openDeleteRoute.routeCode,
                       onSuccess: () => {
                         toast(
                           <ToastCustom
