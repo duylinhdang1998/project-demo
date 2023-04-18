@@ -65,10 +65,16 @@ export default function TicketSales() {
             value: values.arrivalPoint?.value,
             operator: 'eq',
           },
-          departureTime: {
-            value: values.departureTime?.[0] && dayjsToNumber(values.departureTime[0]),
-            operator: 'gte',
-          },
+          departureTime: [
+            {
+              value: values.departureTime?.[0] && dayjsToNumber(values.departureTime[0]),
+              operator: 'gte',
+            },
+            {
+              value: values.departureTime?.[0] && dayjsToNumber(values.departureTime[1]),
+              operator: 'lte',
+            },
+          ],
           orderCode: {
             value: values.order_id,
             operator: 'contains',

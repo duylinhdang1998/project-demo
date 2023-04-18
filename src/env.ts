@@ -4,6 +4,8 @@ export interface ENV {
   appLanguage: string;
   isDevMode: boolean;
   tinyMCEApiKey: string | undefined;
+  baseCmsDomain: string;
+  baseWebDomain: string;
 }
 const env: ENV = {
   apiEndPoint: import.meta.env.VITE_APP_API_END_POINT || '',
@@ -11,6 +13,8 @@ const env: ENV = {
   appLanguage: import.meta.env.VITE_APP_LANGUAGE || 'en',
   isDevMode: !import.meta.env.NODE_ENV || import.meta.env.NODE_ENV === 'development',
   tinyMCEApiKey: import.meta.env.VITE_APP_TINY_MCE_API_KEY,
+  baseCmsDomain: import.meta.env.VITE_APP_BASE_CMS_DOMAIN,
+  baseWebDomain: import.meta.env.VITE_APP_BASE_WEB_DOMAIN,
 };
 
 export default env;

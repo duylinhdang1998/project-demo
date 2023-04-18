@@ -151,7 +151,7 @@ export const SelectTripOnCreateTicketSale = () => {
   };
 
   return (
-    <LayoutDetail title={t('create_ticket_orders')} subTitle={t('sidebar.ticket_sale')}>
+    <LayoutDetail title={t('create_ticket_order')} subTitle={t('sidebar:ticket_sale')}>
       <CardWhite title={t('select_your_trip')}>
         <FilterRoutesBySearcher control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} />
         <Grid container spacing="24px">

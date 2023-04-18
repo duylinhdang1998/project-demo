@@ -15,7 +15,7 @@ interface FormValues {
 }
 
 export const DialogConfirmChangeStatusToCancel = ({ isUpdating, onCancel, onOk }: DialogConfirmChangeStatusToCancel) => {
-  const { t } = useTranslation(['packageSales', 'translation']);
+  const { t } = useTranslation(['ticketSales', 'translation']);
 
   const {
     control,
@@ -31,7 +31,7 @@ export const DialogConfirmChangeStatusToCancel = ({ isUpdating, onCancel, onOk }
     <Dialog open onClose={onCancel}>
       <Box padding="24px" style={{ width: 350 }}>
         <Typography textAlign="center" marginBottom="24px" fontSize="16px" fontWeight={700}>
-          {t('packageSales:confirm_title_to_change_cancel')}
+          {t('ticketSales:confirm_title_to_change_cancel')}
         </Typography>
         <FormVerticle
           control={control}
@@ -41,14 +41,14 @@ export const DialogConfirmChangeStatusToCancel = ({ isUpdating, onCancel, onOk }
               type: 'textarea',
               label: 'confirm_description_to_change_cancel',
               required: true,
-              placeholder: t('packageSales:reason'),
+              placeholder: t('ticketSales:reason'),
             },
           ]}
-          filterKey="packageSales"
+          filterKey="ticketSales"
           errors={errors}
           messages={{
             confirm_description_to_change_cancel: t('translation:error_required', {
-              name: t('packageSales:reason'),
+              name: t('ticketSales:reason'),
             }),
           }}
         />

@@ -1,3 +1,4 @@
+import CancelPresentationOutlinedIcon from '@mui/icons-material/CancelPresentationOutlined';
 import { Box } from '@mui/material';
 import { ColumnsType } from 'antd/es/table';
 import { MapPinIcon } from 'assets';
@@ -5,13 +6,15 @@ import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
 import { AntTableColumnDisplayAsTypograph } from 'components/AntTableColumnTitle/AntTableColumnDisplayAsTypograph';
 import { AntTableColumnTitle } from 'components/AntTableColumnTitle/AntTableColumnTitle';
+import EditIcon from 'components/SvgIcon/EditIcon';
+import { ViewIcon } from 'components/SvgIcon/ViewIcon';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { RECORDS_PER_PAGE } from 'services/TicketSale/getTicketSales';
@@ -23,11 +26,14 @@ import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable
 import { v4 } from 'uuid';
 import { ticketSaleModelToColumnTicket } from '../utils/ticketSaleModelToColumnTicket';
 import { ColumnTicket } from './ColumnTicket';
+import { DialogConfirmChangeStatusToCancel } from './DialogConfirmChangeStatusToCancel';
 import { useStyles } from './styles';
 
 export const TableTicketSales = () => {
   const { t } = useTranslation(['ticketSales', 'translation']);
   const classes = useStyles();
+
+  const [openConfirmCancel, setOpenConfirmCancel] = useState<ColumnTicket | null>(null);
 
   const navigate = useNavigate();
 
@@ -36,6 +42,14 @@ export const TableTicketSales = () => {
   const dispatch = useAppDispatch();
 
   const isAgent = userInfo?.role === 'agent';
+
+  const handleOpenDialogConfirmCancel = (row: ColumnTicket) => {
+    setOpenConfirmCancel(row);
+  };
+
+  const handleCloseDialogConfirmCancel = () => {
+    setOpenConfirmCancel(null);
+  };
 
   const columns: ColumnsType<ColumnTicket> = useMemo(() => {
     return [
@@ -85,7 +99,7 @@ export const TableTicketSales = () => {
         key: 'totalPax',
         dataIndex: 'totalPax',
         title: () => <AntTableColumnTitle>{t('ticketSales:paxCount')}</AntTableColumnTitle>,
-        width: 110,
+        width: 130,
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
@@ -132,25 +146,47 @@ export const TableTicketSales = () => {
         },
       },
       {
-        key: 'creator',
-        dataIndex: 'creator',
-        title: () => <AntTableColumnTitle>{t('ticketSales:createdBy')}</AntTableColumnTitle>,
-        width: 120,
-        align: 'center',
-        sorter: () => 0,
-        render: (_, row) => {
-          return <AntTableColumnDisplayAsTypograph>{row.createdBy}</AntTableColumnDisplayAsTypograph>;
-        },
-      },
-      {
         key: 'action',
         title: () => <AntTableColumnTitle>{t('translation:action')}</AntTableColumnTitle>,
-        render: (_, row) => <ActionTable actions={[]} row={row} />,
+        render: (_, row) => (
+          <ActionTable
+            actions={[
+              {
+                id: v4(),
+                label: 'detail',
+                icon: <ViewIcon />,
+                onClick(record) {
+                  const nextUrl = isAgent ? '/agent/ticket-sales/' : '/admin/ticket-sales/';
+                  navigate(nextUrl + record.rawData.orderCode, { state: record });
+                },
+              },
+              {
+                id: v4(),
+                label: 'edit',
+                icon: <EditIcon />,
+                onClick: () => {
+                  // FIXME: Lắp chức năng edit ticket sale
+                  console.log('EDIT TICKET SALE');
+                },
+              },
+              {
+                id: v4(),
+                label: 'cancel',
+                icon: <CancelPresentationOutlinedIcon color="error" />,
+                onClick: () => {
+                  handleOpenDialogConfirmCancel(row);
+                },
+                color: '#FF2727',
+              },
+            ]}
+            row={row}
+          />
+        ),
         align: 'center',
         width: 70,
       },
     ];
-  }, [t]);
+  }, [isAgent, navigate, t]);
 
   const dataSource: ColumnTicket[] = useMemo(() => {
     const result: ColumnTicket[] = [];
@@ -162,6 +198,23 @@ export const TableTicketSales = () => {
     return result;
   }, [ticketSales]);
 
+  const renderDialogConfirmCancel = () => {
+    if (!openConfirmCancel) {
+      return null;
+    }
+    return (
+      <DialogConfirmChangeStatusToCancel
+        isUpdating={false}
+        onCancel={handleCloseDialogConfirmCancel}
+        // FIXME: Lắp chức năng cancel ticket sale
+        onOk={values => {
+          console.log(values);
+          handleCloseDialogConfirmCancel();
+        }}
+      />
+    );
+  };
+
   return (
     <Box my="30px">
       <AntTable
@@ -169,14 +222,6 @@ export const TableTicketSales = () => {
         columns={columns}
         dataSource={dataSource}
         rowKey={() => v4()}
-        onRow={record => {
-          return {
-            onClick: () => {
-              const nextUrl = isAgent ? '/agent/ticket-sales/' : '/admin/ticket-sales/';
-              navigate(nextUrl + record.rawData.orderCode, { state: record });
-            },
-          };
-        }}
         pagination={{
           total: totalRows,
           showLessItems: true,
@@ -195,6 +240,7 @@ export const TableTicketSales = () => {
         }}
         rowClassName={classes.cursor}
       />
+      {renderDialogConfirmCancel()}
     </Box>
   );
 };

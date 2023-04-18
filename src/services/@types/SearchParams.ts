@@ -43,8 +43,8 @@ interface SearcherValue {
   operator: SearcherOperator;
   value?: any;
 }
-export type Searcher<T extends AnyObject, AdditionalKeys extends string = string> = Partial<Record<AdditionalKeys, SearcherValue>> &
-  Partial<Record<Path<T>, SearcherValue>>;
+export type Searcher<T extends AnyObject, AdditionalKeys extends string = string> = Partial<Record<AdditionalKeys, SearcherValue | SearcherValue[]>> &
+  Partial<Record<Path<T>, SearcherValue | SearcherValue[]>>;
 
 // Bắt đầu từ 0
 export type Pagination = number;

@@ -78,7 +78,7 @@ export default function DetailTicketPage() {
   }
 
   return (
-    <LayoutDetail title={`${t('ticketSales:order')} ${record.orderId}`} subTitle={t('ticketSales:ticket_sales')}>
+    <LayoutDetail title={`${t('ticketSales:order')} #${record.orderId}`} subTitle={t('ticketSales:ticket_sales')}>
       <Box width="100%">
         <Grid container spacing="24px">
           <Grid item xs={12} sm={6}>

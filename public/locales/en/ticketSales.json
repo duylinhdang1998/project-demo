@@ -19,7 +19,7 @@
   "add_ticket_order": "Add ticket order",
   "select_your_trip": "Select your trip",
   "departureTime": "Departure time",
-  "create_ticket_orders": "Create ticket orders",
+  "create_ticket_order": "Create ticket order",
   "filter_by": "Filter by",
   "oneway": "One Way",
   "pax": "Pax",
@@ -29,7 +29,7 @@
   "your_reservation": "Your reservation",
   "class": "Class",
   "service": "Service",
-  "policy_privacy": "I confirm that i hace read, understood and accepted the BlaBlaCar General Terms and Conditions of Sale, Alsa Spain General Terms and Conditions and i accepted the Privacy Policy of Privacy.",
+  "policy_privacy": "I confirm that i hace read, understood and accepted the {{busName}} General Terms and Conditions of Sale, Alsa Spain General Terms and Conditions and i accepted the Privacy Policy of Privacy.",
   "total_price": "Total price",
   "all_taxes_and_fees": "All taxes and fees included",
   "email_ticket": "Email ticket",
@@ -71,5 +71,7 @@
   "confirm_checkin": "Confirm checkin",
   "reason": "Reason",
   "ticket_order": "Ticket order",
-  "email_field_description": "Required in order to receive the email from confirmation and your ticket."
+  "email_field_description": "Required in order to receive the email from confirmation and your ticket.",
+  "confirm_title_to_change_cancel": "Confirm to cancel",
+  "confirm_description_to_change_cancel": "Please enter a reason for cancellation"
 }

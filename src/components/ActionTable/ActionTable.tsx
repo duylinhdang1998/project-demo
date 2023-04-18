@@ -38,8 +38,10 @@ function ActionTable<T>({ actions, row }: ActionTableProps<T>) {
     <>
       {actions?.map(act => (
         <Menu.Item onClick={handleClickAction(act)} key={act.id}>
-          <Stack direction="row" justifyContent="flex-start" spacing={1} paddingX="8px">
-            <Box>{act.icon}</Box>
+          <Stack direction="row" alignItems="center" spacing={1} padding="8px">
+            <Box display="flex" alignItems="center">
+              {act.icon}
+            </Box>
             <Typography fontSize="14px" color={act.color}>
               {t(`translation:${act.label}`)}
             </Typography>
