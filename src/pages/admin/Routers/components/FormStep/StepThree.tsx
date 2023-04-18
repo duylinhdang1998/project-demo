@@ -98,7 +98,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const [open, setOpen] = useState(false);
   const [openDialogConfirmDelete, setOpenDialogConfirmDelete] = useState(false);
 
-  const { route, statusRemoveDayActive, statusUpdateTicketPrices } = useAppSelector(selectRoutes);
+  const { route, statusRemoveDayActive, statusUpdateParticularDayPrice } = useAppSelector(selectRoutes);
   const dispatch = useAppDispatch();
 
   const handleClose = () => setOpen(false);
@@ -150,7 +150,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const handleUpdateTicketPrices = (formValues: StepThreeValues) => {
     if (route) {
       dispatch(
-        routesActions.updateTicketPricesRequest({
+        routesActions.updateParticularDayPriceRequest({
           routeCode: route.routeCode,
           data: {
             routeCode: route.routeCode,
@@ -244,7 +244,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             textCancel={t('translation:delete')}
             onCancel={handleOpenDialogConfirmDelete}
             onSave={handleSubmit(handleUpdateTicketPrices)}
-            isSaving={statusUpdateTicketPrices === 'loading'}
+            isSaving={statusUpdateParticularDayPrice === 'loading'}
             isDeleting={statusRemoveDayActive === 'loading'}
           />
         </Box>
@@ -421,6 +421,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         textOk={t('translation:save')}
         textCancel={t('translation:back')}
         onCancel={handleCancel}
+        isSaving={statusUpdateParticularDayPrice === 'loading' || statusRemoveDayActive === 'loading'}
         onSave={() => {
           toast(
             <ToastCustom

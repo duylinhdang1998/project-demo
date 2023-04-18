@@ -101,7 +101,7 @@ interface FormEditPriceValues {
   vipChildren: number;
 }
 
-export const SubRoute = ({ route }: DialogMultiStopTripDetailProps) => {
+export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiStopTripDetailProps, 'onUpdateRoutePointPrice' | 'route'>) => {
   const {
     control,
     formState: { errors },
@@ -112,7 +112,7 @@ export const SubRoute = ({ route }: DialogMultiStopTripDetailProps) => {
   const classes = useStyles();
   const { t } = useTranslation(['routers']);
 
-  const { statusUpdateTicketPrices } = useAppSelector(selectRoutes);
+  const { queueUpdateRoutePointPrice } = useAppSelector(selectRoutes);
   const dispatch = useAppDispatch();
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -140,28 +140,23 @@ export const SubRoute = ({ route }: DialogMultiStopTripDetailProps) => {
   const handleUpdatePrice = (formValues: FormEditPriceValues) => {
     if (openRoutePoint) {
       dispatch(
-        routesActions.updateTicketPricesRequest({
+        routesActions.updateRoutePointPriceRequest({
           routeCode: route.routeCode,
+          routePointId: openRoutePoint._id,
           data: {
-            particularDay: 0,
-            routeCode: route.routeCode,
-            routeParticulars: [
-              {
-                routePointId: openRoutePoint._id,
-                ECOPrices: [
-                  { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
-                  { passengerType: 'CHILD', price: Number(formValues.ecoChildren) },
-                  { passengerType: 'STUDENT', price: Number(formValues.ecoStudent) },
-                ],
-                VIPPrices: [
-                  { passengerType: 'ADULT', price: Number(formValues.vipAdult) },
-                  { passengerType: 'CHILD', price: Number(formValues.vipChildren) },
-                  { passengerType: 'STUDENT', price: Number(formValues.vipStudent) },
-                ],
-              },
+            ECOPrices: [
+              { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
+              { passengerType: 'CHILD', price: Number(formValues.ecoChildren) },
+              { passengerType: 'STUDENT', price: Number(formValues.ecoStudent) },
+            ],
+            VIPPrices: [
+              { passengerType: 'ADULT', price: Number(formValues.vipAdult) },
+              { passengerType: 'CHILD', price: Number(formValues.vipChildren) },
+              { passengerType: 'STUDENT', price: Number(formValues.vipStudent) },
             ],
           },
-          onSuccess() {
+          onSuccess(route) {
+            onUpdateRoutePointPrice(route);
             toast(
               <ToastCustom
                 type="success"
@@ -205,7 +200,7 @@ export const SubRoute = ({ route }: DialogMultiStopTripDetailProps) => {
           </Stack>
           <EditPriceTrip errors={errors} control={control as any} />
           <ComboButton
-            isSaving={statusUpdateTicketPrices === 'loading'}
+            isSaving={queueUpdateRoutePointPrice.includes(openRoutePoint._id)}
             onCancel={handleCloseDialogEditPrice}
             onSave={handleSubmit(handleUpdatePrice)}
           />

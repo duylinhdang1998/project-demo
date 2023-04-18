@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const MainRoute = ({ route }: DialogMultiStopTripDetailProps) => {
+export const MainRoute = ({ route }: Pick<DialogMultiStopTripDetailProps, 'route'>) => {
   const classes = useStyles();
 
   const mainRoutePoints = useMemo(() => {

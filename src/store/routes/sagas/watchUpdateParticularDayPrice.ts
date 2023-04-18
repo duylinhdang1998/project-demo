@@ -4,24 +4,24 @@ import { updateParticular } from 'services/Route/Company/updateParticular';
 import { ServiceException } from 'services/utils/ServiceException';
 import { routesActions } from '../routesSlice';
 
-function* handleUpdateTicketPrices({ payload }: ReturnType<typeof routesActions.updateTicketPricesRequest>) {
+function* handleUpdateParticularDayPrice({ payload }: ReturnType<typeof routesActions.updateParticularDayPriceRequest>) {
   const { data, routeCode, onFailure, onSuccess } = payload;
   try {
     yield retry(3, 1000, updateParticular, data);
     const response: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, { routeCode });
     yield put(
-      routesActions.updateTicketPricesSuccess({
+      routesActions.updateParticularDayPriceSuccess({
         data: response.data,
       }),
     );
     onSuccess();
   } catch (error) {
-    console.log('watchUpdateTicketPrices.ts', error);
-    yield put(routesActions.updateTicketPricesFailure({}));
+    console.log('watchUpdateParticularDayPrice.ts', error);
+    yield put(routesActions.updateParticularDayPriceFailure({}));
     onFailure(ServiceException.getMessageError(error));
   }
 }
 
-export function* watchUpdateTicketPrices() {
-  yield takeLeading(routesActions.updateTicketPricesRequest, handleUpdateTicketPrices);
+export function* watchUpdateParticularDayPrice() {
+  yield takeLeading(routesActions.updateParticularDayPriceRequest, handleUpdateParticularDayPrice);
 }

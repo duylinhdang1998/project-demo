@@ -1,15 +1,15 @@
 import { Route } from 'services/models/Route';
 import { UpdateParticular } from 'services/Route/Company/updateParticular';
 
-export interface UpdateTicketPricesRequest {
+export interface UpdateParticularDayPriceRequest {
   data: UpdateParticular;
   routeCode: Route['routeCode'];
   onSuccess: () => void;
   onFailure: OnFailureWithMessageOfStatusCode;
 }
 
-export interface UpdateTicketPricesSuccess {
+export interface UpdateParticularDayPriceSuccess {
   data: Route;
 }
 
-export interface UpdateTicketPricesFailure {}
+export interface UpdateParticularDayPriceFailure {}

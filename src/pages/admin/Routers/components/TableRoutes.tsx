@@ -294,7 +294,7 @@ function TableRoutes() {
     if (openDetailRoute === null) {
       return null;
     }
-    return <DialogMultiStopTripDetail onClose={handleCloseDialogDetail} route={openDetailRoute} />;
+    return <DialogMultiStopTripDetail onClose={handleCloseDialogDetail} route={openDetailRoute} onUpdateRoutePointPrice={setOpenDetailRoute} />;
   };
 
   return (
