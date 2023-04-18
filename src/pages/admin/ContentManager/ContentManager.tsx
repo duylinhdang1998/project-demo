@@ -1,38 +1,34 @@
 import { Box, Divider, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import CardWhite from 'components/CardWhite/CardWhite';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
-import FormVerticle from 'components/FormVerticle/FormVerticle';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { Content } from 'services/models/Content';
 import { contentManagerActions } from 'store/contentManager/contentManagerSlice';
 import { selectContentManager } from 'store/contentManager/selectors';
-import { footerFields, sidebarFields } from './constants';
-import { Editor } from '@tinymce/tinymce-react';
-import { uploadImageResource } from 'services/Resource/uploadImageResource';
-import { getUrlOfResource } from 'utils/getUrlOfResource';
-import { blobToFile } from 'utils/blobToFile';
-import env from 'env';
-import { ServiceException } from 'services/utils/ServiceException';
-import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
+import { ForContentField } from './components/ForContentField';
+import { ForSidebarNFooterField } from './components/ForSidebarNFooterField';
 
-type Values = Pick<Content, 'city' | 'email' | 'phone' | 'content' | 'footerText' | 'postalAddress' | 'zipCode'>;
-const fieldKeys: Array<keyof Values> = ['city', 'email', 'phone', 'content', 'footerText', 'postalAddress', 'zipCode'];
+type Values = Pick<Content, 'footerText' | 'content' | 'sidebar'>;
+const fieldKeys: Array<keyof Values> = ['content', 'footerText', 'sidebar'];
 
 function ContentManager() {
   const { t } = useTranslation(['account', 'translation', 'message_error']);
 
-  const { control, handleSubmit, setValue, watch } = useForm<Values>();
+  const { handleSubmit, setValue, watch } = useForm<Values>();
   const contentValueOfForm = watch('content');
+  const sidebarValueOfForm = watch('sidebar');
+  const footerTextValueOfForm = watch('footerText');
 
   const [open, setOpen] = useState(false);
 
@@ -68,7 +64,7 @@ function ContentManager() {
   useEffect(() => {
     if (content) {
       fieldKeys.forEach(key => {
-        setValue(key, content[key]);
+        setValue(key, content[key] ?? '');
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,49 +88,21 @@ function ContentManager() {
               {t('account:content')}
             </Typography>
             <Box my="20px">
-              <Editor
-                apiKey={env.tinyMCEApiKey}
-                initialValue={contentValueOfForm}
-                onChange={e => {
-                  const data = e.target.getContent();
-                  setValue('content', data);
-                }}
-                init={{
-                  height: 500,
-                  menubar: false,
-                  plugins: ['link', 'lists', 'table', 'image', 'media', 'advlist', 'paste', 'undo', 'redo', 'blockquote'],
-                  toolbar: 'blocks bold italic link bullist numlist outdent indent image blockquote table media undo redo',
-                  images_upload_handler: async blobInfo => {
-                    const file = blobToFile(blobInfo.blob(), blobInfo.filename());
-                    try {
-                      const response = await uploadImageResource({ file });
-                      return Promise.resolve(getUrlOfResource(response.data));
-                    } catch (error) {
-                      toast(
-                        <ToastCustom description={ServiceException.getMessageError(error)} text={`${file.name} file upload failed.`} type="error" />,
-                        {
-                          className: 'toast-error',
-                        },
-                      );
-                      return Promise.reject(error);
-                    }
-                  },
-                }}
-              />
+              <ForContentField contentValueOfForm={contentValueOfForm} onChange={value => setValue('content', value)} />
             </Box>
             <Divider sx={{ borderStyle: 'dashed' }} />
             <Box my="20px">
               <Typography fontWeight={700} color="#0C1132" my="10px">
                 {t('translation:sideBar')}
               </Typography>
-              <FormVerticle control={control} fields={sidebarFields} grid isGridHorizon filterKey="account" />
+              <ForSidebarNFooterField valueOfForm={sidebarValueOfForm ?? ''} onChange={value => setValue('sidebar', value)} variant="sidebar" />
             </Box>
             <Divider sx={{ borderStyle: 'dashed' }} />
             <Box my="20px">
               <Typography fontWeight={700} color="#0C1132" my="10px">
                 {t('translation:footer')}
               </Typography>
-              <FormVerticle control={control} fields={footerFields} filterKey="account" />
+              <ForSidebarNFooterField valueOfForm={footerTextValueOfForm} onChange={value => setValue('footerText', value)} variant="footer" />
             </Box>
             <ComboButton onSave={handleSubmit(onSubmit)} isSaving={statusUpdateContent === 'loading'} onCancel={handleCancel} />
           </CardWhite>

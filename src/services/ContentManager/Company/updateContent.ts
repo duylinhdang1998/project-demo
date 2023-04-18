@@ -5,7 +5,7 @@ import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
 export interface UpdateContent {
-  data: Pick<Content, 'city' | 'email' | 'phone' | 'content' | 'footerText' | 'postalAddress' | 'zipCode'>;
+  data: Pick<Content, 'content' | 'footerText' | 'sidebar'>;
 }
 
 export const updateContent = async ({ data }: UpdateContent) => {
