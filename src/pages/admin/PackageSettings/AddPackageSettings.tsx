@@ -44,7 +44,7 @@ export default function AddPackageSettings() {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
         ...res,
-        [key]: t('translation:error_required', { name: key }),
+        [key]: t('translation:error_required', { name: t(`packageSettings:${key}`).toLowerCase() }),
       };
     }, {});
   }, [t]);

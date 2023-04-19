@@ -131,7 +131,7 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
                     render={() => {
                       const labelTranslated = t('routers:stop_point');
                       const error = get(errors, routePointPathInFormValues);
-                      const messageErr = t('translation:error_required', { name: labelTranslated });
+                      const messageErr = t('translation:error_required', { name: labelTranslated.toLowerCase() });
                       const value = get(getValues(), routePointPathInFormValues) ?? '';
                       return (
                         <Box>
@@ -181,7 +181,7 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
                     render={({ field }) => {
                       const labelTranslated = t('routers:arrivalDuration');
                       const error = get(errors, durationPathInFormValues);
-                      const messageErr = t('translation:error_required', { name: labelTranslated });
+                      const messageErr = t('translation:error_required', { name: labelTranslated.toLowerCase() });
                       return (
                         <Box>
                           <InputLabel htmlFor={`duration-${f.id}`} className={formVerticleClasses.label}>

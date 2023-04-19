@@ -49,11 +49,12 @@ export default function PassengerDetail() {
   const isEditAction = useMemo(() => {
     return !!location.state?.isEdit;
   }, [location.state?.isEdit]);
+
   const messages = useMemo(() => {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
         ...res,
-        [key]: t('translation:error_required', { name: key }),
+        [key]: t('translation:error_required', { name: t(`passenger:${key}`).toLowerCase() }),
       };
     }, {});
   }, [t]);

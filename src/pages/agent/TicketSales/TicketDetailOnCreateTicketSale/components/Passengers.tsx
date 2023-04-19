@@ -130,7 +130,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                     render={({ field }) => {
                       const labelTranslated = t('ticketSales:firstName');
                       const error = get(errors, firstNamePathInFormValues);
-                      const messageErr = t('translation:error_required', { name: labelTranslated });
+                      const messageErr = t('translation:error_required', { name: labelTranslated.toLowerCase() });
                       return (
                         <Box>
                           <InputLabel className={classes.label}>
@@ -156,7 +156,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                     render={({ field }) => {
                       const labelTranslated = t('ticketSales:lastName');
                       const error = get(errors, lastNamePathInFormValues);
-                      const messageErr = t('translation:error_required', { name: labelTranslated });
+                      const messageErr = t('translation:error_required', { name: labelTranslated.toLowerCase() });
                       return (
                         <Box>
                           <InputLabel className={classes.label}>
@@ -182,7 +182,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                     render={({ field }) => {
                       const labelTranslated = t('ticketSales:typeTicket');
                       const error = get(errors, typeTicketPathInFormValues);
-                      const messageErr = t('translation:error_required', { name: labelTranslated });
+                      const messageErr = t('translation:error_required', { name: labelTranslated.toLowerCase() });
                       return (
                         <Box>
                           <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
@@ -205,7 +205,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                     render={({ field }) => {
                       const labelTranslated = t('ticketSales:seatsType');
                       const error = get(errors, seatsTypePathInFormValues);
-                      const messageErr = t('translation:error_required', { name: labelTranslated });
+                      const messageErr = t('translation:error_required', { name: labelTranslated.toLowerCase() });
                       return (
                         <Box>
                           <InputLabel className={classes.label}>{labelTranslated}</InputLabel>

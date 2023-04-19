@@ -118,7 +118,7 @@ export const EmailEditor = ({ control, description, errors, messages, onChange, 
       rules={{
         required: {
           value: required ?? false,
-          message: t('translation:error_required', { name: label }),
+          message: t('translation:error_required', { name: t(`passenger:${label}`).toLowerCase() }),
         },
       }}
     />

@@ -48,7 +48,7 @@ export const DialogConfirmChangeStatusToCancel = ({ isUpdating, onCancel, onOk }
           errors={errors}
           messages={{
             confirm_description_to_change_cancel: t('translation:error_required', {
-              name: t('packageSales:reason'),
+              name: t('packageSales:reason').toLowerCase(),
             }),
           }}
         />
