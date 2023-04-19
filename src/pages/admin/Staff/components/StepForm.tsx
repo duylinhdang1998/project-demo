@@ -59,15 +59,28 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
           staffId: staff._id,
           data: omit(formValues, ['role', 'email', 'office']),
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('staff:staff') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:edit_type_success', {
+                  type: t('staff:staff').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             nextStep();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('staff:staff') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:edit_type_error', {
+                  type: t('staff:staff').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );
@@ -76,15 +89,28 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
         staffsActions.createStaffRequest({
           data: formValues,
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('staff:staff') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:add_type_success', {
+                  type: t('staff:staff').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             nextStep();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('staff:staff') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:add_type_error', {
+                  type: t('staff:staff').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );
@@ -102,15 +128,28 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
             staffId: staff._id,
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('staff:staff') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:edit_type_success', {
+                  type: t('staff:staff').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             nextStep();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('staff:staff') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:edit_type_error', {
+                  type: t('staff:staff').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );

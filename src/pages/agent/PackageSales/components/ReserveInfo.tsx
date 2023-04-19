@@ -87,7 +87,7 @@ function ReserveInfo({ onBook, loading }: Props) {
       </Button>
       <DialogConfirm
         openDialog={open}
-        title={t('translation:cancel_type', { type: t('package_order') })}
+        title={t('translation:cancel_type', { type: t('package_order').toLowerCase() })}
         subTitle={t('translation:leave_page')}
         onClose={handleClose}
       />

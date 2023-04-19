@@ -36,7 +36,7 @@ export default function OfficeManager() {
       <HeaderLayout activeSideBarHeader={t('account:offices_manager')} />
       <Box padding="24px">
         <BoxSearch
-          searchValue={currentSearcher.title?.value as string | undefined}
+          searchValue={!Array.isArray(currentSearcher.title) ? currentSearcher.title?.value : undefined}
           onSearch={value => {
             dispatch(
               officesManagerActions.getOfficesRequest({
@@ -49,7 +49,7 @@ export default function OfficeManager() {
             );
           }}
           onAdd={handleAdd}
-          addTextButton={t('translation:create_new', { type: t('account:office') })}
+          addTextButton={t('translation:create_new', { type: t('account:office').toLowerCase() })}
         />
         <TableOfficesManager />
       </Box>

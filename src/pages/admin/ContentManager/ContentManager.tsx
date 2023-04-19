@@ -43,14 +43,25 @@ function ContentManager() {
       contentManagerActions.updateContentRequest({
         data: values,
         onSuccess: () => {
-          toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('account:content_manager') })} />, {
-            className: 'toast-success',
-          });
+          toast(
+            <ToastCustom
+              type="success"
+              text={t('translation:edit_type_success', {
+                type: t('account:content_manager').toLowerCase(),
+              })}
+            />,
+            { className: 'toast-success' },
+          );
         },
         onFailure: message => {
-          toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:content_manager') })} description={message} />, {
-            className: 'toast-error',
-          });
+          toast(
+            <ToastCustom
+              type="error"
+              text={t('translation:edit_type_error', { type: t('account:content_manager').toLowerCase() })}
+              description={message}
+            />,
+            { className: 'toast-error' },
+          );
         },
       }),
     );
@@ -110,7 +121,7 @@ function ContentManager() {
 
         <DialogConfirm
           openDialog={open}
-          title={t('translation:cancel_type', { type: t('account:content') })}
+          title={t('translation:cancel_type', { type: t('account:content').toLowerCase() })}
           subTitle={t('translation:leave_page')}
           onClose={handleClose}
         />

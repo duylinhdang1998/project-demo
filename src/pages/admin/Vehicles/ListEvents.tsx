@@ -65,7 +65,7 @@ export default function ListEvents() {
           onClick: () => {
             navigate(isAgent ? `/agent/vehicles/${vehicleId}/add-new-event` : `/admin/vehicles/${vehicleId}/add-new-event`);
           },
-          children: t('translation:create_new', { type: t('vehicles:event') }),
+          children: t('translation:create_new', { type: t('vehicles:event').toLowerCase() }),
         }}
       >
         <TableEvents />

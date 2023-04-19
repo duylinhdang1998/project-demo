@@ -105,7 +105,7 @@ export const TicketDetailOnCreateTicketSale = () => {
               <ToastCustom
                 type="success"
                 text={t('translation:add_type_success', {
-                  type: t('ticketSales:ticket'),
+                  type: t('ticketSales:ticket').toLowerCase(),
                 })}
               />,
               { className: 'toast-success' },
@@ -117,7 +117,7 @@ export const TicketDetailOnCreateTicketSale = () => {
               <ToastCustom
                 type="error"
                 text={t('translation:add_type_error', {
-                  type: t('ticketSales:ticket'),
+                  type: t('ticketSales:ticket').toLowerCase(),
                 })}
                 description={message}
               />,

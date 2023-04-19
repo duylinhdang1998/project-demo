@@ -97,15 +97,26 @@ function FormAddEvent() {
               totalKilometers: value.totalKilometers,
             },
             onSuccess() {
-              toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('vehicles:event') })} />, {
-                className: 'toast-success',
-              });
+              toast(
+                <ToastCustom
+                  type="success"
+                  text={t('translation:edit_type_success', {
+                    type: t('vehicles:event').toLowerCase(),
+                  })}
+                />,
+                { className: 'toast-success' },
+              );
               navigate(isAgent ? `/agent/vehicles/${vehicleId}/list-events` : `/admin/vehicles/${vehicleId}/list-events`);
             },
             onFailure: message => {
-              toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('vehicles:event') })} description={message} />, {
-                className: 'toast-error',
-              });
+              toast(
+                <ToastCustom
+                  type="error"
+                  text={t('translation:edit_type_error', { type: t('vehicles:event').toLowerCase() })}
+                  description={message}
+                />,
+                { className: 'toast-error' },
+              );
             },
           }),
         );
@@ -124,15 +135,28 @@ function FormAddEvent() {
               vehicle: vehicleId,
             },
             onSuccess() {
-              toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('vehicles:event') })} />, {
-                className: 'toast-success',
-              });
+              toast(
+                <ToastCustom
+                  type="success"
+                  text={t('translation:add_type_success', {
+                    type: t('vehicles:event').toLowerCase(),
+                  })}
+                />,
+                { className: 'toast-success' },
+              );
               navigate(isAgent ? `/agent/vehicles/${vehicleId}/list-events` : `/admin/vehicles/${vehicleId}/list-events`);
             },
             onFailure: message => {
-              toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('vehicles:event') })} description={message} />, {
-                className: 'toast-error',
-              });
+              toast(
+                <ToastCustom
+                  type="error"
+                  text={t('translation:add_type_error', {
+                    type: t('vehicles:event').toLowerCase(),
+                  })}
+                  description={message}
+                />,
+                { className: 'toast-error' },
+              );
             },
           }),
         );

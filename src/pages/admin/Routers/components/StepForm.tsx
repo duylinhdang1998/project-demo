@@ -147,15 +147,26 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             ],
           } as CreateOneStopTrip,
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('routers:new_trip') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:add_type_success', {
+                  type: t('routers:new_trip').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             nextStep();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:new_trip') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:add_type_error', { type: t('routers:new_trip').toLowerCase() })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );

@@ -182,16 +182,24 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
                         status: isBlocking ? 'ACTIVE' : 'BLOCK',
                       },
                       onSuccess: () => {
-                        toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('passenger:passenger') })} />, {
-                          className: 'toast-success',
-                        });
+                        toast(
+                          <ToastCustom
+                            type="success"
+                            text={t('translation:edit_type_success', {
+                              type: t('passenger:passenger').toLowerCase(),
+                            })}
+                          />,
+                          { className: 'toast-success' },
+                        );
                         handleCloseDialogConfirmBlock();
                       },
                       onFailure: message => {
                         toast(
                           <ToastCustom
                             type="error"
-                            text={t('translation:edit_type_error', { type: t('passenger:passenger') })}
+                            text={t('translation:edit_type_error', {
+                              type: t('passenger:passenger').toLowerCase(),
+                            })}
                             description={message}
                           />,
                           { className: 'toast-error' },

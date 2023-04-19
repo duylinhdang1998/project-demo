@@ -47,7 +47,7 @@ export default function ControlTicket() {
               <ToastCustom
                 type="success"
                 text={t('translation:edit_type_success', {
-                  type: t('ticketSales:ticketSale'),
+                  type: t('ticketSales:ticketSale').toLowerCase(),
                 })}
               />,
               { className: 'toast-success' },
@@ -58,7 +58,7 @@ export default function ControlTicket() {
               <ToastCustom
                 type="error"
                 text={t('translation:edit_type_error', {
-                  type: t('ticketSales:ticketSale'),
+                  type: t('ticketSales:ticketSale').toLowerCase(),
                 })}
                 description={message}
               />,
