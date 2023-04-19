@@ -1,15 +1,17 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
+import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { Option } from 'models/Field';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { PaymentGateway } from 'services/models/PaymentGateway';
 import { PassengerInTicketSale, RouteOfTicketSale } from 'services/models/TicketSale';
@@ -17,10 +19,11 @@ import { selectAuth } from 'store/auth/selectors';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
-import { Passengers } from './components/Passengers';
+import { Passengers, seatsTypeOptions, typeTicketOptions } from './components/Passengers';
 import { PaymentMethod } from './components/PaymentMethod';
 import { PaymentStatus } from './components/PaymentStatus';
 import { Reservation } from './components/Reservation';
+import { PaymentStatus as EPaymentStatus } from 'models/PaymentStatus';
 
 export interface Passenger {
   firstName: PassengerInTicketSale['firstName'];
@@ -43,11 +46,12 @@ export const TicketDetailOnCreateTicketSale = () => {
   const { t } = useTranslation(['ticketSales', 'translation']);
 
   const { userInfo } = useAppSelector(selectAuth);
-  const { statusCreateTicketSale } = useAppSelector(selectTicketSales);
+  const { statusCreateTicketSale, statusGetTicketSale, ticketSale } = useAppSelector(selectTicketSales);
   const dispatch = useAppDispatch();
 
   const location = useLocation();
   const navigate = useNavigate();
+  const { orderCode } = useParams();
 
   const {
     control,
@@ -55,6 +59,7 @@ export const TicketDetailOnCreateTicketSale = () => {
     handleSubmit,
     setValue,
     watch,
+    reset,
   } = useForm<TicketDetailFormValues>({
     defaultValues: {
       isActive: false,
@@ -70,7 +75,16 @@ export const TicketDetailOnCreateTicketSale = () => {
   const isActive = watch('isActive');
 
   const isAgent = userInfo?.role === 'agent';
-  const route = location.state as RouteOfTicketSale | undefined;
+  const isEditAction = useMemo(() => {
+    return !!orderCode;
+  }, [orderCode]);
+  const route: RouteOfTicketSale | undefined = useMemo(() => {
+    if (isEditAction) {
+      return ticketSale?.route;
+    } else {
+      return location.state;
+    }
+  }, [isEditAction, location.state, ticketSale?.route]);
   const messages = useMemo(() => {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
@@ -92,7 +106,7 @@ export const TicketDetailOnCreateTicketSale = () => {
               seatsType: passenger.seatsType.value as PassengerInTicketSale['seatsType'],
             })),
             email: values.email,
-            route: route._id,
+            route: route,
             departureTime: dayjsToNumber(dayjs(route.route.departureTime, 'HH:mm')),
             arrivalPoint: route.stopPoint,
             departurePoint: route.departurePoint,
@@ -129,6 +143,42 @@ export const TicketDetailOnCreateTicketSale = () => {
     }
   };
 
+  useEffect(() => {
+    if (isEditAction && ticketSale) {
+      reset({
+        accept_term: true,
+        email: ticketSale.email,
+        isActive: ticketSale.paymentStatus === EPaymentStatus.APPROVED,
+        method: ticketSale.paymentType,
+        passengers: ticketSale.passengers.map(passenger => ({
+          firstName: passenger.firstName,
+          lastName: passenger.lastName,
+          seatsType: seatsTypeOptions.find(option => option.value === passenger.seatsType),
+          typeTicket: typeTicketOptions.find(option => option.value === passenger.typeTicket),
+        })),
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ticketSale]);
+
+  useEffect(() => {
+    if (orderCode) {
+      dispatch(
+        ticketSalesActions.getTicketSaleRequest({
+          orderCode: orderCode,
+        }),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderCode]);
+
+  if (isEditAction && statusGetTicketSale === 'loading') {
+    return <LoadingScreen />;
+  }
+  if (isEditAction && statusGetTicketSale === 'failure') {
+    return <EmptyScreen description={t('message_error:TICKET_SALE_NOT_FOUND')} />;
+  }
+
   if (!route) {
     return <Navigate to={isAgent ? '/agent/ticket-sales' : '/admin/ticket-sales'} />;
   }
@@ -141,7 +191,7 @@ export const TicketDetailOnCreateTicketSale = () => {
             <Grid item xs={12} md={8}>
               <Typography variant="h5">{t('ticketSales:traveller_contact_details')}</Typography>
               <Divider sx={{ margin: '16px 0' }} />
-              <Passengers append={append} remove={remove} control={control} errors={errors} passengers={fields} route={route} />
+              <Passengers append={append} remove={remove} control={control} errors={errors} passengers={fields} />
               <Divider sx={{ margin: '16px 0' }} />
               <FormVerticle
                 control={control}

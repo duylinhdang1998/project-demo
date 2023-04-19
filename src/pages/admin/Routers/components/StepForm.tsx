@@ -341,7 +341,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             }
             return result;
           }, []),
-        } as StepOneValuesForMultipleStopTrip);
+        });
       } else {
         const routePointValue = route.routePoints[0];
         setStepOneValues({
@@ -350,14 +350,14 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
           departureTime: toDayjs({ value: route.departureTime, format: 'HH:mm' }),
           arrivalPoint: routePointValue.stopPoint,
           arrivalDuration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }),
-          ecoAdult: routePointValue.ECOPrices?.ADULT,
-          ecoChildren: routePointValue.ECOPrices?.CHILD,
-          ecoStudent: routePointValue.ECOPrices?.STUDENT,
-          vipAdult: routePointValue.VIPPrices?.ADULT,
-          vipChildren: routePointValue.VIPPrices?.CHILD,
-          vipStudent: routePointValue.VIPPrices?.STUDENT,
+          ecoAdult: routePointValue.ECOPrices?.ADULT as number,
+          ecoChildren: routePointValue.ECOPrices?.CHILD as number,
+          ecoStudent: routePointValue.ECOPrices?.STUDENT as number,
+          vipAdult: routePointValue.VIPPrices?.ADULT as number,
+          vipChildren: routePointValue.VIPPrices?.CHILD as number,
+          vipStudent: routePointValue.VIPPrices?.STUDENT as number,
           routePointId: routePointValue._id,
-        } as StepOneValuesForOneStopTrip);
+        });
       }
       setStepTwoValues({
         days: route.dayActives,
@@ -391,7 +391,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             }
             return result;
           }, []),
-        } as StepOneValuesForMultipleStopTrip);
+        });
       } else {
         const routePointValue = sourceToCopy.routePoints[0];
         setStepOneValues({
@@ -400,14 +400,14 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
           departureTime: toDayjs({ value: sourceToCopy.departureTime, format: 'HH:mm' }),
           arrivalPoint: routePointValue.stopPoint,
           arrivalDuration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }),
-          ecoAdult: routePointValue.ECOPrices?.ADULT,
-          ecoChildren: routePointValue.ECOPrices?.CHILD,
-          ecoStudent: routePointValue.ECOPrices?.STUDENT,
-          vipAdult: routePointValue.VIPPrices?.ADULT,
-          vipChildren: routePointValue.VIPPrices?.CHILD,
-          vipStudent: routePointValue.VIPPrices?.STUDENT,
+          ecoAdult: routePointValue.ECOPrices?.ADULT as number,
+          ecoChildren: routePointValue.ECOPrices?.CHILD as number,
+          ecoStudent: routePointValue.ECOPrices?.STUDENT as number,
+          vipAdult: routePointValue.VIPPrices?.ADULT as number,
+          vipChildren: routePointValue.VIPPrices?.CHILD as number,
+          vipStudent: routePointValue.VIPPrices?.STUDENT as number,
           routePointId: undefined,
-        } as StepOneValuesForOneStopTrip);
+        });
       }
       setStepTwoValues({
         days: sourceToCopy.dayActives,

@@ -3,13 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 import Button from 'components/Button/Button';
 import MerchandiseDetailView from 'components/MerchandiseDetailView/MerchandiseDetailView';
-import OrderDetailView from 'components/OrderDetailView/OrderDetailView';
+import OrderDetailView, { OrderDetailViewProps } from 'components/OrderDetailView/OrderDetailView';
 import PrintIcon from 'components/SvgIcon/PrintIcon';
 import SendIcon from 'components/SvgIcon/SendIcon';
 import LayoutDetail from 'layout/LayoutDetail';
 import { PaymentStatus } from 'models/PaymentStatus';
 
-const dataDetails = {
+const dataDetails: OrderDetailViewProps['data'] = {
   order_id: '023232-0023',
   trip: ['Lyon Gare Perrache', 'Lyon Gare Perrache'] as [string, string],
   date: '02/27/2022 - 10H30',
@@ -21,6 +21,7 @@ const dataDetails = {
   weight: '4kg',
   price: '$10',
   payment_status: 'Paid' as PaymentStatus,
+  delivery_status: 'fulfilment',
 };
 
 const merchandises = [

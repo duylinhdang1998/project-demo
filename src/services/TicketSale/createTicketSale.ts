@@ -24,7 +24,10 @@ export const createTicketSale = async (data: CreateTicketSale): Promise<Response
   const response: AxiosResponse<ResponseDetailSuccess<ResponseData> | ResponseFailure> = await fetchAPI.request({
     method: 'POST',
     url: '/v1.0/company/ticket-sales',
-    data,
+    data: {
+      ...data,
+      route: data.route._id,
+    },
   });
   if (response.data.code === 0) {
     return response.data as ResponseDetailSuccess<ResponseData>;

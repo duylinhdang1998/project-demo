@@ -24,7 +24,7 @@ export interface RoutePointValues {
   routePointId?: RoutePoint['_id'];
 }
 export interface StepOneValuesForMultipleStopTrip {
-  vehicle: Vehicle;
+  vehicle: Vehicle | null;
   departurePoint: string;
   departureTime: dayjs.Dayjs;
   routePoints: RoutePointValues[];
