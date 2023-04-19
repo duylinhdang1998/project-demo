@@ -315,7 +315,6 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
           departureTime: toDayjs({ value: route.departureTime, format: 'HH:mm' }),
           routePoints: route.routePoints.reduce<StepOneValuesForMultipleStopTrip['routePoints']>((result, routePointValue) => {
             if (routePointValue.routeType === 'MAIN_ROUTE') {
-              console.log(222, routePointValue.durationTime, minutesToTimeString(routePointValue.durationTime));
               const value: RoutePointValues = {
                 stop_point: routePointValue.stopPoint,
                 duration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }),

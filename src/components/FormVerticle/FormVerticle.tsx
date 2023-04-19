@@ -15,6 +15,7 @@ import { SelectRole } from 'components/SelectDecouplingData/SelectRole';
 import { SelectVehicle } from 'components/SelectDecouplingData/SelectVehicle';
 import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
 import { UploadPDFResource } from 'components/UploadImageResource/UploadPDFResource';
+import { Dayjs, isDayjs } from 'dayjs';
 import { Field, SelectField } from 'models/Field';
 import { equals } from 'ramda';
 import { Controller, FieldErrors, FieldValues, Path, UseControllerProps } from 'react-hook-form';
@@ -334,6 +335,9 @@ export default function FormVerticle<T extends FieldValues>({
             control={control}
             name={i.label as Path<T>}
             render={({ field }) => {
+              const value = field.value;
+              const valueInDayjs = isDayjs(value) && (value as Dayjs).isValid();
+
               return (
                 <Box>
                   <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
@@ -341,10 +345,11 @@ export default function FormVerticle<T extends FieldValues>({
                     disabled={i.disabled}
                     picker={i.picker}
                     showTime={i.showTime}
-                    value={field.value as any}
+                    value={valueInDayjs ? (field.value as any) : undefined}
                     onChange={field.onChange}
                     className={cx(classes.datePicker, !!error ? classes.inputError : '')}
                     format={i.format}
+                    status={!!error ? 'error' : undefined}
                   />
                   {!!error && (
                     <Typography component="p" className={classes.error} fontSize={12}>
