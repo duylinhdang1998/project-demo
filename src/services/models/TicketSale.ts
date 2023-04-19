@@ -3,6 +3,8 @@ import { PaymentGateway } from './PaymentGateway';
 import { UserRole } from './UserRole';
 import { Route, RoutePoint, RoutePointPriceType } from './Route';
 
+export type TicketStatus = 'USED' | 'PENDING' | 'CANCELLED';
+
 export interface PassengerInTicketSale {
   firstName: string;
   lastName: string;
@@ -18,7 +20,6 @@ export interface TicketSale {
   VIPseated: number;
   arrivalPoint: string;
   company: string;
-  passengerPresent?: string;
   createdAt: string;
   creator: string;
   creatorType: UserRole;
@@ -27,6 +28,7 @@ export interface TicketSale {
   departureTime: number;
   email: string;
   orderCode: string;
+  passengerPresent?: string;
   passengers: PassengerInTicketSale[];
   payment: {
     _id: string;
@@ -35,6 +37,7 @@ export interface TicketSale {
   paymentStatus: PaymentStatus;
   paymentType: PaymentGateway;
   route: string;
+  ticketStatus: TicketStatus;
   totalPax: number;
   totalPrice: number;
   updatedAt: string;

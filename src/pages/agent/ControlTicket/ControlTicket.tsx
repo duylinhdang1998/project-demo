@@ -9,6 +9,7 @@ import Qrcode from 'components/Qrcode/Qrcode';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { TicketStatus } from 'components/TicketStatus/TicketStatus';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
 import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -17,6 +18,8 @@ import { get } from 'lodash-es';
 import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { UserRoleMappingToLabel } from 'services/models/UserRole';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
@@ -29,8 +32,43 @@ export default function ControlTicket() {
 
   const [showPassengersDetail, setShowPassengersDetail] = useState(false);
 
-  const { statusGetTicketSale, ticketSale } = useAppSelector(selectTicketSales);
+  const { statusGetTicketSale, queueUpdateTicketStatus, ticketSale } = useAppSelector(selectTicketSales);
   const dispatch = useAppDispatch();
+
+  const handleConfirmCheckIn = () => {
+    if (ticketSale) {
+      dispatch(
+        ticketSalesActions.updateTicketStatusRequest({
+          orderCode: ticketSale.orderCode,
+          targetTicket: ticketSale,
+          ticketStatus: 'USED',
+          onSuccess: () => {
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:edit_type_success', {
+                  type: t('ticketSales:ticketSale'),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
+          },
+          onFailure: message => {
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:edit_type_error', {
+                  type: t('ticketSales:ticketSale'),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
+          },
+        }),
+      );
+    }
+  };
 
   const renderTablePassenger = () => {
     if (!showPassengersDetail) {
@@ -96,8 +134,7 @@ export default function ControlTicket() {
           <Typography variant="h5">
             {t('ticketSales:order')} #{ticketSale?.orderCode}
           </Typography>
-          {/* FIXME: Đâu ra cái này */}
-          <TicketStatus status="CANCELLED" />
+          <TicketStatus status={ticketSale.ticketStatus} />
         </Stack>
         <Divider sx={{ margin: '16px 0' }} />
         <Box marginBottom="24px">
@@ -142,14 +179,20 @@ export default function ControlTicket() {
               />
             }
           />
-          <Infomation left={t('ticketSales:created_by')} right={ticketSale.creator} />
+          <Infomation left={t('ticketSales:created_by')} right={UserRoleMappingToLabel[ticketSale.creatorType]} />
           <Infomation left={t('ticketSales:created_on')} right={dayjs(ticketSale?.createdAt).format('MM/DD/YYYY - HH[H]mm')} />
           <Infomation left={t('ticketSales:total')} right={`${ticketSale?.totalPrice}${getAppCurrencySymbol()}`} />
         </Box>
-        {/* FIXME: Lắp api */}
-        <Button fullWidth backgroundButton="rgba(26, 166, 238, 1)">
-          {t('ticketSales:confirm_checkin')}
-        </Button>
+        {ticketSale.ticketStatus === 'PENDING' && (
+          <Button
+            fullWidth
+            backgroundButton="rgba(26, 166, 238, 1)"
+            onClick={handleConfirmCheckIn}
+            loading={queueUpdateTicketStatus.includes(ticketSale._id)}
+          >
+            {t('ticketSales:confirm_checkin')}
+          </Button>
+        )}
       </>
     );
   };

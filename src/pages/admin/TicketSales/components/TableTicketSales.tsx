@@ -10,6 +10,7 @@ import EditIcon from 'components/SvgIcon/EditIcon';
 import { ViewIcon } from 'components/SvgIcon/ViewIcon';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
 import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -17,6 +18,7 @@ import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, Payment
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { RECORDS_PER_PAGE } from 'services/TicketSale/getTicketSales';
 import { selectAuth } from 'store/auth/selectors';
 import { selectTicketSales } from 'store/ticketSales/selectors';
@@ -37,7 +39,7 @@ export const TableTicketSales = () => {
 
   const navigate = useNavigate();
 
-  const { statusGetTicketSales, ticketSales, totalRows, currentPage, currentSearcher } = useAppSelector(selectTicketSales);
+  const { statusGetTicketSales, queueUpdateTicketStatus, ticketSales, totalRows, currentPage, currentSearcher } = useAppSelector(selectTicketSales);
   const { userInfo } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
 
@@ -204,12 +206,41 @@ export const TableTicketSales = () => {
     }
     return (
       <DialogConfirmChangeStatusToCancel
-        isUpdating={false}
+        isUpdating={queueUpdateTicketStatus.includes(openConfirmCancel.rawData._id)}
         onCancel={handleCloseDialogConfirmCancel}
-        // FIXME: Lắp chức năng cancel ticket sale
         onOk={values => {
           console.log(values);
-          handleCloseDialogConfirmCancel();
+          dispatch(
+            ticketSalesActions.updateTicketStatusRequest({
+              orderCode: openConfirmCancel.rawData.orderCode,
+              targetTicket: openConfirmCancel.rawData,
+              ticketStatus: 'CANCELLED',
+              onSuccess: () => {
+                handleCloseDialogConfirmCancel();
+                toast(
+                  <ToastCustom
+                    type="success"
+                    text={t('translation:edit_type_success', {
+                      type: t('ticketSales:ticket').toLowerCase(),
+                    })}
+                  />,
+                  { className: 'toast-success' },
+                );
+              },
+              onFailure: message => {
+                toast(
+                  <ToastCustom
+                    type="error"
+                    text={t('translation:edit_type_error', {
+                      type: t('ticketSales:ticket').toLowerCase(),
+                    })}
+                    description={message}
+                  />,
+                  { className: 'toast-error' },
+                );
+              },
+            }),
+          );
         }}
       />
     );

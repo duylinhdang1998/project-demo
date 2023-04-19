@@ -11,6 +11,7 @@ import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ColumnTicket } from '../../../components/ColumnTicket';
 import { Infomation } from './Infomation';
+import { UserRoleMappingToLabel } from 'services/models/UserRole';
 
 export interface OrderDetailsProps {
   record: ColumnTicket;
@@ -98,7 +99,7 @@ function OrderDetails({ record }: OrderDetailsProps) {
           left={t('ticketSales:createdBy')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {record.createdBy}
+              {UserRoleMappingToLabel[record.rawData.ticketStatus]}
             </Typography>
           }
         />
