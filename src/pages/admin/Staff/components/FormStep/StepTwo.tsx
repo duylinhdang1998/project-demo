@@ -7,15 +7,15 @@ import { ALL_DAYS_OPTION_VALUE, options, SelectDaysOfWeek } from 'components/Sel
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash-es';
 import { Field } from 'models/Field';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toDayjs } from 'utils/toDayjs';
 import { v4 as uuidv4 } from 'uuid';
 
 const fields: Field[] = [
-  { id: uuidv4(), label: 'fromDate', type: 'datetime' },
-  { id: uuidv4(), label: 'toDate', type: 'datetime' },
+  { id: uuidv4(), label: 'fromDate', type: 'datetime', required: true },
+  { id: uuidv4(), label: 'toDate', type: 'datetime', required: true },
 ];
 
 export interface StepTwoValues {
@@ -31,9 +31,27 @@ interface StepTwoProps {
   isLoading?: boolean;
 }
 export default function StepTwo({ onCancel, onNextStep, values, isLoading }: StepTwoProps) {
-  const { control, handleSubmit, reset, setValue, getValues, watch } = useForm<StepTwoValues>();
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    reset,
+    setValue,
+    getValues,
+    watch,
+  } = useForm<StepTwoValues>();
   const days = watch('days');
   const { t } = useTranslation(['staff', 'translation']);
+
+  const messages = useMemo(() => {
+    const fieldKeys: Array<keyof StepTwoValues> = ['days', 'fromDate', 'toDate'];
+    return fieldKeys.reduce<Record<string, string>>((res, key) => {
+      return {
+        ...res,
+        [key]: t('translation:error_required', { name: t(`staff:${key}`).toLowerCase() }),
+      };
+    }, {});
+  }, [t]);
 
   const onSubmit = (values: StepTwoValues) => {
     onNextStep?.(values);
@@ -60,7 +78,7 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
       <Typography color="#0C1132" fontWeight={700} fontSize={14} my="10px">
         {t('staff:active_period')}
       </Typography>
-      <FormVerticle grid control={control} filterKey="staff" fields={fields} />
+      <FormVerticle grid control={control} filterKey="staff" fields={fields} errors={errors} messages={messages} />
       <ComboButton
         isSaving={isLoading}
         textOk={t('translation:next')}

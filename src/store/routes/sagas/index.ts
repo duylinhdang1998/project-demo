@@ -4,8 +4,10 @@ import { watchDeleteRoute } from './watchDeleteRoute';
 import { watchGetRoute } from './watchGetRoute';
 import { watchGetRoutes } from './watchGetRoutes';
 import { watchRemoveDayActive } from './watchRemoveDayActive';
+import { watchUpdateRoutePointPrice } from './watchRoutePointPrice';
 import { watchUpdateActiveDays } from './watchUpdateActiveDays';
-import { watchUpdateTicketPrices } from './watchUpdateTicketPrices';
+import { watchUpdateParticularDayPrice } from './watchUpdateParticularDayPrice';
+import { watchUpdateTrip } from './watchUpdateTrip';
 
 export const routesSagas = [
   watchCreateMultipleStopTrip,
@@ -15,5 +17,7 @@ export const routesSagas = [
   watchDeleteRoute,
   watchRemoveDayActive,
   watchUpdateActiveDays,
-  watchUpdateTicketPrices,
+  watchUpdateParticularDayPrice,
+  watchUpdateTrip,
+  watchUpdateRoutePointPrice,
 ];

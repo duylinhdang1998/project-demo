@@ -47,8 +47,8 @@ export default function AddStaff() {
           location.state?.isConsultSchedule
             ? t('translation:schedule')
             : isEditAction
-            ? t('translation:edit_type', { type: t('staff:staff') })
-            : t('translation:create_new', { type: t('staff:staff') })
+            ? t('translation:edit_type', { type: t('staff:staff').toLowerCase() })
+            : t('translation:create_new', { type: t('staff:staff').toLowerCase() })
         }
         subTitle={t('staff:staff')}
       >

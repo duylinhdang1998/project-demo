@@ -1,14 +1,15 @@
-import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-export const useStyles = makeStyles((theme: Theme) => ({
+export const useStyles = makeStyles(() => ({
   headerText: {
-    color: theme.palette.grey[700],
+    color: 'rgba(133, 140, 147, 1) !important',
     fontSize: '14px !important',
+    fontWeight: '500 !important',
   },
   cell: {
     fontWeight: '700 !important',
-    color: theme.palette.grey[100],
+    color: 'rgba(12, 17, 50, 1) !important',
     fontSize: '14px !important',
+    padding: '8px !important',
   },
 }));

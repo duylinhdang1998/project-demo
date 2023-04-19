@@ -110,7 +110,9 @@ export default function EditPriceTrip({ control, errors, isMulti, index }: EditP
                         rules={{
                           required: {
                             value: true,
-                            message: t('translation:error_required', { name: t('routers:prices') }),
+                            message: t('translation:error_required', {
+                              name: t('routers:prices').toLowerCase(),
+                            }),
                           },
                         }}
                       />
@@ -124,7 +126,9 @@ export default function EditPriceTrip({ control, errors, isMulti, index }: EditP
       </Table>
       {!!error && (
         <Typography component="p" className={classes.error} fontSize={12}>
-          {t('translation:error_required', { name: t('routers:prices') })}
+          {t('translation:error_required', {
+            name: t('routers:prices').toLowerCase(),
+          })}
         </Typography>
       )}
     </TableContainer>

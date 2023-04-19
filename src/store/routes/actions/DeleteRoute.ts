@@ -7,9 +7,9 @@ export type DeleteRouteRequest = DeleteRoute & {
 };
 
 export interface DeleteRouteSuccess {
-  id: Route['_id'];
+  routeCode: Route['routeCode'];
 }
 
 export interface DeleteRouteFailure {
-  id: Route['_id'];
+  routeCode: Route['routeCode'];
 }

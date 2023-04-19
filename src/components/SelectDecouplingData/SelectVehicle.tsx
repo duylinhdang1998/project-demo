@@ -15,7 +15,7 @@ export interface SelectVehicleProps {
   isDisabled?: boolean;
   filterKey?: string;
   label: string;
-  vehicle: Vehicle;
+  vehicle: Vehicle | null;
   onChange: (vehicle: Vehicle | undefined) => void;
 }
 
@@ -54,7 +54,7 @@ export const SelectVehicle = ({
             <SingleSelectDecouplingData
               isDisabled={isDisabled}
               isSearchable
-              value={vehicle}
+              value={vehicle ?? undefined}
               isClearable={!isRequired}
               service={async () => {
                 try {

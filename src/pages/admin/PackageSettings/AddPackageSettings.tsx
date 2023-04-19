@@ -44,7 +44,7 @@ export default function AddPackageSettings() {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
         ...res,
-        [key]: t('translation:error_required', { name: key }),
+        [key]: t('translation:error_required', { name: t(`packageSettings:${key}`).toLowerCase() }),
       };
     }, {});
   }, [t]);
@@ -57,10 +57,11 @@ export default function AddPackageSettings() {
   const handleCancel = () => setOpenDialog(true);
 
   const onSubmit = (values: Values) => {
-    if (isEditAction && packageSettingId) {
+    if (isEditAction && packageSetting && packageSettingId) {
       dispatch(
         packageSettingsActions.updatePackageSettingRequest({
           id: packageSettingId,
+          targetPackageSetting: packageSetting,
           data: {
             title: values.title,
             description: values.description,
@@ -69,16 +70,24 @@ export default function AddPackageSettings() {
             toast(
               <ToastCustom
                 type="error"
-                text={t('translation:edit_type_error', { type: t('packageSettings:package_settings') })}
+                text={t('translation:edit_type_error', {
+                  type: t('packageSettings:package_settings').toLowerCase(),
+                })}
                 description={message}
               />,
               { className: 'toast-error' },
             );
           },
           onSuccess: () => {
-            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('packageSettings:package_settings') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:edit_type_success', {
+                  type: t('packageSettings:package_settings').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             navigate('/admin/package-settings', { replace: true });
           },
         }),
@@ -94,16 +103,22 @@ export default function AddPackageSettings() {
             toast(
               <ToastCustom
                 type="error"
-                text={t('translation:add_type_error', { type: t('packageSettings:package_settings') })}
+                text={t('translation:add_type_error', { type: t('packageSettings:package_settings').toLowerCase() })}
                 description={message}
               />,
               { className: 'toast-error' },
             );
           },
           onSuccess: () => {
-            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('packageSettings:package_settings') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:add_type_success', {
+                  type: t('packageSettings:package_settings').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             navigate('/admin/package-settings');
           },
         }),
@@ -145,8 +160,8 @@ export default function AddPackageSettings() {
           subTitleHeader={t('packageSettings:package_settings')}
           activeSideBarHeader={
             isEditAction
-              ? t('translation:edit_type', { type: t('packageSettings:package_settings_lowercase') })
-              : t('translation:create_new', { type: t('packageSettings:package_settings_lowercase') })
+              ? t('translation:edit_type', { type: t('packageSettings:package_settings').toLowerCase() })
+              : t('translation:create_new', { type: t('packageSettings:package_settings').toLowerCase() })
           }
         />
         <Box padding="24px">
@@ -155,7 +170,7 @@ export default function AddPackageSettings() {
             <Box width="100%" display="flex" justifyContent="center">
               <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
                 <Typography color="#0c1132" fontWeight={700}>
-                  {t('translation:create_new', { type: t('packageSettings:package_settings_lowercase') })}
+                  {t('translation:create_new', { type: t('packageSettings:package_settings').toLowerCase() })}
                 </Typography>
                 <Divider sx={{ margin: '16px 0' }} />
                 <form onSubmitCapture={handleSubmit(onSubmit)}>
@@ -172,7 +187,7 @@ export default function AddPackageSettings() {
         </Box>
         <DialogConfirm
           openDialog={openDialog}
-          title={t('translation:cancel_type', { type: t('packageSettings:package_settings_lowercase') })}
+          title={t('translation:cancel_type', { type: t('packageSettings:package_settings').toLowerCase() })}
           subTitle={t('translation:leave_page')}
           onClose={handleClose}
         />

@@ -4,7 +4,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useTranslation } from 'react-i18next';
 import { DialogTitle } from 'components/DialogTitle/DialogTitle';
 
-export const Title = ({ onClose, route }: DialogMultiStopTripDetailProps) => {
+export const Title = ({ onClose, route }: Pick<DialogMultiStopTripDetailProps, 'route' | 'onClose'>) => {
   const { t } = useTranslation(['routers']);
 
   return (

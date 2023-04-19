@@ -213,7 +213,7 @@ export const staffsSlice = createSlice({
       const { id } = action.payload;
       return {
         ...state,
-        staffs: state.staffs.filter(office => office._id !== id),
+        staffs: state.staffs.filter(staff => staff._id !== id),
         queueDeleteStaff: state.queueDeleteStaff.filter(item => item !== id),
       };
     },

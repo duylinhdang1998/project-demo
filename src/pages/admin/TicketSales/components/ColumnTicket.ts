@@ -6,10 +6,13 @@ export interface ColumnTicket {
   firstName: PassengerInTicketSale['firstName'];
   departurePoint: TicketSale['departurePoint'];
   arrivalPoint: TicketSale['arrivalPoint'];
-  dateTime: Date;
+  departureTime: TicketSale['departureTime'];
   totalPax: number;
   paymentStatus: TicketSale['paymentStatus'];
   orderId: TicketSale['orderCode'];
   createdBy: TicketSale['creator'];
+  createdOn: TicketSale['createdAt'];
+  // FIXME: BE chưa có field này
+  cancelReason?: string;
   rawData: TicketSale;
 }

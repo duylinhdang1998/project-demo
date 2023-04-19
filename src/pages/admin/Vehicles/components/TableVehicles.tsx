@@ -199,16 +199,22 @@ function TableVehicles() {
                     vehiclesActions.deleteVehicleRequest({
                       id: openDeleteVehicle._id,
                       onSuccess: () => {
-                        toast(<ToastCustom type="success" text={t('translation:delete_type_success', { type: t('vehicles:vehicle') })} />, {
-                          className: 'toast-success',
-                        });
+                        toast(
+                          <ToastCustom
+                            type="success"
+                            text={t('translation:delete_type_success', {
+                              type: t('vehicles:vehicle').toLowerCase(),
+                            })}
+                          />,
+                          { className: 'toast-success' },
+                        );
                         handleCloseDialogDelete();
                       },
                       onFailure: message => {
                         toast(
                           <ToastCustom
                             type="error"
-                            text={t('translation:delete_type_error', { type: t('vehicles:vehicle') })}
+                            text={t('translation:delete_type_error', { type: t('vehicles:vehicle').toLowerCase() })}
                             description={message}
                           />,
                           { className: 'toast-error' },

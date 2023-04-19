@@ -3,6 +3,7 @@ import { UpdateProfile } from 'services/Company/updateProfile';
 
 export interface UpdateProfileRequest {
   data: UpdateProfile;
+  targetProfile: Profile;
   onSuccess: () => void;
   onFailure: OnFailureWithMessageOfStatusCode;
 }

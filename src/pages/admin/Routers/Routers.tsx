@@ -69,7 +69,7 @@ export default function Routers() {
       routesActions.getRoutesRequest({
         page: 0,
         searcher: {
-          departurePoints: {
+          departurePoint: {
             value: values.departurePoints?.value,
             operator: 'eq',
           },

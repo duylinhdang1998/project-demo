@@ -70,7 +70,7 @@ function FormAddVehicle() {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
         ...res,
-        [key]: t('translation:error_required', { name: key }),
+        [key]: t('translation:error_required', { name: t(`vehicles:${key}`).toLowerCase() }),
       };
     }, {});
   }, [t]);
@@ -83,21 +83,35 @@ function FormAddVehicle() {
   const handleCancel = () => setOpen(true);
 
   const onSubmit = (formValues: Values) => {
-    if (isEditAction && vehicleId) {
+    if (isEditAction && vehicle && vehicleId) {
       dispatch(
         vehiclesActions.updateVehicleRequest({
           data: formValues,
           id: vehicleId,
+          targetVehicle: vehicle,
           onSuccess: () => {
-            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('vehicles:vehicle') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:edit_type_success', {
+                  type: t('vehicles:vehicle').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             navigate(isAgent ? '/agent/vehicles' : '/admin/vehicles', { replace: true });
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('vehicles:vehicle') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:edit_type_error', {
+                  type: t('vehicles:vehicle').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );
@@ -106,15 +120,28 @@ function FormAddVehicle() {
         vehiclesActions.createVehicleRequest({
           data: formValues,
           onSuccess: () => {
-            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('vehicles:vehicle') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:add_type_success', {
+                  type: t('vehicles:vehicle').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             navigate(isAgent ? '/agent/vehicles' : '/admin/vehicles', { replace: true });
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('vehicles:vehicle') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:add_type_error', {
+                  type: t('vehicles:vehicle').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );
@@ -213,7 +240,7 @@ function FormAddVehicle() {
       </Stack>
       <DialogConfirm
         openDialog={open}
-        title={t('translation:cancel_type', { type: t('vehicles:vehicle') })}
+        title={t('translation:cancel_type', { type: t('vehicles:vehicle').toLowerCase() })}
         subTitle={t('translation:leave_page')}
         onClose={handleClose}
       />

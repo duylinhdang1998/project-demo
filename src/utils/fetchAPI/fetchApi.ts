@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import env from 'env';
 
 interface Configure {
   configure: AxiosRequestConfig;
@@ -42,6 +43,9 @@ export default class ConfigureAxios {
         const request = this.axiosInstance({
           ...requestConfig,
           cancelToken: source.token,
+          headers: {
+            'X-Host': env.isDevMode ? 'alibaba' : window.location.host.replace(env.baseCmsDomain, ''),
+          },
         });
         if (!!cancel) {
           // @ts-ignore

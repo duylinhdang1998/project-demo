@@ -151,10 +151,13 @@ function TablePackageSettings() {
                       id: openDeletePackageSetting._id,
                       onSuccess: () => {
                         toast(
-                          <ToastCustom type="success" text={t('translation:delete_type_success', { type: t('packageSettings:package_settings') })} />,
-                          {
-                            className: 'toast-success',
-                          },
+                          <ToastCustom
+                            type="success"
+                            text={t('translation:delete_type_success', {
+                              type: t('packageSettings:package_settings').toLowerCase(),
+                            })}
+                          />,
+                          { className: 'toast-success' },
                         );
                         handleCloseDialogDelete();
                       },
@@ -162,7 +165,9 @@ function TablePackageSettings() {
                         toast(
                           <ToastCustom
                             type="error"
-                            text={t('translation:delete_type_error', { type: t('packageSettings:package_settings') })}
+                            text={t('translation:delete_type_error', {
+                              type: t('packageSettings:package_settings').toLowerCase(),
+                            })}
                             description={message}
                           />,
                           { className: 'toast-error' },

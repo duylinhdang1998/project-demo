@@ -1,14 +1,17 @@
-import { Divider, Typography, useTheme } from '@mui/material';
+import { Divider, Stack, Typography, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import { MapPinIcon } from 'assets';
+import QRCode from 'react-qr-code';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
+import { TicketStatus } from 'components/TicketStatus/TicketStatus';
 import dayjs from 'dayjs';
 import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ColumnTicket } from '../../../components/ColumnTicket';
 import { Infomation } from './Infomation';
+import { UserRoleMappingToLabel } from 'services/models/UserRole';
 
 export interface OrderDetailsProps {
   record: ColumnTicket;
@@ -20,10 +23,16 @@ function OrderDetails({ record }: OrderDetailsProps) {
 
   return (
     <Box padding="24px" bgcolor="#fff" borderRadius="4px">
-      <Typography fontSize={16} color={theme.palette.grey[100]} fontWeight="700" pb="24px">
-        {t('ticketSales:order_details')}
-      </Typography>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" pb="24px">
+        <Typography fontSize={16} color={theme.palette.grey[100]} fontWeight="700">
+          {t('ticketSales:order')} #{record.rawData.orderCode}
+        </Typography>
+        <TicketStatus status="USED" />
+      </Stack>
       <Divider sx={{ borderColor: '#D7DADC' }} />
+      <Box mt="24px" sx={{ maxWidth: 120, maxHeight: 120, marginLeft: 'auto', marginRight: 'auto' }}>
+        <QRCode size={120} value={record.rawData.orderCode} />
+      </Box>
       <Box py="24px">
         <Infomation
           left={t('ticketSales:order_id')}
@@ -53,16 +62,18 @@ function OrderDetails({ record }: OrderDetailsProps) {
           left={t('ticketSales:trip')}
           right={
             <>
-              <TextWithIcon text={record.departurePoint} icon={MapPinIcon} color="#1AA6EE" typography={{ fontSize: '14px' }} />
+              <Box mb="8px">
+                <TextWithIcon text={record.departurePoint} icon={MapPinIcon} color="#1AA6EE" typography={{ fontSize: '14px' }} />
+              </Box>
               <TextWithIcon text={record.arrivalPoint} icon={MapPinIcon} color="#1AA6EE" typography={{ fontSize: '14px' }} />
             </>
           }
         />
         <Infomation
-          left={t('ticketSales:dateTime')}
+          left={t('ticketSales:departureTime')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dayjs(record.dateTime).format('MM/DD/YYYY - HH:mm')}
+              {dayjs(record.departureTime).format('MM/DD/YYYY - HH[H]mm')}
             </Typography>
           }
         />
@@ -88,7 +99,15 @@ function OrderDetails({ record }: OrderDetailsProps) {
           left={t('ticketSales:createdBy')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {record.createdBy}
+              {UserRoleMappingToLabel[record.rawData.ticketStatus]}
+            </Typography>
+          }
+        />
+        <Infomation
+          left={t('ticketSales:reason')}
+          right={
+            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+              {record.cancelReason}
             </Typography>
           }
         />

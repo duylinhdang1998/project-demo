@@ -5,10 +5,11 @@ export interface Content {
   city: string;
   content: string;
   createdAt: string;
-  email: string;
+  email?: string;
   footerText: string;
-  phone: string;
-  postalAddress: string;
+  phone?: string;
+  postalAddress?: string;
   updatedAt: string;
-  zipCode: string;
+  zipCode?: string;
+  sidebar?: string;
 }

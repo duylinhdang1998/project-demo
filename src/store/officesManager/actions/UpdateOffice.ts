@@ -2,6 +2,7 @@ import { Office } from 'services/models/Office';
 import { UpdateOffice } from 'services/OfficesManager/Company/updateOffice';
 
 export type UpdateOfficeRequest = UpdateOffice & {
+  targetOffice: Office;
   onSuccess: () => void;
   onFailure: OnFailureWithMessageOfStatusCode;
 };

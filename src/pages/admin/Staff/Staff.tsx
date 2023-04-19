@@ -66,10 +66,10 @@ export default function Staff() {
 
   useEffect(() => {
     reset({
-      phone: currentSearcher.phone?.value as string | undefined,
-      name: currentSearcher.lastName?.value as string | undefined,
+      phone: !Array.isArray(currentSearcher.phone) ? currentSearcher.phone?.value : undefined,
+      name: !Array.isArray(currentSearcher.lastName) ? currentSearcher.lastName?.value : undefined,
       role: {
-        role: currentSearcher.role?.value as UserRole | undefined,
+        role: !Array.isArray(currentSearcher.role) ? currentSearcher.role?.value : undefined,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -7,7 +7,7 @@ import { isEmpty } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
 import { Control, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Route } from 'services/models/Route';
+import { Route, RoutePoint } from 'services/models/Route';
 import { Vehicle } from 'services/models/Vehicle';
 import { toDayjs } from 'utils/toDayjs';
 import EditPriceTrip from '../EditPriceTrip';
@@ -15,19 +15,18 @@ import EditPriceTrip from '../EditPriceTrip';
 const fieldKeys: Array<keyof Route | string> = ['vehicle', 'departurePoint', 'arrivalPoint', 'departureTime', 'arrivalDuration'];
 
 export interface StepOneValuesForOneStopTrip {
-  vehicle: Vehicle;
+  vehicle: Vehicle | null;
   departurePoint: string;
   arrivalPoint: string;
-  // FIXME: Sửa format thành MM-DD-YYYY HH:mm
   departureTime: dayjs.Dayjs;
-  // FIXME: Chuyển sang datepicker antd
-  arrivalDuration: number;
+  arrivalDuration: dayjs.Dayjs;
   ecoAdult: number;
   vipAdult: number;
   ecoStudent: number;
   vipStudent: number;
   ecoChildren: number;
   vipChildren: number;
+  routePointId?: RoutePoint['_id'];
 }
 
 export interface StepOneProps {
@@ -69,7 +68,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
         ...res,
-        [key]: t('translation:error_required', { name: t(`routers:${key}`) }),
+        [key]: t('translation:error_required', { name: t(`routers:${key}`).toLowerCase() }),
       };
     }, {});
   }, [t]);
@@ -80,6 +79,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
         ...values,
         arrivalDuration: values.arrivalDuration,
         departureTime: toDayjs({ value: values.departureTime, format: 'MM-DD-YYY HH:mm' }),
+        routePointId: values.routePointId,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -140,7 +140,15 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             },
             required: true,
           },
-          { id: 'arrivalDuration', label: 'arrivalDuration', type: 'number', required: true },
+          {
+            id: 'arrivalDuration',
+            label: 'arrivalDuration',
+            type: 'datetime',
+            format: 'HH:mm',
+            showTime: true,
+            picker: 'time',
+            required: true,
+          },
         ]}
       />
       <Typography fontSize={14} color="#45485e" fontWeight={500} py="16px">

@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const GeneralInfomation = ({ route }: DialogMultiStopTripDetailProps) => {
+export const GeneralInfomation = ({ route }: Pick<DialogMultiStopTripDetailProps, 'route'>) => {
   const classes = useStyles();
   const { t } = useTranslation(['routers']);
 

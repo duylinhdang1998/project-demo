@@ -170,14 +170,26 @@ function TableStaff() {
                     staffsActions.deleteStaffRequest({
                       id: openDeleteStaff._id,
                       onSuccess: () => {
-                        toast(<ToastCustom type="success" text={t('translation:delete_type_success', { type: t('staff:staff') })} />, {
-                          className: 'toast-success',
-                        });
+                        toast(
+                          <ToastCustom
+                            type="success"
+                            text={t('translation:delete_type_success', {
+                              type: t('staff:staff').toLowerCase(),
+                            })}
+                          />,
+                          { className: 'toast-success' },
+                        );
                         handleCloseDialogDelete();
                       },
                       onFailure: message => {
                         toast(
-                          <ToastCustom type="error" text={t('translation:delete_type_error', { type: t('staff:staff') })} description={message} />,
+                          <ToastCustom
+                            type="error"
+                            text={t('translation:delete_type_error', {
+                              type: t('staff:staff').toLowerCase(),
+                            })}
+                            description={message}
+                          />,
                           { className: 'toast-error' },
                         );
                       },

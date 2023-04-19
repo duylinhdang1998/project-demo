@@ -13,18 +13,34 @@ export const AdminRoutes: RouteObject[] = [
   },
   // Ticket sales
   {
-    path: 'ticket-sales',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.TicketSales />
-      </RequiredAuth>
-    ),
-  },
-  {
     path: 'ticket-sales/:orderCode',
     element: (
       <RequiredAuth role="admin">
         <Page.DetailTicketPage />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'ticket-sales/create-ticket-order',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.Agent.SelectTripOnCreateTicketSale />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'ticket-sales/traveller-contact-details',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.Agent.TicketDetailOnCreateTicketSale />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'ticket-sales',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.TicketSales />
       </RequiredAuth>
     ),
   },

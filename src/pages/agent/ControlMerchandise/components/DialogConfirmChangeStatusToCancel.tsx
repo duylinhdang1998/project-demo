@@ -4,7 +4,7 @@ import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-export interface DialogConfirmChangeStatusToDeliveried {
+export interface DialogConfirmChangeStatusToCancel {
   onOk: (values: FormValues) => void;
   onCancel: () => void;
   isUpdating: boolean;
@@ -14,7 +14,7 @@ interface FormValues {
   confirm_description_to_change_cancel: string;
 }
 
-export const DialogConfirmChangeStatusToCancel = ({ isUpdating, onCancel, onOk }: DialogConfirmChangeStatusToDeliveried) => {
+export const DialogConfirmChangeStatusToCancel = ({ isUpdating, onCancel, onOk }: DialogConfirmChangeStatusToCancel) => {
   const { t } = useTranslation(['packageSales', 'translation']);
 
   const {
@@ -48,7 +48,7 @@ export const DialogConfirmChangeStatusToCancel = ({ isUpdating, onCancel, onOk }
           errors={errors}
           messages={{
             confirm_description_to_change_cancel: t('translation:error_required', {
-              name: t('packageSales:reason'),
+              name: t('packageSales:reason').toLowerCase(),
             }),
           }}
         />

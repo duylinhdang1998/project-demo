@@ -1,63 +1,83 @@
-import { Box, Typography } from '@mui/material';
+import CancelPresentationOutlinedIcon from '@mui/icons-material/CancelPresentationOutlined';
+import { Box } from '@mui/material';
 import { ColumnsType } from 'antd/es/table';
 import { MapPinIcon } from 'assets';
+import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
+import { AntTableColumnDisplayAsTypograph } from 'components/AntTableColumnTitle/AntTableColumnDisplayAsTypograph';
+import { AntTableColumnTitle } from 'components/AntTableColumnTitle/AntTableColumnTitle';
+import EditIcon from 'components/SvgIcon/EditIcon';
+import { ViewIcon } from 'components/SvgIcon/ViewIcon';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
 import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { RECORDS_PER_PAGE } from 'services/TicketSale/getTicketSales';
 import { selectAuth } from 'store/auth/selectors';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
+import { v4 } from 'uuid';
 import { ticketSaleModelToColumnTicket } from '../utils/ticketSaleModelToColumnTicket';
 import { ColumnTicket } from './ColumnTicket';
+import { DialogConfirmChangeStatusToCancel } from './DialogConfirmChangeStatusToCancel';
 import { useStyles } from './styles';
 
 export const TableTicketSales = () => {
   const { t } = useTranslation(['ticketSales', 'translation']);
   const classes = useStyles();
 
+  const [openConfirmCancel, setOpenConfirmCancel] = useState<ColumnTicket | null>(null);
+
   const navigate = useNavigate();
 
-  const { statusGetTicketSales, ticketSales, totalRows, currentPage, currentSearcher } = useAppSelector(selectTicketSales);
+  const { statusGetTicketSales, queueUpdateTicketStatus, ticketSales, totalRows, currentPage, currentSearcher } = useAppSelector(selectTicketSales);
   const { userInfo } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
 
   const isAgent = userInfo?.role === 'agent';
+
+  const handleOpenDialogConfirmCancel = (row: ColumnTicket) => {
+    setOpenConfirmCancel(row);
+  };
+
+  const handleCloseDialogConfirmCancel = () => {
+    setOpenConfirmCancel(null);
+  };
 
   const columns: ColumnsType<ColumnTicket> = useMemo(() => {
     return [
       {
         key: 'passengers.lastName',
         dataIndex: 'passengers.lastName',
-        width: 90,
-        title: () => t('ticketSales:lastName'),
+        width: 85,
+        title: () => <AntTableColumnTitle>{t('ticketSales:lastName')}</AntTableColumnTitle>,
         render: (_, row) => {
-          return <Typography fontSize="14px">{row.lastName}</Typography>;
+          return <AntTableColumnDisplayAsTypograph>{row.lastName}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
         key: 'passengers.firstName',
         dataIndex: 'passengers.firstName',
-        width: 90,
-        title: () => t('ticketSales:firstName'),
+        width: 88,
+        title: () => <AntTableColumnTitle>{t('ticketSales:firstName')}</AntTableColumnTitle>,
         render: (_, row) => {
-          return <Typography fontSize="14px">{row.firstName}</Typography>;
+          return <AntTableColumnDisplayAsTypograph>{row.firstName}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
         key: 'trip',
         dataIndex: 'trip',
-        width: 180,
-        title: () => t('ticketSales:trip'),
+        width: 140,
+        title: () => <AntTableColumnTitle>{t('ticketSales:trip')}</AntTableColumnTitle>,
         render: (_, row) => {
           return (
             <>
@@ -68,30 +88,30 @@ export const TableTicketSales = () => {
         },
       },
       {
-        key: 'createdAt',
-        dataIndex: 'createdAt',
-        title: () => t('ticketSales:dateTime'),
-        width: 140,
+        key: 'departureTime',
+        dataIndex: 'departureTime',
+        title: () => <AntTableColumnTitle>{t('ticketSales:departureTime')}</AntTableColumnTitle>,
+        width: 145,
         sorter: () => 0,
         render: (_, row) => {
-          return <Typography>{dayjs(row.dateTime).format('MM/DD/YYYY - HH:mm')}</Typography>;
+          return <AntTableColumnDisplayAsTypograph>{dayjs(row.departureTime).format('MM/DD/YYYY - HH[H]mm')}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
         key: 'totalPax',
         dataIndex: 'totalPax',
-        title: () => t('ticketSales:paxCount'),
-        width: 120,
+        title: () => <AntTableColumnTitle>{t('ticketSales:paxCount')}</AntTableColumnTitle>,
+        width: 130,
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
-          return <Typography>{row.rawData.totalPax}</Typography>;
+          return <AntTableColumnDisplayAsTypograph>{row.rawData.totalPax}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
         key: 'paymentStatus',
         dataIndex: 'paymentStatus',
-        title: () => t('ticketSales:payment_status'),
+        title: () => <AntTableColumnTitle>{t('ticketSales:payment_status')}</AntTableColumnTitle>,
         width: 120,
         align: 'center',
         sorter: () => 0,
@@ -108,27 +128,67 @@ export const TableTicketSales = () => {
       {
         key: 'orderCode',
         dataIndex: 'orderCode',
-        title: () => t('ticketSales:order_id'),
-        width: 80,
+        title: () => <AntTableColumnTitle>{t('ticketSales:order_id')}</AntTableColumnTitle>,
+        width: 100,
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
-          return <Typography>{row.orderId}</Typography>;
+          return <AntTableColumnDisplayAsTypograph>{row.orderId}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
         key: 'creator',
         dataIndex: 'creator',
-        title: () => t('ticketSales:createdBy'),
+        title: () => <AntTableColumnTitle>{t('ticketSales:createdBy')}</AntTableColumnTitle>,
         width: 120,
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
-          return <Typography>{row.createdBy}</Typography>;
+          return <AntTableColumnDisplayAsTypograph>{row.createdBy}</AntTableColumnDisplayAsTypograph>;
         },
       },
+      {
+        key: 'action',
+        title: () => <AntTableColumnTitle>{t('translation:action')}</AntTableColumnTitle>,
+        render: (_, row) => (
+          <ActionTable
+            actions={[
+              {
+                id: v4(),
+                label: 'detail',
+                icon: <ViewIcon />,
+                onClick(record) {
+                  const nextUrl = isAgent ? '/agent/ticket-sales/' : '/admin/ticket-sales/';
+                  navigate(nextUrl + record.rawData.orderCode, { state: record });
+                },
+              },
+              {
+                id: v4(),
+                label: 'edit',
+                icon: <EditIcon />,
+                onClick: () => {
+                  // FIXME: Lắp chức năng edit ticket sale
+                  console.log('EDIT TICKET SALE');
+                },
+              },
+              {
+                id: v4(),
+                label: 'cancel',
+                icon: <CancelPresentationOutlinedIcon color="error" />,
+                onClick: () => {
+                  handleOpenDialogConfirmCancel(row);
+                },
+                color: '#FF2727',
+              },
+            ]}
+            row={row}
+          />
+        ),
+        align: 'center',
+        width: 70,
+      },
     ];
-  }, [t]);
+  }, [isAgent, navigate, t]);
 
   const dataSource: ColumnTicket[] = useMemo(() => {
     const result: ColumnTicket[] = [];
@@ -140,21 +200,59 @@ export const TableTicketSales = () => {
     return result;
   }, [ticketSales]);
 
+  const renderDialogConfirmCancel = () => {
+    if (!openConfirmCancel) {
+      return null;
+    }
+    return (
+      <DialogConfirmChangeStatusToCancel
+        isUpdating={queueUpdateTicketStatus.includes(openConfirmCancel.rawData._id)}
+        onCancel={handleCloseDialogConfirmCancel}
+        onOk={values => {
+          console.log(values);
+          dispatch(
+            ticketSalesActions.updateTicketStatusRequest({
+              orderCode: openConfirmCancel.rawData.orderCode,
+              targetTicket: openConfirmCancel.rawData,
+              ticketStatus: 'CANCELLED',
+              onSuccess: () => {
+                handleCloseDialogConfirmCancel();
+                toast(
+                  <ToastCustom
+                    type="success"
+                    text={t('translation:edit_type_success', {
+                      type: t('ticketSales:ticket').toLowerCase(),
+                    })}
+                  />,
+                  { className: 'toast-success' },
+                );
+              },
+              onFailure: message => {
+                toast(
+                  <ToastCustom
+                    type="error"
+                    text={t('translation:edit_type_error', {
+                      type: t('ticketSales:ticket').toLowerCase(),
+                    })}
+                    description={message}
+                  />,
+                  { className: 'toast-error' },
+                );
+              },
+            }),
+          );
+        }}
+      />
+    );
+  };
+
   return (
     <Box my="30px">
       <AntTable
         loading={statusGetTicketSales === 'loading'}
         columns={columns}
         dataSource={dataSource}
-        rowKey={record => record._id}
-        onRow={record => {
-          return {
-            onClick: () => {
-              const nextUrl = isAgent ? '/agent/ticket-sales/' : '/admin/ticket-sales/';
-              navigate(nextUrl + record.rawData.orderCode, { state: record });
-            },
-          };
-        }}
+        rowKey={() => v4()}
         pagination={{
           total: totalRows,
           showLessItems: true,
@@ -173,6 +271,7 @@ export const TableTicketSales = () => {
         }}
         rowClassName={classes.cursor}
       />
+      {renderDialogConfirmCancel()}
     </Box>
   );
 };

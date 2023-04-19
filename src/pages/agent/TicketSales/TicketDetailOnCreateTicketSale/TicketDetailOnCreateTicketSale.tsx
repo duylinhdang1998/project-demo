@@ -19,6 +19,7 @@ import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { Passengers } from './components/Passengers';
 import { PaymentMethod } from './components/PaymentMethod';
+import { PaymentStatus } from './components/PaymentStatus';
 import { Reservation } from './components/Reservation';
 
 export interface Passenger {
@@ -33,6 +34,7 @@ export interface TicketDetailFormValues {
   method: PaymentGateway;
   passengers: Passenger[];
   accept_term: boolean;
+  isActive: boolean;
 }
 
 const fieldKeys = ['email', 'method'];
@@ -55,6 +57,7 @@ export const TicketDetailOnCreateTicketSale = () => {
     watch,
   } = useForm<TicketDetailFormValues>({
     defaultValues: {
+      isActive: false,
       method: 'PAYPAL',
       passengers: [],
     },
@@ -64,6 +67,7 @@ export const TicketDetailOnCreateTicketSale = () => {
     name: 'passengers',
   });
   const method = watch('method');
+  const isActive = watch('isActive');
 
   const isAgent = userInfo?.role === 'agent';
   const route = location.state as RouteOfTicketSale | undefined;
@@ -71,7 +75,7 @@ export const TicketDetailOnCreateTicketSale = () => {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
         ...res,
-        [key]: t('translation:error_required', { name: key }),
+        [key]: t('translation:error_required', { name: t(`ticketSales:${key}`).toLowerCase() }),
       };
     }, {});
   }, [t]);
@@ -101,7 +105,7 @@ export const TicketDetailOnCreateTicketSale = () => {
               <ToastCustom
                 type="success"
                 text={t('translation:add_type_success', {
-                  type: t('ticketSales:ticket'),
+                  type: t('ticketSales:ticket').toLowerCase(),
                 })}
               />,
               { className: 'toast-success' },
@@ -113,7 +117,7 @@ export const TicketDetailOnCreateTicketSale = () => {
               <ToastCustom
                 type="error"
                 text={t('translation:add_type_error', {
-                  type: t('ticketSales:ticket'),
+                  type: t('ticketSales:ticket').toLowerCase(),
                 })}
                 description={message}
               />,
@@ -137,14 +141,33 @@ export const TicketDetailOnCreateTicketSale = () => {
             <Grid item xs={12} md={8}>
               <Typography variant="h5">{t('ticketSales:traveller_contact_details')}</Typography>
               <Divider sx={{ margin: '16px 0' }} />
-              <Passengers append={append} remove={remove} control={control} errors={errors} passengers={fields} />
+              <Passengers append={append} remove={remove} control={control} errors={errors} passengers={fields} route={route} />
               <Divider sx={{ margin: '16px 0' }} />
               <FormVerticle
                 control={control}
                 errors={errors}
                 messages={messages}
                 filterKey="ticketSales"
-                fields={[{ id: 'email', label: 'email', type: 'email', required: true }]}
+                fields={[
+                  {
+                    id: 'email',
+                    label: 'email',
+                    type: 'email',
+                    required: true,
+                    description: t('ticketSales:email_field_description'),
+                  },
+                ]}
+              />
+              <Divider sx={{ margin: '16px 0' }} />
+              <PaymentStatus
+                control={control}
+                errors={errors}
+                messages={messages}
+                label="isActive"
+                isActive={isActive}
+                onChange={value => {
+                  setValue('isActive', value);
+                }}
               />
               <Divider sx={{ margin: '16px 0' }} />
               <PaymentMethod

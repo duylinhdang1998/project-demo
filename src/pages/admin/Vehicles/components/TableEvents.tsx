@@ -186,14 +186,26 @@ function TableEvents() {
                     vehicleEventsActions.deleteVehicleEventRequest({
                       id: openDeleteVehicleEvent._id,
                       onSuccess: () => {
-                        toast(<ToastCustom type="success" text={t('translation:delete_type_success', { type: t('vehicles:event') })} />, {
-                          className: 'toast-success',
-                        });
+                        toast(
+                          <ToastCustom
+                            type="success"
+                            text={t('translation:delete_type_success', {
+                              type: t('vehicles:event').toLowerCase(),
+                            })}
+                          />,
+                          { className: 'toast-success' },
+                        );
                         handleCloseDialogDelete();
                       },
                       onFailure: message => {
                         toast(
-                          <ToastCustom type="error" text={t('translation:delete_type_error', { type: t('vehicles:event') })} description={message} />,
+                          <ToastCustom
+                            type="error"
+                            text={t('translation:delete_type_error', {
+                              type: t('vehicles:event').toLowerCase(),
+                            })}
+                            description={message}
+                          />,
                           { className: 'toast-error' },
                         );
                       },

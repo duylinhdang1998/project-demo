@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Searcher } from 'services/@types/SearchParams';
-import { Route } from 'services/models/Route';
+import { Route, RoutePoint } from 'services/models/Route';
 import { CreateMultipleStopTripFailure, CreateMultipleStopTripRequest, CreateMultipleStopTripSuccess } from './actions/CreateMultipleStopTrip';
 import { CreateOneStopTripFailure, CreateOneStopTripRequest, CreateOneStopTripSuccess } from './actions/CreateOneStopTrip';
 import { DeleteRouteFailure, DeleteRouteRequest, DeleteRouteSuccess } from './actions/DeleteRoute';
@@ -8,7 +8,13 @@ import { GetRouteFailure, GetRouteRequest, GetRouteSuccess } from './actions/Get
 import { GetRoutesFailure, GetRoutesRequest, GetRoutesSuccess } from './actions/GetRoutes';
 import { RemoveDayActiveFailure, RemoveDayActiveRequest, RemoveDayActiveSuccess } from './actions/RemoveDayActive';
 import { UpdateActiveDaysFailure, UpdateActiveDaysRequest, UpdateActiveDaysSuccess } from './actions/UpdateActiveDays';
-import { UpdateTicketPricesFailure, UpdateTicketPricesRequest, UpdateTicketPricesSuccess } from './actions/UpdateTicketPrices';
+import { UpdateTripFailure, UpdateTripRequest, UpdateTripSuccess } from './actions/UpdateTrip';
+import {
+  UpdateParticularDayPriceFailure,
+  UpdateParticularDayPriceRequest,
+  UpdateParticularDayPriceSuccess,
+} from './actions/UpdateParticularDayPrice';
+import { UpdateRoutePointPriceFailure, UpdateRoutePointPriceRequest, UpdateRoutePointPriceSuccess } from './actions/UpdateRoutePointPrice';
 
 interface RoutesManagerState {
   statusGetRoutes: Status;
@@ -17,8 +23,9 @@ interface RoutesManagerState {
   statusUpdateRoute: Status;
   statusRemoveDayActive: Status;
   statusUpdateDayActive: Status;
-  statusUpdateTicketPrices: Status;
+  statusUpdateParticularDayPrice: Status;
   queueDeleteRoute: Route['_id'][];
+  queueUpdateRoutePointPrice: RoutePoint['_id'][];
   routes: Route[];
   currentPage: number;
   totalPages: number;
@@ -34,8 +41,9 @@ const initialState: RoutesManagerState = {
   statusUpdateRoute: 'idle',
   statusUpdateDayActive: 'idle',
   statusRemoveDayActive: 'idle',
-  statusUpdateTicketPrices: 'idle',
+  statusUpdateParticularDayPrice: 'idle',
   queueDeleteRoute: [],
+  queueUpdateRoutePointPrice: [],
   routes: [],
   currentPage: 0,
   totalPages: 0,
@@ -149,6 +157,56 @@ export const routesSlice = createSlice({
       };
     },
 
+    /** <---------- update trip by step form ----------> */
+    updateTripRequest: (state, _action: PayloadAction<UpdateTripRequest>) => {
+      return {
+        ...state,
+        statusUpdateRoute: 'loading',
+      };
+    },
+    updateTripSuccess: (state, action: PayloadAction<UpdateTripSuccess>) => {
+      const { data } = action.payload;
+      return {
+        ...state,
+        route: data,
+        statusUpdateRoute: 'success',
+      };
+    },
+    updateTripFailure: (state, _action: PayloadAction<UpdateTripFailure>) => {
+      return {
+        ...state,
+        statusUpdateRoute: 'failure',
+      };
+    },
+
+    updateRoutePointPriceRequest: (state, action: PayloadAction<UpdateRoutePointPriceRequest>) => {
+      const { routePointId } = action.payload;
+      return {
+        ...state,
+        queueUpdateRoutePointPrice: state.queueUpdateRoutePointPrice.concat(routePointId),
+      };
+    },
+    updateRoutePointPriceSuccess: (state, action: PayloadAction<UpdateRoutePointPriceSuccess>) => {
+      const { data, routePointId } = action.payload;
+      return {
+        ...state,
+        routes: state.routes.map(route => {
+          if (route._id === data._id) {
+            return data;
+          }
+          return route;
+        }),
+        queueUpdateRoutePointPrice: state.queueUpdateRoutePointPrice.filter(item => item !== routePointId),
+      };
+    },
+    updateRoutePointPriceFailure: (state, action: PayloadAction<UpdateRoutePointPriceFailure>) => {
+      const { routePointId } = action.payload;
+      return {
+        ...state,
+        queueUpdateRoutePointPrice: state.queueUpdateRoutePointPrice.filter(item => item !== routePointId),
+      };
+    },
+
     /** <---------- update active days ----------> */
     updateActiveDaysRequest: (state, _action: PayloadAction<UpdateActiveDaysRequest>) => {
       return {
@@ -194,48 +252,54 @@ export const routesSlice = createSlice({
     },
 
     /** <---------- update ticket prices ----------> */
-    updateTicketPricesRequest: (state, _action: PayloadAction<UpdateTicketPricesRequest>) => {
+    updateParticularDayPriceRequest: (state, _action: PayloadAction<UpdateParticularDayPriceRequest>) => {
       return {
         ...state,
-        statusUpdateTicketPrices: 'loading',
+        statusUpdateParticularDayPrice: 'loading',
       };
     },
-    updateTicketPricesSuccess: (state, action: PayloadAction<UpdateTicketPricesSuccess>) => {
+    updateParticularDayPriceSuccess: (state, action: PayloadAction<UpdateParticularDayPriceSuccess>) => {
       const { data } = action.payload;
       return {
         ...state,
         route: data,
-        statusUpdateTicketPrices: 'success',
+        routes: state.routes.map(route => {
+          if (route._id === data._id) {
+            return data;
+          }
+          return route;
+        }),
+        statusUpdateParticularDayPrice: 'success',
       };
     },
-    updateTicketPricesFailure: (state, _action: PayloadAction<UpdateTicketPricesFailure>) => {
+    updateParticularDayPriceFailure: (state, _action: PayloadAction<UpdateParticularDayPriceFailure>) => {
       return {
         ...state,
-        statusUpdateTicketPrices: 'failure',
+        statusUpdateParticularDayPrice: 'failure',
       };
     },
 
     /** <---------- delete route ----------> */
     deleteRouteRequest: (state, action: PayloadAction<DeleteRouteRequest>) => {
-      const { id } = action.payload;
+      const { routeCode } = action.payload;
       return {
         ...state,
-        queueDeleteRoute: state.queueDeleteRoute.concat(id),
+        queueDeleteRoute: state.queueDeleteRoute.concat(routeCode),
       };
     },
     deleteRouteSuccess: (state, action: PayloadAction<DeleteRouteSuccess>) => {
-      const { id } = action.payload;
+      const { routeCode } = action.payload;
       return {
         ...state,
-        routes: state.routes.filter(office => office._id !== id),
-        queueDeleteRoute: state.queueDeleteRoute.filter(item => item !== id),
+        routes: state.routes.filter(route => route.routeCode !== routeCode),
+        queueDeleteRoute: state.queueDeleteRoute.filter(item => item !== routeCode),
       };
     },
     deleteRouteFailure: (state, action: PayloadAction<DeleteRouteFailure>) => {
-      const { id } = action.payload;
+      const { routeCode } = action.payload;
       return {
         ...state,
-        queueDeleteRoute: state.queueDeleteRoute.filter(item => item !== id),
+        queueDeleteRoute: state.queueDeleteRoute.filter(item => item !== routeCode),
       };
     },
   },

@@ -1,6 +1,7 @@
 import { FormControlLabel, Radio, RadioGroup, Stack, Typography } from '@mui/material';
 import { useStyles } from '../styles';
-import VisaPng from 'assets/images/visa.png';
+import StripeLogo from 'assets/images/stripe.svg';
+import PaypalLogo from 'assets/images/paypal.svg';
 import { useTranslation } from 'react-i18next';
 import { Control, FieldErrors } from 'react-hook-form';
 import { TicketDetailFormValues } from '../TicketDetailOnCreateTicketSale';
@@ -25,10 +26,8 @@ export const PaymentMethod = ({ errors, messages, label, method, onChange }: Pay
     STRIPE: t('account:Stripe'),
   };
   const PAYMENT_IMAGES: Record<TicketDetailFormValues['method'], string> = {
-    // FIXME: Ảnh
-    PAYPAL: VisaPng,
-    // FIXME: Ảnh
-    STRIPE: VisaPng,
+    PAYPAL: PaypalLogo,
+    STRIPE: StripeLogo,
   };
 
   const error = errors && label ? errors[label] : false;

@@ -43,7 +43,7 @@ export default function AddOfficeManager() {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
         ...res,
-        [key]: t('translation:error_required', { name: key }),
+        [key]: t('translation:error_required', { name: t(`account:${key}`).toLowerCase() }),
       };
     }, {});
   }, [t]);
@@ -56,10 +56,11 @@ export default function AddOfficeManager() {
   const handleCancel = () => setOpenDialog(true);
 
   const onSubmit = (values: Values) => {
-    if (isEditAction && officeId) {
+    if (isEditAction && office && officeId) {
       dispatch(
         officesManagerActions.updateOfficeRequest({
           id: officeId,
+          targetOffice: office,
           data: {
             address: values.address,
             city: values.city,
@@ -70,14 +71,27 @@ export default function AddOfficeManager() {
             zipCode: values.zipCode,
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('account:office') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:edit_type_error', {
+                  type: t('account:office').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
           onSuccess: () => {
-            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('account:office') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:edit_type_success', {
+                  type: t('account:office').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             navigate('/account/offices-manager', { replace: true });
           },
         }),
@@ -95,14 +109,27 @@ export default function AddOfficeManager() {
             zipCode: values.zipCode,
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('account:office') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:add_type_error', {
+                  type: t('account:office').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
           onSuccess: () => {
-            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('account:office') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:add_type_success', {
+                  type: t('account:office').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             navigate('/account/offices-manager');
           },
         }),
@@ -141,12 +168,18 @@ export default function AddOfficeManager() {
     <FadeIn>
       <LayoutDetail
         subTitle={t('account:offices_manager')}
-        title={isEditAction ? t('translation:edit_type', { type: t('account:office') }) : t('translation:create_new', { type: t('account:office') })}
+        title={
+          isEditAction
+            ? t('translation:edit_type', { type: t('account:office').toLowerCase() })
+            : t('translation:create_new', { type: t('account:office').toLowerCase() })
+        }
       >
         <Box width="100%" display="flex" justifyContent="center">
           <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
             <Typography color="#0c1132" fontWeight={700}>
-              {isEditAction ? t('translation:edit_type', { type: t('account:office') }) : t('translation:create_new', { type: t('account:office') })}
+              {isEditAction
+                ? t('translation:edit_type', { type: t('account:office').toLowerCase() })
+                : t('translation:create_new', { type: t('account:office').toLowerCase() })}
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
             <form onSubmitCapture={handleSubmit(onSubmit)}>
@@ -163,7 +196,7 @@ export default function AddOfficeManager() {
         </Box>
         <DialogConfirm
           openDialog={openDialog}
-          title={t('translation:cancel_type', { type: t('account:office') })}
+          title={t('translation:cancel_type', { type: t('account:office').toLowerCase() })}
           subTitle={t('translation:leave_page')}
           onClose={handleClose}
         />

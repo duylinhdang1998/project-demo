@@ -49,11 +49,12 @@ export default function PassengerDetail() {
   const isEditAction = useMemo(() => {
     return !!location.state?.isEdit;
   }, [location.state?.isEdit]);
+
   const messages = useMemo(() => {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
         ...res,
-        [key]: t('translation:error_required', { name: key }),
+        [key]: t('translation:error_required', { name: t(`passenger:${key}`).toLowerCase() }),
       };
     }, {});
   }, [t]);
@@ -75,15 +76,28 @@ export default function PassengerDetail() {
             phone: values.phone,
           },
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('passenger:passenger') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:edit_type_success', {
+                  type: t('passenger:passenger').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             navigate(route);
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('passenger:passenger') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:edit_type_error', {
+                  type: t('passenger:passenger').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );
@@ -131,7 +145,7 @@ export default function PassengerDetail() {
           <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Typography color="rgba(12, 17, 50, 1)" fontWeight={700} fontSize="16px">
-                {isEditAction ? t('translation:edit_type', { type: t('passenger:passenger') }) : t('passenger:details')}
+                {isEditAction ? t('translation:edit_type', { type: t('passenger:passenger').toLowerCase() }) : t('passenger:details').toLowerCase()}
               </Typography>
               <Typography color="rgba(71, 84, 97, 1)" fontSize="14px">
                 {t('passenger:account_created')} {dayjs(new Date(passenger?.createdAt as string)).format('MM/DD/YYYY')}

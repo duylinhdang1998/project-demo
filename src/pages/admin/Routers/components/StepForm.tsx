@@ -8,10 +8,14 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { Route } from 'services/models/Route';
+import { CreateMultipleStopTrip } from 'services/Route/Company/createMultipleStopTrip';
+import { CreateOneStopTrip } from 'services/Route/Company/createOneStopTrip';
+import { UpdateTripRequest } from 'store/routes/actions/UpdateTrip';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { dayjsToString } from 'utils/dayjsToString';
+import { minutesToTimeString, timeStringToMinutes } from 'utils/timeStringNMinutes';
 import { toDayjs } from 'utils/toDayjs';
 import StepOne, { StepOneValuesForOneStopTrip } from './FormStep/StepOne';
 import StepOneMultiple, { RoutePointValues, StepOneValuesForMultipleStopTrip } from './FormStep/StepOneMultiple';
@@ -64,18 +68,21 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
   };
 
   const handleSubmitStep1ForOneStopTrip = (formValues: StepOneValuesForOneStopTrip) => {
-    if (isEditAction) {
-      // FIXME: Chưa có api update nên chưa lắp chức năng "Edit"
-    } else {
+    const data: Pick<UpdateTripRequest['data'] | CreateOneStopTrip, 'departurePoint' | 'departureTime' | 'tripType' | 'vehicle'> = {
+      departurePoint: formValues.departurePoint,
+      departureTime: dayjsToString(formValues.departureTime, 'HH:mm'),
+      tripType: 'ONE_TRIP',
+      vehicle: formValues.vehicle,
+    };
+    if (isEditAction && route) {
       dispatch(
-        routesActions.createOneStopTripRequest({
+        routesActions.updateTripRequest({
           data: {
-            departurePoint: formValues.departurePoint,
-            departureTime: dayjsToString(formValues.departureTime, 'HH:mm'),
-            tripType: 'ONE_TRIP',
+            ...data,
             stopPoints: [
               {
-                durationTime: Number(formValues.arrivalDuration),
+                routePointId: formValues.routePointId as string,
+                durationTime: timeStringToMinutes(formValues.arrivalDuration.format('HH:mm')),
                 stopPoint: formValues.arrivalPoint,
                 ECOPrices: [
                   { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
@@ -89,18 +96,77 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
                 ],
               },
             ],
-            vehicle: formValues.vehicle,
           },
+          routeCode: route.routeCode,
           onSuccess() {
-            toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('routers:new_trip') })} />, {
-              className: 'toast-success',
-            });
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:add_type_success', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
             nextStep();
           },
           onFailure: message => {
-            toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('routers:new_trip') })} description={message} />, {
-              className: 'toast-error',
-            });
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:add_type_error', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
+          },
+        }),
+      );
+    } else {
+      dispatch(
+        routesActions.createOneStopTripRequest({
+          data: {
+            ...data,
+            stopPoints: [
+              {
+                durationTime: timeStringToMinutes(formValues.arrivalDuration.format('HH:mm')),
+                stopPoint: formValues.arrivalPoint,
+                ECOPrices: [
+                  { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
+                  { passengerType: 'CHILD', price: Number(formValues.ecoChildren) },
+                  { passengerType: 'STUDENT', price: Number(formValues.ecoStudent) },
+                ],
+                VIPPrices: [
+                  { passengerType: 'ADULT', price: Number(formValues.vipAdult) },
+                  { passengerType: 'CHILD', price: Number(formValues.vipChildren) },
+                  { passengerType: 'STUDENT', price: Number(formValues.vipStudent) },
+                ],
+              },
+            ],
+          } as CreateOneStopTrip,
+          onSuccess() {
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:add_type_success', {
+                  type: t('routers:new_trip').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
+            nextStep();
+          },
+          onFailure: message => {
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:add_type_error', { type: t('routers:new_trip').toLowerCase() })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
           },
         }),
       );
@@ -108,17 +174,67 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
   };
 
   const handleSubmitStep1ForMultipleStopTrip = (formValues: StepOneValuesForMultipleStopTrip) => {
-    if (isEditAction) {
-      // FIXME: Chưa có api update nên chưa lắp chức năng "Edit"
+    const data: Pick<UpdateTripRequest['data'] | CreateMultipleStopTrip, 'departurePoint' | 'departureTime' | 'tripType' | 'vehicle'> = {
+      departurePoint: formValues.departurePoint,
+      departureTime: dayjsToString(formValues.departureTime, 'HH:mm'),
+      tripType: 'MULTI_STOP',
+      vehicle: formValues.vehicle,
+    };
+    if (isEditAction && route) {
+      dispatch(
+        routesActions.updateTripRequest({
+          routeCode: route.routeCode,
+          data: {
+            ...data,
+            stopPoints: formValues.routePoints.map(routePoint => ({
+              durationTime: timeStringToMinutes(routePoint.duration.format('HH:mm')),
+              stopPoint: routePoint.stop_point,
+              routePointId: routePoint.routePointId as string,
+              ECOPrices: [
+                { passengerType: 'ADULT', price: Number(routePoint.ecoAdult) },
+                { passengerType: 'CHILD', price: Number(routePoint.ecoChildren) },
+                { passengerType: 'STUDENT', price: Number(routePoint.ecoStudent) },
+              ],
+              VIPPrices: [
+                { passengerType: 'ADULT', price: Number(routePoint.vipAdult) },
+                { passengerType: 'CHILD', price: Number(routePoint.vipChildren) },
+                { passengerType: 'STUDENT', price: Number(routePoint.vipStudent) },
+              ],
+            })),
+          },
+          onSuccess() {
+            toast(
+              <ToastCustom
+                type="success"
+                text={t('translation:add_type_success', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+              />,
+              { className: 'toast-success' },
+            );
+            nextStep();
+          },
+          onFailure: message => {
+            toast(
+              <ToastCustom
+                type="error"
+                text={t('translation:add_type_error', {
+                  type: t('routers:trip').toLowerCase(),
+                })}
+                description={message}
+              />,
+              { className: 'toast-error' },
+            );
+          },
+        }),
+      );
     } else {
       dispatch(
         routesActions.createMultipleStopTripRequest({
           data: {
-            departurePoint: formValues.departurePoint,
-            departureTime: dayjsToString(formValues.departureTime, 'HH:mm'),
-            tripType: 'MULTI_STOP',
+            ...data,
             stopPoints: formValues.routePoints.map(routePoint => ({
-              durationTime: Number(routePoint.duration),
+              durationTime: timeStringToMinutes(routePoint.duration.format('HH:mm')),
               stopPoint: routePoint.stop_point,
               ECOPrices: [
                 { passengerType: 'ADULT', price: Number(routePoint.ecoAdult) },
@@ -131,8 +247,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
                 { passengerType: 'STUDENT', price: Number(routePoint.vipStudent) },
               ],
             })),
-            vehicle: formValues.vehicle,
-          },
+          } as CreateMultipleStopTrip,
           onSuccess() {
             toast(
               <ToastCustom
@@ -211,17 +326,18 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
           departureTime: toDayjs({ value: route.departureTime, format: 'HH:mm' }),
           routePoints: route.routePoints.reduce<StepOneValuesForMultipleStopTrip['routePoints']>((result, routePointValue) => {
             if (routePointValue.routeType === 'MAIN_ROUTE') {
-              const value = {
+              const value: RoutePointValues = {
                 stop_point: routePointValue.stopPoint,
-                duration: Number(routePointValue.durationTime),
-                ecoAdult: routePointValue.ECOPrices?.ADULT,
-                ecoChildren: routePointValue.ECOPrices?.CHILD,
-                ecoStudent: routePointValue.ECOPrices?.STUDENT,
-                vipAdult: routePointValue.VIPPrices?.ADULT,
-                vipChildren: routePointValue.VIPPrices?.CHILD,
-                vipStudent: routePointValue.VIPPrices?.STUDENT,
+                duration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }),
+                ecoAdult: routePointValue.ECOPrices?.ADULT as number,
+                ecoChildren: routePointValue.ECOPrices?.CHILD as number,
+                ecoStudent: routePointValue.ECOPrices?.STUDENT as number,
+                vipAdult: routePointValue.VIPPrices?.ADULT as number,
+                vipChildren: routePointValue.VIPPrices?.CHILD as number,
+                vipStudent: routePointValue.VIPPrices?.STUDENT as number,
+                routePointId: routePointValue._id,
               };
-              return result.concat(value as RoutePointValues);
+              return result.concat(value);
             }
             return result;
           }, []),
@@ -233,13 +349,14 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
           departurePoint: route.departurePoint,
           departureTime: toDayjs({ value: route.departureTime, format: 'HH:mm' }),
           arrivalPoint: routePointValue.stopPoint,
-          arrivalDuration: routePointValue.durationTime,
+          arrivalDuration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }),
           ecoAdult: routePointValue.ECOPrices?.ADULT,
           ecoChildren: routePointValue.ECOPrices?.CHILD,
           ecoStudent: routePointValue.ECOPrices?.STUDENT,
           vipAdult: routePointValue.VIPPrices?.ADULT,
           vipChildren: routePointValue.VIPPrices?.CHILD,
           vipStudent: routePointValue.VIPPrices?.STUDENT,
+          routePointId: routePointValue._id,
         } as StepOneValuesForOneStopTrip);
       }
       setStepTwoValues({
@@ -259,15 +376,16 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
           departureTime: toDayjs({ value: sourceToCopy.departureTime, format: 'HH:mm' }),
           routePoints: sourceToCopy.routePoints.reduce<StepOneValuesForMultipleStopTrip['routePoints']>((result, routePointValue) => {
             if (routePointValue.routeType === 'MAIN_ROUTE') {
-              const value = {
+              const value: RoutePointValues = {
                 stop_point: routePointValue.stopPoint,
-                duration: Number(routePointValue.durationTime),
-                ecoAdult: routePointValue.ECOPrices?.ADULT,
-                ecoChildren: routePointValue.ECOPrices?.CHILD,
-                ecoStudent: routePointValue.ECOPrices?.STUDENT,
-                vipAdult: routePointValue.VIPPrices?.ADULT,
-                vipChildren: routePointValue.VIPPrices?.CHILD,
-                vipStudent: routePointValue.VIPPrices?.STUDENT,
+                duration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }),
+                ecoAdult: routePointValue.ECOPrices?.ADULT as number,
+                ecoChildren: routePointValue.ECOPrices?.CHILD as number,
+                ecoStudent: routePointValue.ECOPrices?.STUDENT as number,
+                vipAdult: routePointValue.VIPPrices?.ADULT as number,
+                vipChildren: routePointValue.VIPPrices?.CHILD as number,
+                vipStudent: routePointValue.VIPPrices?.STUDENT as number,
+                routePointId: undefined,
               };
               return result.concat(value as RoutePointValues);
             }
@@ -281,13 +399,14 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
           departurePoint: sourceToCopy.departurePoint,
           departureTime: toDayjs({ value: sourceToCopy.departureTime, format: 'HH:mm' }),
           arrivalPoint: routePointValue.stopPoint,
-          arrivalDuration: routePointValue.durationTime,
+          arrivalDuration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }),
           ecoAdult: routePointValue.ECOPrices?.ADULT,
           ecoChildren: routePointValue.ECOPrices?.CHILD,
           ecoStudent: routePointValue.ECOPrices?.STUDENT,
           vipAdult: routePointValue.VIPPrices?.ADULT,
           vipChildren: routePointValue.VIPPrices?.CHILD,
           vipStudent: routePointValue.VIPPrices?.STUDENT,
+          routePointId: undefined,
         } as StepOneValuesForOneStopTrip);
       }
       setStepTwoValues({

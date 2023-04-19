@@ -5,12 +5,14 @@ import { CreateTicketSaleFailure, CreateTicketSaleRequest, CreateTicketSaleSucce
 import { GetTicketSaleFailure, GetTicketSaleRequest, GetTicketSaleSuccess } from './actions/GetTicketSale';
 import { GetTicketSalesFailure, GetTicketSalesRequest, GetTicketSalesSuccess } from './actions/GetTicketSales';
 import { SendEmailFailure, SendEmailRequest, SendEmailSuccess } from './actions/SendEmail';
+import { UpdateTicketStatusFailure, UpdateTicketStatusRequest, UpdateTicketStatusSuccess } from './actions/UpdateTicketStatus';
 
 interface TicketSalesState {
   statusSendEmail: Status;
   statusGetTicketSales: Status;
   statusGetTicketSale: Status;
   statusCreateTicketSale: Status;
+  queueUpdateTicketStatus: TicketSale['_id'][];
   ticketSales: TicketSale[];
   currentPage: number;
   totalPages: number;
@@ -24,6 +26,7 @@ const initialState: TicketSalesState = {
   statusGetTicketSale: 'idle',
   statusGetTicketSales: 'idle',
   statusCreateTicketSale: 'idle',
+  queueUpdateTicketStatus: [],
   ticketSales: [],
   currentPage: 0,
   totalPages: 0,
@@ -109,6 +112,38 @@ export const ticketSalesSlice = createSlice({
         statusCreateTicketSale: 'failure',
       };
     },
+
+    /** <---------- update ticket status ----------> */
+    updateTicketStatusRequest: (state, action: PayloadAction<UpdateTicketStatusRequest>) => {
+      const { targetTicket } = action.payload;
+      return {
+        ...state,
+        queueUpdateTicketStatus: state.queueUpdateTicketStatus.concat(targetTicket._id),
+      };
+    },
+    updateTicketStatusSuccess: (state, action: PayloadAction<UpdateTicketStatusSuccess>) => {
+      const { data } = action.payload;
+      return {
+        ...state,
+        queueUpdateTicketStatus: state.queueUpdateTicketStatus.filter(id => id !== data._id),
+        ticketSale: state.ticketSale ? data : state.ticketSale,
+        ticketSales: state.ticketSales.map(ticketSale => {
+          if (ticketSale._id === data._id) {
+            return data;
+          }
+          return ticketSale;
+        }),
+      };
+    },
+    updateTicketStatusFailure: (state, action: PayloadAction<UpdateTicketStatusFailure>) => {
+      const { id } = action.payload;
+      return {
+        ...state,
+        queueUpdateTicketStatus: state.queueUpdateTicketStatus.filter(item => item !== id),
+      };
+    },
+
+    /** <---------- send mail ----------> */
     sendEmailRequest: (state, _action: PayloadAction<SendEmailRequest>) => {
       return {
         ...state,

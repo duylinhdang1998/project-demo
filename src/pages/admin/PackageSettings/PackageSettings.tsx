@@ -36,7 +36,7 @@ export default function PackageSettings() {
       <HeaderLayout activeSideBarHeader={t('packageSettings:package_settings')} />
       <Box padding="24px">
         <BoxSearch
-          searchValue={currentSearcher.title?.value as string | undefined}
+          searchValue={!Array.isArray(currentSearcher.title) ? currentSearcher.title?.value : undefined}
           onSearch={value => {
             dispatch(
               packageSettingsActions.getPackageSettingsRequest({
@@ -49,7 +49,7 @@ export default function PackageSettings() {
             );
           }}
           onAdd={handleAdd}
-          addTextButton={t('translation:create_new', { type: t('packageSettings:package_settings_lowercase') })}
+          addTextButton={t('translation:create_new', { type: t('packageSettings:package_settings').toLowerCase() })}
         />
         <TablePackageSettings />
       </Box>

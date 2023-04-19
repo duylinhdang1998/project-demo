@@ -9,12 +9,12 @@ export interface InformationProps {
 export const Infomation = ({ left, right }: InformationProps) => {
   return (
     <Grid container>
-      <Grid item xs={4}>
+      <Grid item xs={5.5}>
         <Typography py="8px" fontSize="14px">
-          {left}
+          {left}:
         </Typography>
       </Grid>
-      <Grid item xs={8}>
+      <Grid item xs={6.5}>
         {right}
       </Grid>
     </Grid>

@@ -66,7 +66,7 @@ function FormAddEvent() {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
         ...res,
-        [key]: t('translation:error_required', { name: key }),
+        [key]: t('translation:error_required', { name: t(`vehicles:${key}`).toLowerCase() }),
       };
     }, {});
   }, [t]);
@@ -82,11 +82,12 @@ function FormAddEvent() {
 
   const onSubmit = (value: Values) => {
     console.log(value);
-    if (isEditAction && vehicleEventId && vehicleId) {
+    if (isEditAction && vehicleEvent && vehicleEventId && vehicleId) {
       if (value.attach_document) {
         dispatch(
           vehicleEventsActions.updateVehicleEventRequest({
             id: vehicleEventId,
+            targetVehicleEvent: vehicleEvent,
             data: {
               attach: value.attach_document,
               description: value.description,
@@ -94,18 +95,28 @@ function FormAddEvent() {
               fuelFees: value.fuelFees,
               reminderDate: dayjsToNumber(value.reminderDate),
               totalKilometers: value.totalKilometers,
-              vehicle: vehicleId,
             },
             onSuccess() {
-              toast(<ToastCustom type="success" text={t('translation:edit_type_success', { type: t('vehicles:event') })} />, {
-                className: 'toast-success',
-              });
+              toast(
+                <ToastCustom
+                  type="success"
+                  text={t('translation:edit_type_success', {
+                    type: t('vehicles:event').toLowerCase(),
+                  })}
+                />,
+                { className: 'toast-success' },
+              );
               navigate(isAgent ? `/agent/vehicles/${vehicleId}/list-events` : `/admin/vehicles/${vehicleId}/list-events`);
             },
             onFailure: message => {
-              toast(<ToastCustom type="error" text={t('translation:edit_type_error', { type: t('vehicles:event') })} description={message} />, {
-                className: 'toast-error',
-              });
+              toast(
+                <ToastCustom
+                  type="error"
+                  text={t('translation:edit_type_error', { type: t('vehicles:event').toLowerCase() })}
+                  description={message}
+                />,
+                { className: 'toast-error' },
+              );
             },
           }),
         );
@@ -124,15 +135,28 @@ function FormAddEvent() {
               vehicle: vehicleId,
             },
             onSuccess() {
-              toast(<ToastCustom type="success" text={t('translation:add_type_success', { type: t('vehicles:event') })} />, {
-                className: 'toast-success',
-              });
+              toast(
+                <ToastCustom
+                  type="success"
+                  text={t('translation:add_type_success', {
+                    type: t('vehicles:event').toLowerCase(),
+                  })}
+                />,
+                { className: 'toast-success' },
+              );
               navigate(isAgent ? `/agent/vehicles/${vehicleId}/list-events` : `/admin/vehicles/${vehicleId}/list-events`);
             },
             onFailure: message => {
-              toast(<ToastCustom type="error" text={t('translation:add_type_error', { type: t('vehicles:event') })} description={message} />, {
-                className: 'toast-error',
-              });
+              toast(
+                <ToastCustom
+                  type="error"
+                  text={t('translation:add_type_error', {
+                    type: t('vehicles:event').toLowerCase(),
+                  })}
+                  description={message}
+                />,
+                { className: 'toast-error' },
+              );
             },
           }),
         );

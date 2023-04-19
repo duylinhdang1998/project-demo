@@ -1,8 +1,9 @@
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { TicketStatus as TTicketStatus } from 'services/models/TicketSale';
 
 interface TicketStatusProps {
-  status: 'CANCELLED' | 'USED' | 'PENDING';
+  status: TTicketStatus;
 }
 
 export const TicketStatus = ({ status }: TicketStatusProps) => {

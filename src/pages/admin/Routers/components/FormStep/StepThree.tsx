@@ -24,8 +24,10 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
+import { DayInWeekMappingToString } from 'services/models/DayInWeek';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
+import { createArrayDateFromRange } from 'utils/createArrayDateFromRange';
 import { dateClamp } from 'utils/dateClamp';
 import EditPriceTrip from '../EditPriceTrip';
 import './styles.scss';
@@ -92,11 +94,11 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const { t } = useTranslation(['routers', 'translation', 'message_error']);
   const classes = useStyles();
 
-  const [selectedSlot, setSelectedSlot] = useState<SlotInfo['slots']>([]);
+  const [selectedSlot, setSelectedSlot] = useState<SlotInfo['slots'][number] | null>(null);
   const [open, setOpen] = useState(false);
   const [openDialogConfirmDelete, setOpenDialogConfirmDelete] = useState(false);
 
-  const { route, statusRemoveDayActive, statusUpdateTicketPrices } = useAppSelector(selectRoutes);
+  const { route, statusRemoveDayActive, statusUpdateParticularDayPrice } = useAppSelector(selectRoutes);
   const dispatch = useAppDispatch();
 
   const handleClose = () => setOpen(false);
@@ -105,17 +107,17 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     onCancel?.();
   };
 
-  const handleCloseDialogEdit = () => setSelectedSlot([]);
+  const handleCloseDialogEdit = () => setSelectedSlot(null);
 
   const handleOpenDialogConfirmDelete = () => setOpenDialogConfirmDelete(true);
   const handleCloseDialogConfirmDelete = () => setOpenDialogConfirmDelete(false);
 
   const handleRemoveActiveDay = () => {
-    if (route) {
+    if (route && selectedSlot) {
       dispatch(
         routesActions.removeDayActiveRequest({
           routeCode: route.routeCode,
-          data: { routeCode: route.routeCode, dayoff: selectedSlot[0].setHours(12) },
+          data: { routeCode: route.routeCode, dayoff: selectedSlot.setHours(12) },
           onSuccess() {
             toast(
               <ToastCustom
@@ -146,13 +148,13 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   };
 
   const handleUpdateTicketPrices = (formValues: StepThreeValues) => {
-    if (route) {
+    if (route && selectedSlot) {
       dispatch(
-        routesActions.updateTicketPricesRequest({
+        routesActions.updateParticularDayPriceRequest({
           routeCode: route.routeCode,
           data: {
             routeCode: route.routeCode,
-            particularDay: selectedSlot[0].setHours(12),
+            particularDay: selectedSlot.setHours(12),
             routeParticulars: route.routePoints.map(routePoint => ({
               routePointId: routePoint._id,
               ECOPrices: [
@@ -221,7 +223,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   }, [route]);
 
   const renderDialogEdit = () => {
-    if (!selectedSlot.length) {
+    if (!selectedSlot) {
       return null;
     }
     return (
@@ -242,7 +244,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             textCancel={t('translation:delete')}
             onCancel={handleOpenDialogConfirmDelete}
             onSave={handleSubmit(handleUpdateTicketPrices)}
-            isSaving={statusUpdateTicketPrices === 'loading'}
+            isSaving={statusUpdateParticularDayPrice === 'loading'}
             isDeleting={statusRemoveDayActive === 'loading'}
           />
         </Box>
@@ -376,8 +378,13 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             return <div>{title}</div>;
           },
         }}
+        onSelecting={() => false}
         onSelectSlot={event => {
-          setSelectedSlot(event.slots);
+          const selected = event.slots[0];
+          const isWorkingDay = route.dayActives.includes(DayInWeekMappingToString[selected.getDay()]);
+          if (isWorkingDay && isDateClampRouterPeriod(selected.getTime())) {
+            setSelectedSlot(selected);
+          }
         }}
         dayPropGetter={date => {
           if (isDateClampRouterPeriod(date.getTime())) {
@@ -399,12 +406,27 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             end: new Date(particularDay),
             title: t('translation:edited'),
           })),
+          ...(typeof route.startPeriod === 'number' && typeof route.endPeriod === 'number'
+            ? createArrayDateFromRange({
+                start: route.startPeriod,
+                end: route.endPeriod,
+                isNeedIgnore(date) {
+                  return route.dayActives.includes(DayInWeekMappingToString[date.getDay()]);
+                },
+              }).map(item => ({
+                start: new Date(item),
+                end: new Date(item),
+                allDay: true,
+                title: t('translation:off'),
+              }))
+            : []),
         ]}
       />
       <ComboButton
         textOk={t('translation:save')}
         textCancel={t('translation:back')}
         onCancel={handleCancel}
+        isSaving={statusUpdateParticularDayPrice === 'loading' || statusRemoveDayActive === 'loading'}
         onSave={() => {
           toast(
             <ToastCustom

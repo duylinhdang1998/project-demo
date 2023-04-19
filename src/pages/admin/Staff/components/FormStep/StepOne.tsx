@@ -53,7 +53,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
         ...res,
-        [key]: t('translation:error_required', { name: t(`staff:${key}`) }),
+        [key]: t('translation:error_required', { name: t(`staff:${key}`).toLowerCase() }),
       };
     }, {});
   }, [t]);
