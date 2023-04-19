@@ -34,6 +34,7 @@ export const PaymentStatus = ({ isActive, onChange }: PaymentStatusProps) => {
           sx={{
             color: 'rgba(69, 72, 94, 1)',
             fontSize: '14px',
+            marginRight: '4px',
           }}
         >
           {PaymentStatusLabelMapping['APPROVED']}

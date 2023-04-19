@@ -22,16 +22,17 @@ export interface PassengersProps {
   passengers: Array<TicketDetailFormValues['passengers'][number] & FieldArrayWithId>;
   append: UseFieldArrayAppend<TicketDetailFormValues, 'passengers'>;
   remove: UseFieldArrayRemove;
-  route: RouteOfTicketSale;
+  // FIXME: Để tạm optional
+  route?: RouteOfTicketSale;
 }
 
-const typeTicketOptions: Array<Passenger['typeTicket']> = [
+export const typeTicketOptions: Array<Passenger['typeTicket']> = [
   { key: 'adult', value: 'ADULT', label: 'Adult (26-59)' },
   { key: 'student', value: 'STUDENT', label: 'Student (16-25)' },
   { key: 'children', value: 'CHILD', label: 'Children (1-15)' },
 ];
 
-const seatsTypeOptions: Array<Passenger['seatsType']> = [
+export const seatsTypeOptions: Array<Passenger['seatsType']> = [
   { key: 'adult', value: 'ECO', label: 'ECO' },
   { key: 'student', value: 'VIP', label: 'VIP' },
 ];
@@ -130,7 +131,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                     render={({ field }) => {
                       const labelTranslated = t('ticketSales:firstName');
                       const error = get(errors, firstNamePathInFormValues);
-                      const messageErr = t('translation:error_required', { name: labelTranslated.toLowerCase() });
+                      const messageErr = t('translation:error_required', { name: labelTranslated });
                       return (
                         <Box>
                           <InputLabel className={classes.label}>
@@ -156,7 +157,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                     render={({ field }) => {
                       const labelTranslated = t('ticketSales:lastName');
                       const error = get(errors, lastNamePathInFormValues);
-                      const messageErr = t('translation:error_required', { name: labelTranslated.toLowerCase() });
+                      const messageErr = t('translation:error_required', { name: labelTranslated });
                       return (
                         <Box>
                           <InputLabel className={classes.label}>
@@ -182,7 +183,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                     render={({ field }) => {
                       const labelTranslated = t('ticketSales:typeTicket');
                       const error = get(errors, typeTicketPathInFormValues);
-                      const messageErr = t('translation:error_required', { name: labelTranslated.toLowerCase() });
+                      const messageErr = t('translation:error_required', { name: labelTranslated });
                       return (
                         <Box>
                           <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
@@ -205,7 +206,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                     render={({ field }) => {
                       const labelTranslated = t('ticketSales:seatsType');
                       const error = get(errors, seatsTypePathInFormValues);
-                      const messageErr = t('translation:error_required', { name: labelTranslated.toLowerCase() });
+                      const messageErr = t('translation:error_required', { name: labelTranslated });
                       return (
                         <Box>
                           <InputLabel className={classes.label}>{labelTranslated}</InputLabel>

@@ -36,7 +36,7 @@ export interface TicketSale {
   };
   paymentStatus: PaymentStatus;
   paymentType: PaymentGateway;
-  route: string;
+  route: RouteOfTicketSale;
   ticketStatus: TicketStatus;
   totalPax: number;
   totalPrice: number;

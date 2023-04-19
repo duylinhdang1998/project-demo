@@ -29,11 +29,9 @@ import { v4 } from 'uuid';
 import { ticketSaleModelToColumnTicket } from '../utils/ticketSaleModelToColumnTicket';
 import { ColumnTicket } from './ColumnTicket';
 import { DialogConfirmChangeStatusToCancel } from './DialogConfirmChangeStatusToCancel';
-import { useStyles } from './styles';
 
 export const TableTicketSales = () => {
   const { t } = useTranslation(['ticketSales', 'translation']);
-  const classes = useStyles();
 
   const [openConfirmCancel, setOpenConfirmCancel] = useState<ColumnTicket | null>(null);
 
@@ -167,8 +165,7 @@ export const TableTicketSales = () => {
                 label: 'edit',
                 icon: <EditIcon />,
                 onClick: () => {
-                  // FIXME: Lắp chức năng edit ticket sale
-                  console.log('EDIT TICKET SALE');
+                  navigate(isAgent ? `/agent/ticket-sales/${row.rawData.orderCode}/edit` : `/admin/ticket-sales/${row.rawData.orderCode}/edit`);
                 },
               },
               {
@@ -269,7 +266,6 @@ export const TableTicketSales = () => {
             }),
           );
         }}
-        rowClassName={classes.cursor}
       />
       {renderDialogConfirmCancel()}
     </Box>
