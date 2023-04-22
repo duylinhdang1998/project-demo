@@ -19,8 +19,8 @@ export const ControlDelivertStatus = ({ deliveryStatus, onChange }: ControlDeliv
       <Divider sx={{ marginTop: '16px' }} />
       <Stack paddingY="16px" direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="body2">{t('packageSales:arrived_destination')}</Typography>
-        <Button onClick={() => onChange('unfulfilment')}>
-          <CheckCircle success={deliveryStatus === 'unfulfilment'} />
+        <Button onClick={() => onChange(DeliveryStatus.PENDING)}>
+          <CheckCircle success={deliveryStatus === DeliveryStatus.PENDING} />
         </Button>
       </Stack>
       <Stack
@@ -31,8 +31,8 @@ export const ControlDelivertStatus = ({ deliveryStatus, onChange }: ControlDeliv
         alignItems="center"
       >
         <Typography variant="body2">{t('packageSales:delivered_recipient')}</Typography>
-        <Button onClick={() => onChange('fulfilment')}>
-          <CheckCircle success={deliveryStatus === 'fulfilment'} />
+        <Button onClick={() => onChange(DeliveryStatus.DELIVERED)}>
+          <CheckCircle success={deliveryStatus === DeliveryStatus.DELIVERED} />
         </Button>
       </Stack>
       <Stack
@@ -43,8 +43,8 @@ export const ControlDelivertStatus = ({ deliveryStatus, onChange }: ControlDeliv
         alignItems="center"
       >
         <Typography variant="body2">{t('packageSales:cancel_to_delivery')}</Typography>
-        <Button onClick={() => onChange('schedule')}>
-          <CheckCircle success={deliveryStatus === 'schedule'} />
+        <Button onClick={() => onChange(DeliveryStatus.CANCELED)}>
+          <CheckCircle success={deliveryStatus === DeliveryStatus.CANCELED} />
         </Button>
       </Stack>
     </Box>

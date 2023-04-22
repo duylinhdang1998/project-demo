@@ -106,7 +106,7 @@ export function ControlMerchandiseDetail() {
       );
     }
 
-    if (openDialogConfirm === DeliveryStatus.PENDING) {
+    if (openDialogConfirm === DeliveryStatus.CANCELED) {
       return <DialogConfirmChangeStatusToCancel isUpdating={isUpdating} onCancel={handleCloseDialogConfirm} onOk={handleUpdateDeliveryStatus} />;
     }
   };

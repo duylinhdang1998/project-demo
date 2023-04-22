@@ -248,8 +248,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         isUpdating={cancelLoading}
         onCancel={handleCloseDialogConfirmCancel}
         onOk={values => {
-          console.log({ values });
-          cancelPackage({ orderCode: openConfirmCancel.orderCode, status: 'cancelled' });
+          cancelPackage({ orderCode: openConfirmCancel.orderCode, reason: values.confirm_description_to_change_cancel });
         }}
       />
     );
