@@ -1,6 +1,6 @@
 import { Box, Grid, Stack } from '@mui/material';
 import MerchandiseDetailView from 'components/MerchandiseDetailView/MerchandiseDetailView';
-import OrderDetailView, { OrderDetailViewProps } from 'components/OrderDetailView/OrderDetailView';
+import OrderDetailView from 'components/OrderDetailView/OrderDetailView';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import LayoutDetail from 'layout/LayoutDetail';
 import { DeliveryStatus, PackageSale } from 'models/PackageSales';
@@ -10,12 +10,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { updateDeliveryStatus } from 'services/PackageSales/updateDeliveryStatus';
 import { ServiceException } from 'services/utils/ServiceException';
-import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
-import { getAppWeightSymbol } from 'utils/getAppWeightSymbol';
 import { ControlDelivertStatus } from '../components/ControlDelivertStatus';
 import { DialogConfirmChangeStatusToCancel } from '../components/DialogConfirmChangeStatusToCancel';
 import { DialogConfirmChangeStatusToDeliveriedNArrived } from '../components/DialogConfirmChangeStatusToDeliveriedNArrived';
-import { packageSaleToDataDetail } from './utils/packageSaleToDataDetail';
 
 export function ControlMerchandiseDetail() {
   const { t } = useTranslation(['dashboard']);
@@ -25,27 +22,20 @@ export function ControlMerchandiseDetail() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const locationState = useMemo(() => {
-    return location.state as PackageSale | null | undefined;
+  const dataDetail = useMemo(() => {
+    return location.state as PackageSale;
   }, [location.state]);
 
-  const [dataDetail, setDataDetail] = useState<OrderDetailViewProps['data']>(() => {
-    return packageSaleToDataDetail(locationState);
-  });
+  console.log({ dataDetail });
 
-  const merchandises = useMemo(() => {
-    return locationState?.merchandises?.map(merchandise => {
-      return {
-        title: merchandise.package?.title,
-        weight: merchandise.weight + getAppWeightSymbol(),
-        price: getAppCurrencySymbol() + merchandise.price,
-        id: merchandise.package?._id,
-      };
-    });
-  }, [locationState]);
+  useEffect(() => {
+    if (!dataDetail) {
+      throw 'Some thing went wrong';
+    }
+  }, [dataDetail]);
 
   const handleOpenDialogConfirm = (val: DeliveryStatus) => {
-    if (val !== dataDetail.delivery_status) {
+    if (val !== dataDetail.deliveryStatus) {
       setOpenDialogConfirm(val);
     }
   };
@@ -55,11 +45,10 @@ export function ControlMerchandiseDetail() {
   };
 
   const handleUpdateDeliveryStatus = async () => {
-    if (dataDetail.order_id && openDialogConfirm) {
+    if (dataDetail.orderCode && openDialogConfirm) {
       setIsUpdaing(true);
       try {
-        const response = await updateDeliveryStatus({ orderCode: dataDetail.order_id, status: openDialogConfirm });
-        setDataDetail(packageSaleToDataDetail(response.data));
+        const response = await updateDeliveryStatus({ orderCode: dataDetail.orderCode, status: openDialogConfirm });
         toast(
           <ToastCustom
             type="success"
@@ -90,21 +79,12 @@ export function ControlMerchandiseDetail() {
     }
   };
 
-  useEffect(() => {
-    if (!locationState) {
-      navigate('/agent/control-merchandise-delivery');
-    } else {
-      setDataDetail(packageSaleToDataDetail(locationState));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locationState]);
-
   const renderModalConfirm = () => {
     if (!openDialogConfirm) {
       return null;
     }
     // FIXME: Mapping status
-    if (openDialogConfirm === 'fulfilment') {
+    if (openDialogConfirm === DeliveryStatus.DELIVERED) {
       return (
         <DialogConfirmChangeStatusToDeliveriedNArrived
           isUpdating={isUpdating}
@@ -115,7 +95,7 @@ export function ControlMerchandiseDetail() {
       );
     }
     // FIXME: Mapping status
-    if (openDialogConfirm === 'unfulfilment') {
+    if (openDialogConfirm === DeliveryStatus.DELIVERING) {
       return (
         <DialogConfirmChangeStatusToDeliveriedNArrived
           isUpdating={isUpdating}
@@ -126,7 +106,7 @@ export function ControlMerchandiseDetail() {
       );
     }
 
-    if (openDialogConfirm === 'schedule') {
+    if (openDialogConfirm === DeliveryStatus.PENDING) {
       return <DialogConfirmChangeStatusToCancel isUpdating={isUpdating} onCancel={handleCloseDialogConfirm} onOk={handleUpdateDeliveryStatus} />;
     }
   };
@@ -142,9 +122,9 @@ export function ControlMerchandiseDetail() {
           </Grid>
           <Grid item xs={12} md={3}>
             <Stack direction="column" spacing="24px">
-              <ControlDelivertStatus deliveryStatus={dataDetail.delivery_status} onChange={handleOpenDialogConfirm} />
+              <ControlDelivertStatus deliveryStatus={dataDetail.deliveryStatus} onChange={handleOpenDialogConfirm} />
               <Box bgcolor="#fff" borderRadius="4px" padding="24px">
-                <MerchandiseDetailView merchandises={merchandises} />
+                <MerchandiseDetailView merchandises={dataDetail.merchandises} />
               </Box>
             </Stack>
           </Grid>

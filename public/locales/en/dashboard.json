@@ -43,5 +43,6 @@
   "price": "Total",
   "order_id": "Order ID",
   "date": "Date",
-  "trip": "Trip"
+  "trip": "Trip",
+  "orderCode": "Order code"
 }

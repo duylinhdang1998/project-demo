@@ -72,7 +72,6 @@ export default function ClientInfo() {
       route: selectedRoute.route._id,
       departurePoint: selectedRoute.departurePoint,
       arrivalPoint: selectedRoute.stopPoint,
-      departureTime: selectedRoute.route.departureTime,
       sender: {
         firstName: values.sender_first_name,
         lastName: values.sender_last_name,
@@ -86,9 +85,10 @@ export default function ClientInfo() {
         type: 'RECIPENT',
       },
       merchandise: values.merchandise,
+      departureTime: get(location, 'state.departureTime', undefined),
     };
     dispatch(setOrderInfomation(payload));
-    navigate('/agent/package-sales/create-package-orders/order-confirm', {
+    navigate('order-confirm', {
       state: {
         payloadClient: payload,
       },

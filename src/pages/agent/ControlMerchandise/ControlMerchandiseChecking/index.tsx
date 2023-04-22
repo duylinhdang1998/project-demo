@@ -6,12 +6,13 @@ import { MerchandiseStatus } from 'components/MerchandiseStatus/MerchandiseStatu
 import Qrcode from 'components/Qrcode/Qrcode';
 import Tag from 'components/Tag/Tag';
 import LayoutDetail from 'layout/LayoutDetail';
-import { PaymentStatus, PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
+import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useGetPackageSale } from 'services/PackageSales/packageSales';
 import Empty from 'assets/images/empty-result.svg';
+import { get } from 'lodash-es';
 
 export default function ControlMerchandiseChecking() {
   const { t } = useTranslation(['dashboard', 'translation']);
@@ -26,7 +27,7 @@ export default function ControlMerchandiseChecking() {
       firstName_recipent: data?.recipent.firstName,
       firstName_sender: data?.sender?.firstName,
       number_of_merchandise: data?.merchandises.length,
-      payment_status: PaymentStatus.APPROVED,
+      payment_status: data?.paymentStatus,
     };
   }, [data]);
 
@@ -35,9 +36,9 @@ export default function ControlMerchandiseChecking() {
       case 'payment_status': {
         return (
           <Tag
-            text={PaymentStatusLabelMapping[dataDetails[i]]}
-            backgroundColor={PaymentStatusBackgroundColorMapping[dataDetails[i]]}
-            color={PaymentStatusColorMapping[dataDetails[i]]}
+            text={get(PaymentStatusLabelMapping, `${dataDetails[i]}`, '')}
+            backgroundColor={get(PaymentStatusBackgroundColorMapping, `${dataDetails[i]}`, '')}
+            color={get(PaymentStatusColorMapping, `${dataDetails[i]}`, '')}
           />
         );
       }
@@ -72,9 +73,7 @@ export default function ControlMerchandiseChecking() {
             {t('merchandise_order')} #{data.orderCode}
           </Typography>
           {/* FIXME: Đâu ra cái này */}
-          <MerchandiseStatus
-            status={data.deliveryStatus === 'schedule' ? 'NOT_DELIVERIED' : data.deliveryStatus === 'fulfilment' ? 'DELIVERIED' : 'DELIVERING'}
-          />
+          <MerchandiseStatus status={data.deliveryStatus} />
         </Stack>
         <Divider sx={{ margin: '16px 0' }} />
         <Box>

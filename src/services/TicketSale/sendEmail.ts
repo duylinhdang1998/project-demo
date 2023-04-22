@@ -4,7 +4,7 @@ import { TicketSale } from 'services/models/TicketSale';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
-interface ResponseData {
+export interface ResponseData {
   id: '19';
   name: 'send-mails';
   data: [

@@ -1,16 +1,12 @@
 import AddIcon from '@mui/icons-material/Add';
-import { Grid, Stack, useTheme } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import { useMount } from 'ahooks';
-import AntTable from 'components/AntTable/AntTable';
 import Button from 'components/Button/Button';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import { useAppSelector } from 'hooks/useAppSelector';
 import { get } from 'lodash-es';
-import { Country } from 'models/Country';
-import { Option } from 'models/Field';
 import { useState } from 'react';
 import { PackageSale } from 'models/PackageSales';
 import { useForm } from 'react-hook-form';
@@ -18,32 +14,29 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Searcher } from 'services/@types/SearchParams';
 import { useGetListPackageSales } from 'services/PackageSales/packageSales';
-import { selectAuth } from 'store/auth/selectors';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
-import { columnsPackage } from './columnsPackage';
-import { agentFieldSearch, fieldsSearch } from './constants';
+import { fieldsSearch } from './constants';
+import SearchIcon from '@mui/icons-material/Search';
+import { dayjsToNumber } from 'utils/dayjsToNumber';
+import dayjs from 'dayjs';
+import TablePackageSales from './components/TablePackageSales';
 
 interface Values {
-  destination?: Country;
-  payment_status?: Option;
+  destination?: { value: string };
   from: string;
   recipient: string;
   orderId: string;
+  departureTime?: [dayjs.Dayjs, dayjs.Dayjs];
 }
 
 export default function PackageSales() {
   const { t } = useTranslation(['packageSales', 'translation']);
-  const theme = useTheme();
   const navigate = useNavigate();
-  const { userInfo } = useAppSelector(selectAuth);
-  const isAgent = userInfo?.role === 'agent';
   const [sortOrder, setSortOrder] = useState<any>({});
-
-  const [currentPage, setCurrentPage] = useState(0);
   const [filterValues, setFilterValues] = useState<any>({});
 
-  const { data, loading, run: getListPkgSales } = useGetListPackageSales();
+  const { data, loading, run: getListPkgSales, refresh } = useGetListPackageSales();
 
   const { control, handleSubmit } = useForm<Values>();
 
@@ -56,7 +49,12 @@ export default function PackageSales() {
   });
 
   const onSubmit = (values: Values) => {
+    console.log({ values });
     const searcher: Searcher<PackageSale> = {
+      arrivalPoint: {
+        operator: 'eq',
+        value: values.destination?.value,
+      },
       orderCode: {
         value: values.orderId,
         operator: 'eq',
@@ -69,10 +67,16 @@ export default function PackageSales() {
         value: values.recipient,
         operator: 'eq',
       },
-      'paymentDetail.paymentStatus': {
-        value: values.payment_status?.label,
-        operator: 'eq',
-      },
+      departureTime: [
+        {
+          value: values.departureTime?.[0] && dayjsToNumber(values.departureTime[0]),
+          operator: 'gte',
+        },
+        {
+          value: values.departureTime?.[0] && dayjsToNumber(values.departureTime[1]),
+          operator: 'lte',
+        },
+      ],
     };
 
     setFilterValues(searcher);
@@ -85,7 +89,7 @@ export default function PackageSales() {
   };
 
   const handleAdd = () => {
-    navigate('/agent/package-sales/create-package-orders');
+    navigate(`create-package-orders`);
   };
 
   return (
@@ -95,12 +99,14 @@ export default function PackageSales() {
       <FadeIn>
         <Box p="24px">
           <Grid container spacing={2}>
-            <Grid item xs={12} md={isAgent ? 8 : 11}>
+            <Grid item xs={12} md={9.5}>
               <FilterTicket
+                gap="14px"
                 control={control}
-                fields={isAgent ? agentFieldSearch : fieldsSearch}
-                numberColumns={isAgent ? 2.5 : 2}
+                fields={fieldsSearch}
+                numberColumns={2.5}
                 filterKey="packageSales"
+                flexWrap={{ xs: 'wrap', md: 'nowrap' }}
                 selectProps={{
                   isClearable: true,
                 }}
@@ -109,56 +115,53 @@ export default function PackageSales() {
             <Grid
               item
               xs={12}
-              md={isAgent ? 4 : 1}
+              md={2.5}
               sx={{
                 alignSelf: 'flex-end',
               }}
             >
               <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-                <Button variant="contained" fullWidth backgroundButton={theme.palette.primary.main} onClick={handleSubmit(onSubmit)}>
-                  {t('translation:search')}
+                <Button
+                  sx={{ width: '40px', height: '40px', minWidth: 'initial', fontSize: '18px' }}
+                  variant="contained"
+                  fullWidth
+                  onClick={handleSubmit(onSubmit)}
+                  backgroundButton="#1AA6EE"
+                >
+                  <SearchIcon fontSize="inherit" />
                 </Button>
-                {isAgent && (
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    backgroundButton="#33CC7F"
-                    onClick={handleAdd}
-                    startIcon={<AddIcon />}
-                    sx={{ padding: '12px 16px !important' }}
-                  >
-                    {t('add_merchandise')}
-                  </Button>
-                )}
+                <Button
+                  variant="contained"
+                  fullWidth
+                  backgroundButton="#33CC7F"
+                  onClick={handleAdd}
+                  startIcon={<AddIcon />}
+                  sx={{ padding: '12px 16px !important' }}
+                >
+                  {t('add_merchandise')}
+                </Button>
               </Stack>
             </Grid>
           </Grid>
           <Box my="30px">
-            {data?.code === 0 && (
-              <AntTable
-                columns={columnsPackage(sortOrder)}
-                loading={loading}
-                dataSource={data?.data?.hits ?? []}
-                rowKey={record => record._id ?? ''}
-                pagination={{
-                  pageSize: 10,
-                  total: data?.data.pagination.totalRows,
-                  current: currentPage + 1,
-                }}
-                onChange={(pagination, _, sorter, extra) => {
-                  const sorterMap = getSorterParamsFromAntdTable({ sorter });
-                  setSortOrder({
-                    [`${get(sorter, 'columnKey', '')}`]: get(sorter, 'order', ''),
-                  });
-                  getListPkgSales({
-                    page: getPaginationFromAntdTable({ pagination, extra }),
-                    searcher: filterValues,
-                    sorter: sorterMap,
-                  });
-                  setCurrentPage(getPaginationFromAntdTable({ pagination, extra }));
-                }}
-              />
-            )}
+            <TablePackageSales
+              onRefresh={refresh}
+              dataSource={data?.data.hits ?? []}
+              pagination={data?.data.pagination ?? { totalPages: 0, totalRows: 0 }}
+              sortOrder={sortOrder}
+              loading={loading}
+              onFilter={(pagination, _, sorter, extra) => {
+                const sorterMap = getSorterParamsFromAntdTable({ sorter });
+                setSortOrder({
+                  [`${get(sorter, 'columnKey', '')}`]: get(sorter, 'order', ''),
+                });
+                getListPkgSales({
+                  page: getPaginationFromAntdTable({ pagination, extra }),
+                  searcher: filterValues,
+                  sorter: sorterMap,
+                });
+              }}
+            />
           </Box>
         </Box>
       </FadeIn>

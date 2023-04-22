@@ -11,11 +11,11 @@ import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
 import { UserRole } from 'services/models/UserRole';
 import { getOffices } from 'services/OfficesManager/Company/getOffices';
-import { getCountryList } from 'services/PackageSales/packageSales';
 import { getListArrivals } from 'services/Route/Company/getListArrivals';
 import { getListDepartures } from 'services/Route/Company/getListDepartures';
 import { getVehicles } from 'services/Vehicle/Company/getVehicles';
 import { customStyles } from './customStyles';
+import { getListDestinations } from 'services/Destinations/getListDestinations';
 
 export interface FilterTicketProps<T extends FieldValues> {
   fields?: Array<Field & { numberColumn?: number }>;
@@ -148,7 +148,7 @@ export default function FilterTicket<T extends FieldValues>({
                   value={field.value}
                   service={async () => {
                     try {
-                      const response = await getCountryList();
+                      const response = await getListDestinations({ page: 0, searcher: {}, sorter: {}, isGetAll: true });
                       return response.data.hits;
                     } catch {
                       return [];
@@ -156,7 +156,7 @@ export default function FilterTicket<T extends FieldValues>({
                   }}
                   transformToOption={model => ({
                     key: model._id,
-                    label: model.officialName,
+                    label: model.title,
                     value: model,
                   })}
                   equalFunc={(model, value) => model._id === value?._id}

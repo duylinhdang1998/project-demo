@@ -1,7 +1,16 @@
 import { PaymentStatus } from './PaymentStatus';
 
-export type DeliveryStatus = 'unfulfilment' | 'schedule' | 'fulfilment';
+export enum DeliveryStatus {
+  PENDING = 'PENDING',
+  DELIVERING = 'DELIVERING',
+  DELIVERED = 'DELIVERED',
+  CANCELED = 'CANCELED',
+}
 
+export enum OrderStatus {
+  SUCCESS = 'SUCCESS',
+  CANCELED = 'CANCELED',
+}
 export interface PackageSale {
   _id: string;
   company: string;
@@ -18,15 +27,10 @@ export interface PackageSale {
   createdAt: string;
   updatedAt: string;
   __v: number;
-  paymentDetail: PaymentDetailItem[];
+  paymentStatus: PaymentStatus;
   totalWeight: number;
   totalPrice: number;
   totalQuantity: number;
-}
-
-interface PaymentDetailItem {
-  paymentCode: string;
-  paymentStatus: PaymentStatus;
 }
 
 interface Merchandise {
