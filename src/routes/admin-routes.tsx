@@ -61,6 +61,38 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  {
+    path: 'package-sales/create-package-orders',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.Agent.CreatePackageOrders />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'package-sales/create-package-orders/client-info',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.Agent.ClientInfo />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'package-sales/create-package-orders/order-confirm',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.Agent.OrderConfirm />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'package-sales/create-package-orders/order-detail-confirm',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.Agent.OrderDetailConfirm />
+      </RequiredAuth>
+    ),
+  },
   // Service settings
   {
     path: 'services-settings/:id',

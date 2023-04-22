@@ -3,7 +3,9 @@ import { Options } from 'ahooks/lib/useRequest/src/types';
 import { AxiosResponse } from 'axios';
 import { Country } from 'models/Country';
 import { PackageSale } from 'models/PackageSales';
-import { ParamsSettings, ResponseDetailSuccess, ResponseSuccess } from 'services/models/Response';
+import { ResponseData as SendEmailResponse } from 'services/TicketSale/sendEmail';
+import { ParamsSettings, ResponseDetailSuccess, ResponseFailure, ResponseSuccess } from 'services/models/Response';
+import { ServiceException } from 'services/utils/ServiceException';
 import { getSearchParams } from 'services/utils/getSearchParams';
 import { getSortParams } from 'services/utils/getSortParams';
 import fetchAPI from 'utils/fetchAPI';
@@ -31,6 +33,10 @@ export interface Recipent {
   lastName?: string;
   mobile?: string;
   type?: string;
+}
+
+export interface SendEmailPayload {
+  orderCode: string;
 }
 
 export const useGetListPackageSales = (option?: Options<ResponseSuccess<PackageSale>, any>) => {
@@ -115,6 +121,27 @@ export const useCreatePackageSale = (option?: Options<ResponseSuccess<PackageSal
   };
 
   return useRequest<ResponseSuccess<PackageSale>, [PackageSalePayload]>(createPackageSale, {
+    manual: true,
+    ...option,
+  });
+};
+
+export const useSendEmailPackageSale = (option?: Options<ResponseDetailSuccess<SendEmailResponse>, any>) => {
+  const sendEmail = async ({ orderCode }: SendEmailPayload) => {
+    const response: AxiosResponse<ResponseDetailSuccess<SendEmailResponse> | ResponseFailure> = await fetchAPI.request({
+      url: `v1.0/company/package-sale/send-mails`,
+      method: 'POST',
+      data: {
+        orderCode,
+      },
+    });
+    if (response.data.code === 0) {
+      return response.data as ResponseDetailSuccess<SendEmailResponse>;
+    }
+    const response_ = response as AxiosResponse<ResponseFailure>;
+    throw new ServiceException(response_.data.message, response_.data);
+  };
+  return useRequest<ResponseDetailSuccess<SendEmailResponse>, [SendEmailPayload]>(sendEmail, {
     manual: true,
     ...option,
   });

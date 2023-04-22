@@ -78,6 +78,7 @@ export default function CreatePackageOrders() {
     navigate('client-info', {
       state: {
         selectedRoute: routeItem,
+        departureTime: getValues().departureTime,
       },
     });
   };

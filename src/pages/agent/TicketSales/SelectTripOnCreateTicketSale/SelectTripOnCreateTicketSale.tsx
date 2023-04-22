@@ -4,6 +4,8 @@ import { Empty, Pagination } from 'antd';
 import CardWhite from 'components/CardWhite/CardWhite';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
@@ -18,6 +20,9 @@ import { FilterRoutesBySearcher } from './components/FilterRoutesBySearcher';
 import { FilterByTripTypeFormValues, FilterRoutesByTripType } from './components/FilterRoutesByTripType';
 import { useStyles } from './styles';
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 export interface FilterRoutesFormValues {
   departurePoint?: { value: string };
   arrivalPoint?: { value: string };
@@ -27,6 +32,7 @@ export interface FilterRoutesFormValues {
 }
 
 export const getTrips = async (page: number, values: FilterRoutesFormValues): Promise<Awaited<ReturnType<typeof searchRoutes>>['data']> => {
+  console.log('123', dayjs(values.departureTime).utc().format('DD/MM/YYYY, z'));
   try {
     const response = await searchRoutes({
       page,
@@ -35,7 +41,7 @@ export const getTrips = async (page: number, values: FilterRoutesFormValues): Pr
         departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
         stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
         departureTime: {
-          value: values.departureTime && dayjs(values.departureTime).valueOf(),
+          value: values.departureTime && dayjs.utc(values.departureTime).unix(),
           operator: 'eq',
         },
         quantity: {
