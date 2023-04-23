@@ -26,6 +26,7 @@ import { customStyles } from 'components/FilterTicket/customStyles';
 import classNames from 'classnames';
 import { DatePicker } from 'antd';
 import EditPriceTrip from 'pages/admin/Routers/components/EditPriceTrip';
+import { disabledDate } from 'utils/disableDate';
 
 export interface StopPointsProps {
   control: Control<StepOneValuesForMultipleStopTrip>;
@@ -195,6 +196,7 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
                             className={classNames(formVerticleClasses.datePicker, !!error ? formVerticleClasses.inputError : '')}
                             picker="time"
                             format="HH:mm"
+                            disabledDate={disabledDate as any}
                           />
                           {!!error && (
                             <Typography component="p" className={formVerticleClasses.error} fontSize={12}>

@@ -45,3 +45,8 @@ export interface Route {
   updatedAt: string;
   vehicle: Vehicle | null;
 }
+
+export const TripTypeLabelMapping: Record<TripType, string> = {
+  MULTI_STOP: 'Round-trip',
+  ONE_TRIP: 'One-wat',
+};

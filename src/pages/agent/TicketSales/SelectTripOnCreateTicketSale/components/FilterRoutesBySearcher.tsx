@@ -5,7 +5,7 @@ import FilterTicket from 'components/FilterTicket/FilterTicket';
 import { Field } from 'models/Field';
 import { Control } from 'react-hook-form';
 import { v4 } from 'uuid';
-import { FilterRoutesFormValues } from '../SelectTripOnCreateTicketSale';
+import { SelectTripFormValues } from '../SelectTripOnCreateTicketSale';
 
 const fields: Field[] = [
   { id: v4(), label: 'departurePoint', type: 'departurePoint' },
@@ -16,14 +16,14 @@ const fields: Field[] = [
 export interface FilterRoutesBySearcherProps {
   onSubmit: () => void;
   loading: boolean;
-  control: Control<FilterRoutesFormValues>;
+  control: Control<SelectTripFormValues>;
 }
 
 export const FilterRoutesBySearcher = ({ onSubmit, loading, control }: FilterRoutesBySearcherProps) => {
   const matches = useMediaQuery('(max-width:768px)');
 
   return (
-    <Grid container sx={{ margin: '20px 0' }} rowSpacing="24px" columnSpacing="0">
+    <Grid container sx={{ margin: '20px 0' }}>
       <Grid item xs={12} md={11}>
         <FilterTicket fields={fields} control={control} filterKey="ticketSales" numberColumns={3} />
       </Grid>

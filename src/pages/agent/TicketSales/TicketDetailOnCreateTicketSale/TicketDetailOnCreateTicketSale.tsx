@@ -42,6 +42,7 @@ export interface TicketDetailFormValues {
 
 const fieldKeys = ['email', 'method'];
 
+// FIXME: Trường hợp create round trip thì sao ??
 export const TicketDetailOnCreateTicketSale = () => {
   const { t } = useTranslation(['ticketSales', 'translation']);
 
@@ -163,11 +164,7 @@ export const TicketDetailOnCreateTicketSale = () => {
 
   useEffect(() => {
     if (orderCode) {
-      dispatch(
-        ticketSalesActions.getTicketSaleRequest({
-          orderCode: orderCode,
-        }),
-      );
+      dispatch(ticketSalesActions.getTicketSaleRequest({ orderCode: orderCode }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderCode]);

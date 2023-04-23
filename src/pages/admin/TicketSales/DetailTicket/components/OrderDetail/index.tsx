@@ -99,15 +99,7 @@ function OrderDetails({ record }: OrderDetailsProps) {
           left={t('ticketSales:createdBy')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {UserRoleMappingToLabel[record.rawData.ticketStatus]}
-            </Typography>
-          }
-        />
-        <Infomation
-          left={t('ticketSales:reason')}
-          right={
-            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {record.cancelReason}
+              {UserRoleMappingToLabel[record.rawData.creatorType]}
             </Typography>
           }
         />

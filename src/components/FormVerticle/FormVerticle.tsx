@@ -21,6 +21,7 @@ import { equals } from 'ramda';
 import { Controller, FieldErrors, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
+import { disabledDate } from 'utils/disableDate';
 import { useStyles } from './styles';
 
 export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
@@ -350,6 +351,7 @@ export default function FormVerticle<T extends FieldValues>({
                     className={cx(classes.datePicker, !!error ? classes.inputError : '')}
                     format={i.format}
                     status={!!error ? 'error' : undefined}
+                    disabledDate={disabledDate as any}
                   />
                   {!!error && (
                     <Typography component="p" className={classes.error} fontSize={12}>

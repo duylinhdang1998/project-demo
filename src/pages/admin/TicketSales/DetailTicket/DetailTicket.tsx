@@ -3,6 +3,7 @@ import { Box } from '@mui/system';
 import Button from 'components/Button/Button';
 import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import { ArrowOutward } from 'components/SvgIcon/ArrowOutward';
 import PrintIcon from 'components/SvgIcon/PrintIcon';
 import SendIcon from 'components/SvgIcon/SendIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
@@ -19,7 +20,9 @@ import { ColumnTicket } from '../components/ColumnTicket';
 import { ticketSaleModelToColumnTicket } from '../utils/ticketSaleModelToColumnTicket';
 import { ModalPrintTicket } from './components/ModalPrintTicket/ModalPrintTicket';
 import OrderDetails from './components/OrderDetail';
+import { PassengersDetail } from './components/PassengersDetail';
 import { PaymentDetail } from './components/PaymentDetail';
+import { VehicleDetail } from './components/VehicleDetail';
 
 export default function DetailTicketPage() {
   const { t } = useTranslation(['ticketSales', 'message_error']);
@@ -62,6 +65,11 @@ export default function DetailTicketPage() {
     }
   };
 
+  // FIXME: Lắp chức năng
+  const handleViewRelateOrder = () => {
+    console.log('View relate order');
+  };
+
   useEffect(() => {
     if (!record && orderCode) {
       dispatch(ticketSalesActions.getTicketSaleRequest({ orderCode }));
@@ -85,10 +93,29 @@ export default function DetailTicketPage() {
             <OrderDetails record={record} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <PaymentDetail record={record} />
+            <Stack direction="column" spacing="24px">
+              <PaymentDetail record={record} />
+              <VehicleDetail record={record} />
+              <PassengersDetail record={record} />
+            </Stack>
           </Grid>
         </Grid>
         <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={2} my="24px">
+          <Button
+            onClick={handleViewRelateOrder}
+            variant="outlined"
+            sx={{
+              padding: '12px 16px',
+              backgroundColor: '#fff',
+              '&:hover': {
+                backgroundColor: '#fff',
+                color: '#1AA6EE',
+              },
+            }}
+            startIcon={<ArrowOutward />}
+          >
+            {t('ticketSales:view_relate_order')}
+          </Button>
           <Button
             onClick={handleSendEmail}
             loading={statusSendEmail === 'loading'}

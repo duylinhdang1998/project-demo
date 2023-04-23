@@ -19,6 +19,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { TripTypeLabelMapping } from 'services/models/Route';
 import { RECORDS_PER_PAGE } from 'services/TicketSale/getTicketSales';
 import { selectAuth } from 'store/auth/selectors';
 import { selectTicketSales } from 'store/ticketSales/selectors';
@@ -135,14 +136,15 @@ export const TableTicketSales = () => {
         },
       },
       {
-        key: 'creator',
-        dataIndex: 'creator',
-        title: () => <AntTableColumnTitle>{t('ticketSales:createdBy')}</AntTableColumnTitle>,
+        key: 'route.tripType',
+        dataIndex: 'route.tripType',
+        title: () => <AntTableColumnTitle>{t('ticketSales:type')}</AntTableColumnTitle>,
         width: 120,
         align: 'center',
         sorter: () => 0,
-        render: (_, row) => {
-          return <AntTableColumnDisplayAsTypograph>{row.createdBy}</AntTableColumnDisplayAsTypograph>;
+        render: _ => {
+          // FIXME: Chưa populate
+          return <AntTableColumnDisplayAsTypograph>{TripTypeLabelMapping['MULTI_STOP']}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {

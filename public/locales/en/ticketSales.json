@@ -73,5 +73,10 @@
   "ticket_order": "Ticket order",
   "email_field_description": "Required in order to receive the email from confirmation and your ticket.",
   "confirm_title_to_change_cancel": "Confirm to cancel",
-  "confirm_description_to_change_cancel": "Please enter a reason for cancellation"
+  "confirm_description_to_change_cancel": "Please enter a reason for cancellation",
+  "vehicle": "Vehicle",
+  "view_relate_order": "View relate order",
+  "type": "Type",
+  "departure_trip": "Departure trip",
+  "return_trip": "Return trip"
 }

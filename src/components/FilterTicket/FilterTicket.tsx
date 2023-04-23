@@ -16,6 +16,7 @@ import { getListDepartures } from 'services/Route/Company/getListDepartures';
 import { getVehicles } from 'services/Vehicle/Company/getVehicles';
 import { customStyles } from './customStyles';
 import { getListDestinations } from 'services/Destinations/getListDestinations';
+import { disabledDate } from 'utils/disableDate';
 
 export interface FilterTicketProps<T extends FieldValues> {
   fields?: Array<Field & { numberColumn?: number }>;
@@ -131,6 +132,7 @@ export default function FilterTicket<T extends FieldValues>({
                   value={field.value as any}
                   onChange={field.onChange}
                   className={classes.datePicker}
+                  disabledDate={disabledDate as any}
                 />
               </Box>
             )}
@@ -374,6 +376,7 @@ export default function FilterTicket<T extends FieldValues>({
                     value={field.value as any}
                     onChange={field.onChange}
                     className={classes.datePicker}
+                    disabledDate={disabledDate as any}
                   />
                 </Box>
               );
