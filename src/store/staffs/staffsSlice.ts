@@ -5,7 +5,12 @@ import { CreateStaffFailure, CreateStaffRequest, CreateStaffSuccess } from './ac
 import { DeleteStaffFailure, DeleteStaffRequest, DeleteStaffSuccess } from './actions/DeleteStaff';
 import { GetStaffFailure, GetStaffRequest, GetStaffSuccess } from './actions/GetStaff';
 import { GetStaffsFailure, GetStaffsRequest, GetStaffsSuccess } from './actions/GetStaffs';
-import { UpdateDayOffFailure, UpdateDayOffLocal, UpdateDayOffRequest, UpdateDayOffSuccess } from './actions/UpdateDayOff';
+import {
+  UpdateDayOffNDayExceptionsFailure,
+  UpdateDayOffNDayExceptionsLocal,
+  UpdateDayOffNDayExceptionsRequest,
+  UpdateDayOffNDayExceptionsSuccess,
+} from './actions/UpdateDayOffNDayExceptions';
 import { UpdateActiveDaysFailure, UpdateActiveDaysRequest, UpdateActiveDaysSuccess } from './actions/UpdateActiveDays';
 import { UpdateStaffInfoFailure, UpdateStaffInfoRequest, UpdateStaffInfoSuccess } from './actions/UpdateStaffInfo';
 
@@ -167,26 +172,27 @@ export const staffsSlice = createSlice({
     },
 
     /** <---------- create day off ----------> */
-    updateDayOffLocal: (state, action: PayloadAction<UpdateDayOffLocal>) => {
-      const { dayOff } = action.payload;
+    updateDayOffNDayExceptionsLocal: (state, action: PayloadAction<UpdateDayOffNDayExceptionsLocal>) => {
+      const { dayOff, dayExceptions } = action.payload;
       if (state.staff) {
         return {
           ...state,
           staff: {
             ...state.staff,
-            dayOff,
+            dayOff: dayOff ?? state.staff.dayOff,
+            dayExceptions: dayExceptions ?? state.staff.dayExceptions,
           },
         };
       }
       return state;
     },
-    updateDayOffRequest: (state, _action: PayloadAction<UpdateDayOffRequest>) => {
+    updateDayOffNDayExceptionsRequest: (state, _action: PayloadAction<UpdateDayOffNDayExceptionsRequest>) => {
       return {
         ...state,
         statusUpdateDayOff: 'loading',
       };
     },
-    updateDayOffSuccess: (state, action: PayloadAction<UpdateDayOffSuccess>) => {
+    updateDayOffNDayExceptionsSuccess: (state, action: PayloadAction<UpdateDayOffNDayExceptionsSuccess>) => {
       const { data } = action.payload;
       return {
         ...state,
@@ -194,7 +200,7 @@ export const staffsSlice = createSlice({
         statusUpdateDayOff: 'success',
       };
     },
-    updateDayOffFailure: (state, _action: PayloadAction<UpdateDayOffFailure>) => {
+    updateDayOffNDayExceptionsFailure: (state, _action: PayloadAction<UpdateDayOffNDayExceptionsFailure>) => {
       return {
         ...state,
         statusUpdateDayOff: 'failure',

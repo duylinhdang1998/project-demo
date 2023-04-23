@@ -2,7 +2,7 @@ import { watchCreateStaff } from './watchCreateStaff';
 import { watchDeleteStaff } from './watchDeleteStaff';
 import { watchGetStaff } from './watchGetStaff';
 import { watchGetStaffs } from './watchGetStaffs';
-import { watchUpdateDayOff } from './watchUpdateDayOff';
+import { watchUpdateDayOffNDayExceptions } from './watchUpdateDayOffNDayExceptions';
 import { watchUpdateActiveDays } from './watchUpdateActiveDays';
 import { watchUpdateStaffInfo } from './watchUpdateStaffInfo';
 
@@ -11,7 +11,7 @@ export const staffsSagas = [
   watchGetStaffs,
   watchGetStaff,
   watchDeleteStaff,
-  watchUpdateDayOff,
+  watchUpdateDayOffNDayExceptions,
   watchUpdateActiveDays,
   watchUpdateStaffInfo,
 ];

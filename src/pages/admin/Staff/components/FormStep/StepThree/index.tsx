@@ -1,10 +1,4 @@
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Stack, Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import { Alert } from 'antd';
-import 'antd/lib/alert/style/css';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
@@ -14,7 +8,7 @@ import enUS from 'date-fns/locale/en-US';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { useState } from 'react';
-import { Calendar, dateFnsLocalizer, Event, Views } from 'react-big-calendar';
+import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -22,10 +16,13 @@ import { toast } from 'react-toastify';
 import { DayInWeekMappingToString } from 'services/models/DayInWeek';
 import { selectStaffs } from 'store/staffs/selectors';
 import { staffsActions } from 'store/staffs/staffsSlice';
-import { createArrayDateFromRange } from 'utils/createArrayDateFromRange';
 import { dateClamp } from 'utils/dateClamp';
 import { isTimestampEqualDayInYear } from 'utils/handleTimestampWithDayInYear';
+import { AlertSuccess } from './components/AlertSuccess';
+import { CalendarToolbar } from './components/CalendarToolbar';
 import './styles.scss';
+import { getDayoffsEvent } from './utils/getDayoffsEvent';
+import { getDayoffsOutsidePresenceDay } from './utils/getDayoffsOutsidePresenceDay';
 
 const locales = {
   'en-US': enUS,
@@ -39,29 +36,6 @@ const localizer = dateFnsLocalizer({
   getDay,
 });
 
-const useStyles = makeStyles(() => ({
-  btnIcon: {
-    width: 28,
-    height: 28,
-    backgroundColor: '#f7f7f7',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    border: 'none',
-    cursor: 'pointer',
-  },
-  selectedDate: {
-    background: 'rgba(232, 246, 253, 1)',
-    padding: '8px 16px',
-    borderRadius: '24px',
-    display: 'inline-flex',
-    alignItems: 'center',
-    fontSize: '14px',
-    color: '#45485E',
-    marginTop: '12px',
-  },
-}));
-
 interface StepThreeProps {
   onCancel?: () => void;
   isEdit?: boolean;
@@ -71,7 +45,6 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const navigate = useNavigate();
 
   const { t } = useTranslation(['staffs', 'translation', 'message_error']);
-  const classes = useStyles();
 
   const [open, setOpen] = useState(false);
 
@@ -89,9 +62,10 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const handleSave = () => {
     if (staff) {
       dispatch(
-        staffsActions.updateDayOffRequest({
+        staffsActions.updateDayOffNDayExceptionsRequest({
           data: {
             dayOffs: staff.dayOff,
+            dayExceptions: staff.dayExceptions,
             staffId: staff._id,
           },
           onSuccess() {
@@ -129,33 +103,13 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     );
   };
 
-  const renderAlertSuccess = () => {
-    if (!location.state?.isConsultSchedule) {
-      return (
-        <Alert
-          closable
-          showIcon
-          type="success"
-          className="alertSuccess"
-          message={
-            <Box>
-              <Typography className="alert__title">{t('staff:alert_title')}</Typography>
-              <Typography className="alert__description">{t('staff:alert_description')}</Typography>
-            </Box>
-          }
-        />
-      );
-    }
-    return null;
-  };
-
   if (!staff) {
     return <EmptyScreen description={t('message_error:STAFF_NOT_FOUND')} />;
   }
 
   return (
     <Box my="24px">
-      {renderAlertSuccess()}
+      <AlertSuccess isConsultSchedule={location.state?.isConsultSchedule} />
       <Calendar
         selectable
         defaultDate={staff.periodFrom ? new Date(staff.periodFrom) : undefined}
@@ -166,43 +120,13 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         views={[Views.MONTH]}
         className="staff custom-big-calendar"
         components={{
-          toolbar: ({ label, onNavigate }) => {
-            return (
-              <Stack direction="row" alignItems="center" justifyContent="space-between" border="1px solid #ddd" py="10px">
-                <Box className={classes.btnIcon} onClick={() => onNavigate('PREV')}>
-                  <ChevronLeftIcon sx={{ color: '#333', fontSize: 20 }} />
-                </Box>
-                <Typography fontSize={18} fontWeight={700}>
-                  {label}
-                </Typography>
-                <Box className={classes.btnIcon} onClick={() => onNavigate('NEXT')}>
-                  <ChevronRightIcon sx={{ color: '#333', fontSize: 14 }} />
-                </Box>
-              </Stack>
-            );
-          },
+          toolbar: CalendarToolbar,
           month: {
-            header: ({ label }) => {
-              return (
-                <Box padding="8px 14px" textAlign="center" fontSize="14px">
-                  {label}
-                </Box>
-              );
-            },
-            dateHeader: ({ label }) => {
-              return <Box textAlign="center">{label}</Box>;
-            },
+            header: ({ label }) => <Box padding="8px 14px" textAlign="center" fontSize="14px" children={label} />,
+            dateHeader: ({ label }) => <Box textAlign="center">{label}</Box>,
           },
-          dateCellWrapper: ({ children }) => {
-            return (
-              <Box display="flex" className="cell_wrapper" flex="1 0">
-                {children}
-              </Box>
-            );
-          },
-          event: ({ title }) => {
-            return <div>{title}</div>;
-          },
+          dateCellWrapper: ({ children }) => <Box display="flex" className="cell_wrapper" flex="1 0" children={children} />,
+          event: ({ title }) => <div>{title}</div>,
         }}
         onSelecting={() => false}
         onSelectSlot={event => {
@@ -211,46 +135,31 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           if (isWorkingDay && isDateClampStaffPeriod(selected.getTime())) {
             const isDeleteDayOffAction = staff.dayOff.find(item => isTimestampEqualDayInYear(item, selected.getTime()));
             dispatch(
-              staffsActions.updateDayOffLocal({
+              staffsActions.updateDayOffNDayExceptionsLocal({
                 dayOff: isDeleteDayOffAction
                   ? staff.dayOff.filter(item => !isTimestampEqualDayInYear(item, selected.getTime()))
                   : staff.dayOff.concat(selected.getTime()),
               }),
             );
-          } else {
-            console.log('Ngày nghỉ và muốn đi làm');
+          }
+          if (!isWorkingDay && isDateClampStaffPeriod(selected.getTime())) {
+            const isDeleteDayExceptionAction = staff.dayExceptions.find(item => isTimestampEqualDayInYear(item, selected.getTime()));
+            dispatch(
+              staffsActions.updateDayOffNDayExceptionsLocal({
+                dayExceptions: isDeleteDayExceptionAction
+                  ? staff.dayExceptions.filter(item => !isTimestampEqualDayInYear(item, selected.getTime()))
+                  : staff.dayExceptions.concat(selected.getTime()),
+              }),
+            );
           }
         }}
         dayPropGetter={date => {
           if (isDateClampStaffPeriod(date.getTime())) {
-            return {
-              className: 'selectable',
-            };
+            return { className: 'selectable' };
           }
           return {};
         }}
-        events={[
-          ...staff.dayOff.map<Event>(dayoff => ({
-            start: new Date(dayoff),
-            end: new Date(dayoff),
-            allDay: true,
-            title: t('translation:off'),
-          })),
-          ...(typeof staff.periodFrom === 'number' && typeof staff.periodTo === 'number'
-            ? createArrayDateFromRange({
-                start: staff.periodFrom,
-                end: staff.periodTo,
-                isNeedIgnore(date) {
-                  return staff.presenceDay.includes(DayInWeekMappingToString[date.getDay()]);
-                },
-              }).map(item => ({
-                start: new Date(item),
-                end: new Date(item),
-                allDay: true,
-                title: t('translation:off'),
-              }))
-            : []),
-        ]}
+        events={[...getDayoffsEvent(staff, t('translation:off')), ...getDayoffsOutsidePresenceDay(staff, t('translation:off'))]}
       />
       <ComboButton
         isSaving={statusUpdateDayOff === 'loading'}

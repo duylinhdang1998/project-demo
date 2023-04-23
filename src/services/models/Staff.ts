@@ -20,4 +20,5 @@ export interface Staff {
   __v: number;
   periodFrom: null | string | number;
   periodTo: null | string | number;
+  dayExceptions: number[];
 }
