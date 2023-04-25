@@ -6,6 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { fields2, fields3 } from '../constant';
 import FormMerchandise from './FormMerchandise';
 import { Field } from 'models/Field';
+import { useGetPaymentMethod } from 'services/Company/paymentMethods';
+import Radio from 'components/Radio/Radio';
+import { useMemo } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   label: {
@@ -64,6 +67,17 @@ interface Props {
 export default function FormClientInfo({ control, errors }: Props) {
   const { t } = useTranslation(['packageSales', 'translation', 'account']);
   const classes = useStyles();
+  const { data: paymentMethods } = useGetPaymentMethod();
+
+  const methods = useMemo(() => {
+    return paymentMethods?.data?.map((p, index) => ({
+      label: p,
+      value: p,
+      key: `${p}_${index}`,
+    }));
+  }, [paymentMethods]);
+
+  console.log({ paymentMethods });
 
   const renderField = (fields: Field[]) => {
     return (
@@ -128,6 +142,46 @@ export default function FormClientInfo({ control, errors }: Props) {
       </Typography>
       <Divider sx={{ margin: '16px 0' }} />
       <FormMerchandise control={control} errors={errors} />
+      <Divider sx={{ margin: '16px 0' }} />
+      <Controller
+        name="email"
+        control={control}
+        render={({ field }) => {
+          return (
+            <Box>
+              <InputLabel htmlFor="email" className={classes.label}>
+                {t(`email`)} <span className={classes.error}>*</span>
+              </InputLabel>
+              <InputBase fullWidth id="email" {...field} placeholder={t(`email`)} className={classes.input} error={!!errors} />
+              {!!errors && (
+                <Typography component="p" className={classes.error} fontSize={12}>
+                  {get(errors, `email.message`, '')}
+                </Typography>
+              )}
+              <Typography fontSize={12} color="#B2BABE" mt="6px">
+                {t('packageSales:required_in_order')}
+              </Typography>
+            </Box>
+          );
+        }}
+        rules={{
+          required: {
+            value: true,
+            message: t('translation:error_required', { name: t(`packageSales:email`).toLowerCase() }),
+          },
+        }}
+      />
+      <Divider sx={{ margin: '16px 0' }} />
+      {/* <Controller
+        name="method"
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field }) => {
+          return <Radio {...field} options={methods ?? []} radioName="payment-method" />;
+        }}
+      /> */}
     </Box>
   );
 }

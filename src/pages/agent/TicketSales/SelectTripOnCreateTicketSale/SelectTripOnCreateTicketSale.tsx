@@ -24,6 +24,7 @@ export interface SelectTripFormValues {
   departureTime?: number;
   tripType: RouteOfTicketSale['tripType'];
   departureTrip: RouteOfTicketSale | null;
+  merchandises?: { value: string };
 }
 
 export const SelectTripOnCreateTicketSale = () => {

@@ -17,6 +17,7 @@ import { getVehicles } from 'services/Vehicle/Company/getVehicles';
 import { customStyles } from './customStyles';
 import { getListDestinations } from 'services/Destinations/getListDestinations';
 import { disabledDate } from 'utils/disableDate';
+import { getPackageSettings } from 'services/PackageSetting/Company/getPackageSettings';
 
 export interface FilterTicketProps<T extends FieldValues> {
   fields?: Array<Field & { numberColumn?: number }>;
@@ -377,6 +378,42 @@ export default function FilterTicket<T extends FieldValues>({
                     onChange={field.onChange}
                     className={classes.datePicker}
                     disabledDate={disabledDate as any}
+                  />
+                </Box>
+              );
+            }}
+          />
+        );
+      case 'packageSettings':
+        return (
+          <Controller
+            control={control}
+            name={i.label as Path<T>}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <SingleSelectDecouplingData
+                    isClearable
+                    isSearchable
+                    service={async () => {
+                      try {
+                        const response = await getPackageSettings({ isGetAll: true, page: 0, searcher: {}, sorter: {} });
+                        return response.data.hits.map(item => ({ value: item._id, label: item.title }));
+                      } catch {
+                        return [];
+                      }
+                    }}
+                    transformToOption={model => ({
+                      key: model.value,
+                      label: model.label,
+                      value: model,
+                    })}
+                    equalFunc={(model, input) => model.value === input?.value}
+                    value={field.value}
+                    styles={customStyles as any}
+                    placeholder={t(`${i.label}`)}
+                    onChange={field.onChange}
                   />
                 </Box>
               );

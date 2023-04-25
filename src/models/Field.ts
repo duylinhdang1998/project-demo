@@ -45,7 +45,8 @@ export interface SimpleField extends BaseField {
     | 'role'
     | 'departurePoint'
     | 'arrivalPoint'
-    | 'vehicle';
+    | 'vehicle'
+    | 'packageSettings';
   placeholder?: string;
   options?: Option[];
   prefix?: string;
