@@ -11,6 +11,8 @@ interface ResponseData {
   counts: Array<{ _id: RouteOfTicketSale['tripType']; count: number }>;
 }
 
+type ResponsePackage = RouteOfTicketSale[];
+
 export interface SearchRoutes {
   page: Pagination;
   searcher: Searcher<RouteOfTicketSale, 'quantity' | 'departureTime' | 'merchandises'>;
