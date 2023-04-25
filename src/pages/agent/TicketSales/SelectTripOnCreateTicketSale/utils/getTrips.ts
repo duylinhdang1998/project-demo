@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { searchRoutes } from 'services/TicketSale/searchRoutes';
+import { searchRoutes, searchRoutesPackage } from 'services/TicketSale/searchRoutes';
 import { SelectTripFormValues } from '../SelectTripOnCreateTicketSale';
 
 export const getTrips = async (page: number, values: SelectTripFormValues): Promise<Awaited<ReturnType<typeof searchRoutes>>['data']> => {
@@ -11,7 +11,11 @@ export const getTrips = async (page: number, values: SelectTripFormValues): Prom
         departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
         stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
         departureTime: {
-          value: values.departureTime && dayjs.utc(values.departureTime).unix(),
+          value: values.departureTime && dayjs.utc(values.departureTime).valueOf(),
+          operator: 'eq',
+        },
+        merchandises: {
+          value: values.merchandises?.value,
           operator: 'eq',
         },
       },
@@ -24,6 +28,37 @@ export const getTrips = async (page: number, values: SelectTripFormValues): Prom
         { _id: 'MULTI_STOP', count: 0 },
         { _id: 'ONE_TRIP', count: 0 },
       ],
+    };
+  }
+};
+
+export const getTripPackages = async (
+  page: number,
+  values: SelectTripFormValues,
+): Promise<Awaited<ReturnType<typeof searchRoutesPackage>>['data']> => {
+  try {
+    const response = await searchRoutesPackage({
+      page,
+      searcher: {
+        tripType: { value: values.tripType, operator: 'eq' },
+        departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
+        stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
+        departureTime: {
+          value: values.departureTime && dayjs.utc(values.departureTime).set('second', 0).unix() * 1000,
+          operator: 'eq',
+          // value: 1682428200000
+        },
+        merchandises: {
+          value: values.merchandises?.value,
+          operator: 'eq',
+        },
+      },
+    });
+    return response.data;
+  } catch {
+    return {
+      hits: [],
+      pagination: { totalPages: 1, totalRows: 0 },
     };
   }
 };

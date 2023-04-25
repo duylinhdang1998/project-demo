@@ -1,21 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Divider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { v4 as uuid } from 'uuid';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import Radio from 'components/Radio/Radio';
 import { useGetPaymentMethod, useLoginPaymentGateway, useUpdatePaymentSettings } from 'services/Company/paymentMethods';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
-import { get } from 'lodash-es';
+import { get, isEmpty } from 'lodash-es';
 import { styled } from '@mui/material/styles';
 import { getNotifcation } from 'utils/getNotification';
 import Button from 'components/Button/Button';
+import { CheckboxGroup } from 'components/CheckboxGroup/CheckboxGroup';
+import { isEqual } from 'lodash-es';
 
 const PaypalButton = styled(Button)({
   backgroundColor: '#263B80',
@@ -29,7 +29,7 @@ const PaypalButton = styled(Button)({
 export default function PaymentMethod() {
   const { t } = useTranslation(['account', 'translation']);
 
-  const { control, handleSubmit, reset } = useForm<{ method: string }>();
+  const { control, handleSubmit, reset } = useForm<{ methods: string[] }>();
 
   const { loading, data } = useGetPaymentMethod();
   const { loading: loading2, runAsync: getUrlGateWay } = useLoginPaymentGateway();
@@ -45,16 +45,8 @@ export default function PaymentMethod() {
 
   const methodValueWatch = useWatch({
     control,
-    name: 'method',
+    name: 'methods',
   });
-
-  useEffect(() => {
-    if (data?.code === 0) {
-      reset({
-        method: get(data, 'data[0]', ''),
-      });
-    }
-  }, [data]);
 
   const [open, setOpen] = useState(false);
   const handleClose = () => {
@@ -62,19 +54,36 @@ export default function PaymentMethod() {
   };
   const handleCancel = () => setOpen(true);
 
-  const methods = [
-    { id: uuid(), label: t('stripe'), value: 'STRIPE' },
-    { id: uuid(), label: t('paypal'), value: 'PAYPAL' },
-  ];
+  useEffect(() => {
+    if (!isEmpty(data?.data)) {
+      reset({
+        methods: data?.data?.filter(item => !!item.status).map(i => i.paymentGateWay),
+      });
+    }
+  }, [data?.data]);
+
+  const methods = useMemo(() => {
+    if (!isEmpty(data?.data)) {
+      return data?.data.map(item => ({
+        key: item._id,
+        value: item.paymentGateWay,
+        status: item.status,
+        registered: item.registered,
+        label: item.paymentGateWay,
+      }));
+    }
+    return [];
+  }, [data?.data]);
 
   const onSubmit = (values: any) => {
-    updateMethod({
-      method: [values.method],
-    });
+    console.log(123, values);
+    // updateMethod({
+    //   method: values.methods,
+    // });
   };
 
   const handleLogin = async () => {
-    if (methodValueWatch === 'PAYPAL') {
+    if (methodValueWatch.includes('PAYPAL')) {
       return;
     }
     const response = await getUrlGateWay('/v1.0/company/payment/stripe-links', {
@@ -100,7 +109,7 @@ export default function PaymentMethod() {
           loading={loading2}
           onClick={handleLogin}
         >
-          {methodValueWatch === 'PAYPAL' ? t('login_paypal') : t('login_stripe')}
+          {methodValueWatch.includes('PAYPAL') ? t('login_paypal') : t('login_stripe')}
         </PaypalButton>
       </Box>
     );
@@ -123,16 +132,23 @@ export default function PaymentMethod() {
                 <Box>
                   <Typography variant="body2">{t('define_method')}</Typography>
                   <Controller
-                    name="method"
                     control={control}
-                    rules={{
-                      required: true,
-                    }}
+                    name={`methods`}
+                    defaultValue={methodValueWatch ?? []}
                     render={({ field }) => {
-                      return <Radio {...field} options={methods} radioName="payment-method" />;
+                      return (
+                        <CheckboxGroup
+                          horizontal={false}
+                          options={methods ?? []}
+                          values={field.value ?? []}
+                          onChange={field.onChange}
+                          equalsFunc={isEqual}
+                        />
+                      );
                     }}
                   />
-                  {renderButton()}
+                  {methodValueWatch?.includes('PAYPAL') && renderButton()}
+                  {methodValueWatch?.includes('STRIPE') && renderButton()}
                 </Box>
                 <ComboButton onSave={handleSubmit(onSubmit)} onCancel={handleCancel} isSaving={updateLoading} />
               </Box>

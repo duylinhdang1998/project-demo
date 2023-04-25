@@ -17,7 +17,8 @@ import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { isEmpty } from 'lodash-es';
 import { useDispatch } from 'react-redux';
 import { resetOrderInformation } from 'store/packageSales/packageSalesSlice';
-import { getTrips } from '../TicketSales/SelectTripOnCreateTicketSale/utils/getTrips';
+import { getTripPackages } from '../TicketSales/SelectTripOnCreateTicketSale/utils/getTrips';
+import dayjs from 'dayjs';
 
 const useStyles = makeStyles((theme: Theme) => ({
   buttonSearch: {
@@ -52,19 +53,17 @@ export default function CreatePackageOrders() {
       arrivalPoint: undefined,
       departurePoint: undefined,
       departureTime: undefined,
-      totalPax: 0,
+      merchandises: undefined,
     },
   });
 
-  const { run, loading, data } = useRequest(getTrips, {
+  const { run, loading, data } = useRequest(getTripPackages, {
     manual: true,
   });
 
   const totalPages = useMemo(() => {
-    return data?.counts.reduce((s, item) => {
-      return (s += item.count);
-    }, 0);
-  }, [data?.counts]);
+    return data?.pagination.totalPages;
+  }, [data?.pagination]);
 
   useMount(() => {
     dispatch(resetOrderInformation());
@@ -84,6 +83,7 @@ export default function CreatePackageOrders() {
     });
   };
   const onSubmit = (values: SelectTripFormValues) => {
+    console.log({ values });
     setCurrentPage(1);
     run(0, values);
   };
@@ -91,33 +91,31 @@ export default function CreatePackageOrders() {
   return (
     <LayoutDetail title={t('create_package_orders')} subTitle={t('package_sales')}>
       <CardWhite title={t('select_your_trip')}>
-        <FilterRoutesBySearcher control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} />
-        {isEmpty(data?.routes) ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /> : null}
+        <FilterRoutesBySearcher control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} page="packageSales" />
+        {isEmpty(data?.hits) ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /> : null}
 
-        {!!data?.routes.length && (
+        {!isEmpty(data?.hits) && (
           <Box>
             <Highlighter
-              textToHighlight={t('ticketSales:total_trips_found', { total: data?.routes.length })}
+              textToHighlight={t('ticketSales:total_trips_found', { total: data?.hits.length })}
               highlightClassName={classes.highlightText}
-              searchWords={[data?.routes.length.toString() ?? '']}
+              searchWords={[data?.hits.length.toString() ?? '']}
               autoEscape={true}
               className={classes.title}
             />
             <Grid sx={{ marginY: '16px' }} columns={12} container spacing="16px">
-              {data?.routes.map(routeItem => {
+              {data?.hits.map((routeItem: RouteOfTicketSale) => {
                 return (
                   <Grid xs={12} lg={6} item key={routeItem._id}>
                     <CardSelectTrip
-                      key={routeItem._id}
                       timeStart={routeItem.route.departureTime}
                       timeEnd={addMinutesToTimeString(routeItem.route.departureTime, routeItem.durationTime)}
                       placeStart={routeItem.departurePoint}
                       placeEnd={routeItem.stopPoint}
-                      ECOPrices={routeItem.ECOPrices}
-                      VIPPrices={routeItem.VIPPrices}
                       duration={t('ticketSales:duration_minutes', { duration: routeItem.durationTime })}
                       vehicle={routeItem.vehicle}
                       onSelect={() => handleSelect(routeItem)}
+                      dateTime={dayjs(routeItem.dateQuery).format('MM/DD/YYYY')}
                     />
                   </Grid>
                 );

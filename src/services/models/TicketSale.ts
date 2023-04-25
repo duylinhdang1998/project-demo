@@ -78,4 +78,6 @@ export interface RouteOfTicketSale {
     updatedAt: '2023-03-21T09:12:16.642Z';
     __v: 0;
   };
+  dateQuery?: string;
+  bookDate?: string;
 }

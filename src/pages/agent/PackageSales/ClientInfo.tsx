@@ -12,6 +12,8 @@ import { setOrderInfomation } from 'store/packageSales/packageSalesSlice';
 import { useEffect } from 'react';
 import { orderConfirmSelector } from 'store/passengers/selectors';
 import { isEmpty } from 'lodash-es';
+import { useMount, useRequest, useUpdateEffect } from 'ahooks';
+import { getRoute } from 'services/Route/Company/getRoute';
 
 interface StateLocation {
   merchandise: {
@@ -32,6 +34,7 @@ interface FieldValues {
   recipent_last_name: string;
   recipent_mobile: string;
   merchandise: StateLocation['merchandise'];
+  email: string;
 }
 
 export default function ClientInfo() {
@@ -52,6 +55,19 @@ export default function ClientInfo() {
       merchandise: [{ weight: '', price: '' }],
     },
   });
+
+  const { data: dataDetail, run: getRouteDetail } = useRequest(getRoute, {
+    ready: !!selectedRoute.routeCode,
+    manual: true,
+  });
+
+  useEffect(() => {
+    if (!!selectedRoute.routeCode) {
+      getRouteDetail({ routeCode: selectedRoute.routeCode });
+    }
+  }, [selectedRoute]);
+
+  console.log({ dataDetail });
 
   useEffect(() => {
     if (!isEmpty(orderConfirm)) {

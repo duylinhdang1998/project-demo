@@ -1,20 +1,22 @@
 import { useRequest } from 'ahooks';
 import { Options } from 'ahooks/lib/useRequest/src/types';
 import { AxiosResponse } from 'axios';
+import { PaymentGateway } from 'services/models/PaymentGateway';
 import fetchAPI from 'utils/fetchAPI';
-
-interface MethodPayload {
-  method: string[];
-}
 
 interface SettingPayload {
   refreshUrl: string;
   returnUrl: string;
 }
 
+interface MethodUpdatePayload {
+  method: string;
+  status?: boolean;
+}
+
 interface MethodPaymentResponse {
   code: number;
-  data: MethodPayload;
+  data: PaymentGateway[];
 }
 
 export const useGetPaymentMethod = () => {
@@ -43,7 +45,7 @@ export const useLoginPaymentGateway = () => {
 };
 
 export const useUpdatePaymentSettings = (option: Options<MethodPaymentResponse, any>) => {
-  const updateOrderSettings = async (data: any) => {
+  const updateOrderSettings = async (data: MethodUpdatePayload) => {
     const response: AxiosResponse<MethodPaymentResponse> = await fetchAPI.request({
       url: '/v1.0/company/payment/settings',
       method: 'post',
@@ -51,7 +53,7 @@ export const useUpdatePaymentSettings = (option: Options<MethodPaymentResponse, 
     });
     return response.data;
   };
-  return useRequest<MethodPaymentResponse, [MethodPayload]>(updateOrderSettings, {
+  return useRequest<MethodPaymentResponse, [MethodUpdatePayload]>(updateOrderSettings, {
     manual: true,
     ...option,
   });
