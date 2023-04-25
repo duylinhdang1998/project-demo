@@ -45,5 +45,10 @@
   "cancel_to_delivery": "Cancel to delivery",
   "reason": "Reason",
   "delivery_status": "Delivery status",
-  "email": "Email"
+  "email": "Email",
+  "name_of_sender": "Sender's name",
+  "mobile_of_sender": "Sender's mobile",
+  "name_of_recipient": "Recipient's name",
+  "mobile_of_recipient": "Recipient's mobile",
+  "total_weight": "Total weight"
 }

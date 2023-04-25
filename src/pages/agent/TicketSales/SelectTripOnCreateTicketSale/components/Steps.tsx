@@ -4,27 +4,29 @@ import { SelectTripFormValues } from '../SelectTripOnCreateTicketSale';
 
 interface StepProps {
   tripType: SelectTripFormValues['tripType'];
-  step: 1 | 2;
+  step: 0 | 1 | 2;
 }
 
 export const Steps = ({ step, tripType }: StepProps) => {
   const { t } = useTranslation(['ticketSales']);
 
   if (tripType === 'MULTI_STOP') {
+    const isStepOnepActiving = step === 0 || step === 1;
+    const isStepTwopActiving = step === 1 || step === 2;
     return (
       <Stepper activeStep={step} sx={{ my: '24px', maxWidth: 500, mx: 'auto' }}>
         <Step>
           <StepLabel
             StepIconProps={{
               sx: {
-                fill: step === 1 ? '#1AA6EE' : 'rgba(178, 186, 190, 1)',
+                fill: isStepOnepActiving ? '#1AA6EE' : 'rgba(178, 186, 190, 1)',
                 '& text': {
                   fill: '#fff !important',
                 },
               },
             }}
             optional={
-              <Typography variant="caption" color={step === 1 ? '#1AA6EE' : 'rgba(178, 186, 190, 1)'}>
+              <Typography variant="caption" color={isStepOnepActiving ? '#1AA6EE' : 'rgba(178, 186, 190, 1)'}>
                 {t('ticketSales:departure_trip')}
               </Typography>
             }
@@ -34,14 +36,14 @@ export const Steps = ({ step, tripType }: StepProps) => {
           <StepLabel
             StepIconProps={{
               sx: {
-                fill: step === 2 ? '#1AA6EE' : 'rgba(178, 186, 190, 1)',
+                fill: isStepTwopActiving ? '#1AA6EE' : 'rgba(178, 186, 190, 1)',
                 '& text': {
                   fill: '#fff !important',
                 },
               },
             }}
             optional={
-              <Typography variant="caption" color={step === 2 ? '#1AA6EE' : 'rgba(178, 186, 190, 1)'}>
+              <Typography variant="caption" color={isStepTwopActiving ? '#1AA6EE' : 'rgba(178, 186, 190, 1)'}>
                 {t('ticketSales:return_trip')}
               </Typography>
             }

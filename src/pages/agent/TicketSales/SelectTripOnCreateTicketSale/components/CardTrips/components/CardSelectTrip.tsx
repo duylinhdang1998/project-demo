@@ -83,7 +83,10 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, dur
           <Typography variant="body2">{vehicle?.brand}</Typography>
         </Stack>
         <Stack spacing={2} direction="row" alignItems="center">
-          {vehicle?.services.map(service => {
+          {vehicle?.services.map((service, index) => {
+            if (typeof service === 'string') {
+              return <img key={index} alt={service} src={getUrlImage(service)} className={mainClasses.icon} />;
+            }
             return <img key={service._id} alt={service.title} src={getUrlImage(service.icon)} className={mainClasses.icon} />;
           })}
         </Stack>

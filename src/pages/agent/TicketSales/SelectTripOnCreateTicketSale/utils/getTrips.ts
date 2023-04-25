@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { searchRoutes, searchRoutesPackage } from 'services/TicketSale/searchRoutes';
 import { SelectTripFormValues } from '../SelectTripOnCreateTicketSale';
 
@@ -7,13 +6,19 @@ export const getTrips = async (page: number, values: SelectTripFormValues): Prom
     const response = await searchRoutes({
       page,
       searcher: {
-        tripType: { value: values.tripType, operator: 'eq' },
-        departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
-        stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
+        departurePoint: { value: 'Tưởng tạo ra test routers cho dễ 1', operator: 'eq' },
+        stopPoint: { value: 'Tưởng tạo ra test routers cho dễ 3', operator: 'eq' },
         departureTime: {
-          value: values.departureTime && dayjs.utc(values.departureTime).valueOf(),
+          value: 1682428200000,
           operator: 'eq',
         },
+        // tripType: { value: values.tripType, operator: 'eq' },
+        // departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
+        // stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
+        // departureTime: {
+        //   value: values.departureTime && dayjs.utc(values.departureTime).valueOf(),
+        //   operator: 'eq',
+        // },
         merchandises: {
           value: values.merchandises?.value,
           operator: 'eq',
@@ -21,13 +26,10 @@ export const getTrips = async (page: number, values: SelectTripFormValues): Prom
       },
     });
     return response.data;
-  } catch {
+  } catch (error) {
     return {
-      routes: [],
-      counts: [
-        { _id: 'MULTI_STOP', count: 0 },
-        { _id: 'ONE_TRIP', count: 0 },
-      ],
+      hits: [],
+      pagination: { totalPages: 1, totalRows: 0 },
     };
   }
 };

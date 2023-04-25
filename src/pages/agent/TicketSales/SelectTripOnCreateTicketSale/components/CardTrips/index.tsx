@@ -8,15 +8,15 @@ import CardSelectTrip from './components/CardSelectTrip';
 
 interface CardTripsProps {
   loading: boolean;
+  totalRoutes: number;
   routes: RouteOfTicketSale[];
-  counts: Array<{ _id: RouteOfTicketSale['tripType']; count: number }>;
   tripType: RouteOfTicketSale['tripType'];
   onSelect: (route: RouteOfTicketSale) => void;
   setCurrentPage: (page: number) => void;
   currentPage: number;
 }
 
-export const CardTrips = ({ loading, routes, counts, tripType, currentPage, setCurrentPage, onSelect }: CardTripsProps) => {
+export const CardTrips = ({ loading, totalRoutes, routes, currentPage, setCurrentPage, onSelect }: CardTripsProps) => {
   const { t } = useTranslation(['ticketSales']);
 
   if (loading) {
@@ -33,7 +33,6 @@ export const CardTrips = ({ loading, routes, counts, tripType, currentPage, setC
       </Stack>
     );
   }
-  const totalRoutes = counts.find(count => count._id === tripType)?.count ?? 0;
   return (
     <Box>
       <Grid sx={{ marginBottom: '16px' }} spacing="16px" container>

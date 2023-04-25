@@ -42,6 +42,8 @@ export const SelectTripOnCreateTicketSale = () => {
   const tripType = watch('tripType');
   const departureTrip = watch('departureTrip');
 
+  console.log(111, departureTrip);
+
   const { run, loading, data } = useRequest(getTrips, { manual: true });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -93,13 +95,13 @@ export const SelectTripOnCreateTicketSale = () => {
         }
       >
         <FilterRoutesBySearcher control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} />
-        <Steps step={departureTrip ? 1 : 2} tripType={tripType} />
+        <Steps step={departureTrip ? 1 : 0} tripType={tripType} />
         <CardTrips
-          counts={data?.counts ?? []}
+          totalRoutes={data?.pagination.totalRows ?? 0}
           currentPage={currentPage}
           loading={loading}
           onSelect={handleSelectTrip}
-          routes={data?.routes ?? []}
+          routes={data?.hits ?? []}
           setCurrentPage={setCurrentPage}
           tripType={tripType}
         />
