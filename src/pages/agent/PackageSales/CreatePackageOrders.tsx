@@ -8,7 +8,7 @@ import { makeStyles } from '@mui/styles';
 import { FilterRoutesBySearcher } from '../TicketSales/SelectTripOnCreateTicketSale/components/FilterRoutesBySearcher';
 import { SelectTripFormValues } from '../TicketSales/SelectTripOnCreateTicketSale/SelectTripOnCreateTicketSale';
 import { useMount, useRequest, useUpdateEffect } from 'ahooks';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Empty, Pagination } from 'antd';
 import Highlighter from 'react-highlight-words';
 import CardSelectTrip from '../TicketSales/SelectTripOnCreateTicketSale/components/CardTrips/components/CardSelectTrip';
@@ -61,14 +61,9 @@ export default function CreatePackageOrders() {
     manual: true,
   });
 
-  console.log({ data });
-
-  // const totalPages = useMemo(() => {
-  //   return data?.counts.reduce((s, item) => {
-  //     return (s += item.count);
-  //   }, 0);
-  // }, [data?.counts]);
-  const totalPages = 1;
+  const totalPages = useMemo(() => {
+    return data?.pagination.totalPages;
+  }, [data?.pagination]);
 
   useMount(() => {
     dispatch(resetOrderInformation());
@@ -97,19 +92,19 @@ export default function CreatePackageOrders() {
     <LayoutDetail title={t('create_package_orders')} subTitle={t('package_sales')}>
       <CardWhite title={t('select_your_trip')}>
         <FilterRoutesBySearcher control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} page="packageSales" />
-        {isEmpty(data) ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /> : null}
+        {isEmpty(data?.hits) ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /> : null}
 
-        {!isEmpty(data) && (
+        {!isEmpty(data?.hits) && (
           <Box>
             <Highlighter
-              textToHighlight={t('ticketSales:total_trips_found', { total: data?.length })}
+              textToHighlight={t('ticketSales:total_trips_found', { total: data?.hits.length })}
               highlightClassName={classes.highlightText}
-              searchWords={[data?.length.toString() ?? '']}
+              searchWords={[data?.hits.length.toString() ?? '']}
               autoEscape={true}
               className={classes.title}
             />
             <Grid sx={{ marginY: '16px' }} columns={12} container spacing="16px">
-              {data?.map((routeItem: RouteOfTicketSale) => {
+              {data?.hits.map((routeItem: RouteOfTicketSale) => {
                 return (
                   <Grid xs={12} lg={6} item key={routeItem._id}>
                     <CardSelectTrip

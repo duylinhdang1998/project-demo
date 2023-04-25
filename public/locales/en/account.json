@@ -81,5 +81,6 @@
   "click_button_description_paypal": "Click the PayPal button to log in.",
   "subtext_2": "You'll be prompted for your PayPal account email and password through a secure PayPal login form.",
   "login_stripe": "Connect with Stripe",
-  "change_pasword_action": "change password action"
+  "change_pasword_action": "change password action",
+  "offline_agent": "Agent (Offline)"
 }

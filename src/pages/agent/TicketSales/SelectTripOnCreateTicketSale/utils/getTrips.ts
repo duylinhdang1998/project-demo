@@ -44,9 +44,9 @@ export const getTripPackages = async (
         departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
         stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
         departureTime: {
-          // value: values.departureTime && dayjs.utc(values.departureTime).valueOf(),
+          value: values.departureTime && dayjs.utc(values.departureTime).set('second', 0).unix() * 1000,
           operator: 'eq',
-          value: 1682428200000,
+          // value: 1682428200000
         },
         merchandises: {
           value: values.merchandises?.value,
@@ -56,6 +56,9 @@ export const getTripPackages = async (
     });
     return response.data;
   } catch {
-    return [];
+    return {
+      hits: [],
+      pagination: { totalPages: 1, totalRows: 0 },
+    };
   }
 };

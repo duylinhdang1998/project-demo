@@ -44,5 +44,6 @@
   "delivered_recipient": "Delivered to recipient",
   "cancel_to_delivery": "Cancel to delivery",
   "reason": "Reason",
-  "delivery_status": "Delivery status"
+  "delivery_status": "Delivery status",
+  "email": "Email"
 }
