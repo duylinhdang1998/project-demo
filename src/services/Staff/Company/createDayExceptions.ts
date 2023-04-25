@@ -13,7 +13,7 @@ export interface CreateDayExceptions {
 export const createDayExceptions = async ({ dayExceptions, staffId }: CreateDayExceptions) => {
   const response: AxiosResponse<ResponseDetailSuccess<ResponseData> | ResponseFailure> = await fetchAPI.request({
     method: 'PUT',
-    url: `/v1.0/company/staffs/${staffId}}/exceptions/days`,
+    url: `/v1.0/company/staffs/${staffId}/exceptions/days`,
     data: { dayExceptions },
   });
   if (response.data.code === 0) {
