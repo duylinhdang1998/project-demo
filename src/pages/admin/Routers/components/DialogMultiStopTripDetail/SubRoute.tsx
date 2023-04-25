@@ -18,7 +18,7 @@ import { RoutePoint } from 'services/models/Route';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
 import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
-import EditPriceTrip from '../EditPriceTrip';
+import EditPriceARoutePointNCreateTrip, { EditPriceARoutePointFormValues } from '../FormEditPrice/EditPriceARoutePointNCreateTrip';
 import { DialogMultiStopTripDetailProps } from './DialogMultiStopTripDetail';
 
 export const useStyles = makeStyles(() => ({
@@ -92,22 +92,13 @@ export const useStyles = makeStyles(() => ({
 
 const RECORD_PER_PAGE = 2;
 
-interface FormEditPriceValues {
-  ecoAdult: number;
-  vipAdult: number;
-  ecoStudent: number;
-  vipStudent: number;
-  ecoChildren: number;
-  vipChildren: number;
-}
-
 export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiStopTripDetailProps, 'onUpdateRoutePointPrice' | 'route'>) => {
   const {
     control,
     formState: { errors },
     reset,
     handleSubmit,
-  } = useForm<FormEditPriceValues>();
+  } = useForm<EditPriceARoutePointFormValues>();
 
   const classes = useStyles();
   const { t } = useTranslation(['routers']);
@@ -131,13 +122,14 @@ export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiSto
       vipAdult: routePoint.VIPPrices?.ADULT,
       vipChildren: routePoint.VIPPrices?.CHILD,
       vipStudent: routePoint.VIPPrices?.STUDENT,
+      routePointId: routePoint._id,
     });
   };
   const handleCloseDialogEditPrice = () => {
     setOpenRoutePoint(null);
   };
 
-  const handleUpdatePrice = (formValues: FormEditPriceValues) => {
+  const handleUpdatePrice = (formValues: EditPriceARoutePointFormValues) => {
     if (openRoutePoint) {
       dispatch(
         routesActions.updateRoutePointPriceRequest({
@@ -198,7 +190,7 @@ export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiSto
               <ClearIcon />
             </IconButton>
           </Stack>
-          <EditPriceTrip errors={errors} control={control as any} />
+          <EditPriceARoutePointNCreateTrip errors={errors} control={control} isMulti={false} />
           <ComboButton
             isSaving={queueUpdateRoutePointPrice.includes(openRoutePoint._id)}
             onCancel={handleCloseDialogEditPrice}
@@ -297,7 +289,7 @@ export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiSto
                         </Typography>
                         <Typography component="span" className={classes.ticketTypeValue}>
                           {getAppCurrencySymbol()}
-                          {routePoint.ECOPrices?.ADULT}
+                          {routePoint.VIPPrices?.ADULT}
                         </Typography>
                       </Box>
                     </Grid>
@@ -308,7 +300,7 @@ export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiSto
                         </Typography>
                         <Typography component="span" className={classes.ticketTypeValue}>
                           {getAppCurrencySymbol()}
-                          {routePoint.ECOPrices?.STUDENT}
+                          {routePoint.VIPPrices?.STUDENT}
                         </Typography>
                       </Box>
                     </Grid>
@@ -319,7 +311,7 @@ export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiSto
                         </Typography>
                         <Typography component="span" className={classes.ticketTypeValue}>
                           {getAppCurrencySymbol()}
-                          {routePoint.ECOPrices?.CHILD}
+                          {routePoint.VIPPrices?.CHILD}
                         </Typography>
                       </Box>
                     </Grid>

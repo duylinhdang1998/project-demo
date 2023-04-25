@@ -5,28 +5,21 @@ import FormVerticle from 'components/FormVerticle/FormVerticle';
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
-import { Control, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Route, RoutePoint } from 'services/models/Route';
+import { Route } from 'services/models/Route';
 import { Vehicle } from 'services/models/Vehicle';
 import { toDayjs } from 'utils/toDayjs';
-import EditPriceTrip from '../EditPriceTrip';
+import EditPriceARoutePointNCreateTrip, { EditPriceARoutePointFormValues } from '../FormEditPrice/EditPriceARoutePointNCreateTrip';
 
 const fieldKeys: Array<keyof Route | string> = ['vehicle', 'departurePoint', 'arrivalPoint', 'departureTime', 'arrivalDuration'];
 
-export interface StepOneValuesForOneStopTrip {
+export interface StepOneValuesForOneStopTrip extends EditPriceARoutePointFormValues {
   vehicle: Vehicle | null;
   departurePoint: string;
   arrivalPoint: string;
   departureTime: dayjs.Dayjs;
   arrivalDuration: dayjs.Dayjs;
-  ecoAdult: number;
-  vipAdult: number;
-  ecoStudent: number;
-  vipStudent: number;
-  ecoChildren: number;
-  vipChildren: number;
-  routePointId?: RoutePoint['_id'];
 }
 
 export interface StepOneProps {
@@ -154,7 +147,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
       <Typography fontSize={14} color="#45485e" fontWeight={500} py="16px">
         {t('routers:config_prices_per_passenger')}
       </Typography>
-      <EditPriceTrip errors={errors} control={control as unknown as Control} />
+      <EditPriceARoutePointNCreateTrip errors={errors} control={control as any} isMulti={false} />
       <ComboButton
         isSaving={isLoading}
         textOk={isEdit ? t('translation:save') : t('translation:next')}

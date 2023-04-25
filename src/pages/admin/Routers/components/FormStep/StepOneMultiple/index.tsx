@@ -7,21 +7,15 @@ import { isEmpty } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Route, RoutePoint } from 'services/models/Route';
+import { Route } from 'services/models/Route';
 import { Vehicle } from 'services/models/Vehicle';
 import { toDayjs } from 'utils/toDayjs';
+import { EditPriceARoutePointFormValues } from '../../FormEditPrice/EditPriceARoutePointNCreateTrip';
 import { StopPoints } from './components/StopPoints/StopPoints';
 
-export interface RoutePointValues {
+export interface RoutePointValues extends EditPriceARoutePointFormValues {
   stop_point: string;
   duration: dayjs.Dayjs;
-  ecoAdult: number;
-  vipAdult: number;
-  ecoStudent: number;
-  vipStudent: number;
-  ecoChildren: number;
-  vipChildren: number;
-  routePointId?: RoutePoint['_id'];
 }
 export interface StepOneValuesForMultipleStopTrip {
   vehicle: Vehicle | null;

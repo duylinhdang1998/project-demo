@@ -1,17 +1,18 @@
-import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
-import { getRoute } from 'services/Route/Company/getRoute';
+import { put, retry, takeLeading } from 'redux-saga/effects';
 import { removeDayActive } from 'services/Route/Company/removeDayActive';
 import { ServiceException } from 'services/utils/ServiceException';
 import { routesActions } from '../routesSlice';
 
 function* handleRemoveDayActive({ payload }: ReturnType<typeof routesActions.removeDayActiveRequest>) {
-  const { data, routeCode, onFailure, onSuccess } = payload;
+  const { targetRoute, data, onFailure, onSuccess } = payload;
   try {
     yield retry(3, 1000, removeDayActive, data);
-    const response: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, { routeCode });
     yield put(
       routesActions.removeDayActiveSuccess({
-        data: response.data,
+        data: {
+          ...targetRoute,
+          dayoffs: targetRoute.dayoffs.concat(data.dayoff),
+        },
       }),
     );
     onSuccess();

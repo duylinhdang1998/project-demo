@@ -3,7 +3,6 @@ import { UpdateParticular } from 'services/Route/Company/updateParticular';
 
 export interface UpdateParticularDayPriceRequest {
   data: UpdateParticular;
-  routeCode: Route['routeCode'];
   onSuccess: () => void;
   onFailure: OnFailureWithMessageOfStatusCode;
 }

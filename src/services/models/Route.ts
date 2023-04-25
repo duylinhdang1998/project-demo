@@ -38,12 +38,25 @@ export interface Route {
   departureTime: string;
   endPeriod: null | string | number;
   particularDays: Array<string | number>;
+  particularPrices: ParticularPrice[];
   routeCode: string;
   routePoints: [RoutePoint] | RoutePoint[];
   startPeriod: null | string | number;
   tripType: TripType;
   updatedAt: string;
   vehicle: Vehicle | null;
+}
+
+export interface ParticularPrice {
+  _id: string;
+  routeCode: Route['routeCode'];
+  routePoint: RoutePoint['_id'];
+  ECOPrices: RoutePointPrice;
+  VIPPrices: RoutePointPrice;
+  __v: 0;
+  applyDay: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export const TripTypeLabelMapping: Record<TripType, string> = {

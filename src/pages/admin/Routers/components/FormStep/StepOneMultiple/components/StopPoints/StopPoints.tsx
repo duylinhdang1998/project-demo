@@ -1,5 +1,17 @@
+import AddIcon from '@mui/icons-material/Add';
 import { Box, Dialog, Grid, InputLabel, Stack, Typography } from '@mui/material';
+import { DatePicker } from 'antd';
+import TrashSvg from 'assets/images/trash.svg';
+import classNames from 'classnames';
+import Button from 'components/Button/Button';
+import { customStyles } from 'components/FilterTicket/customStyles';
+import { useStyles as useFormVerticalStyles } from 'components/FormVerticle/styles';
+import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
+import dayjs from 'dayjs';
+import { get } from 'lodash-es';
+import EditPriceARoutePointNCreateTrip from 'pages/admin/Routers/components/FormEditPrice/EditPriceARoutePointNCreateTrip';
+import { useState } from 'react';
 import {
   Control,
   Controller,
@@ -11,22 +23,10 @@ import {
   UseFormSetValue,
 } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { RoutePointValues, StepOneValuesForMultipleStopTrip } from '../..';
-import TrashSvg from 'assets/images/trash.svg';
-import Button from 'components/Button/Button';
-import dayjs from 'dayjs';
-import { useState } from 'react';
-import AddIcon from '@mui/icons-material/Add';
-import { useStyles } from './styles';
-import { useStyles as useFormVerticalStyles } from 'components/FormVerticle/styles';
-import { get } from 'lodash-es';
-import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import { getListDestinations } from 'services/Destinations/getListDestinations';
-import { customStyles } from 'components/FilterTicket/customStyles';
-import classNames from 'classnames';
-import { DatePicker } from 'antd';
-import EditPriceTrip from 'pages/admin/Routers/components/EditPriceTrip';
 import { disabledDate } from 'utils/disableDate';
+import { RoutePointValues, StepOneValuesForMultipleStopTrip } from '../..';
+import { useStyles } from './styles';
 
 export interface StopPointsProps {
   control: Control<StepOneValuesForMultipleStopTrip>;
@@ -214,7 +214,7 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
               <Typography fontSize={14} color="#45485e" fontWeight={500} py="16px">
                 {t('routers:config_prices_per_passenger')}
               </Typography>
-              <EditPriceTrip errors={errors} control={control as any} isMulti index={index} />
+              <EditPriceARoutePointNCreateTrip errors={errors as any} control={control as any} index={index} isMulti={true} />
             </Box>
           </Box>
         );

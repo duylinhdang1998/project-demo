@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useRequest } from 'ahooks';
 import { Option } from 'models/Field';
 import { equals } from 'ramda';
@@ -60,7 +60,11 @@ export const MultipleSelectDecouplingData = <Model extends AnyObject>({
         }}
         ref={menuListRef}
       >
-        {({ index, style }) => <div style={style}>{children[index]}</div>}
+        {({ index, style }) => (
+          <Box style={style}>
+            <Typography sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{children[index]}</Typography>
+          </Box>
+        )}
       </FixedSizeList>
     );
   };

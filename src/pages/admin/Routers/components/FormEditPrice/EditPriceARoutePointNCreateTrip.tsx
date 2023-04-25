@@ -1,48 +1,41 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme, Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { InputNumber } from 'antd';
 import { default as classNames, default as cx } from 'classnames';
 import { get } from 'lodash-es';
 import { useMemo } from 'react';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { RoutePoint } from 'services/models/Route';
+import { useStyles } from './useStyles';
 
-interface EditPriceTripProps {
-  control: Control;
-  isMulti?: boolean;
-  index?: number;
-  errors: FieldErrors<any>;
+export interface EditPriceARoutePointFormValues {
+  ecoAdult: number;
+  vipAdult: number;
+  ecoStudent: number;
+  vipStudent: number;
+  ecoChildren: number;
+  vipChildren: number;
+  routePointId?: RoutePoint['_id'];
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-  cell: {
-    width: 'calc(100% / 3)',
-    border: '1px solid #F7F7F7 !important',
-    padding: '8px 14px !important',
-  },
-  cellTitle: {
-    fontSize: '14px !important',
-    color: 'rgba(133, 140, 147, 1) !important',
-  },
-  input: {
-    width: '100% !important',
-    '& .ant-input-number-input-wrap input': {
-      textAlign: 'center',
-      fontWeight: 500,
-      fontSize: 14,
-      color: 'rgba(12, 17, 50, 1)',
-    },
-  },
-  error: {
-    marginTop: '4px !important',
-    color: `${theme.palette.error.main} !important`,
-  },
-}));
+interface EditPriceCreateTripProps {
+  control: Control<{ routePoints: EditPriceARoutePointFormValues[] }>;
+  errors: FieldErrors<{ routePoints: EditPriceARoutePointFormValues[] }>;
+  isMulti: true;
+  index: number;
+}
 
-export default function EditPriceTrip({ control, errors, isMulti, index }: EditPriceTripProps) {
+interface EditPriceARoutePointProps {
+  control: Control<EditPriceARoutePointFormValues>;
+  errors: FieldErrors<EditPriceARoutePointFormValues>;
+  isMulti: false;
+  index?: undefined;
+}
+
+export default function EditPriceARoutePointNCreateTrip({ control, errors, isMulti, index }: EditPriceCreateTripProps | EditPriceARoutePointProps) {
   const { t } = useTranslation(['routers', 'translation']);
   const classes = useStyles();
-  const getNameInput = defaultName => {
+  const getNameInput = (defaultName: string) => {
     if (isMulti) {
       return `routePoints.${index}.${defaultName}`;
     }
@@ -91,7 +84,7 @@ export default function EditPriceTrip({ control, errors, isMulti, index }: EditP
                   return (
                     <TableCell key={input.value} className={classNames(classes.cell)}>
                       <Controller
-                        control={control}
+                        control={control as any}
                         name={getNameInput(`${input.value}${row.value}`)}
                         render={({ field }) => {
                           return (

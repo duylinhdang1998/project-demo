@@ -14,7 +14,6 @@ export function timeStringToMinutes(timeString: string): number {
 }
 
 export function minutesToTimeString(minutes: number): string {
-  console.log(minutes);
   const hours = Math.floor(minutes / 60);
   const minutesMod60 = minutes % 60;
   const timeString = dayjs().hour(hours).minute(minutesMod60).format('HH:mm');

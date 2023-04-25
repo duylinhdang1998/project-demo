@@ -5,10 +5,10 @@ import { ServiceException } from 'services/utils/ServiceException';
 import { routesActions } from '../routesSlice';
 
 function* handleUpdateParticularDayPrice({ payload }: ReturnType<typeof routesActions.updateParticularDayPriceRequest>) {
-  const { data, routeCode, onFailure, onSuccess } = payload;
+  const { data, onFailure, onSuccess } = payload;
   try {
     yield retry(3, 1000, updateParticular, data);
-    const response: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, { routeCode });
+    const response: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, { routeCode: data.routeCode });
     yield put(
       routesActions.updateParticularDayPriceSuccess({
         data: response.data,

@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useRequest } from 'ahooks';
 import { Option } from 'models/Field';
 import { useMemo } from 'react';
@@ -53,7 +53,11 @@ export const SingleSelectDecouplingData = <Model extends AnyObject>({
 
     return (
       <List width="100%" height={maxHeight} itemCount={children.length} itemSize={HEIGHT} initialScrollOffset={initialOffset}>
-        {({ index, style }) => <div style={style}>{children[index]}</div>}
+        {({ index, style }) => (
+          <Box style={style}>
+            <Typography sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{children[index]}</Typography>
+          </Box>
+        )}
       </List>
     );
   };

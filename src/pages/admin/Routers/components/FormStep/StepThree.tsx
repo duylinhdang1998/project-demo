@@ -1,7 +1,7 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Dialog, IconButton, Stack, Typography } from '@mui/material';
+import { Dialog, Divider, IconButton, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { Alert } from 'antd';
@@ -17,8 +17,8 @@ import enUS from 'date-fns/locale/en-US';
 import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { useEffect, useState } from 'react';
-import { Calendar, dateFnsLocalizer, Event, SlotInfo, Views } from 'react-big-calendar';
+import { useState } from 'react';
+import { Calendar, CalendarProps, dateFnsLocalizer, Event, SlotInfo, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +29,10 @@ import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
 import { createArrayDateFromRange } from 'utils/createArrayDateFromRange';
 import { dateClamp } from 'utils/dateClamp';
-import EditPriceTrip from '../EditPriceTrip';
+import { isTimestampEqualDayInYear } from 'utils/handleTimestampWithDayInYear';
+import { minutesToTimeString } from 'utils/timeStringNMinutes';
+import { toDayjs } from 'utils/toDayjs';
+import { EditPriceStepThreeOfForm, EditPriceStepThreeOfFormValues } from '../FormEditPrice/EditPriceStepThreeOfForm';
 import './styles.scss';
 
 const locales = {
@@ -66,28 +69,25 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export interface StepThreeValues {
-  ecoAdult: number;
-  vipAdult: number;
-  ecoStudent: number;
-  vipStudent: number;
-  ecoChildren: number;
-  vipChildren: number;
-}
+type StepThreeValues = EditPriceStepThreeOfFormValues;
 
 interface StepThreeProps {
   onCancel?: () => void;
   isEdit?: boolean;
 }
 
-// FIXME: RESET FORM VALUES
 export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const {
     control,
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<StepThreeValues>();
+    setValue,
+    watch,
+  } = useForm<StepThreeValues>({
+    defaultValues: { priceOfRoutePoints: [] },
+  });
+  const priceOfRoutePoints = watch('priceOfRoutePoints');
 
   const navigate = useNavigate();
 
@@ -101,12 +101,52 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const { route, statusRemoveDayActive, statusUpdateParticularDayPrice } = useAppSelector(selectRoutes);
   const dispatch = useAppDispatch();
 
+  const isDateClampRouterPeriod = (timestamp: number) => {
+    return (
+      route &&
+      typeof route.startPeriod === 'number' &&
+      typeof route.endPeriod === 'number' &&
+      dateClamp(timestamp, route.startPeriod, route.endPeriod)
+    );
+  };
+
   const handleClose = () => setOpen(false);
   const handleCancel = () => {
     setOpen(true);
     onCancel?.();
   };
 
+  const handleOpenDialogEdit: CalendarProps['onSelectSlot'] = event => {
+    if (route) {
+      const selected = event.slots[0];
+      const isWorkingDay = route.dayActives.includes(DayInWeekMappingToString[selected.getDay()]);
+      if (isWorkingDay && isDateClampRouterPeriod(selected.getTime())) {
+        setSelectedSlot(selected);
+        reset({
+          priceOfRoutePoints: route.routePoints.map(routePoint => {
+            const particularPrice = route.particularPrices.find(item => {
+              const applyDay = dayjs(item.applyDay);
+              return isTimestampEqualDayInYear(applyDay.valueOf(), selected.getTime()) && routePoint._id === item.routePoint;
+            });
+            return {
+              ecoAdult: particularPrice?.ECOPrices.ADULT ?? route.routePoints[0].ECOPrices?.ADULT,
+              ecoChildren: particularPrice?.ECOPrices.CHILD ?? route.routePoints[0].ECOPrices?.CHILD,
+              ecoStudent: particularPrice?.ECOPrices.STUDENT ?? route.routePoints[0].ECOPrices?.STUDENT,
+              vipChildren: particularPrice?.VIPPrices.CHILD ?? route.routePoints[0].VIPPrices?.CHILD,
+              vipStudent: particularPrice?.VIPPrices.STUDENT ?? route.routePoints[0].VIPPrices?.STUDENT,
+              vipAdult: particularPrice?.VIPPrices.ADULT ?? route.routePoints[0].VIPPrices?.STUDENT,
+              routePointId: routePoint._id,
+              durationTime: toDayjs({
+                value: minutesToTimeString(routePoint.durationTime),
+                format: 'HH:mm',
+              }),
+              stopPoint: routePoint.stopPoint,
+            };
+          }),
+        });
+      }
+    }
+  };
   const handleCloseDialogEdit = () => setSelectedSlot(null);
 
   const handleOpenDialogConfirmDelete = () => setOpenDialogConfirmDelete(true);
@@ -116,7 +156,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     if (route && selectedSlot) {
       dispatch(
         routesActions.removeDayActiveRequest({
-          routeCode: route.routeCode,
+          targetRoute: route,
           data: { routeCode: route.routeCode, dayoff: selectedSlot.setHours(12) },
           onSuccess() {
             toast(
@@ -151,21 +191,20 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     if (route && selectedSlot) {
       dispatch(
         routesActions.updateParticularDayPriceRequest({
-          routeCode: route.routeCode,
           data: {
             routeCode: route.routeCode,
             particularDay: selectedSlot.setHours(12),
-            routeParticulars: route.routePoints.map(routePoint => ({
-              routePointId: routePoint._id,
+            routeParticulars: formValues.priceOfRoutePoints.map(item => ({
+              routePointId: item.routePointId,
               ECOPrices: [
-                { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
-                { passengerType: 'CHILD', price: Number(formValues.ecoChildren) },
-                { passengerType: 'STUDENT', price: Number(formValues.ecoStudent) },
+                { passengerType: 'ADULT', price: Number(item.ecoAdult) },
+                { passengerType: 'CHILD', price: Number(item.ecoChildren) },
+                { passengerType: 'STUDENT', price: Number(item.ecoStudent) },
               ],
               VIPPrices: [
-                { passengerType: 'ADULT', price: Number(formValues.vipAdult) },
-                { passengerType: 'CHILD', price: Number(formValues.vipChildren) },
-                { passengerType: 'STUDENT', price: Number(formValues.vipStudent) },
+                { passengerType: 'ADULT', price: Number(item.vipAdult) },
+                { passengerType: 'CHILD', price: Number(item.vipChildren) },
+                { passengerType: 'STUDENT', price: Number(item.vipStudent) },
               ],
             })),
           },
@@ -198,30 +237,6 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     }
   };
 
-  const isDateClampRouterPeriod = (timestamp: number) => {
-    return (
-      route &&
-      typeof route.startPeriod === 'number' &&
-      typeof route.endPeriod === 'number' &&
-      dateClamp(timestamp, route.startPeriod, route.endPeriod)
-    );
-  };
-
-  useEffect(() => {
-    // FIXME: RESET FORM VALUES -> Đang k có cái gì từ response trả về có thể làm chức năng này
-    if (route) {
-      reset({
-        ecoAdult: route.routePoints[0].ECOPrices?.ADULT,
-        ecoChildren: route.routePoints[0].ECOPrices?.CHILD,
-        ecoStudent: route.routePoints[0].ECOPrices?.STUDENT,
-        vipAdult: route.routePoints[0].VIPPrices?.ADULT,
-        vipChildren: route.routePoints[0].VIPPrices?.CHILD,
-        vipStudent: route.routePoints[0].VIPPrices?.STUDENT,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [route]);
-
   const renderDialogEdit = () => {
     if (!selectedSlot) {
       return null;
@@ -235,11 +250,12 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
               <ClearIcon />
             </IconButton>
           </Stack>
+          <Divider sx={{ marginY: '16px' }} />
           <Box className={classes.selectedDate}>
             <CalendarIcon />
             <span style={{ marginLeft: 4 }}>{dayjs(selectedSlot[0]).format('dddd, MM/DD/YYYY')}</span>
           </Box>
-          <EditPriceTrip errors={errors} control={control as any} />
+          <EditPriceStepThreeOfForm control={control} errors={errors} priceOfRoutePoints={priceOfRoutePoints} setValue={setValue} />
           <ComboButton
             textCancel={t('translation:delete')}
             onCancel={handleOpenDialogConfirmDelete}
@@ -379,13 +395,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           },
         }}
         onSelecting={() => false}
-        onSelectSlot={event => {
-          const selected = event.slots[0];
-          const isWorkingDay = route.dayActives.includes(DayInWeekMappingToString[selected.getDay()]);
-          if (isWorkingDay && isDateClampRouterPeriod(selected.getTime())) {
-            setSelectedSlot(selected);
-          }
-        }}
+        onSelectSlot={handleOpenDialogEdit}
         dayPropGetter={date => {
           if (isDateClampRouterPeriod(date.getTime())) {
             return {
