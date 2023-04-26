@@ -2,21 +2,17 @@ import { Checkbox, FormControlLabel, Typography } from '@mui/material';
 import { useStyles } from 'components/FormVerticle/styles';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { RouteOfTicketSale } from 'services/models/TicketSale';
-import { TicketDetailFormValues } from '../TicketDetailOnCreateTicketSale';
+import { TicketDetailFormValues } from '../../../@types/FormValues';
 
 export interface AgreeTermsProps {
   label: 'accept_term';
   control: Control<TicketDetailFormValues>;
   errors: FieldErrors<TicketDetailFormValues>;
-  route: RouteOfTicketSale;
 }
 
-export const AgreeTerms = ({ control, errors, label, route }: AgreeTermsProps) => {
+export const AgreeTerms = ({ control, errors, label }: AgreeTermsProps) => {
   const { t } = useTranslation(['ticketSales']);
   const formVerticleStyles = useStyles();
-
-  const busName = route.vehicle ? `${route.vehicle.brand} ${route.vehicle.model}` : '';
 
   return (
     <Controller
@@ -28,7 +24,7 @@ export const AgreeTerms = ({ control, errors, label, route }: AgreeTermsProps) =
           <>
             <FormControlLabel
               control={<Checkbox {...field} />}
-              label={`${t('ticketSales:policy_privacy', { busName })}`}
+              label={`${t('ticketSales:policy_privacy')}`}
               sx={{
                 '.MuiFormControlLabel-label': {
                   fontSize: '14px !important',

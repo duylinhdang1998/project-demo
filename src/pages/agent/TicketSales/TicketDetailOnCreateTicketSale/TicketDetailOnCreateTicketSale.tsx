@@ -2,57 +2,34 @@ import { Box, Divider, Grid, Typography } from '@mui/material';
 import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
-import dayjs from 'dayjs';
-import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
-import { Option } from 'models/Field';
 import { useEffect, useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { PaymentGateway } from 'services/models/PaymentGateway';
-import { PassengerInTicketSale, RouteOfTicketSale } from 'services/models/TicketSale';
+import { useDispatch } from 'react-redux';
+import { Navigate, useLocation, useParams } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
-import { dayjsToNumber } from 'utils/dayjsToNumber';
-import { Passengers, seatsTypeOptions, typeTicketOptions } from './components/Passengers';
-import { PaymentMethod } from './components/PaymentMethod';
-import { PaymentStatus } from './components/PaymentStatus';
+import { TicketDetailFormValues } from './@types/FormValues';
+import { LocationStateForCreateTicketSaleOneWay, LocationStateForCreateTicketSaleRoundTrip } from './@types/GeneralInfomationOfTicket';
+import { Passengers } from './components/Passengers';
+import { PaymentMethod } from '../../../../components/PaymentMethod';
+import { PaymentStatus } from '../../../../components/PaymentStatus';
 import { Reservation } from './components/Reservation';
-import { PaymentStatus as EPaymentStatus } from 'models/PaymentStatus';
-
-export interface Passenger {
-  firstName: PassengerInTicketSale['firstName'];
-  lastName: PassengerInTicketSale['lastName'];
-  typeTicket: Option<PassengerInTicketSale['typeTicket']>;
-  seatsType: Option<PassengerInTicketSale['seatsType']>;
-}
-
-export interface TicketDetailFormValues {
-  email: string;
-  method: PaymentGateway;
-  passengers: Passenger[];
-  accept_term: boolean;
-  isActive: boolean;
-}
 
 const fieldKeys = ['email', 'method'];
 
-// FIXME: Trường hợp create round trip thì sao ??
 export const TicketDetailOnCreateTicketSale = () => {
   const { t } = useTranslation(['ticketSales', 'translation']);
 
+  const { statusCreateTicketSale, statusGetTicketSale } = useAppSelector(selectTicketSales);
   const { userInfo } = useAppSelector(selectAuth);
-  const { statusCreateTicketSale, statusGetTicketSale, ticketSale } = useAppSelector(selectTicketSales);
-  const dispatch = useAppDispatch();
 
+  const { ticketCode } = useParams();
+  const dispatch = useDispatch();
   const location = useLocation();
-  const navigate = useNavigate();
-  const { orderCode } = useParams();
 
   const {
     control,
@@ -60,32 +37,29 @@ export const TicketDetailOnCreateTicketSale = () => {
     handleSubmit,
     setValue,
     watch,
-    reset,
   } = useForm<TicketDetailFormValues>({
     defaultValues: {
-      isActive: false,
       method: 'PAYPAL',
       passengers: [],
     },
   });
-  const { fields, append, remove } = useFieldArray({
+  const { append, remove } = useFieldArray({
     control,
     name: 'passengers',
   });
   const method = watch('method');
-  const isActive = watch('isActive');
+  const passengers = watch('passengers');
+
+  const generalInfomationOfTicket = useMemo(() => {
+    return location.state as LocationStateForCreateTicketSaleOneWay | LocationStateForCreateTicketSaleRoundTrip;
+  }, [location.state]);
 
   const isAgent = userInfo?.role === 'agent';
+
   const isEditAction = useMemo(() => {
-    return !!orderCode;
-  }, [orderCode]);
-  const route: RouteOfTicketSale | undefined = useMemo(() => {
-    if (isEditAction) {
-      return ticketSale?.route;
-    } else {
-      return location.state;
-    }
-  }, [isEditAction, location.state, ticketSale?.route]);
+    return !!ticketCode;
+  }, [ticketCode]);
+
   const messages = useMemo(() => {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
       return {
@@ -96,78 +70,15 @@ export const TicketDetailOnCreateTicketSale = () => {
   }, [t]);
 
   const onSubmit = (values: TicketDetailFormValues) => {
-    if (route) {
-      dispatch(
-        ticketSalesActions.createTicketSaleRequest({
-          data: {
-            passengers: values.passengers.map(passenger => ({
-              firstName: passenger.firstName,
-              lastName: passenger.lastName,
-              typeTicket: passenger.typeTicket.value as PassengerInTicketSale['typeTicket'],
-              seatsType: passenger.seatsType.value as PassengerInTicketSale['seatsType'],
-            })),
-            email: values.email,
-            route: route,
-            departureTime: dayjsToNumber(dayjs(route.route.departureTime, 'HH:mm')),
-            arrivalPoint: route.stopPoint,
-            departurePoint: route.departurePoint,
-            cancelUrl: '',
-            returnUrl: '',
-            paymentType: values.method,
-          },
-          onSuccess(ticketSaleOrderCode) {
-            toast(
-              <ToastCustom
-                type="success"
-                text={t('translation:add_type_success', {
-                  type: t('ticketSales:ticket').toLowerCase(),
-                })}
-              />,
-              { className: 'toast-success' },
-            );
-            navigate(isAgent ? `/agent/ticket-sales/${ticketSaleOrderCode}` : `/admin/ticket-sales/${ticketSaleOrderCode}`);
-          },
-          onFailure: message => {
-            toast(
-              <ToastCustom
-                type="error"
-                text={t('translation:add_type_error', {
-                  type: t('ticketSales:ticket').toLowerCase(),
-                })}
-                description={message}
-              />,
-              { className: 'toast-error' },
-            );
-          },
-        }),
-      );
-    }
+    console.log(values);
   };
 
   useEffect(() => {
-    if (isEditAction && ticketSale) {
-      reset({
-        accept_term: true,
-        email: ticketSale.email,
-        isActive: ticketSale.paymentStatus === EPaymentStatus.APPROVED,
-        method: ticketSale.paymentType,
-        passengers: ticketSale.passengers.map(passenger => ({
-          firstName: passenger.firstName,
-          lastName: passenger.lastName,
-          seatsType: seatsTypeOptions.find(option => option.value === passenger.seatsType),
-          typeTicket: typeTicketOptions.find(option => option.value === passenger.typeTicket),
-        })),
-      });
+    if (ticketCode) {
+      dispatch(ticketSalesActions.getTicketSaleRequest({ ticketCode }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ticketSale]);
-
-  useEffect(() => {
-    if (orderCode) {
-      dispatch(ticketSalesActions.getTicketSaleRequest({ orderCode: orderCode }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [orderCode]);
+  }, [ticketCode]);
 
   if (isEditAction && statusGetTicketSale === 'loading') {
     return <LoadingScreen />;
@@ -176,19 +87,27 @@ export const TicketDetailOnCreateTicketSale = () => {
     return <EmptyScreen description={t('message_error:TICKET_SALE_NOT_FOUND')} />;
   }
 
-  if (!route) {
-    return <Navigate to={isAgent ? '/agent/ticket-sales' : '/admin/ticket-sales'} />;
+  if (!isEditAction && !generalInfomationOfTicket) {
+    const nextUrl = isAgent ? '/agent/ticket-sales/create-ticket-order' : '/admin/ticket-sales/create-ticket-order';
+    return <Navigate to={nextUrl} />;
   }
 
   return (
-    <LayoutDetail title={t('ticketSales:create_ticket_orders')} subTitle={t('ticketSales:ticket_sales')}>
+    <LayoutDetail title={t('ticketSales:create_ticket_order')} subTitle={t('ticketSales:ticket_sales')}>
       <Box width="100%" display="flex" justifyContent="center">
         <Box padding="24px" borderRadius={4} bgcolor="white" width={{ xs: '100%', md: '90%' }}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
               <Typography variant="h5">{t('ticketSales:traveller_contact_details')}</Typography>
               <Divider sx={{ margin: '16px 0' }} />
-              <Passengers append={append} remove={remove} control={control} errors={errors} passengers={fields} />
+              <Passengers
+                append={append}
+                remove={remove}
+                control={control}
+                errors={errors}
+                passengers={passengers}
+                generalInfomationOfTicket={generalInfomationOfTicket}
+              />
               <Divider sx={{ margin: '16px 0' }} />
               <FormVerticle
                 control={control}
@@ -206,16 +125,7 @@ export const TicketDetailOnCreateTicketSale = () => {
                 ]}
               />
               <Divider sx={{ margin: '16px 0' }} />
-              <PaymentStatus
-                control={control}
-                errors={errors}
-                messages={messages}
-                label="isActive"
-                isActive={isActive}
-                onChange={value => {
-                  setValue('isActive', value);
-                }}
-              />
+              <PaymentStatus isActive={true} />
               <Divider sx={{ margin: '16px 0' }} />
               <PaymentMethod
                 control={control}
@@ -233,8 +143,9 @@ export const TicketDetailOnCreateTicketSale = () => {
                 errors={errors}
                 control={control}
                 loading={statusCreateTicketSale === 'loading'}
-                route={route}
                 onSubmit={handleSubmit(onSubmit)}
+                passengers={passengers}
+                generalInfomationOfTicket={generalInfomationOfTicket}
               />
             </Grid>
           </Grid>

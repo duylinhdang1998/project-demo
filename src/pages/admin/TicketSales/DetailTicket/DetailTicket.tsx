@@ -93,7 +93,7 @@ export default function DetailTicketPage() {
   }
 
   return (
-    <LayoutDetail title={`${t('ticketSales:order')} #${record.orderId}`} subTitle={t('ticketSales:ticket_sales')}>
+    <LayoutDetail title={`${t('ticketSales:order')} #${record.orderCode}`} subTitle={t('ticketSales:ticket_sales')}>
       <Box width="100%">
         <Grid container spacing="24px">
           <Grid item xs={12} sm={6}>
@@ -154,14 +154,14 @@ export default function DetailTicketPage() {
         open={openModalPrint}
         onClose={() => setOpenModalPrint(false)}
         title={t('ticketSales:ticket_order').toUpperCase()}
-        totalPrice={record.rawData.totalPrice}
-        qrCode={record.rawData.orderCode}
+        totalPrice={record.totalPrice}
+        qrCode={record.orderCode}
       >
         <Infomation
           left={t('ticketSales:order_id')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {record.rawData.orderCode}
+              {record.orderCode}
             </Typography>
           }
         />
@@ -204,7 +204,7 @@ export default function DetailTicketPage() {
           left={t('ticketSales:paxCount')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {record.rawData.totalPax}
+              {record.totalPax}
             </Typography>
           }
         />

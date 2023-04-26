@@ -20,6 +20,7 @@ export interface RoutePoint {
   routeCode: string;
   routeType: RouteType;
   stopPoint: string;
+  stopPointCode: string;
   tripType: TripType;
   updatedAt: string;
   vehicle: Vehicle | null;

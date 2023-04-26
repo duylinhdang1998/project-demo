@@ -1,31 +1,32 @@
 import { FormControlLabel, Radio, RadioGroup, Stack, Typography } from '@mui/material';
-import { useStyles } from '../styles';
+import { useStyles } from '../../pages/agent/TicketSales/TicketDetailOnCreateTicketSale/styles';
 import StripeLogo from 'assets/images/stripe.svg';
 import PaypalLogo from 'assets/images/paypal.svg';
 import { useTranslation } from 'react-i18next';
 import { Control, FieldErrors } from 'react-hook-form';
-import { TicketDetailFormValues } from '../TicketDetailOnCreateTicketSale';
+import { AnyObject } from 'services/@types/SearchParams';
+import { PaymentGateway } from 'services/models/PaymentGateway';
 
-export interface PaymentMethodProps {
-  control: Control<TicketDetailFormValues>;
-  errors: FieldErrors<TicketDetailFormValues>;
-  messages: Record<string, string>;
-  label: 'method';
-  method: TicketDetailFormValues['method'];
-  onChange: (value: TicketDetailFormValues['method']) => void;
+export interface PaymentMethodProps<T extends AnyObject, Key extends keyof T> {
+  control: Control<T>;
+  errors: FieldErrors<T>;
+  messages: Record<keyof T, string>;
+  label: Key;
+  method: T[Key];
+  onChange: (value: T[Key]) => void;
 }
 
-const PAYMENT_METHODS: Array<TicketDetailFormValues['method']> = ['PAYPAL', 'STRIPE'];
+const PAYMENT_METHODS: Array<Required<PaymentGateway>['paymentGateWay']> = ['PAYPAL', 'STRIPE'];
 
-export const PaymentMethod = ({ errors, messages, label, method, onChange }: PaymentMethodProps) => {
+export const PaymentMethod = <T extends AnyObject, K extends keyof T>({ errors, messages, label, method, onChange }: PaymentMethodProps<T, K>) => {
   const classes = useStyles();
   const { t } = useTranslation(['ticketSales']);
 
-  const PAYMENT_LABELS: Record<TicketDetailFormValues['method'], string> = {
+  const PAYMENT_LABELS: Record<Required<PaymentGateway>['paymentGateWay'], string> = {
     PAYPAL: t('account:Paypal'),
     STRIPE: t('account:Stripe'),
   };
-  const PAYMENT_IMAGES: Record<TicketDetailFormValues['method'], string> = {
+  const PAYMENT_IMAGES: Record<Required<PaymentGateway>['paymentGateWay'], string> = {
     PAYPAL: PaypalLogo,
     STRIPE: StripeLogo,
   };
@@ -41,9 +42,9 @@ export const PaymentMethod = ({ errors, messages, label, method, onChange }: Pay
           <RadioGroup
             value={method}
             onChange={() => {
-              onChange(PAYMENT_METHOD);
+              onChange(PAYMENT_METHOD as any);
             }}
-            name={label}
+            name={label as string}
             className={error ? classes.fieldError : undefined}
           >
             <Stack direction="row" justifyContent="space-between" alignItems="center">

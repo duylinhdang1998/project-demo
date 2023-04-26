@@ -7,8 +7,14 @@ import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
+import { selectAuth } from 'store/auth/selectors';
+import {
+  LocationStateForCreateTicketSaleOneWay,
+  LocationStateForCreateTicketSaleRoundTrip,
+} from '../TicketDetailOnCreateTicketSale/@types/GeneralInfomationOfTicket';
 import { CardTrips } from './components/CardTrips';
 import { FilterRoutesBySearcher } from './components/FilterRoutesBySearcher';
 import { FilterRoutesByTripType } from './components/FilterRoutesByTripType';
@@ -23,7 +29,7 @@ export interface SelectTripFormValues {
   arrivalPoint?: { value: string };
   departureTime?: number;
   tripType: RouteOfTicketSale['tripType'];
-  departureTrip: RouteOfTicketSale | null;
+  departureRoute: RouteOfTicketSale | null;
   merchandises?: { value: string };
 }
 
@@ -36,13 +42,11 @@ export const SelectTripOnCreateTicketSale = () => {
       departurePoint: undefined,
       departureTime: undefined,
       tripType: 'ONE_TRIP',
-      departureTrip: null,
+      departureRoute: null,
     },
   });
   const tripType = watch('tripType');
-  const departureTrip = watch('departureTrip');
-
-  console.log(111, departureTrip);
+  const departureRoute = watch('departureRoute');
 
   const { run, loading, data } = useRequest(getTrips, { manual: true });
 
@@ -50,25 +54,56 @@ export const SelectTripOnCreateTicketSale = () => {
 
   const navigate = useNavigate();
 
+  const { userInfo } = useSelector(selectAuth);
+  const isAgent = userInfo?.role === 'agent';
+
   const onSubmit = (values: SelectTripFormValues) => {
     setCurrentPage(1);
     run(0, values);
   };
 
   const handleSelectTrip = (route: RouteOfTicketSale) => {
+    const nextUrl = isAgent ? '/agent/ticket-sales/traveller-contact-details' : '/admin/ticket-sales/traveller-contact-details';
     if (tripType === 'ONE_TRIP') {
-      navigate('/agent/ticket-sales/traveller-contact-details', {
-        state: route,
+      navigate(nextUrl, {
+        state: {
+          type: 'ONE_WAY',
+          data: {
+            dateFormatted: route.dateQuery,
+            vehicle: route.vehicle,
+            routePoint: {
+              ...route,
+              vehicle: route.vehicle?._id,
+            },
+          },
+        } as LocationStateForCreateTicketSaleOneWay,
       });
     } else {
-      if (!departureTrip) {
-        setValue('departureTrip', route);
+      if (!departureRoute) {
+        setValue('departureRoute', route);
       } else {
-        navigate('/agent/ticket-sales/traveller-contact-details', {
+        navigate(nextUrl, {
           state: {
-            departureTrip,
-            returnTrip: route,
-          },
+            type: 'ROUND_TRIP',
+            data: {
+              departureTrip: {
+                dateFormatted: departureRoute.dateQuery,
+                vehicle: departureRoute.vehicle,
+                routePoint: {
+                  ...departureRoute,
+                  vehicle: departureRoute.vehicle?._id,
+                },
+              },
+              returnTrip: {
+                dateFormatted: route.dateQuery,
+                vehicle: route.vehicle,
+                routePoint: {
+                  ...route,
+                  vehicle: route.vehicle?._id,
+                },
+              },
+            },
+          } as LocationStateForCreateTicketSaleRoundTrip,
         });
       }
     }
@@ -88,14 +123,14 @@ export const SelectTripOnCreateTicketSale = () => {
             tripType={tripType}
             onChange={tripType => {
               setValue('tripType', tripType);
-              setValue('departureTrip', null);
+              setValue('departureRoute', null);
               onSubmit(getValues());
             }}
           />
         }
       >
         <FilterRoutesBySearcher control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} />
-        <Steps step={departureTrip ? 1 : 0} tripType={tripType} />
+        <Steps step={departureRoute ? 1 : 0} tripType={tripType} />
         <CardTrips
           totalRoutes={data?.pagination.totalRows ?? 0}
           currentPage={currentPage}

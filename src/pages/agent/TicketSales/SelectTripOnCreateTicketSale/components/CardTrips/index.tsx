@@ -1,6 +1,7 @@
 import { Box, Grid, Stack } from '@mui/material';
 import { Empty, Pagination } from 'antd';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { addMinutesToTimeString } from 'utils/addMinutesToTimeString';
@@ -37,6 +38,7 @@ export const CardTrips = ({ loading, totalRoutes, routes, currentPage, setCurren
     <Box>
       <Grid sx={{ marginBottom: '16px' }} spacing="16px" container>
         {routes.map(routeItem => {
+          const depatureTime = dayjs(routeItem.dateQuery);
           return (
             <Grid item xs={12} md={6} key={routeItem._id}>
               <CardSelectTrip
@@ -47,8 +49,7 @@ export const CardTrips = ({ loading, totalRoutes, routes, currentPage, setCurren
                 duration={t('ticketSales:duration_minutes', { duration: routeItem.durationTime })}
                 vehicle={routeItem.vehicle}
                 onSelect={() => onSelect(routeItem)}
-                // FIXME: Cái gì ở đây ?
-                dateTime="04/27/2022"
+                dateTime={depatureTime.isValid() ? depatureTime.format('DD/MM/YYYY') : ''}
               />
             </Grid>
           );

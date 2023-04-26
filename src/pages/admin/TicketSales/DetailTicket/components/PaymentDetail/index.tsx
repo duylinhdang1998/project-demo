@@ -31,7 +31,7 @@ export const PaymentDetail = ({ record }: PaymentDetailProps) => {
           {t('ticketSales:total')}
         </Typography>
         <Typography fontSize={24} color="#FF2727" fontWeight="700">
-          {record.rawData.totalPrice}
+          {record.totalPrice}
           {getAppCurrencySymbol()}
         </Typography>
       </Box>

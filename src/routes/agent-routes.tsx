@@ -13,7 +13,7 @@ const AgentRoutes: RouteObject[] = [
   },
   // Ticket sales
   {
-    path: 'ticket-sales/:orderCode',
+    path: 'ticket-sales/:ticketCode',
     element: (
       <RequiredAuth role="agent">
         <Page.DetailTicketPage />
@@ -37,7 +37,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'ticket-sales/:orderCode/edit',
+    path: 'ticket-sales/:ticketCode/edit',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.TicketDetailOnCreateTicketSale />

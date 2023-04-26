@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Searcher } from 'services/@types/SearchParams';
 import { TicketSale } from 'services/models/TicketSale';
-import { CreateTicketSaleFailure, CreateTicketSaleRequest, CreateTicketSaleSuccess } from './actions/CreateTicketSale';
+import { CreateTicketSaleOneWayFailure, CreateTicketSaleOneWayRequest, CreateTicketSaleOneWaySuccess } from './actions/CreateTicketSaleOneWay';
 import { GetTicketSaleFailure, GetTicketSaleRequest, GetTicketSaleSuccess } from './actions/GetTicketSale';
 import { GetTicketSalesFailure, GetTicketSalesRequest, GetTicketSalesSuccess } from './actions/GetTicketSales';
 import { SendEmailFailure, SendEmailRequest, SendEmailSuccess } from './actions/SendEmail';
@@ -18,7 +18,13 @@ interface TicketSalesState {
   totalPages: number;
   totalRows: number;
   currentSearcher: Searcher<TicketSale>;
-  ticketSale: TicketSale | null;
+  ticketSale:
+    | { type: 'ONE_WAY'; data: TicketSale }
+    | {
+        type: 'ROUND_TRIP';
+        data: { departureTrip: TicketSale; returnTrip: TicketSale };
+      }
+    | null;
 }
 
 const initialState: TicketSalesState = {
@@ -78,10 +84,26 @@ export const ticketSalesSlice = createSlice({
     },
     getTicketSaleSuccess: (state, action: PayloadAction<GetTicketSaleSuccess>) => {
       const { data } = action.payload;
+      if (data.ticketType === 'ROUND_TRIP') {
+        return {
+          ...state,
+          statusGetTicketSale: 'success',
+          ticketSale: {
+            type: 'ROUND_TRIP',
+            data: {
+              departureTrip: data,
+              returnTrip: data,
+            },
+          },
+        };
+      }
       return {
         ...state,
         statusGetTicketSale: 'success',
-        ticketSale: data,
+        ticketSale: {
+          type: 'ONE_WAY',
+          data,
+        },
       };
     },
     getTicketSaleFailure: (state, _action: PayloadAction<GetTicketSaleFailure>) => {
@@ -92,13 +114,13 @@ export const ticketSalesSlice = createSlice({
       };
     },
     /** <---------- create ----------> */
-    createTicketSaleRequest: (state, _action: PayloadAction<CreateTicketSaleRequest>) => {
+    createTicketSaleOneWayRequest: (state, _action: PayloadAction<CreateTicketSaleOneWayRequest>) => {
       return {
         ...state,
         statusCreateTicketSale: 'loading',
       };
     },
-    createTicketSaleSuccess: (state, action: PayloadAction<CreateTicketSaleSuccess>) => {
+    createTicketSaleOneWaySuccess: (state, action: PayloadAction<CreateTicketSaleOneWaySuccess>) => {
       const { data } = action.payload;
       return {
         ...state,
@@ -106,7 +128,7 @@ export const ticketSalesSlice = createSlice({
         ticketSales: state.ticketSales.concat(data),
       };
     },
-    createTicketSaleFailure: (state, _action: PayloadAction<CreateTicketSaleFailure>) => {
+    createTicketSaleOneWayFailure: (state, _action: PayloadAction<CreateTicketSaleOneWayFailure>) => {
       return {
         ...state,
         statusCreateTicketSale: 'failure',
@@ -126,13 +148,7 @@ export const ticketSalesSlice = createSlice({
       return {
         ...state,
         queueUpdateTicketStatus: state.queueUpdateTicketStatus.filter(id => id !== data._id),
-        ticketSale: state.ticketSale ? data : state.ticketSale,
-        ticketSales: state.ticketSales.map(ticketSale => {
-          if (ticketSale._id === data._id) {
-            return data;
-          }
-          return ticketSale;
-        }),
+        // FIXME: Update
       };
     },
     updateTicketStatusFailure: (state, action: PayloadAction<UpdateTicketStatusFailure>) => {

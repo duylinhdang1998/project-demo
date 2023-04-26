@@ -2,17 +2,11 @@ import { Stack, Typography } from '@mui/material';
 import { Switch } from 'antd';
 import 'antd/lib/switch/style/css';
 import { PaymentStatusLabelMapping } from 'models/PaymentStatus';
-import { Control, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { TicketDetailFormValues } from '../TicketDetailOnCreateTicketSale';
 
 export interface PaymentStatusProps {
-  control: Control<TicketDetailFormValues>;
-  errors: FieldErrors<TicketDetailFormValues>;
-  messages: Record<string, string>;
-  label: 'isActive';
-  isActive: TicketDetailFormValues['isActive'];
-  onChange: (value: TicketDetailFormValues['isActive']) => void;
+  isActive: boolean;
+  onChange?: (value: boolean) => void;
 }
 
 export const PaymentStatus = ({ isActive, onChange }: PaymentStatusProps) => {
@@ -29,7 +23,6 @@ export const PaymentStatus = ({ isActive, onChange }: PaymentStatusProps) => {
         {t('ticketSales:payment_status')}
       </Typography>
       <Stack direction="row" alignItems="center">
-        {/* FIXME: Chưa có quy ước */}
         <Typography
           sx={{
             color: 'rgba(69, 72, 94, 1)',
@@ -37,9 +30,9 @@ export const PaymentStatus = ({ isActive, onChange }: PaymentStatusProps) => {
             marginRight: '4px',
           }}
         >
-          {PaymentStatusLabelMapping['APPROVED']}
+          {isActive ? PaymentStatusLabelMapping['APPROVED'] : PaymentStatusLabelMapping['CREATED']}
         </Typography>
-        <Switch checked={isActive} onChange={checked => onChange(checked)} />
+        <Switch checked={isActive} onChange={checked => onChange?.(checked)} />
       </Stack>
     </Stack>
   );

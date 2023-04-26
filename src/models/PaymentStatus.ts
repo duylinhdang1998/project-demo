@@ -7,9 +7,9 @@ export enum PaymentStatus {
 
 export const PaymentStatusLabelMapping: Record<PaymentStatus, string> = {
   APPROVED: 'Paid',
-  CREATED: 'CREATED',
-  PENDING: 'PENDING',
-  VOIDED: 'VOIDED',
+  CREATED: 'Not Paid',
+  PENDING: 'Not Paid',
+  VOIDED: 'Not Paid',
 };
 
 export const PaymentStatusColorMapping: Record<PaymentStatus, string> = {

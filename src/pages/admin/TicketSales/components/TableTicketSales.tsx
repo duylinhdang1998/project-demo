@@ -104,7 +104,7 @@ export const TableTicketSales = () => {
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
-          return <AntTableColumnDisplayAsTypograph>{row.rawData.totalPax}</AntTableColumnDisplayAsTypograph>;
+          return <AntTableColumnDisplayAsTypograph>{row.totalPax}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
@@ -132,7 +132,7 @@ export const TableTicketSales = () => {
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
-          return <AntTableColumnDisplayAsTypograph>{row.orderId}</AntTableColumnDisplayAsTypograph>;
+          return <AntTableColumnDisplayAsTypograph>{row.orderCode}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
@@ -159,7 +159,7 @@ export const TableTicketSales = () => {
                 icon: <ViewIcon />,
                 onClick(record) {
                   const nextUrl = isAgent ? '/agent/ticket-sales/' : '/admin/ticket-sales/';
-                  navigate(nextUrl + record.rawData.orderCode, { state: record });
+                  navigate(nextUrl + record.orderCode, { state: record });
                 },
               },
               {
@@ -167,7 +167,7 @@ export const TableTicketSales = () => {
                 label: 'edit',
                 icon: <EditIcon />,
                 onClick: () => {
-                  navigate(isAgent ? `/agent/ticket-sales/${row.rawData.orderCode}/edit` : `/admin/ticket-sales/${row.rawData.orderCode}/edit`);
+                  navigate(isAgent ? `/agent/ticket-sales/${row.orderCode}/edit` : `/admin/ticket-sales/${row.orderCode}/edit`);
                 },
               },
               {
@@ -205,13 +205,13 @@ export const TableTicketSales = () => {
     }
     return (
       <DialogConfirmChangeStatusToCancel
-        isUpdating={queueUpdateTicketStatus.includes(openConfirmCancel.rawData._id)}
+        isUpdating={queueUpdateTicketStatus.includes(openConfirmCancel._id)}
         onCancel={handleCloseDialogConfirmCancel}
         onOk={values => {
           console.log(values);
           dispatch(
             ticketSalesActions.updateTicketStatusRequest({
-              orderCode: openConfirmCancel.rawData.orderCode,
+              orderCode: openConfirmCancel.orderCode,
               targetTicket: openConfirmCancel.rawData,
               ticketStatus: 'CANCELLED',
               onSuccess: () => {

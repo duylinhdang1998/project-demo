@@ -25,20 +25,20 @@ function OrderDetails({ record }: OrderDetailsProps) {
     <Box padding="24px" bgcolor="#fff" borderRadius="4px">
       <Stack direction="row" alignItems="center" justifyContent="space-between" pb="24px">
         <Typography fontSize={16} color={theme.palette.grey[100]} fontWeight="700">
-          {t('ticketSales:order')} #{record.rawData.orderCode}
+          {t('ticketSales:order')} #{record.orderCode}
         </Typography>
         <TicketStatus status="USED" />
       </Stack>
       <Divider sx={{ borderColor: '#D7DADC' }} />
       <Box mt="24px" sx={{ maxWidth: 120, maxHeight: 120, marginLeft: 'auto', marginRight: 'auto' }}>
-        <QRCode size={120} value={record.rawData.orderCode} />
+        <QRCode size={120} value={record.orderCode} />
       </Box>
       <Box py="24px">
         <Infomation
           left={t('ticketSales:order_id')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {record.orderId}
+              {record.orderCode}
             </Typography>
           }
         />
@@ -81,7 +81,7 @@ function OrderDetails({ record }: OrderDetailsProps) {
           left={t('ticketSales:paxCount')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {record.rawData.totalPax}
+              {record.totalPax}
             </Typography>
           }
         />

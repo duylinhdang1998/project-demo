@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
 
 export const dayjsToNumber = (value: dayjs.Dayjs) => {
-  return value.valueOf();
+  return value?.isValid?.() ? value.valueOf() : 0;
 };

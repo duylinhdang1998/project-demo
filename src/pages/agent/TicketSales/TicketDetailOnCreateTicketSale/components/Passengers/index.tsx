@@ -1,50 +1,33 @@
-import { Box, Dialog, Grid, InputBase, InputLabel, Stack, Typography } from '@mui/material';
-import Button from 'components/Button/Button';
 import AddIcon from '@mui/icons-material/Add';
+import { Box, Dialog, Grid, InputBase, InputLabel, Stack, Typography } from '@mui/material';
+import { InputNumber } from 'antd';
 import TrashSvg from 'assets/images/trash.svg';
-import Button2 from 'components/Button/Button';
+import { default as Button, default as Button2 } from 'components/Button/Button';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import { useStyles } from 'components/FormVerticle/styles';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { get } from 'lodash-es';
 import { useState } from 'react';
-import { Control, Controller, FieldArrayWithId, FieldErrors, UseFieldArrayAppend, UseFieldArrayRemove } from 'react-hook-form';
+import { Control, Controller, FieldErrors, UseFieldArrayAppend, UseFieldArrayRemove } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
-import { Passenger, TicketDetailFormValues } from '../TicketDetailOnCreateTicketSale';
-import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
-import { InputNumber } from 'antd';
+import { TicketDetailFormValues } from '../../@types/FormValues';
+import { GeneralInfomationOfTicket } from '../../@types/GeneralInfomationOfTicket';
+import { getTotalPriceForTicketOfPassenger } from '../utils/getTotalPriceForTicketOfPassenger';
+import { seatsTypeOptions, typeTicketOptions } from './const';
+import { getEmptyPassenger } from './utils';
 
 export interface PassengersProps {
   control: Control<TicketDetailFormValues>;
   errors: FieldErrors<TicketDetailFormValues>;
-  passengers: Array<TicketDetailFormValues['passengers'][number] & FieldArrayWithId>;
+  passengers: TicketDetailFormValues['passengers'];
   append: UseFieldArrayAppend<TicketDetailFormValues, 'passengers'>;
   remove: UseFieldArrayRemove;
-  // FIXME: Để tạm optional
-  route?: RouteOfTicketSale;
+  generalInfomationOfTicket: GeneralInfomationOfTicket;
 }
 
-export const typeTicketOptions: Array<Passenger['typeTicket']> = [
-  { key: 'adult', value: 'ADULT', label: 'Adult (26-59)' },
-  { key: 'student', value: 'STUDENT', label: 'Student (16-25)' },
-  { key: 'children', value: 'CHILD', label: 'Children (1-15)' },
-];
-
-export const seatsTypeOptions: Array<Passenger['seatsType']> = [
-  { key: 'adult', value: 'ECO', label: 'ECO' },
-  { key: 'student', value: 'VIP', label: 'VIP' },
-];
-
-const emptyPassenger: Passenger = {
-  firstName: '',
-  lastName: '',
-  typeTicket: typeTicketOptions.find(option => option.value === 'ADULT') as Passenger['typeTicket'],
-  seatsType: seatsTypeOptions.find(option => option.value === 'ECO') as Passenger['seatsType'],
-};
-
-export const Passengers = ({ control, errors, passengers, append, remove }: PassengersProps) => {
+export const Passengers = ({ control, errors, passengers, generalInfomationOfTicket, append, remove }: PassengersProps) => {
   const classes = useStyles();
   const { t } = useTranslation(['ticketSales', 'translation']);
 
@@ -109,12 +92,9 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
         const lastNamePathInFormValues: `passengers.${number}.lastName` = `passengers.${index}.lastName`;
         const typeTicketPathInFormValues: `passengers.${number}.typeTicket` = `passengers.${index}.typeTicket`;
         const seatsTypePathInFormValues: `passengers.${number}.seatsType` = `passengers.${index}.seatsType`;
-        // const seatsTypePricesKey = passenger.seatsType && `${passenger.seatsType}Prices`;
-        // const ticketTypePriceKey = passenger.typeTicket.value;
-        // const seatsTypePrices = seatsTypePricesKey && route[seatsTypePricesKey];
-        // const ticketTypePrice = seatsTypePrices && ticketTypePriceKey ? seatsTypePrices[ticketTypePriceKey] : 0;
+
         return (
-          <Box key={passenger.id} borderTop="1px dashed #ddd" py="24px">
+          <Box key={passenger.uniqKey} borderTop="1px dashed #ddd" py="24px">
             <Stack direction="row" alignItems="center" justifyContent="space-between" my="10px">
               <Typography fontSize={14} fontWeight={700}>
                 {t('ticketSales:passenger')} {index + 1}
@@ -230,7 +210,12 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
                       return (
                         <Box>
                           <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
-                          <InputNumber className={classes.inputNumber} value={0} disabled readOnly />
+                          <InputNumber
+                            className={classes.inputNumber}
+                            value={getTotalPriceForTicketOfPassenger({ generalInfomationOfTicket, passenger })}
+                            disabled
+                            readOnly
+                          />
                         </Box>
                       );
                     }}
@@ -255,7 +240,7 @@ export const Passengers = ({ control, errors, passengers, append, remove }: Pass
           marginTop: '10px !important',
         }}
         startIcon={<AddIcon sx={{ color: '#1AA6EE' }} />}
-        onClick={() => append(emptyPassenger)}
+        onClick={() => append(getEmptyPassenger())}
       >
         {t('ticketSales:add_new_passenger')}
       </Button>
