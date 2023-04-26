@@ -14,7 +14,7 @@ import { PackageSale } from 'models/PackageSales';
 import { useSendEmailPackageSale } from 'services/PackageSales/packageSales';
 import { getNotifcation } from 'utils/getNotification';
 import { ModalPrintTicket } from 'components/ModalPrintTicket/ModalPrintTicket';
-import { Infomation } from 'pages/admin/TicketSales/DetailTicket/components/OrderDetail/Infomation';
+import { Infomation } from 'pages/admin/TicketSales/DetailOrder/components/OrderDetail/Infomation';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { MapPinIcon } from 'assets';
 import dayjs from 'dayjs';

@@ -85,8 +85,8 @@
   "PACKAGE_SALE_CANT_NOT_CANCEL": 2605,
   "PACKAGE_SALE_CANT_NOT_UPDATE": 2606,
   "TICKET_SALE_NOT_FOUND": "The requested ticket sale could not be found. Please ensure that the ticket sale exists and the provided URL is correct",
-  "TICKET_SALE_UPDATE_PAYMENT_ERROR": 2701,
-  "TICKET_SALE_CREATE_ERROR": 2702,
-  "TICKET_SALE_UPDATE_ERROR": 2703,
+  "TICKET_SALE_UPDATE_PAYMENT_ERROR": "Failed to update the payment information for the ticket sale. Please try again later or contact support for assistance",
+  "TICKET_SALE_CREATE_ERROR": "Failed to create the ticket sale. Please try again later or contact support for assistance",
+  "TICKET_SALE_UPDATE_ERROR": "Failed to update the ticket sale information. Please try again later or contact support for assistance",
   "UNKNOWN": "Something went wrong"
 }

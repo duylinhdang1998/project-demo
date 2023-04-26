@@ -13,6 +13,7 @@ export interface ColumnTicket {
   orderCode: TicketSale['orderCode'];
   createdBy: TicketSale['creator'];
   createdOn: TicketSale['createdAt'];
+  ticketType: TicketSale['ticketType'];
   // FIXME: BE chưa có field này
   cancelReason?: string;
   rawData: TicketSale;

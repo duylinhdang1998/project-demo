@@ -1,13 +1,13 @@
 import { PaymentStatus } from 'models/PaymentStatus';
-import { PaymentGateway } from './PaymentGateway';
-import { UserRole } from './UserRole';
-import { Route, RoutePoint, RoutePointPriceType } from './Route';
-import { Vehicle } from './Vehicle';
 import { Passenger } from './Passenger';
+import { EnumPaymentGateway } from './PaymentGateway';
+import { Route, RoutePoint, RoutePointPriceType } from './Route';
+import { UserRole } from './UserRole';
+import { Vehicle } from './Vehicle';
 
 export type TicketStatus = 'USED' | 'PENDING' | 'CANCELLED';
 export type TicketDirection = 'DEPARTURE' | 'RETURN';
-export type TicketType = 'ROUND_TRIP';
+export type TicketType = 'ROUND_TRIP' | 'ONE_TRIP';
 
 export interface PassengerInTicketSale {
   firstName: string;
@@ -36,7 +36,7 @@ export interface TicketSale {
   passengers: PassengerInTicketSale[];
   email: string;
   paymentStatus: PaymentStatus;
-  paymentType: PaymentGateway;
+  paymentType: EnumPaymentGateway;
   ticketType: TicketType;
   ticketDirection: TicketDirection;
   ticketStatus: TicketStatus;
@@ -86,3 +86,8 @@ export interface RouteOfTicketSale {
   dateQuery?: string;
   bookDate?: string;
 }
+
+export const TicketTypeLabelMapping: Record<TicketType, string> = {
+  ROUND_TRIP: 'Round-trip',
+  ONE_TRIP: 'One-way',
+};

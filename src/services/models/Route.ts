@@ -59,8 +59,3 @@ export interface ParticularPrice {
   createdAt: string;
   updatedAt: string;
 }
-
-export const TripTypeLabelMapping: Record<TripType, string> = {
-  MULTI_STOP: 'Round-trip',
-  ONE_TRIP: 'One-wat',
-};

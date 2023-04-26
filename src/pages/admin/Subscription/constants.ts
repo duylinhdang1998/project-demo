@@ -1,4 +1,4 @@
-import { PaymentGateway } from 'services/models/PaymentGateway';
+import { EnumPaymentGateway } from 'services/models/PaymentGateway';
 import { PaymentMethod } from './@types/PaymentMethod';
 import { PlanDuration } from './@types/PlanDuration';
 
@@ -12,7 +12,7 @@ export const defaultPlanDuration: PlanDuration = 'monthly';
 export const paymentMethods: PaymentMethod[] = ['PayPal', 'Stripe'];
 export const defaultPaymentMethod: PaymentMethod = 'PayPal';
 
-export const paymentGateWayMapping: Record<PaymentMethod, PaymentGateway> = {
+export const paymentGateWayMapping: Record<PaymentMethod, EnumPaymentGateway> = {
   PayPal: 'PAYPAL',
   Stripe: 'STRIPE',
 };

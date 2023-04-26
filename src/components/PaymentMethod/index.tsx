@@ -1,11 +1,11 @@
 import { FormControlLabel, Radio, RadioGroup, Stack, Typography } from '@mui/material';
-import { useStyles } from '../../pages/agent/TicketSales/TicketDetailOnCreateTicketSale/styles';
-import StripeLogo from 'assets/images/stripe.svg';
 import PaypalLogo from 'assets/images/paypal.svg';
-import { useTranslation } from 'react-i18next';
+import StripeLogo from 'assets/images/stripe.svg';
 import { Control, FieldErrors } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { AnyObject } from 'services/@types/SearchParams';
-import { PaymentGateway } from 'services/models/PaymentGateway';
+import { EnumPaymentGateway } from 'services/models/PaymentGateway';
+import { useStyles } from '../../pages/agent/TicketSales/OrderDetailOnCreateOrder/styles';
 
 export interface PaymentMethodProps<T extends AnyObject, Key extends keyof T> {
   control: Control<T>;
@@ -16,17 +16,17 @@ export interface PaymentMethodProps<T extends AnyObject, Key extends keyof T> {
   onChange: (value: T[Key]) => void;
 }
 
-const PAYMENT_METHODS: Array<Required<PaymentGateway>['paymentGateWay']> = ['PAYPAL', 'STRIPE'];
+const PAYMENT_METHODS: Array<EnumPaymentGateway> = ['PAYPAL', 'STRIPE'];
 
 export const PaymentMethod = <T extends AnyObject, K extends keyof T>({ errors, messages, label, method, onChange }: PaymentMethodProps<T, K>) => {
   const classes = useStyles();
   const { t } = useTranslation(['ticketSales']);
 
-  const PAYMENT_LABELS: Record<Required<PaymentGateway>['paymentGateWay'], string> = {
+  const PAYMENT_LABELS: Record<EnumPaymentGateway, string> = {
     PAYPAL: t('account:Paypal'),
     STRIPE: t('account:Stripe'),
   };
-  const PAYMENT_IMAGES: Record<Required<PaymentGateway>['paymentGateWay'], string> = {
+  const PAYMENT_IMAGES: Record<EnumPaymentGateway, string> = {
     PAYPAL: PaypalLogo,
     STRIPE: StripeLogo,
   };

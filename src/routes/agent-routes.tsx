@@ -13,10 +13,10 @@ const AgentRoutes: RouteObject[] = [
   },
   // Ticket sales
   {
-    path: 'ticket-sales/:ticketCode',
+    path: 'ticket-sales/:orderCode',
     element: (
       <RequiredAuth role="agent">
-        <Page.DetailTicketPage />
+        <Page.DetailOrder />
       </RequiredAuth>
     ),
   },
@@ -24,7 +24,7 @@ const AgentRoutes: RouteObject[] = [
     path: 'ticket-sales/create-ticket-order',
     element: (
       <RequiredAuth role="agent">
-        <Page.Agent.SelectTripOnCreateTicketSale />
+        <Page.Agent.SelectTripOnCreateOrder />
       </RequiredAuth>
     ),
   },
@@ -32,15 +32,15 @@ const AgentRoutes: RouteObject[] = [
     path: 'ticket-sales/traveller-contact-details',
     element: (
       <RequiredAuth role="agent">
-        <Page.Agent.TicketDetailOnCreateTicketSale />
+        <Page.Agent.OrderDetailOnCreateOrder />
       </RequiredAuth>
     ),
   },
   {
-    path: 'ticket-sales/:ticketCode/edit',
+    path: 'ticket-sales/:orderCode/edit',
     element: (
       <RequiredAuth role="agent">
-        <Page.Agent.TicketDetailOnCreateTicketSale />
+        <Page.Agent.OrderDetailOnCreateOrder />
       </RequiredAuth>
     ),
   },

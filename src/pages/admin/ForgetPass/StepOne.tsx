@@ -51,7 +51,6 @@ export const StepOne = ({ onNext }: StepOneProps) => {
     } finally {
       setIsLoading(false);
     }
-    console.log(values);
   };
 
   const handleCancel = () => {

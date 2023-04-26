@@ -5,13 +5,13 @@ import Dashboard from './Dashboard/Dashboard';
 import ClientInfo from './PackageSales/ClientInfo';
 import CreatePackageOrders from './PackageSales/CreatePackageOrders';
 import OrderDetailConfirm from './PackageSales/OrderDetailConfirm';
-import { SelectTripOnCreateTicketSale } from './TicketSales/SelectTripOnCreateTicketSale';
-import { TicketDetailOnCreateTicketSale } from './TicketSales/TicketDetailOnCreateTicketSale';
+import { SelectTripOnCreateOrder } from './TicketSales/SelectTripOnCreateOrder';
+import { OrderDetailOnCreateOrder } from './TicketSales/OrderDetailOnCreateOrder';
 import OrderConfirm from './PackageSales/OrderConfirm';
 export {
   Dashboard,
-  SelectTripOnCreateTicketSale,
-  TicketDetailOnCreateTicketSale,
+  SelectTripOnCreateOrder,
+  OrderDetailOnCreateOrder,
   CreatePackageOrders,
   ClientInfo,
   OrderDetailConfirm,
