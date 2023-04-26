@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, Typography } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import { useStyles } from 'components/FormVerticle/styles';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -24,11 +24,20 @@ export const AgreeTerms = ({ control, errors, label }: AgreeTermsProps) => {
           <>
             <FormControlLabel
               control={<Checkbox {...field} />}
-              label={`${t('ticketSales:policy_privacy')}`}
+              label={
+                <Box>
+                  <span>
+                    {t('ticketSales:term_create_ticket_sale')}{' '}
+                    <a target="_blank" href="https://www.google.com/" className="text-primary font-semibold">
+                      {t('ticketSales:term_of_service')}
+                    </a>
+                  </span>
+                </Box>
+              }
               sx={{
                 alignItems: 'flex-start !important',
                 '.MuiFormControlLabel-label': {
-                  fontSize: '10px !important',
+                  fontSize: '12px !important',
                   color: 'rgba(71, 84, 97, 1) !important',
                 },
               }}
