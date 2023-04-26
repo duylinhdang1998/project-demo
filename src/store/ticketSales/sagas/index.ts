@@ -1,7 +1,7 @@
-import { watchCreateTicketSale } from './watchCreateTicketSale';
-import { watchGetTicketSale } from './watchGetTicketSale';
+import { watchCreateTicketSalesOfOrder } from './watchCreateTicketSalesOfOrder';
+import { watchGetTicketSalesOfOrder } from './watchGetTicketSalesOfOrder';
 import { watchGetTicketSales } from './watchGetTicketSales';
 import { watchSendEmail } from './watchSendEmail';
-import { watchTicketStatus } from './watchUpdateTicketStatus';
+import { watchOrderStatus } from './watchUpdateOrderStatus';
 
-export const ticketSalesSagas = [watchGetTicketSales, watchGetTicketSale, watchCreateTicketSale, watchSendEmail, watchTicketStatus];
+export const ticketSalesSagas = [watchGetTicketSales, watchGetTicketSalesOfOrder, watchCreateTicketSalesOfOrder, watchSendEmail, watchOrderStatus];

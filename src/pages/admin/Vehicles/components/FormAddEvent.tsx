@@ -81,7 +81,6 @@ function FormAddEvent() {
   const handleClose = () => setOpen(false);
 
   const onSubmit = (value: Values) => {
-    console.log(value);
     if (isEditAction && vehicleEvent && vehicleEventId && vehicleId) {
       if (value.attach_document) {
         dispatch(

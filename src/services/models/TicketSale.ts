@@ -1,9 +1,13 @@
 import { PaymentStatus } from 'models/PaymentStatus';
-import { PaymentGateway } from './PaymentGateway';
-import { UserRole } from './UserRole';
+import { Passenger } from './Passenger';
+import { EnumPaymentGateway } from './PaymentGateway';
 import { Route, RoutePoint, RoutePointPriceType } from './Route';
+import { UserRole } from './UserRole';
+import { Vehicle } from './Vehicle';
 
 export type TicketStatus = 'USED' | 'PENDING' | 'CANCELLED';
+export type TicketDirection = 'DEPARTURE' | 'RETURN';
+export type TicketType = 'ROUND_TRIP' | 'ONE_TRIP';
 
 export interface PassengerInTicketSale {
   firstName: string;
@@ -14,34 +18,34 @@ export interface PassengerInTicketSale {
 }
 
 export interface TicketSale {
-  __v: number;
   _id: string;
+  orderCode: string;
+  ticketCode: string;
+  company: string;
+  routePoint?: Omit<RoutePoint, 'vehicle'> & { vehicle: Vehicle['_id'] };
+  routeCode: string;
+  vehicle?: Vehicle;
+  departureTime: number;
+  day: string;
+  departurePoint: RouteOfTicketSale['departurePoint'];
+  arrivalPoint: RouteOfTicketSale['stopPoint'];
+  totalPrice: number;
+  totalPax: number;
   ECOseated: number;
   VIPseated: number;
-  arrivalPoint: string;
-  company: string;
-  createdAt: string;
+  passengers: PassengerInTicketSale[];
+  email: string;
+  paymentStatus: PaymentStatus;
+  paymentType: EnumPaymentGateway;
+  ticketType: TicketType;
+  ticketDirection: TicketDirection;
+  ticketStatus: TicketStatus;
   creator: string;
   creatorType: UserRole;
-  day: string;
-  departurePoint: string;
-  departureTime: number;
-  email: string;
-  orderCode: string;
-  passengerPresent?: string;
-  passengers: PassengerInTicketSale[];
-  payment: {
-    _id: string;
-    paymentStatus: PaymentStatus;
-  };
-  paymentStatus: PaymentStatus;
-  paymentType: PaymentGateway;
-  route: RouteOfTicketSale;
-  ticketStatus: TicketStatus;
-  totalPax: number;
-  totalPrice: number;
+  passengerPresent?: Passenger['_id'];
+  createdAt: string;
   updatedAt: string;
-  vehicle: string;
+  __v: 0;
 }
 
 export interface RouteOfTicketSale {
@@ -50,6 +54,7 @@ export interface RouteOfTicketSale {
   routeCode: Route['routeCode'];
   departurePoint: RoutePoint['departurePoint'];
   stopPoint: RoutePoint['stopPoint'];
+  stopPointCode: RoutePoint['stopPointCode'];
   durationTime: RoutePoint['durationTime'];
   preDurationTime: RoutePoint['durationTime'];
   vehicle: Route['vehicle'];
@@ -81,3 +86,8 @@ export interface RouteOfTicketSale {
   dateQuery?: string;
   bookDate?: string;
 }
+
+export const TicketTypeLabelMapping: Record<TicketType, string> = {
+  ROUND_TRIP: 'Round-trip',
+  ONE_TRIP: 'One-way',
+};

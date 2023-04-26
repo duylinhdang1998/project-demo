@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { PaymentGateway } from 'services/models/PaymentGateway';
+import { EnumPaymentGateway } from 'services/models/PaymentGateway';
 import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
 import { SubscriptionOrder, SubscriptionPlan, SubscriptionType } from 'services/models/Subscription';
 import { ServiceException } from 'services/utils/ServiceException';
@@ -8,7 +8,7 @@ import fetchAPI from 'utils/fetchAPI';
 export interface CreateSubscriptionOrder {
   subscriptionType: SubscriptionType;
   period: SubscriptionPlan['months'];
-  paymentGateWay: PaymentGateway;
+  paymentGateWay: EnumPaymentGateway;
   returnUrl: string;
   cancelUrl: string;
 }

@@ -20,6 +20,7 @@ export interface RoutePoint {
   routeCode: string;
   routeType: RouteType;
   stopPoint: string;
+  stopPointCode: string;
   tripType: TripType;
   updatedAt: string;
   vehicle: Vehicle | null;
@@ -58,8 +59,3 @@ export interface ParticularPrice {
   createdAt: string;
   updatedAt: string;
 }
-
-export const TripTypeLabelMapping: Record<TripType, string> = {
-  MULTI_STOP: 'Round-trip',
-  ONE_TRIP: 'One-wat',
-};

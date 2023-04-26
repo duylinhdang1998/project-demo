@@ -1,38 +1,44 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Searcher } from 'services/@types/SearchParams';
 import { TicketSale } from 'services/models/TicketSale';
-import { CreateTicketSaleFailure, CreateTicketSaleRequest, CreateTicketSaleSuccess } from './actions/CreateTicketSale';
-import { GetTicketSaleFailure, GetTicketSaleRequest, GetTicketSaleSuccess } from './actions/GetTicketSale';
+import { CreateOrderFailure, CreateOrderRequest, CreateOrderSuccess } from './actions/CreateOrder';
+import { GetTicketSalesOfOrderFailure, GetTicketSalesOfOrderRequest, GetTicketSalesOfOrderSuccess } from './actions/GetTicketSalesOfOrder';
 import { GetTicketSalesFailure, GetTicketSalesRequest, GetTicketSalesSuccess } from './actions/GetTicketSales';
 import { SendEmailFailure, SendEmailRequest, SendEmailSuccess } from './actions/SendEmail';
-import { UpdateTicketStatusFailure, UpdateTicketStatusRequest, UpdateTicketStatusSuccess } from './actions/UpdateTicketStatus';
+import { UpdateOrderStatusFailure, UpdateOrderStatusRequest, UpdateOrderStatusSuccess } from './actions/UpdateOrderStatus';
 
-interface TicketSalesState {
+export interface TicketSalesState {
   statusSendEmail: Status;
   statusGetTicketSales: Status;
-  statusGetTicketSale: Status;
+  statusGetTicketSalesOfOrder: Status;
   statusCreateTicketSale: Status;
-  queueUpdateTicketStatus: TicketSale['_id'][];
+  queueUpdateOrderStatus: TicketSale['_id'][];
   ticketSales: TicketSale[];
   currentPage: number;
   totalPages: number;
   totalRows: number;
   currentSearcher: Searcher<TicketSale>;
-  ticketSale: TicketSale | null;
+  ticketSalesOfOrder:
+    | { type: 'ONE_TRIP'; data: TicketSale }
+    | {
+        type: 'ROUND_TRIP';
+        data: { departureTrip: TicketSale; returnTrip: TicketSale };
+      }
+    | null;
 }
 
 const initialState: TicketSalesState = {
   statusSendEmail: 'idle',
-  statusGetTicketSale: 'idle',
+  statusGetTicketSalesOfOrder: 'idle',
   statusGetTicketSales: 'idle',
   statusCreateTicketSale: 'idle',
-  queueUpdateTicketStatus: [],
+  queueUpdateOrderStatus: [],
   ticketSales: [],
   currentPage: 0,
   totalPages: 0,
   totalRows: 0,
   currentSearcher: {},
-  ticketSale: null,
+  ticketSalesOfOrder: null,
 };
 
 export const ticketSalesSlice = createSlice({
@@ -69,44 +75,42 @@ export const ticketSalesSlice = createSlice({
       };
     },
     /** <---------- read 1 ----------> */
-    getTicketSaleRequest: (state, _action: PayloadAction<GetTicketSaleRequest>) => {
+    getTicketSaleWithOrderCodeRequest: (state, _action: PayloadAction<GetTicketSalesOfOrderRequest>) => {
       return {
         ...state,
-        statusGetTicketSale: 'loading',
-        ticketSale: null,
+        statusGetTicketSalesOfOrder: 'loading',
+        ticketSalesOfOrder: null,
       };
     },
-    getTicketSaleSuccess: (state, action: PayloadAction<GetTicketSaleSuccess>) => {
+    getTicketSaleWithOrderCodeSuccess: (state, action: PayloadAction<GetTicketSalesOfOrderSuccess>) => {
       const { data } = action.payload;
       return {
         ...state,
-        statusGetTicketSale: 'success',
-        ticketSale: data,
+        statusGetTicketSalesOfOrder: 'success',
+        ticketSalesOfOrder: data,
       };
     },
-    getTicketSaleFailure: (state, _action: PayloadAction<GetTicketSaleFailure>) => {
+    getTicketSaleWithOrderCodeFailure: (state, _action: PayloadAction<GetTicketSalesOfOrderFailure>) => {
       return {
         ...state,
-        statusGetTicketSale: 'failure',
-        ticketSale: null,
+        statusGetTicketSalesOfOrder: 'failure',
+        ticketSalesOfOrder: null,
       };
     },
     /** <---------- create ----------> */
-    createTicketSaleRequest: (state, _action: PayloadAction<CreateTicketSaleRequest>) => {
+    createOrderRequest: (state, _action: PayloadAction<CreateOrderRequest>) => {
       return {
         ...state,
         statusCreateTicketSale: 'loading',
       };
     },
-    createTicketSaleSuccess: (state, action: PayloadAction<CreateTicketSaleSuccess>) => {
-      const { data } = action.payload;
+    createOrderSuccess: (state, _action: PayloadAction<CreateOrderSuccess>) => {
       return {
         ...state,
         statusCreateTicketSale: 'success',
-        ticketSales: state.ticketSales.concat(data),
       };
     },
-    createTicketSaleFailure: (state, _action: PayloadAction<CreateTicketSaleFailure>) => {
+    createOrderFailure: (state, _action: PayloadAction<CreateOrderFailure>) => {
       return {
         ...state,
         statusCreateTicketSale: 'failure',
@@ -114,32 +118,31 @@ export const ticketSalesSlice = createSlice({
     },
 
     /** <---------- update ticket status ----------> */
-    updateTicketStatusRequest: (state, action: PayloadAction<UpdateTicketStatusRequest>) => {
+    updateOrderStatusRequest: (state, action: PayloadAction<UpdateOrderStatusRequest>) => {
       const { targetTicket } = action.payload;
       return {
         ...state,
-        queueUpdateTicketStatus: state.queueUpdateTicketStatus.concat(targetTicket._id),
+        queueUpdateOrderStatus: state.queueUpdateOrderStatus.concat(targetTicket._id),
       };
     },
-    updateTicketStatusSuccess: (state, action: PayloadAction<UpdateTicketStatusSuccess>) => {
+    updateOrderStatusSuccess: (state, action: PayloadAction<UpdateOrderStatusSuccess>) => {
       const { data } = action.payload;
       return {
         ...state,
-        queueUpdateTicketStatus: state.queueUpdateTicketStatus.filter(id => id !== data._id),
-        ticketSale: state.ticketSale ? data : state.ticketSale,
+        queueUpdateOrderStatus: state.queueUpdateOrderStatus.filter(id => id !== data._id),
         ticketSales: state.ticketSales.map(ticketSale => {
-          if (ticketSale._id === data._id) {
+          if (ticketSale.orderCode === data.orderCode) {
             return data;
           }
           return ticketSale;
         }),
       };
     },
-    updateTicketStatusFailure: (state, action: PayloadAction<UpdateTicketStatusFailure>) => {
+    updateOrderStatusFailure: (state, action: PayloadAction<UpdateOrderStatusFailure>) => {
       const { id } = action.payload;
       return {
         ...state,
-        queueUpdateTicketStatus: state.queueUpdateTicketStatus.filter(item => item !== id),
+        queueUpdateOrderStatus: state.queueUpdateOrderStatus.filter(item => item !== id),
       };
     },
 

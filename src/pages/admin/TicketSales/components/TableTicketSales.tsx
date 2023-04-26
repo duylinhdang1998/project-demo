@@ -19,7 +19,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { TripTypeLabelMapping } from 'services/models/Route';
+import { TicketTypeLabelMapping } from 'services/models/TicketSale';
 import { RECORDS_PER_PAGE } from 'services/TicketSale/getTicketSales';
 import { selectAuth } from 'store/auth/selectors';
 import { selectTicketSales } from 'store/ticketSales/selectors';
@@ -38,7 +38,7 @@ export const TableTicketSales = () => {
 
   const navigate = useNavigate();
 
-  const { statusGetTicketSales, queueUpdateTicketStatus, ticketSales, totalRows, currentPage, currentSearcher } = useAppSelector(selectTicketSales);
+  const { statusGetTicketSales, queueUpdateOrderStatus, ticketSales, totalRows, currentPage, currentSearcher } = useAppSelector(selectTicketSales);
   const { userInfo } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
 
@@ -104,7 +104,7 @@ export const TableTicketSales = () => {
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
-          return <AntTableColumnDisplayAsTypograph>{row.rawData.totalPax}</AntTableColumnDisplayAsTypograph>;
+          return <AntTableColumnDisplayAsTypograph>{row.totalPax}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
@@ -132,19 +132,18 @@ export const TableTicketSales = () => {
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
-          return <AntTableColumnDisplayAsTypograph>{row.orderId}</AntTableColumnDisplayAsTypograph>;
+          return <AntTableColumnDisplayAsTypograph>{row.orderCode}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
-        key: 'route.tripType',
-        dataIndex: 'route.tripType',
+        key: 'ticketType',
+        dataIndex: 'ticketType',
         title: () => <AntTableColumnTitle>{t('ticketSales:type')}</AntTableColumnTitle>,
         width: 120,
         align: 'center',
         sorter: () => 0,
-        render: _ => {
-          // FIXME: Chưa populate
-          return <AntTableColumnDisplayAsTypograph>{TripTypeLabelMapping['MULTI_STOP']}</AntTableColumnDisplayAsTypograph>;
+        render: (_, row) => {
+          return <AntTableColumnDisplayAsTypograph>{TicketTypeLabelMapping[row.ticketType]}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {
@@ -159,7 +158,7 @@ export const TableTicketSales = () => {
                 icon: <ViewIcon />,
                 onClick(record) {
                   const nextUrl = isAgent ? '/agent/ticket-sales/' : '/admin/ticket-sales/';
-                  navigate(nextUrl + record.rawData.orderCode, { state: record });
+                  navigate(nextUrl + record.rawData.orderCode);
                 },
               },
               {
@@ -205,15 +204,16 @@ export const TableTicketSales = () => {
     }
     return (
       <DialogConfirmChangeStatusToCancel
-        isUpdating={queueUpdateTicketStatus.includes(openConfirmCancel.rawData._id)}
+        isUpdating={queueUpdateOrderStatus.includes(openConfirmCancel._id)}
         onCancel={handleCloseDialogConfirmCancel}
         onOk={values => {
-          console.log(values);
+          console.log(111, values);
           dispatch(
-            ticketSalesActions.updateTicketStatusRequest({
-              orderCode: openConfirmCancel.rawData.orderCode,
+            ticketSalesActions.updateOrderStatusRequest({
+              orderCode: openConfirmCancel.orderCode,
               targetTicket: openConfirmCancel.rawData,
               ticketStatus: 'CANCELLED',
+              reason: values.confirm_description_to_change_cancel,
               onSuccess: () => {
                 handleCloseDialogConfirmCancel();
                 toast(

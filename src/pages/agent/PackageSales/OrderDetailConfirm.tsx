@@ -1,4 +1,4 @@
-import { Box, Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import Button from 'components/Button/Button';
 import MerchandiseDetailView from 'components/MerchandiseDetailView/MerchandiseDetailView';
@@ -8,17 +8,25 @@ import SendIcon from 'components/SvgIcon/SendIcon';
 import LayoutDetail from 'layout/LayoutDetail';
 import { useLocation } from 'react-router-dom';
 import { get } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { isEmpty } from 'lodash-es';
 import { PackageSale } from 'models/PackageSales';
 import { useSendEmailPackageSale } from 'services/PackageSales/packageSales';
 import { getNotifcation } from 'utils/getNotification';
+import { ModalPrintTicket } from 'components/ModalPrintTicket/ModalPrintTicket';
+import { Infomation } from 'pages/admin/TicketSales/DetailOrder/components/OrderDetail/Infomation';
+import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
+import { MapPinIcon } from 'assets';
+import dayjs from 'dayjs';
+import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
+import Tag from 'components/Tag/Tag';
 
 export default function OrderDetailConfirm() {
   const { t } = useTranslation(['packageSales', 'translation', 'ticketSales']);
+  const theme = useTheme();
   const location = useLocation();
   const dataDetails: PackageSale = get(location, 'state.packageSale', {});
-  // const [openModalPrint, setOpenModalPrint] = useState(false);
+  const [openModalPrint, setOpenModalPrint] = useState(false);
   console.log({ dataDetails });
 
   const { run, loading } = useSendEmailPackageSale({
@@ -76,7 +84,125 @@ export default function OrderDetailConfirm() {
           </Stack>
         </Box>
       </Box>
-      {/* <ModalPrintTicket open={openModalPrint} onClose={() => setOpenModalPrint(false)} record={record} /> */}
+      <ModalPrintTicket
+        open={openModalPrint}
+        onClose={() => setOpenModalPrint(false)}
+        title={t('packageSales:package_order').toUpperCase()}
+        totalPrice={dataDetails.totalPrice}
+        qrCode={dataDetails.orderCode}
+      >
+        <Infomation
+          left={t('ticketSales:order_id')}
+          right={
+            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+              {dataDetails.orderCode}
+            </Typography>
+          }
+        />
+        <Infomation
+          left={t('ticketSales:lastName')}
+          right={
+            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+              {/* FIXME: Cái này lấy đâu ra ? */}
+              Payoun
+            </Typography>
+          }
+        />
+        <Infomation
+          left={t('ticketSales:firstName')}
+          right={
+            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+              {/* FIXME: Cái này lấy đâu ra ? */}
+              Samia
+            </Typography>
+          }
+        />
+        <Infomation
+          left={t('ticketSales:trip')}
+          right={
+            <>
+              <Box mb="8px">
+                <TextWithIcon text={dataDetails.departurePoint} icon={MapPinIcon} color="#1AA6EE" typography={{ fontSize: '14px' }} />
+              </Box>
+              <TextWithIcon text={dataDetails.arrivalPoint} icon={MapPinIcon} color="#1AA6EE" typography={{ fontSize: '14px' }} />
+            </>
+          }
+        />
+        <Infomation
+          left={t('ticketSales:departureTime')}
+          right={
+            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+              {dayjs(dataDetails.departureTime).format('MM/DD/YYYY - HH[H]mm')}
+            </Typography>
+          }
+        />
+        <Infomation
+          left={t('packageSales:name_of_sender')}
+          right={
+            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+              {dataDetails.sender.firstName} {dataDetails.sender.lastName}
+            </Typography>
+          }
+        />
+        <Infomation
+          left={t('packageSales:mobile_of_sender')}
+          right={
+            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+              {dataDetails.sender.mobile}
+            </Typography>
+          }
+        />
+        <Infomation
+          left={t('packageSales:name_of_recipient')}
+          right={
+            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+              {dataDetails.recipent.firstName} {dataDetails.recipent.lastName}
+            </Typography>
+          }
+        />
+        <Infomation
+          left={t('packageSales:mobile_of_recipient')}
+          right={
+            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+              {dataDetails.recipent.mobile}
+            </Typography>
+          }
+        />
+        <Infomation
+          left={t('ticketSales:payment_status')}
+          right={
+            <Tag
+              color={PaymentStatusColorMapping[dataDetails.paymentStatus]}
+              backgroundColor={PaymentStatusBackgroundColorMapping[dataDetails.paymentStatus]}
+              text={PaymentStatusLabelMapping[dataDetails.paymentStatus]}
+            />
+          }
+        />
+        <Infomation
+          left={t('ticketSales:quantity')}
+          right={
+            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+              {dataDetails.totalQuantity}
+            </Typography>
+          }
+        />
+        <Infomation
+          left={t('packageSales:total_weight')}
+          right={
+            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+              {dataDetails.totalWeight}
+            </Typography>
+          }
+        />
+        <Infomation
+          left={t('ticketSales:created_on')}
+          right={
+            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+              {dayjs(dataDetails.createdAt).format('MM/DD/YYYY - HH[H]mm')}
+            </Typography>
+          }
+        />
+      </ModalPrintTicket>
     </LayoutDetail>
   );
 }

@@ -16,7 +16,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'ticket-sales/:orderCode',
     element: (
       <RequiredAuth role="admin">
-        <Page.DetailTicketPage />
+        <Page.DetailOrder />
       </RequiredAuth>
     ),
   },
@@ -24,7 +24,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'ticket-sales/create-ticket-order',
     element: (
       <RequiredAuth role="admin">
-        <Page.Agent.SelectTripOnCreateTicketSale />
+        <Page.Agent.SelectTripOnCreateOrder />
       </RequiredAuth>
     ),
   },
@@ -32,7 +32,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'ticket-sales/traveller-contact-details',
     element: (
       <RequiredAuth role="admin">
-        <Page.Agent.TicketDetailOnCreateTicketSale />
+        <Page.Agent.OrderDetailOnCreateOrder />
       </RequiredAuth>
     ),
   },
@@ -40,7 +40,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'ticket-sales/:orderCode/edit',
     element: (
       <RequiredAuth role="admin">
-        <Page.Agent.TicketDetailOnCreateTicketSale />
+        <Page.Agent.OrderDetailOnCreateOrder />
       </RequiredAuth>
     ),
   },
@@ -273,7 +273,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'routers/create-oneway',
     element: (
       <RequiredAuth role="admin">
-        <Page.CreateOneWay />
+        <Page.CreateOneStopTrip />
       </RequiredAuth>
     ),
   },
@@ -281,7 +281,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'routers/create-multi',
     element: (
       <RequiredAuth role="admin">
-        <Page.CreateMultiStopWay />
+        <Page.CreateMultiStopTrip />
       </RequiredAuth>
     ),
   },
@@ -289,7 +289,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'routers/update-oneway/:routeCode',
     element: (
       <RequiredAuth role="admin">
-        <Page.CreateOneWay />
+        <Page.CreateOneStopTrip />
       </RequiredAuth>
     ),
   },
@@ -297,7 +297,7 @@ export const AdminRoutes: RouteObject[] = [
     path: 'routers/update-multi/:routeCode',
     element: (
       <RequiredAuth role="admin">
-        <Page.CreateMultiStopWay />
+        <Page.CreateMultiStopTrip />
       </RequiredAuth>
     ),
   },

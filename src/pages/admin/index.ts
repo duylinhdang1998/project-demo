@@ -24,7 +24,7 @@ import Staff from './Staff/Staff';
 import Subscription from './Subscription/Subscription';
 import SubscriptionPackage from './Subscription/SubscriptionPackage';
 import SubscriptionPayment from './Subscription/SubscriptionPayment';
-import DetailTicketPage from './TicketSales/DetailTicket/DetailTicket';
+import DetailOrder from './TicketSales/DetailOrder/DetailOrder';
 import TicketSales from './TicketSales/TicketSales';
 import AddNewEvent from './Vehicles/AddNewEvent';
 import AddNewVehicles from './Vehicles/AddNewVehicles';
@@ -32,12 +32,12 @@ import ListEvents from './Vehicles/ListEvents';
 import Vehicles from './Vehicles/Vehicles';
 
 export {
-  CreateMultiStopTrip as CreateMultiStopWay,
-  CreateOneStopTrip as CreateOneWay,
+  CreateMultiStopTrip,
+  CreateOneStopTrip,
   Dashboard,
   ForgetPassword,
   TicketSales,
-  DetailTicketPage,
+  DetailOrder,
   PackageSales,
   ServicesSettings,
   AddService,

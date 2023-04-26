@@ -5,19 +5,19 @@ import CardWhite from 'components/CardWhite/CardWhite';
 import LayoutDetail from 'layout/LayoutDetail';
 import { Box, Grid, Stack, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { FilterRoutesBySearcher } from '../TicketSales/SelectTripOnCreateTicketSale/components/FilterRoutesBySearcher';
-import { SelectTripFormValues } from '../TicketSales/SelectTripOnCreateTicketSale/SelectTripOnCreateTicketSale';
+import { FilterRoutesBySearcher } from '../TicketSales/SelectTripOnCreateOrder/components/FilterRoutesBySearcher';
+import { SelectTripFormValues } from '../TicketSales/SelectTripOnCreateOrder/SelectTripOnCreateOrder';
 import { useMount, useRequest, useUpdateEffect } from 'ahooks';
 import { useMemo, useState } from 'react';
 import { Empty, Pagination } from 'antd';
 import Highlighter from 'react-highlight-words';
-import CardSelectTrip from '../TicketSales/SelectTripOnCreateTicketSale/components/CardTrips/components/CardSelectTrip';
+import CardSelectTrip from '../TicketSales/SelectTripOnCreateOrder/components/CardTrips/components/CardSelectTrip';
 import { addMinutesToTimeString } from 'utils/addMinutesToTimeString';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { isEmpty } from 'lodash-es';
 import { useDispatch } from 'react-redux';
 import { resetOrderInformation } from 'store/packageSales/packageSalesSlice';
-import { getTripPackages } from '../TicketSales/SelectTripOnCreateTicketSale/utils/getTrips';
+import { getTripPackages } from '../TicketSales/SelectTripOnCreateOrder/utils/getTrips';
 import dayjs from 'dayjs';
 
 const useStyles = makeStyles((theme: Theme) => ({

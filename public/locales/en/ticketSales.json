@@ -7,6 +7,8 @@
   "lastName": "Lastname",
   "firstName": "Firstname",
   "trip": "Trip",
+  "departure_trip": "Departure trip",
+  "return_trip": "Return trip",
   "paxCount": "Numbers of pax",
   "createdBy": "Created By",
   "order_details": "Order Details",
@@ -36,6 +38,8 @@
   "print_ticket": "Print ticket",
   "print": "Print",
   "date": "Date",
+  "depatureDate": "Depature date",
+  "returnDate": "Return date",
   "sender_name": "Sender’s name",
   "sender_mobile": "Sender’s mobile",
   "recipent_name": "Recipient’s name",
@@ -77,7 +81,5 @@
   "vehicle": "Vehicle",
   "view_relate_order": "View relate order",
   "type": "Type",
-  "departure_trip": "Departure trip",
-  "return_trip": "Return trip",
   "merchandises": "Package"
 }

@@ -1,17 +1,19 @@
 import { PassengerInTicketSale, TicketSale } from 'services/models/TicketSale';
 
 export interface ColumnTicket {
-  _id: string;
+  _id: TicketSale['_id'];
   lastName: PassengerInTicketSale['lastName'];
   firstName: PassengerInTicketSale['firstName'];
   departurePoint: TicketSale['departurePoint'];
   arrivalPoint: TicketSale['arrivalPoint'];
   departureTime: TicketSale['departureTime'];
-  totalPax: number;
+  totalPax: TicketSale['totalPax'];
+  totalPrice: TicketSale['totalPrice'];
   paymentStatus: TicketSale['paymentStatus'];
-  orderId: TicketSale['orderCode'];
+  orderCode: TicketSale['orderCode'];
   createdBy: TicketSale['creator'];
   createdOn: TicketSale['createdAt'];
+  ticketType: TicketSale['ticketType'];
   // FIXME: BE chưa có field này
   cancelReason?: string;
   rawData: TicketSale;

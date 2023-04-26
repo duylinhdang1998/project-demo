@@ -1,1 +1,0 @@
-export { SelectTripOnCreateTicketSale } from './SelectTripOnCreateTicketSale';

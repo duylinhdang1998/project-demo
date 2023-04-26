@@ -16,9 +16,10 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { get } from 'lodash-es';
 import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { TicketSale } from 'services/models/TicketSale';
 import { UserRoleMappingToLabel } from 'services/models/UserRole';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
@@ -32,13 +33,23 @@ export default function ControlTicket() {
 
   const [showPassengersDetail, setShowPassengersDetail] = useState(false);
 
-  const { statusGetTicketSale, queueUpdateTicketStatus, ticketSale } = useAppSelector(selectTicketSales);
+  const { statusGetTicketSalesOfOrder, queueUpdateOrderStatus, ticketSalesOfOrder } = useAppSelector(selectTicketSales);
   const dispatch = useAppDispatch();
+
+  const ticketSale: TicketSale | null = useMemo(() => {
+    if (ticketSalesOfOrder?.type === 'ONE_TRIP') {
+      return ticketSalesOfOrder.data;
+    }
+    if (ticketSalesOfOrder?.type === 'ROUND_TRIP') {
+      return ticketSalesOfOrder.data.departureTrip;
+    }
+    return null;
+  }, [ticketSalesOfOrder]);
 
   const handleConfirmCheckIn = () => {
     if (ticketSale) {
       dispatch(
-        ticketSalesActions.updateTicketStatusRequest({
+        ticketSalesActions.updateOrderStatusRequest({
           orderCode: ticketSale.orderCode,
           targetTicket: ticketSale,
           ticketStatus: 'USED',
@@ -112,7 +123,7 @@ export default function ControlTicket() {
   };
 
   const renderRight = () => {
-    if (statusGetTicketSale === 'loading') {
+    if (statusGetTicketSalesOfOrder === 'loading') {
       return (
         <Box sx={{ position: 'relative' }} display="flex" alignItems="center" justifyContent="center">
           <LoadingScreen />
@@ -188,7 +199,7 @@ export default function ControlTicket() {
             fullWidth
             backgroundButton="rgba(26, 166, 238, 1)"
             onClick={handleConfirmCheckIn}
-            loading={queueUpdateTicketStatus.includes(ticketSale._id)}
+            loading={queueUpdateOrderStatus.includes(ticketSale._id)}
           >
             {t('ticketSales:confirm_checkin')}
           </Button>
@@ -202,7 +213,7 @@ export default function ControlTicket() {
       <CardWhite title={t('order_checking')}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
-            <Qrcode code="123" onSearch={value => dispatch(ticketSalesActions.getTicketSaleRequest({ orderCode: value }))} />
+            <Qrcode code="123" onSearch={value => dispatch(ticketSalesActions.getTicketSaleWithOrderCodeRequest({ orderCode: value }))} />
           </Grid>
           <Grid item xs={12} md={8}>
             <Box bgcolor="#FAFDFF" borderRadius="4px" padding="24px">

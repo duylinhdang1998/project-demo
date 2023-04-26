@@ -1,3 +1,5 @@
+export type EnumPaymentGateway = 'PAYPAL' | 'STRIPE';
+
 export interface PaymentGateway {
   _id?: string;
   company?: string;
