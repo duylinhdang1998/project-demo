@@ -136,8 +136,8 @@ export const TableTicketSales = () => {
         },
       },
       {
-        key: 'route.tripType',
-        dataIndex: 'route.tripType',
+        key: 'ticketType',
+        dataIndex: 'ticketType',
         title: () => <AntTableColumnTitle>{t('ticketSales:type')}</AntTableColumnTitle>,
         width: 120,
         align: 'center',
