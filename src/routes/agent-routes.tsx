@@ -70,15 +70,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'package-sales/create-package-orders/order-confirm',
-    element: (
-      <RequiredAuth role="agent">
-        <Page.Agent.OrderConfirm />
-      </RequiredAuth>
-    ),
-  },
-  {
-    path: 'package-sales/create-package-orders/order-detail-confirm',
+    path: 'package-sales/order-detail-confirm',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.OrderDetailConfirm />

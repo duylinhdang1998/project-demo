@@ -78,5 +78,7 @@
   "count_trip_found": "{{count}} trips found",
   "show_detail": "Show detail",
   "confirm": "Confirm",
-  "reactive": "Reactive"
+  "reactive": "Reactive",
+  "delete_package_success": "Delete package successfully!",
+  "delete_package_error": "Delete package error"
 }

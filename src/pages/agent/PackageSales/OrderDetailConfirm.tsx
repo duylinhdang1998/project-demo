@@ -27,7 +27,6 @@ export default function OrderDetailConfirm() {
   const location = useLocation();
   const dataDetails: PackageSale = get(location, 'state.packageSale', {});
   const [openModalPrint, setOpenModalPrint] = useState(false);
-  console.log({ dataDetails });
 
   const { run, loading } = useSendEmailPackageSale({
     onSuccess: dataSendEmail => {

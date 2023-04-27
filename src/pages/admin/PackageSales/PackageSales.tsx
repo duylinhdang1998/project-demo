@@ -49,7 +49,6 @@ export default function PackageSales() {
   });
 
   const onSubmit = (values: Values) => {
-    console.log({ values });
     const searcher: Searcher<PackageSale> = {
       arrivalPoint: {
         operator: 'eq',

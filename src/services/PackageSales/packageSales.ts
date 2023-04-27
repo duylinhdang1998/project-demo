@@ -4,6 +4,7 @@ import { AxiosResponse } from 'axios';
 import { Country } from 'models/Country';
 import { PackageSale } from 'models/PackageSales';
 import { ResponseData as SendEmailResponse } from 'services/TicketSale/sendEmail';
+import { EnumPaymentGateway } from 'services/models/PaymentGateway';
 import { ParamsSettings, ResponseDetailSuccess, ResponseFailure, ResponseSuccess } from 'services/models/Response';
 import { ServiceException } from 'services/utils/ServiceException';
 import { getSearchParams } from 'services/utils/getSearchParams';
@@ -15,11 +16,12 @@ export interface PackageSalePayload {
   route?: string;
   departurePoint?: string;
   arrivalPoint?: string;
-  departureTime?: string;
+  departureTime?: number;
   sender?: Recipent;
   email?: string;
   recipent?: Recipent;
   merchandises?: Merchandise[];
+  paymentMethod?: EnumPaymentGateway;
 }
 
 export interface Merchandise {
@@ -53,7 +55,6 @@ export const useGetListPackageSales = (option?: Options<ResponseSuccess<PackageS
       });
       return response.data;
     } catch (err) {
-      console.log('123', err);
       return {
         code: 500,
         data: {
@@ -69,12 +70,6 @@ export const useGetListPackageSales = (option?: Options<ResponseSuccess<PackageS
   return useRequest<ResponseSuccess<PackageSale>, [ParamsSettings<PackageSale>]>(getListPackageSales, {
     ...option,
     manual: true,
-    onSuccess(data) {
-      console.log(data);
-    },
-    onError: err => {
-      console.log('456', err);
-    },
   });
 };
 
