@@ -17,7 +17,6 @@ import { selectAuth } from 'store/auth/selectors';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
-import { PaymentMethod } from '../../../../components/PaymentMethod';
 import { PaymentStatus } from '../../../../components/PaymentStatus';
 import { TicketDetailFormValues } from './@types/FormValues';
 import {
@@ -46,12 +45,10 @@ export const OrderDetailOnCreateOrder = () => {
     control,
     formState: { errors },
     handleSubmit,
-    setValue,
     watch,
     reset,
   } = useForm<TicketDetailFormValues>({
     defaultValues: {
-      method: 'PAYPAL',
       accept_term: true,
       passengers: [],
     },
@@ -60,7 +57,6 @@ export const OrderDetailOnCreateOrder = () => {
     control,
     name: 'passengers',
   });
-  const method = watch('method');
   const passengers = watch('passengers');
 
   const isAgent = userInfo?.role === 'agent';
@@ -174,7 +170,6 @@ export const OrderDetailOnCreateOrder = () => {
       reset({
         accept_term: true,
         email: representTicketSale.email,
-        method: representTicketSale.paymentType,
         passengers: representTicketSale.passengers.map(passenger => ({
           firstName: passenger.firstName,
           lastName: passenger.lastName,
@@ -233,17 +228,6 @@ export const OrderDetailOnCreateOrder = () => {
                 />
                 <Divider sx={{ margin: '16px 0' }} />
                 <PaymentStatus isActive={true} />
-                <Divider sx={{ margin: '16px 0' }} />
-                <PaymentMethod
-                  control={control}
-                  errors={errors}
-                  messages={messages}
-                  label="method"
-                  method={method}
-                  onChange={value => {
-                    setValue('method', value);
-                  }}
-                />
               </Grid>
               <Grid item xs={12} md={4}>
                 <Reservation

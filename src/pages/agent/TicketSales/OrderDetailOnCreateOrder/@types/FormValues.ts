@@ -1,6 +1,5 @@
 import { Option } from 'models/Field';
 import { Key } from 'react';
-import { PaymentGateway } from 'services/models/PaymentGateway';
 import { PassengerInTicketSale } from 'services/models/TicketSale';
 
 export interface Passenger {
@@ -13,7 +12,6 @@ export interface Passenger {
 
 export interface TicketDetailFormValues {
   email: string;
-  method: Required<PaymentGateway>['paymentGateWay'];
   passengers: Passenger[];
   accept_term: boolean;
 }
