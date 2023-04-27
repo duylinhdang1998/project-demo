@@ -6,7 +6,7 @@ import { CreateOneStopTripFailure, CreateOneStopTripRequest, CreateOneStopTripSu
 import { DeleteRouteFailure, DeleteRouteRequest, DeleteRouteSuccess } from './actions/DeleteRoute';
 import { GetRouteFailure, GetRouteRequest, GetRouteSuccess } from './actions/GetRoute';
 import { GetRoutesFailure, GetRoutesRequest, GetRoutesSuccess } from './actions/GetRoutes';
-import { RemoveDayActiveFailure, RemoveDayActiveRequest, RemoveDayActiveSuccess } from './actions/RemoveDayActive';
+import { ToggleDayActiveFailure, ToggleDayActiveRequest, ToggleDayActiveSuccess } from './actions/ToggleDayActive';
 import { UpdateActiveDaysFailure, UpdateActiveDaysRequest, UpdateActiveDaysSuccess } from './actions/UpdateActiveDays';
 import { UpdateTripFailure, UpdateTripRequest, UpdateTripSuccess } from './actions/UpdateTrip';
 import {
@@ -229,14 +229,14 @@ export const routesSlice = createSlice({
       };
     },
 
-    /** <---------- remove active day (create dayoffs) ----------> */
-    removeDayActiveRequest: (state, _action: PayloadAction<RemoveDayActiveRequest>) => {
+    /** <---------- toggle active day (create & remove dayoffs) ----------> */
+    toggleDayActiveRequest: (state, _action: PayloadAction<ToggleDayActiveRequest>) => {
       return {
         ...state,
         statusRemoveDayActive: 'loading',
       };
     },
-    removeDayActiveSuccess: (state, action: PayloadAction<RemoveDayActiveSuccess>) => {
+    toggleDayActiveSuccess: (state, action: PayloadAction<ToggleDayActiveSuccess>) => {
       const { data } = action.payload;
       return {
         ...state,
@@ -244,7 +244,7 @@ export const routesSlice = createSlice({
         statusRemoveDayActive: 'success',
       };
     },
-    removeDayActiveFailure: (state, _action: PayloadAction<RemoveDayActiveFailure>) => {
+    toggleDayActiveFailure: (state, _action: PayloadAction<ToggleDayActiveFailure>) => {
       return {
         ...state,
         statusRemoveDayActive: 'failure',
