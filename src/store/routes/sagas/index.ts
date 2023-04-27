@@ -3,7 +3,7 @@ import { watchCreateOneStopTrip } from './watchCreateOneStopTrip';
 import { watchDeleteRoute } from './watchDeleteRoute';
 import { watchGetRoute } from './watchGetRoute';
 import { watchGetRoutes } from './watchGetRoutes';
-import { watchRemoveDayActive } from './watchRemoveDayActive';
+import { watchToggleDayActive } from './watchToggleDayActive';
 import { watchUpdateRoutePointPrice } from './watchRoutePointPrice';
 import { watchUpdateActiveDays } from './watchUpdateActiveDays';
 import { watchUpdateParticularDayPrice } from './watchUpdateParticularDayPrice';
@@ -15,7 +15,7 @@ export const routesSagas = [
   watchGetRoutes,
   watchGetRoute,
   watchDeleteRoute,
-  watchRemoveDayActive,
+  watchToggleDayActive,
   watchUpdateActiveDays,
   watchUpdateParticularDayPrice,
   watchUpdateTrip,

@@ -94,7 +94,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const { t } = useTranslation(['routers', 'translation', 'message_error']);
   const classes = useStyles();
 
-  const [selectedSlot, setSelectedSlot] = useState<SlotInfo['slots'][number] | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<{ date: SlotInfo['slots'][number]; isCreateDayoffAction: boolean } | null>(null);
   const [open, setOpen] = useState(false);
   const [openDialogConfirmDelete, setOpenDialogConfirmDelete] = useState(false);
 
@@ -121,7 +121,10 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
       const selected = event.slots[0];
       const isWorkingDay = route.dayActives.includes(DayInWeekMappingToString[selected.getDay()]);
       if (isWorkingDay && isDateClampRouterPeriod(selected.getTime())) {
-        setSelectedSlot(selected);
+        setSelectedSlot({
+          date: selected,
+          isCreateDayoffAction: !route.dayoffs.find(dayoff => isTimestampEqualDayInYear(dayoff, selected.getTime())),
+        });
         reset({
           priceOfRoutePoints: route.routePoints.map(routePoint => {
             const particularPrice = route.particularPrices.find(item => {
@@ -152,12 +155,16 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   const handleOpenDialogConfirmDelete = () => setOpenDialogConfirmDelete(true);
   const handleCloseDialogConfirmDelete = () => setOpenDialogConfirmDelete(false);
 
-  const handleRemoveActiveDay = () => {
+  const handleToggleActiveDay = () => {
     if (route && selectedSlot) {
       dispatch(
-        routesActions.removeDayActiveRequest({
+        routesActions.toggleDayActiveRequest({
           targetRoute: route,
-          data: { routeCode: route.routeCode, dayoff: selectedSlot.setHours(12) },
+          data: {
+            routeCode: route.routeCode,
+            dayoff: selectedSlot.date.setHours(12),
+            type: selectedSlot.isCreateDayoffAction ? 'ADD' : 'REMOVE',
+          },
           onSuccess() {
             toast(
               <ToastCustom
@@ -193,7 +200,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         routesActions.updateParticularDayPriceRequest({
           data: {
             routeCode: route.routeCode,
-            particularDay: selectedSlot.setHours(12),
+            particularDay: selectedSlot.date.setHours(12),
             routeParticulars: formValues.priceOfRoutePoints.map(item => ({
               routePointId: item.routePointId,
               ECOPrices: [
@@ -257,7 +264,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           </Box>
           <EditPriceStepThreeOfForm control={control} errors={errors} priceOfRoutePoints={priceOfRoutePoints} setValue={setValue} />
           <ComboButton
-            textCancel={t('translation:delete')}
+            textCancel={selectedSlot.isCreateDayoffAction ? t('translation:delete') : t('translation:reactive')}
             onCancel={handleOpenDialogConfirmDelete}
             onSave={handleSubmit(handleUpdateTicketPrices)}
             isSaving={statusUpdateParticularDayPrice === 'loading'}
@@ -268,12 +275,12 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     );
   };
 
-  const renderDialogConfirmDelete = () => {
+  const renderDialogConfirmToggle = () => {
     return (
       <Dialog open={openDialogConfirmDelete} onClose={handleCloseDialogConfirmDelete}>
         <Box padding="24px" style={{ maxWidth: 311, textAlign: 'center' }}>
           <Typography marginBottom="24px" fontSize="16px" fontWeight={700}>
-            {t('translation:delete_record_title')}
+            {t('routers:reactive_title')}
           </Typography>
           <Typography marginBottom="30px" fontSize="14px" fontWeight={400}>
             {t('translation:delete_record_message')}
@@ -299,10 +306,10 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
               backgroundButton="rgba(255, 39, 39, 1)"
               onClick={() => {
                 handleCloseDialogConfirmDelete();
-                handleRemoveActiveDay();
+                handleToggleActiveDay();
               }}
             >
-              {t('translation:delete')}
+              {selectedSlot?.isCreateDayoffAction ? t('translation:delete') : t('translation:reactive')}
             </Button>
           </Stack>
         </Box>
@@ -457,7 +464,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         onClose={handleClose}
       />
       {renderDialogEdit()}
-      {renderDialogConfirmDelete()}
+      {renderDialogConfirmToggle()}
     </Box>
   );
 }

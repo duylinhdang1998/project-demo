@@ -77,5 +77,6 @@
   "send": "Send",
   "count_trip_found": "{{count}} trips found",
   "show_detail": "Show detail",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "reactive": "Reactive"
 }
