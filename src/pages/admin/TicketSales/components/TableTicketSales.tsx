@@ -2,7 +2,7 @@ import CancelPresentationOutlinedIcon from '@mui/icons-material/CancelPresentati
 import { Box } from '@mui/material';
 import { ColumnsType } from 'antd/es/table';
 import { MapPinIcon } from 'assets';
-import ActionTable from 'components/ActionTable/ActionTable';
+import ActionTable, { ActionItem } from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
 import { AntTableColumnDisplayAsTypograph } from 'components/AntTableColumnTitle/AntTableColumnDisplayAsTypograph';
 import { AntTableColumnTitle } from 'components/AntTableColumnTitle/AntTableColumnTitle';
@@ -149,39 +149,39 @@ export const TableTicketSales = () => {
       {
         key: 'action',
         title: () => <AntTableColumnTitle>{t('translation:action')}</AntTableColumnTitle>,
-        render: (_, row) => (
-          <ActionTable
-            actions={[
-              {
-                id: v4(),
-                label: 'detail',
-                icon: <ViewIcon />,
-                onClick(record) {
-                  const nextUrl = isAgent ? '/agent/ticket-sales/' : '/admin/ticket-sales/';
-                  navigate(nextUrl + record.rawData.orderCode);
-                },
+        render: (_, row) => {
+          const actions: ActionItem<ColumnTicket>[] = [
+            {
+              id: v4(),
+              label: 'detail',
+              icon: <ViewIcon />,
+              onClick() {
+                const nextUrl = isAgent ? '/agent/ticket-sales/' : '/admin/ticket-sales/';
+                navigate(nextUrl + row.rawData.orderCode);
               },
-              {
-                id: v4(),
-                label: 'edit',
-                icon: <EditIcon />,
-                onClick: () => {
-                  navigate(isAgent ? `/agent/ticket-sales/${row.rawData.orderCode}/edit` : `/admin/ticket-sales/${row.rawData.orderCode}/edit`);
-                },
+            },
+            {
+              id: v4(),
+              label: 'edit',
+              icon: <EditIcon />,
+              onClick: () => {
+                navigate(isAgent ? `/agent/ticket-sales/${row.rawData.orderCode}/edit` : `/admin/ticket-sales/${row.rawData.orderCode}/edit`);
               },
-              {
-                id: v4(),
-                label: 'cancel',
-                icon: <CancelPresentationOutlinedIcon color="error" />,
-                onClick: () => {
-                  handleOpenDialogConfirmCancel(row);
-                },
-                color: '#FF2727',
+            },
+          ];
+          if (row.ticketStatus !== 'USED') {
+            actions.push({
+              id: v4(),
+              label: 'cancel',
+              icon: <CancelPresentationOutlinedIcon color="error" />,
+              onClick: () => {
+                handleOpenDialogConfirmCancel(row);
               },
-            ]}
-            row={row}
-          />
-        ),
+              color: '#FF2727',
+            });
+          }
+          return <ActionTable actions={actions} row={row} />;
+        },
         align: 'center',
         width: 70,
       },

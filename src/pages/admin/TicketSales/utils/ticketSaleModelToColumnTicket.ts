@@ -21,6 +21,7 @@ export const ticketSaleModelToColumnTicket = (ticketSale: TicketSale, passenger?
     totalPax: ticketSale.totalPax,
     totalPrice: ticketSale.totalPrice,
     ticketType: ticketSale.ticketType,
+    ticketStatus: ticketSale.ticketStatus,
     rawData: ticketSale,
   };
 };
