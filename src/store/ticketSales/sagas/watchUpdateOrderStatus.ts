@@ -4,9 +4,9 @@ import { ServiceException } from 'services/utils/ServiceException';
 import { ticketSalesActions } from '../ticketSalesSlice';
 
 function* handleOrderStatus({ payload }: ReturnType<typeof ticketSalesActions.updateOrderStatusRequest>) {
-  const { orderCode, ticketStatus, targetTicket, onFailure, onSuccess } = payload;
+  const { orderCode, ticketStatus, reason, targetTicket, onFailure, onSuccess } = payload;
   try {
-    yield retry(3, 1000, updateOrderStatus, { orderCode, ticketStatus });
+    yield retry(3, 1000, updateOrderStatus, { orderCode, ticketStatus, reason });
     yield put(
       ticketSalesActions.updateOrderStatusSuccess({
         data: {

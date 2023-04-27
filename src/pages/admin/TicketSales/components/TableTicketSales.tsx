@@ -207,7 +207,6 @@ export const TableTicketSales = () => {
         isUpdating={queueUpdateOrderStatus.includes(openConfirmCancel._id)}
         onCancel={handleCloseDialogConfirmCancel}
         onOk={values => {
-          console.log(111, values);
           dispatch(
             ticketSalesActions.updateOrderStatusRequest({
               orderCode: openConfirmCancel.orderCode,
