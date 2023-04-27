@@ -78,7 +78,13 @@ export default function OrderDetailConfirm() {
             >
               {t('ticketSales:email_ticket')}
             </Button>
-            <Button variant="contained" backgroundButton="#1AA6EE" sx={{ padding: '12px 16px' }} startIcon={<PrintIcon />}>
+            <Button
+              variant="contained"
+              backgroundButton="#1AA6EE"
+              sx={{ padding: '12px 16px' }}
+              startIcon={<PrintIcon />}
+              onClick={() => setOpenModalPrint(true)}
+            >
               {t('ticketSales:print_ticket')}
             </Button>
           </Stack>

@@ -10,6 +10,9 @@ export const useStyles = makeStyles((theme: Theme) => {
       overflow: 'hidden',
       background: '#fff',
       flexShrink: 0,
+      '@media print': {
+        margin: '10px auto',
+      },
     },
     logo: {
       textAlign: 'center',
