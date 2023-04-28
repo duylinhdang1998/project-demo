@@ -41,6 +41,7 @@ export default function PackageSales() {
   const { control, handleSubmit } = useForm<Values>();
 
   useMount(() => {
+    console.log('mountign package sales');
     getListPkgSales({
       page: 0,
       searcher: {},

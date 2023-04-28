@@ -7,6 +7,7 @@ import CreatePackageOrders from './PackageSales/CreatePackageOrders';
 import OrderDetailConfirm from './PackageSales/OrderDetailConfirm';
 import { SelectTripOnCreateOrder } from './TicketSales/SelectTripOnCreateOrder';
 import { OrderDetailOnCreateOrder } from './TicketSales/OrderDetailOnCreateOrder';
+import EditPackageSales from './PackageSales/EditPackageSales';
 export {
   Dashboard,
   SelectTripOnCreateOrder,
@@ -17,4 +18,5 @@ export {
   ControlTicket,
   ControlMerchandiseChecking,
   ControlMerchandiseDetail,
+  EditPackageSales,
 };

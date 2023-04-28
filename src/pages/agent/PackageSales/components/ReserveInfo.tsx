@@ -23,9 +23,10 @@ interface Props {
   routeDetail?: RouteOfTicketSale;
   control: Control<FieldValues>;
   errors: FieldErrors<FieldValues>;
+  isEdit?: boolean;
 }
 
-const ReserveInfo = ({ onBook, loading, routeDetail, control, errors }: Props) => {
+const ReserveInfo = ({ onBook, loading, routeDetail, control, errors, isEdit }: Props) => {
   const { t } = useTranslation(['ticketSales', 'translation']);
   const location = useLocation();
   const [open, setOpen] = useState(false);
@@ -159,7 +160,7 @@ const ReserveInfo = ({ onBook, loading, routeDetail, control, errors }: Props) =
 
       {renderVehicleServices()}
 
-      {renderAgreeTerms()}
+      {!isEdit && renderAgreeTerms()}
 
       <Stack direction="row" alignItems="center" spacing={10} marginTop="20px">
         <Typography variant="body2">{t('total_price')}</Typography>
@@ -167,7 +168,7 @@ const ReserveInfo = ({ onBook, loading, routeDetail, control, errors }: Props) =
       </Stack>
       <Typography variant="headerTable">{t('all_taxes_and_fees')}</Typography>
       <Button backgroundButton="#1AA6EE" fullWidth sx={{ marginTop: '24px' }} onClick={handleBook} loading={loading}>
-        {t('translation:next')}
+        {isEdit ? t('translation:update') : t('translation:next')}
       </Button>
       <DialogConfirm
         openDialog={open}

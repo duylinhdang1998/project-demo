@@ -10,7 +10,7 @@ import { getSearchParams } from 'services/utils/getSearchParams';
 import { getSortParams } from 'services/utils/getSortParams';
 import fetchAPI from 'utils/fetchAPI';
 
-const RECORDS_PER_PAGE = 10;
+const RECORDS_PER_PAGE = 5;
 export interface PackageSalePayload {
   route?: string;
   departurePoint?: string;
@@ -21,6 +21,7 @@ export interface PackageSalePayload {
   recipent?: Recipent;
   merchandises?: Merchandise[];
   paymentMethod?: EnumPaymentGateway;
+  orderCode?: string;
 }
 
 export interface Merchandise {
@@ -100,6 +101,22 @@ export const useCreatePackageSale = (option?: Options<ResponseDetailSuccess<Pack
   };
 
   return useRequest<ResponseDetailSuccess<PackageSale>, [PackageSalePayload]>(createPackageSale, {
+    manual: true,
+    ...option,
+  });
+};
+
+export const useUpdatePackageSale = (option?: Options<ResponseDetailSuccess<PackageSale>, any>) => {
+  const updatePackageSale = async (data: PackageSalePayload): Promise<ResponseDetailSuccess<PackageSale>> => {
+    const response: AxiosResponse<ResponseDetailSuccess<PackageSale>> = await fetchAPI.request({
+      url: '/v1.0/company/package-sales/update',
+      method: 'POST',
+      data,
+    });
+    return response.data;
+  };
+
+  return useRequest<ResponseDetailSuccess<PackageSale>, [PackageSalePayload]>(updatePackageSale, {
     manual: true,
     ...option,
   });

@@ -1,3 +1,4 @@
+import { EnumPaymentGateway } from 'services/models/PaymentGateway';
 import { PaymentStatus } from './PaymentStatus';
 
 export enum DeliveryStatus {
@@ -31,6 +32,7 @@ export interface PackageSale {
   totalWeight: number;
   totalPrice: number;
   totalQuantity: number;
+  paymentMethod: EnumPaymentGateway;
 }
 
 interface Merchandise {
