@@ -1,14 +1,13 @@
 import { Box, Divider, Grid, InputBase, InputLabel, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { get } from 'lodash-es';
-import { Controller } from 'react-hook-form';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { fields2, fields3 } from '../constant';
 import FormMerchandise from './FormMerchandise';
 import { Field } from 'models/Field';
-import { useGetPaymentMethod } from 'services/Company/paymentMethods';
-import Radio from 'components/Radio/Radio';
-import { useMemo } from 'react';
+import { FieldValues } from '../ClientInfo';
+import { RouteOfTicketSale } from 'services/models/TicketSale';
 
 const useStyles = makeStyles((theme: Theme) => ({
   label: {
@@ -60,24 +59,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface Props {
-  control: any;
-  errors?: any;
+  control: Control<FieldValues>;
+  errors?: FieldErrors<FieldValues>;
+  routeDetail?: RouteOfTicketSale;
 }
 
-export default function FormClientInfo({ control, errors }: Props) {
+export default function FormClientInfo({ control, errors, routeDetail }: Props) {
   const { t } = useTranslation(['packageSales', 'translation', 'account']);
   const classes = useStyles();
-  const { data: paymentMethods } = useGetPaymentMethod();
-
-  const methods = useMemo(() => {
-    return paymentMethods?.data?.map((p, index) => ({
-      label: p,
-      value: p,
-      key: `${p}_${index}`,
-    }));
-  }, [paymentMethods]);
-
-  console.log({ paymentMethods });
 
   const renderField = (fields: Field[]) => {
     return (
@@ -141,7 +130,7 @@ export default function FormClientInfo({ control, errors }: Props) {
         {t('required_in_order')}
       </Typography>
       <Divider sx={{ margin: '16px 0' }} />
-      <FormMerchandise control={control} errors={errors} />
+      <FormMerchandise control={control} errors={errors} routeDetail={routeDetail} />
       <Divider sx={{ margin: '16px 0' }} />
       <Controller
         name="email"
@@ -172,16 +161,6 @@ export default function FormClientInfo({ control, errors }: Props) {
         }}
       />
       <Divider sx={{ margin: '16px 0' }} />
-      {/* <Controller
-        name="method"
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field }) => {
-          return <Radio {...field} options={methods ?? []} radioName="payment-method" />;
-        }}
-      /> */}
     </Box>
   );
 }

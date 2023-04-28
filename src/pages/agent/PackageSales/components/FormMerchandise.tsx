@@ -1,5 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
-import { Box, Divider, Grid, InputBase, InputLabel, Stack, Theme, Typography } from '@mui/material';
+import { Box, Divider, Grid, InputLabel, Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Controller, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -8,9 +8,8 @@ import TrashSvg from 'assets/images/trash.svg';
 import Button from 'components/Button/Button';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import { useMount, useRequest } from 'ahooks';
-import { getPackageSettings } from 'services/PackageSetting/Company/getPackageSettings';
 import { isEmpty } from 'lodash-es';
+import { RouteOfTicketSale } from 'services/models/TicketSale';
 
 const useStyles = makeStyles((theme: Theme) => ({
   label: {
@@ -73,19 +72,12 @@ interface Props {
   showButton?: boolean;
   control: any;
   errors?: any;
+  routeDetail?: RouteOfTicketSale;
 }
 
-export default function FormMerchandise({ control, errors }: Props) {
+export default function FormMerchandise({ control, errors, routeDetail }: Props) {
   const { t } = useTranslation(['packageSales', 'translation']);
   const classes = useStyles();
-
-  const { data, run } = useRequest(getPackageSettings, {
-    manual: true,
-  });
-
-  useMount(() => {
-    run({ isGetAll: true, searcher: {}, sorter: {}, page: 0 });
-  });
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -122,7 +114,7 @@ export default function FormMerchandise({ control, errors }: Props) {
                     <Select
                       {...field}
                       id={`merchandise.${index}.title`}
-                      options={data?.data.hits.map(i => ({
+                      options={routeDetail?.vehicle?.merchandises.map(i => ({
                         value: i._id,
                         label: i.title,
                       }))}
@@ -137,6 +129,7 @@ export default function FormMerchandise({ control, errors }: Props) {
               <Controller
                 name={`merchandise.${index}.weight`}
                 control={control}
+                defaultValue={1}
                 rules={{
                   required: true,
                 }}
@@ -145,7 +138,10 @@ export default function FormMerchandise({ control, errors }: Props) {
                     <InputLabel htmlFor={`merchandise.${index}.weight`} className={classes.label}>
                       {t(`weight`)}
                     </InputLabel>
-                    <InputBase fullWidth {...field} id={`merchandise.${index}.weight`} placeholder={t(`weight`)} className={classes.input} />
+                    <Box className={classes.inputNumberWrap}>
+                      <input {...field} id={`merchandise.${index}.weight`} min={0} defaultValue={1} type="number" className={classes.inputNumber} />
+                      <span className={classes.prefix}>kg</span>
+                    </Box>
                   </Box>
                 )}
               />
@@ -154,6 +150,7 @@ export default function FormMerchandise({ control, errors }: Props) {
               <Controller
                 name={`merchandise.${index}.price`}
                 control={control}
+                defaultValue={1}
                 rules={{
                   required: true,
                 }}
@@ -164,7 +161,7 @@ export default function FormMerchandise({ control, errors }: Props) {
                     </InputLabel>
                     <Box className={classes.inputNumberWrap}>
                       <span className={classes.prefix}>$</span>
-                      <input {...field} id={`merchandise.${index}.price`} min={0} defaultValue={1} type="number" className={classes.inputNumber} />
+                      <input {...field} id={`merchandise.${index}.price`} min={0} defaultValue="1" type="number" className={classes.inputNumber} />
                     </Box>
                   </Box>
                 )}

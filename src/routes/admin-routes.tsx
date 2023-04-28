@@ -78,15 +78,7 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'package-sales/create-package-orders/order-confirm',
-    element: (
-      <RequiredAuth role="admin">
-        <Page.Agent.OrderConfirm />
-      </RequiredAuth>
-    ),
-  },
-  {
-    path: 'package-sales/create-package-orders/order-detail-confirm',
+    path: 'package-sales/:orderCode',
     element: (
       <RequiredAuth role="admin">
         <Page.Agent.OrderDetailConfirm />

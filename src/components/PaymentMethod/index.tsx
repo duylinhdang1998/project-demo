@@ -10,7 +10,7 @@ import { useStyles } from '../../pages/agent/TicketSales/OrderDetailOnCreateOrde
 export interface PaymentMethodProps<T extends AnyObject, Key extends keyof T> {
   control: Control<T>;
   errors: FieldErrors<T>;
-  messages: Record<keyof T, string>;
+  messages?: Record<keyof T, string>;
   label: Key;
   method: T[Key];
   onChange: (value: T[Key]) => void;
@@ -40,6 +40,7 @@ export const PaymentMethod = <T extends AnyObject, K extends keyof T>({ errors, 
       {PAYMENT_METHODS.map(PAYMENT_METHOD => {
         return (
           <RadioGroup
+            key={PAYMENT_METHOD}
             value={method}
             onChange={() => {
               onChange(PAYMENT_METHOD as any);

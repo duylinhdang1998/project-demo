@@ -6,12 +6,10 @@ import OrderDetailView from 'components/OrderDetailView/OrderDetailView';
 import PrintIcon from 'components/SvgIcon/PrintIcon';
 import SendIcon from 'components/SvgIcon/SendIcon';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useLocation } from 'react-router-dom';
-import { get } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { isEmpty } from 'lodash-es';
 import { PackageSale } from 'models/PackageSales';
-import { useSendEmailPackageSale } from 'services/PackageSales/packageSales';
+import { useGetPackageSale, useSendEmailPackageSale } from 'services/PackageSales/packageSales';
 import { getNotifcation } from 'utils/getNotification';
 import { ModalPrintTicket } from 'components/ModalPrintTicket/ModalPrintTicket';
 import { Infomation } from 'pages/admin/TicketSales/DetailOrder/components/OrderDetail/Infomation';
@@ -20,14 +18,14 @@ import { MapPinIcon } from 'assets';
 import dayjs from 'dayjs';
 import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
 import Tag from 'components/Tag/Tag';
+import { get } from 'lodash-es';
 
 export default function OrderDetailConfirm() {
   const { t } = useTranslation(['packageSales', 'translation', 'ticketSales']);
   const theme = useTheme();
-  const location = useLocation();
-  const dataDetails: PackageSale = get(location, 'state.packageSale', {});
+  const params = useParams();
   const [openModalPrint, setOpenModalPrint] = useState(false);
-  console.log({ dataDetails });
+  const { run: getPackageSaleDetail, data: dataDetails } = useGetPackageSale();
 
   const { run, loading } = useSendEmailPackageSale({
     onSuccess: dataSendEmail => {
@@ -39,13 +37,16 @@ export default function OrderDetailConfirm() {
     },
   });
   useEffect(() => {
-    if (isEmpty(dataDetails)) {
+    if (!params.orderCode) {
       throw 'Some thing went wrong';
+    } else {
+      getPackageSaleDetail(params.orderCode);
     }
-  }, [dataDetails]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.orderCode]);
 
   const handleSendEmail = () => {
-    run({ orderCode: dataDetails.orderCode });
+    run({ orderCode: dataDetails?.orderCode ?? '' });
   };
   return (
     <LayoutDetail title={t('create_package_orders')} subTitle={t('package_sales')}>
@@ -53,11 +54,11 @@ export default function OrderDetailConfirm() {
         <Box padding="24px" borderRadius={4} bgcolor="white" width={{ xs: '100%', md: '90%' }}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
-              <OrderDetailView data={dataDetails} />
+              {!!dataDetails && <OrderDetailView data={dataDetails as PackageSale} />}
             </Grid>
             <Grid item xs={12} md={4}>
               <Box bgcolor="#FAFDFF" borderRadius={4} padding="24px" height="100%">
-                <MerchandiseDetailView merchandises={dataDetails.merchandises} />
+                <MerchandiseDetailView merchandises={dataDetails?.merchandises} />
               </Box>
             </Grid>
           </Grid>
@@ -94,14 +95,14 @@ export default function OrderDetailConfirm() {
         open={openModalPrint}
         onClose={() => setOpenModalPrint(false)}
         title={t('packageSales:package_order').toUpperCase()}
-        totalPrice={dataDetails.totalPrice}
-        qrCode={dataDetails.orderCode}
+        totalPrice={dataDetails?.totalPrice ?? 0}
+        qrCode={dataDetails?.orderCode ?? ''}
       >
         <Infomation
           left={t('ticketSales:order_id')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dataDetails.orderCode}
+              {dataDetails?.orderCode}
             </Typography>
           }
         />
@@ -128,9 +129,9 @@ export default function OrderDetailConfirm() {
           right={
             <>
               <Box mb="8px">
-                <TextWithIcon text={dataDetails.departurePoint} icon={MapPinIcon} color="#1AA6EE" typography={{ fontSize: '14px' }} />
+                <TextWithIcon text={dataDetails?.departurePoint} icon={MapPinIcon} color="#1AA6EE" typography={{ fontSize: '14px' }} />
               </Box>
-              <TextWithIcon text={dataDetails.arrivalPoint} icon={MapPinIcon} color="#1AA6EE" typography={{ fontSize: '14px' }} />
+              <TextWithIcon text={dataDetails?.arrivalPoint} icon={MapPinIcon} color="#1AA6EE" typography={{ fontSize: '14px' }} />
             </>
           }
         />
@@ -138,7 +139,7 @@ export default function OrderDetailConfirm() {
           left={t('ticketSales:departureTime')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dayjs(dataDetails.departureTime).format('MM/DD/YYYY - HH[H]mm')}
+              {dayjs(dataDetails?.departureTime).format('MM/DD/YYYY - HH[H]mm')}
             </Typography>
           }
         />
@@ -146,7 +147,7 @@ export default function OrderDetailConfirm() {
           left={t('packageSales:name_of_sender')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dataDetails.sender.firstName} {dataDetails.sender.lastName}
+              {dataDetails?.sender.firstName} {dataDetails?.sender.lastName}
             </Typography>
           }
         />
@@ -154,7 +155,7 @@ export default function OrderDetailConfirm() {
           left={t('packageSales:mobile_of_sender')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dataDetails.sender.mobile}
+              {dataDetails?.sender.mobile}
             </Typography>
           }
         />
@@ -162,7 +163,7 @@ export default function OrderDetailConfirm() {
           left={t('packageSales:name_of_recipient')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dataDetails.recipent.firstName} {dataDetails.recipent.lastName}
+              {dataDetails?.recipent.firstName} {dataDetails?.recipent.lastName}
             </Typography>
           }
         />
@@ -170,7 +171,7 @@ export default function OrderDetailConfirm() {
           left={t('packageSales:mobile_of_recipient')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dataDetails.recipent.mobile}
+              {dataDetails?.recipent.mobile}
             </Typography>
           }
         />
@@ -178,9 +179,9 @@ export default function OrderDetailConfirm() {
           left={t('ticketSales:payment_status')}
           right={
             <Tag
-              color={PaymentStatusColorMapping[dataDetails.paymentStatus]}
-              backgroundColor={PaymentStatusBackgroundColorMapping[dataDetails.paymentStatus]}
-              text={PaymentStatusLabelMapping[dataDetails.paymentStatus]}
+              color={PaymentStatusColorMapping[get(dataDetails, 'paymentStatus', 'PENDING')]}
+              backgroundColor={PaymentStatusBackgroundColorMapping[get(dataDetails, 'paymentStatus', 'PENDING')]}
+              text={PaymentStatusLabelMapping[get(dataDetails, 'paymentStatus', 'PENDING')]}
             />
           }
         />
@@ -188,7 +189,7 @@ export default function OrderDetailConfirm() {
           left={t('ticketSales:quantity')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dataDetails.totalQuantity}
+              {dataDetails?.totalQuantity}
             </Typography>
           }
         />
@@ -196,7 +197,7 @@ export default function OrderDetailConfirm() {
           left={t('packageSales:total_weight')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dataDetails.totalWeight}
+              {dataDetails?.totalWeight}
             </Typography>
           }
         />
@@ -204,7 +205,7 @@ export default function OrderDetailConfirm() {
           left={t('ticketSales:created_on')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dayjs(dataDetails.createdAt).format('MM/DD/YYYY - HH[H]mm')}
+              {dayjs(dataDetails?.createdAt).format('MM/DD/YYYY - HH[H]mm')}
             </Typography>
           }
         />

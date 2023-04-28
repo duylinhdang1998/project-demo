@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import LayoutDetail from 'layout/LayoutDetail';
@@ -7,13 +8,15 @@ import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { get } from 'lodash-es';
-import { useDispatch, useSelector } from 'react-redux';
-import { setOrderInfomation } from 'store/packageSales/packageSalesSlice';
 import { useEffect } from 'react';
-import { orderConfirmSelector } from 'store/passengers/selectors';
-import { isEmpty } from 'lodash-es';
-import { useMount, useRequest, useUpdateEffect } from 'ahooks';
-import { getRoute } from 'services/Route/Company/getRoute';
+import { useRequest } from 'ahooks';
+import { getRoutePkgDetail } from 'services/Route/Company/getRoute';
+import { PaymentMethod } from 'components/PaymentMethod';
+import { PackageSalePayload, useCreatePackageSale } from 'services/PackageSales/packageSales';
+import { getNotifcation } from 'utils/getNotification';
+import { EnumPaymentGateway } from 'services/models/PaymentGateway';
+import { useSelector } from 'react-redux';
+import { selectAuth } from 'store/auth/selectors';
 
 interface StateLocation {
   merchandise: {
@@ -26,7 +29,7 @@ interface StateLocation {
   }[];
 }
 
-interface FieldValues {
+export interface FieldValues {
   sender_first_name: string;
   sender_last_name: string;
   sender_mobile: string;
@@ -35,59 +38,66 @@ interface FieldValues {
   recipent_mobile: string;
   merchandise: StateLocation['merchandise'];
   email: string;
+  method: EnumPaymentGateway;
+  accept_term?: boolean;
 }
 
 export default function ClientInfo() {
-  const { t } = useTranslation(['packageSales', 'ticketSales']);
+  const { t } = useTranslation(['packageSales', 'ticketSales', 'translation']);
   const location = useLocation();
-
   const selectedRoute: RouteOfTicketSale = get(location, 'state.selectedRoute', undefined);
-  const orderConfirm = useSelector(orderConfirmSelector);
+  const authentication = useSelector(selectAuth);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
+    setValue,
   } = useForm<FieldValues>({
     defaultValues: {
       merchandise: [{ weight: '', price: '' }],
+      method: 'PAYPAL',
+      accept_term: true,
+    },
+  });
+  const methodWatch = watch('method');
+
+  const { run: createPackageSale, loading } = useCreatePackageSale({
+    onSuccess: dataCode => {
+      getNotifcation({
+        code: dataCode.code,
+        success: t('add_package_sale_success'),
+        error: t('add_package_sale_error'),
+        onSuccess: () => {
+          reset();
+          navigate(`${authentication.userInfo?.role === 'admin' ? '/admin' : 'agent'}/package-sales/${dataCode.data.orderCode}`, {
+            state: {
+              packageSale: dataCode.data,
+            },
+          });
+        },
+      });
     },
   });
 
-  const { data: dataDetail, run: getRouteDetail } = useRequest(getRoute, {
+  const { data: dataDetail, run: getRouteDetail } = useRequest(getRoutePkgDetail, {
     ready: !!selectedRoute.routeCode,
     manual: true,
   });
 
   useEffect(() => {
     if (!!selectedRoute.routeCode) {
-      getRouteDetail({ routeCode: selectedRoute.routeCode });
+      getRouteDetail(selectedRoute._id);
     }
   }, [selectedRoute]);
 
-  console.log({ dataDetail });
-
-  useEffect(() => {
-    if (!isEmpty(orderConfirm)) {
-      reset({
-        sender_first_name: orderConfirm.sender?.firstName,
-        sender_last_name: orderConfirm.sender?.lastName,
-        sender_mobile: orderConfirm.sender?.mobile,
-        recipent_first_name: orderConfirm.recipent?.firstName,
-        recipent_last_name: orderConfirm.recipent?.lastName,
-        recipent_mobile: orderConfirm.recipent?.mobile,
-        merchandise: orderConfirm.merchandise,
-      });
-    }
-  }, [orderConfirm]);
-
   const onSubmit = (values: FieldValues) => {
-    const payload = {
-      route: selectedRoute.route._id,
-      departurePoint: selectedRoute.departurePoint,
-      arrivalPoint: selectedRoute.stopPoint,
+    const payload: PackageSalePayload = {
+      route: dataDetail?.data._id,
+      departurePoint: dataDetail?.data.departurePoint,
+      arrivalPoint: dataDetail?.data.stopPoint,
       sender: {
         firstName: values.sender_first_name,
         lastName: values.sender_last_name,
@@ -100,15 +110,16 @@ export default function ClientInfo() {
         mobile: values.recipent_mobile,
         type: 'RECIPENT',
       },
-      merchandise: values.merchandise,
+      merchandises: values.merchandise.map(item => ({
+        package: item.title.value,
+        weight: parseInt(item.weight),
+        price: parseInt(item.price),
+      })),
       departureTime: get(location, 'state.departureTime', undefined),
+      email: values.email,
+      paymentMethod: values.method,
     };
-    dispatch(setOrderInfomation(payload));
-    navigate('order-confirm', {
-      state: {
-        payloadClient: payload,
-      },
-    });
+    createPackageSale(payload);
   };
 
   return (
@@ -120,7 +131,16 @@ export default function ClientInfo() {
               {t('order_infomation')}
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
-            <FormClientInfo control={control} errors={errors} />
+            <FormClientInfo control={control} errors={errors} routeDetail={dataDetail?.data} />
+            <PaymentMethod
+              control={control}
+              errors={errors}
+              label="method"
+              method={methodWatch}
+              onChange={value => {
+                setValue('method', value);
+              }}
+            />
           </Box>
         </Grid>
         <Grid item xs={12} md={4}>
@@ -129,7 +149,7 @@ export default function ClientInfo() {
               {t('ticketSales:your_reservation')}
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
-            <ReserveInfo onBook={handleSubmit(onSubmit)} />
+            <ReserveInfo onBook={handleSubmit(onSubmit)} routeDetail={dataDetail?.data} control={control} errors={errors} loading={loading} />
           </Box>
         </Grid>
       </Grid>

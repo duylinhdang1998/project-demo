@@ -78,12 +78,11 @@ export default function CreatePackageOrders() {
     navigate('client-info', {
       state: {
         selectedRoute: routeItem,
-        departureTime: getValues().departureTime,
+        departureTime: dayjs(getValues().departureTime).valueOf(),
       },
     });
   };
   const onSubmit = (values: SelectTripFormValues) => {
-    console.log({ values });
     setCurrentPage(1);
     run(0, values);
   };

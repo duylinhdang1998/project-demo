@@ -14,8 +14,8 @@ i18n
     lng: 'en',
     fallbackLng: 'en',
     keySeparator: '.',
-    ns: ['translations'],
-    defaultNS: 'translations',
+    ns: ['translation'],
+    defaultNS: 'translation',
     debug: false,
     interpolation: {
       escapeValue: false,

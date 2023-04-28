@@ -206,12 +206,8 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
                 label: 'detail',
                 icon: <ViewIcon />,
                 onClick: record => {
-                  const nextUrl = 'create-package-orders/order-detail-confirm';
-                  navigate(nextUrl, {
-                    state: {
-                      packageSale: record,
-                    },
-                  });
+                  const nextUrl = record.orderCode;
+                  navigate(nextUrl);
                 },
               },
               {

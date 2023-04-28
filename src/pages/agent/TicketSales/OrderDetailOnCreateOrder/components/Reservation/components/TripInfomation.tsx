@@ -20,7 +20,7 @@ export interface TripInfomationProps {
   };
 }
 
-const Title: FC = ({ children }) => (
+export const Title: FC = ({ children }) => (
   <Typography component="p" marginBottom="16px" color="rgba(12, 17, 50, 1)" fontWeight={600} fontSize="14px">
     {children}
   </Typography>

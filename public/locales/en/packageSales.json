@@ -50,5 +50,7 @@
   "mobile_of_sender": "Sender's mobile",
   "name_of_recipient": "Recipient's name",
   "mobile_of_recipient": "Recipient's mobile",
-  "total_weight": "Total weight"
+  "total_weight": "Total weight",
+  "add_package_sale_success": "Add package sale success",
+  "add_package_sale_failed": "Add package sale failed"
 }
