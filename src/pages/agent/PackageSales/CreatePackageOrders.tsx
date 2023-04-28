@@ -17,11 +17,7 @@ import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { isEmpty } from 'lodash-es';
 import { useDispatch } from 'react-redux';
 import { resetOrderInformation } from 'store/packageSales/packageSalesSlice';
-<<<<<<< HEAD
 import { getTripPackages } from '../TicketSales/SelectTripOnCreateOrder/utils/getTrips';
-=======
-import { getTripPackages } from '../TicketSales/SelectTripOnCreateTicketSale/utils/getTrips';
->>>>>>> 14d847fa1f1500bca7fcc3b5cdaff0ac0fc372bc
 import dayjs from 'dayjs';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -87,7 +83,6 @@ export default function CreatePackageOrders() {
     });
   };
   const onSubmit = (values: SelectTripFormValues) => {
-    console.log({ values });
     setCurrentPage(1);
     run(0, values);
   };

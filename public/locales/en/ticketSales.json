@@ -82,10 +82,5 @@
   "vehicle": "Vehicle",
   "view_relate_order": "View relate order",
   "type": "Type",
-<<<<<<< HEAD
-=======
-  "departure_trip": "Departure trip",
-  "return_trip": "Return trip",
->>>>>>> 14d847fa1f1500bca7fcc3b5cdaff0ac0fc372bc
   "merchandises": "Package"
 }

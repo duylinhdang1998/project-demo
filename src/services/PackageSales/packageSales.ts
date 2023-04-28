@@ -1,7 +1,6 @@
 import { useRequest } from 'ahooks';
 import { Options } from 'ahooks/lib/useRequest/src/types';
 import { AxiosResponse } from 'axios';
-import { Country } from 'models/Country';
 import { PackageSale } from 'models/PackageSales';
 import { ResponseData as SendEmailResponse } from 'services/TicketSale/sendEmail';
 import { EnumPaymentGateway } from 'services/models/PaymentGateway';
@@ -73,41 +72,26 @@ export const useGetListPackageSales = (option?: Options<ResponseSuccess<PackageS
   });
 };
 
-export const getCountryList = async (): Promise<ResponseSuccess<Country>> => {
-  const response: AxiosResponse<ResponseSuccess<Country>> = await fetchAPI.request({
-    url: '/v1.0/countries',
-    params: {
-      limit: 1000,
-      offset: 0,
-    },
-  });
-  return response.data;
-};
-
-export const useGetCountryList = () => {
-  return useRequest(getCountryList);
-};
-
 export const useGetPackageSale = () => {
-  const getPackageSale = async (orderCode: PackageSale['orderCode']): Promise<PackageSale | null> => {
+  const getPackageSale = async (orderCode: PackageSale['orderCode']): Promise<PackageSale | undefined> => {
     try {
       const response: AxiosResponse<ResponseDetailSuccess<PackageSale>> = await fetchAPI.request({
         url: `/v1.0/company/package-sale/${orderCode}/detail`,
       });
       return response.data.data;
     } catch {
-      return null;
+      return undefined;
     }
   };
 
-  return useRequest<PackageSale | null, [PackageSale['orderCode']]>(getPackageSale, {
+  return useRequest<PackageSale | undefined, [PackageSale['orderCode']]>(getPackageSale, {
     manual: true,
   });
 };
 
-export const useCreatePackageSale = (option?: Options<ResponseSuccess<PackageSale>, any>) => {
-  const createPackageSale = async (data: PackageSalePayload): Promise<ResponseSuccess<PackageSale>> => {
-    const response: AxiosResponse<ResponseSuccess<PackageSale>> = await fetchAPI.request({
+export const useCreatePackageSale = (option?: Options<ResponseDetailSuccess<PackageSale>, any>) => {
+  const createPackageSale = async (data: PackageSalePayload): Promise<ResponseDetailSuccess<PackageSale>> => {
+    const response: AxiosResponse<ResponseDetailSuccess<PackageSale>> = await fetchAPI.request({
       url: '/v1.0/company/package-sales',
       method: 'POST',
       data,
@@ -115,7 +99,7 @@ export const useCreatePackageSale = (option?: Options<ResponseSuccess<PackageSal
     return response.data;
   };
 
-  return useRequest<ResponseSuccess<PackageSale>, [PackageSalePayload]>(createPackageSale, {
+  return useRequest<ResponseDetailSuccess<PackageSale>, [PackageSalePayload]>(createPackageSale, {
     manual: true,
     ...option,
   });

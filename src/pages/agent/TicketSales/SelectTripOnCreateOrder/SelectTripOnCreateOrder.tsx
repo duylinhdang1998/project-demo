@@ -29,11 +29,7 @@ export interface SelectTripFormValues {
   arrivalPoint?: { value: string };
   departureTime?: number;
   tripType: RouteOfTicketSale['tripType'];
-<<<<<<< HEAD:src/pages/agent/TicketSales/SelectTripOnCreateOrder/SelectTripOnCreateOrder.tsx
   departureRoute: RouteOfTicketSale | null;
-=======
-  departureTrip: RouteOfTicketSale | null;
->>>>>>> 14d847fa1f1500bca7fcc3b5cdaff0ac0fc372bc:src/pages/agent/TicketSales/SelectTripOnCreateTicketSale/SelectTripOnCreateTicketSale.tsx
   merchandises?: { value: string };
 }
 

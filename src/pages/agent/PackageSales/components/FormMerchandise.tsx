@@ -129,6 +129,7 @@ export default function FormMerchandise({ control, errors, routeDetail }: Props)
               <Controller
                 name={`merchandise.${index}.weight`}
                 control={control}
+                defaultValue={1}
                 rules={{
                   required: true,
                 }}
@@ -149,6 +150,7 @@ export default function FormMerchandise({ control, errors, routeDetail }: Props)
               <Controller
                 name={`merchandise.${index}.price`}
                 control={control}
+                defaultValue={1}
                 rules={{
                   required: true,
                 }}
@@ -159,7 +161,7 @@ export default function FormMerchandise({ control, errors, routeDetail }: Props)
                     </InputLabel>
                     <Box className={classes.inputNumberWrap}>
                       <span className={classes.prefix}>$</span>
-                      <input {...field} id={`merchandise.${index}.price`} min={0} defaultValue={1} type="number" className={classes.inputNumber} />
+                      <input {...field} id={`merchandise.${index}.price`} min={0} defaultValue="1" type="number" className={classes.inputNumber} />
                     </Box>
                   </Box>
                 )}

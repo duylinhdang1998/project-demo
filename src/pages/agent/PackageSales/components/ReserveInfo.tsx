@@ -89,7 +89,7 @@ const ReserveInfo = ({ onBook, loading, routeDetail, control, errors }: Props) =
       <Box>
         <Title>{t('ticketSales:service')}</Title>
         {routeDetail?.vehicle?.services?.map(i => (
-          <Box marginBottom="12px">
+          <Box marginBottom="12px" key={i._id}>
             <TextWithIcon icon={getUrlImage(i.icon)} text={i.title} color="#45485E" />
           </Box>
         ))}

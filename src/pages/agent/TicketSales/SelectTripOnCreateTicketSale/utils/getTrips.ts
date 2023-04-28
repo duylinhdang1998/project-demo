@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { searchRoutes, searchRoutesPackage } from 'services/TicketSale/searchRoutes';
-import { SelectTripFormValues } from '../SelectTripOnCreateTicketSale';
+import { SelectTripFormValues } from '../../SelectTripOnCreateOrder/SelectTripOnCreateOrder';
 
 export const getTrips = async (page: number, values: SelectTripFormValues): Promise<Awaited<ReturnType<typeof searchRoutes>>['data']> => {
   try {
@@ -23,11 +23,8 @@ export const getTrips = async (page: number, values: SelectTripFormValues): Prom
     return response.data;
   } catch {
     return {
-      routes: [],
-      counts: [
-        { _id: 'MULTI_STOP', count: 0 },
-        { _id: 'ONE_TRIP', count: 0 },
-      ],
+      hits: [],
+      pagination: { totalPages: 1, totalRows: 0 },
     };
   }
 };
