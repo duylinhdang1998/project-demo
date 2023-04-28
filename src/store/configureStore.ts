@@ -23,7 +23,7 @@ const reducers = persistReducer(
 );
 const middlewares: Middleware[] = [sagaMiddleware];
 if (env.isDevMode) {
-  middlewares.push(logger);
+  // middlewares.push(logger);
 }
 
 const store = configureStore({

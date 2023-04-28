@@ -70,6 +70,14 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
+    path: 'package-sales/edit/:orderCode',
+    element: (
+      <RequiredAuth role="agent">
+        <Page.Agent.EditPackageSales />
+      </RequiredAuth>
+    ),
+  },
+  {
     path: 'package-sales/order-detail-confirm',
     element: (
       <RequiredAuth role="agent">

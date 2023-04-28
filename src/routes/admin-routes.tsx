@@ -78,6 +78,14 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
+    path: 'package-sales/edit/:orderCode',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.Agent.EditPackageSales />
+      </RequiredAuth>
+    ),
+  },
+  {
     path: 'package-sales/:orderCode',
     element: (
       <RequiredAuth role="admin">

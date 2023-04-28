@@ -46,7 +46,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
 
   const [openConfirmCancel, setOpenConfirmCancel] = React.useState<PackageSale | null>(null);
 
-  const [currentPage, setCurrentPage] = React.useState(1);
+  const [currentPage, setCurrentPage] = React.useState(0);
   const { loading: cancelLoading, run: cancelPackage } = useCancelPackage({
     onSuccess: (data: any) => {
       getNotifcation({
@@ -214,7 +214,13 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
                 id: v4(),
                 label: 'edit',
                 icon: <EditIcon />,
-                onClick: () => {},
+                onClick: () => {
+                  navigate(`edit/${row.orderCode}`, {
+                    state: {
+                      defaultPackage: row,
+                    },
+                  });
+                },
               },
               {
                 id: v4(),
@@ -258,7 +264,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         dataSource={dataSource}
         rowKey={record => record._id ?? ''}
         pagination={{
-          pageSize: 10,
+          pageSize: 5,
           total: pagination.totalRows,
           current: currentPage + 1,
         }}
