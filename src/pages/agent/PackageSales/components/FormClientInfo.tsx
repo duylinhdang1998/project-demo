@@ -6,8 +6,14 @@ import { useTranslation } from 'react-i18next';
 import { fields2, fields3 } from '../constant';
 import FormMerchandise from './FormMerchandise';
 import { Field } from 'models/Field';
+<<<<<<< HEAD
 import { FieldValues } from '../ClientInfo';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
+=======
+import { useGetPaymentMethod } from 'services/Company/paymentMethods';
+import Radio from 'components/Radio/Radio';
+import { useMemo } from 'react';
+>>>>>>> 14d847fa1f1500bca7fcc3b5cdaff0ac0fc372bc
 
 const useStyles = makeStyles((theme: Theme) => ({
   label: {
@@ -67,6 +73,17 @@ interface Props {
 export default function FormClientInfo({ control, errors, routeDetail }: Props) {
   const { t } = useTranslation(['packageSales', 'translation', 'account']);
   const classes = useStyles();
+  const { data: paymentMethods } = useGetPaymentMethod();
+
+  const methods = useMemo(() => {
+    return paymentMethods?.data?.map((p, index) => ({
+      label: p,
+      value: p,
+      key: `${p}_${index}`,
+    }));
+  }, [paymentMethods]);
+
+  console.log({ paymentMethods });
 
   const renderField = (fields: Field[]) => {
     return (
@@ -130,7 +147,11 @@ export default function FormClientInfo({ control, errors, routeDetail }: Props) 
         {t('required_in_order')}
       </Typography>
       <Divider sx={{ margin: '16px 0' }} />
+<<<<<<< HEAD
       <FormMerchandise control={control} errors={errors} routeDetail={routeDetail} />
+=======
+      <FormMerchandise control={control} errors={errors} />
+>>>>>>> 14d847fa1f1500bca7fcc3b5cdaff0ac0fc372bc
       <Divider sx={{ margin: '16px 0' }} />
       <Controller
         name="email"
@@ -161,6 +182,19 @@ export default function FormClientInfo({ control, errors, routeDetail }: Props) 
         }}
       />
       <Divider sx={{ margin: '16px 0' }} />
+<<<<<<< HEAD
+=======
+      {/* <Controller
+        name="method"
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field }) => {
+          return <Radio {...field} options={methods ?? []} radioName="payment-method" />;
+        }}
+      /> */}
+>>>>>>> 14d847fa1f1500bca7fcc3b5cdaff0ac0fc372bc
     </Box>
   );
 }

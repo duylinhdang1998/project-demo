@@ -45,6 +45,7 @@
   "cancel_to_delivery": "Cancel to delivery",
   "reason": "Reason",
   "delivery_status": "Delivery status",
+<<<<<<< HEAD
   "email": "Email",
   "name_of_sender": "Sender's name",
   "mobile_of_sender": "Sender's mobile",
@@ -53,4 +54,7 @@
   "total_weight": "Total weight",
   "add_package_sale_success": "Add package sale success",
   "add_package_sale_failed": "Add package sale failed"
+=======
+  "email": "Email"
+>>>>>>> 14d847fa1f1500bca7fcc3b5cdaff0ac0fc372bc
 }

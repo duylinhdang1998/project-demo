@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { get } from 'lodash-es';
 import { useEffect } from 'react';
+<<<<<<< HEAD
 import { useRequest } from 'ahooks';
 import { getRoutePkgDetail } from 'services/Route/Company/getRoute';
 import { PaymentMethod } from 'components/PaymentMethod';
@@ -17,6 +18,12 @@ import { getNotifcation } from 'utils/getNotification';
 import { EnumPaymentGateway } from 'services/models/PaymentGateway';
 import { useSelector } from 'react-redux';
 import { selectAuth } from 'store/auth/selectors';
+=======
+import { orderConfirmSelector } from 'store/passengers/selectors';
+import { isEmpty } from 'lodash-es';
+import { useMount, useRequest, useUpdateEffect } from 'ahooks';
+import { getRoute } from 'services/Route/Company/getRoute';
+>>>>>>> 14d847fa1f1500bca7fcc3b5cdaff0ac0fc372bc
 
 interface StateLocation {
   merchandise: {
@@ -38,8 +45,11 @@ export interface FieldValues {
   recipent_mobile: string;
   merchandise: StateLocation['merchandise'];
   email: string;
+<<<<<<< HEAD
   method: EnumPaymentGateway;
   accept_term?: boolean;
+=======
+>>>>>>> 14d847fa1f1500bca7fcc3b5cdaff0ac0fc372bc
 }
 
 export default function ClientInfo() {
@@ -82,11 +92,26 @@ export default function ClientInfo() {
     },
   });
 
+<<<<<<< HEAD
   const { data: dataDetail, run: getRouteDetail } = useRequest(getRoutePkgDetail, {
+=======
+  const { data: dataDetail, run: getRouteDetail } = useRequest(getRoute, {
+>>>>>>> 14d847fa1f1500bca7fcc3b5cdaff0ac0fc372bc
     ready: !!selectedRoute.routeCode,
     manual: true,
   });
 
+<<<<<<< HEAD
+=======
+  useEffect(() => {
+    if (!!selectedRoute.routeCode) {
+      getRouteDetail({ routeCode: selectedRoute.routeCode });
+    }
+  }, [selectedRoute]);
+
+  console.log({ dataDetail });
+
+>>>>>>> 14d847fa1f1500bca7fcc3b5cdaff0ac0fc372bc
   useEffect(() => {
     if (!!selectedRoute.routeCode) {
       getRouteDetail(selectedRoute._id);
