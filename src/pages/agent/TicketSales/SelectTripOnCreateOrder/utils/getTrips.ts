@@ -2,16 +2,23 @@ import dayjs from 'dayjs';
 import { searchRoutes, searchRoutesPackage } from 'services/TicketSale/searchRoutes';
 import { SelectTripFormValues } from '../SelectTripOnCreateOrder';
 
-export const getTrips = async (page: number, values: SelectTripFormValues): Promise<Awaited<ReturnType<typeof searchRoutes>>['data']> => {
+export const getTrips = async (
+  page: number,
+  values: Omit<SelectTripFormValues, 'departureRoute'>,
+): Promise<Awaited<ReturnType<typeof searchRoutes>>['data']> => {
   try {
     const response = await searchRoutes({
+      tripType: values.tripType,
       page,
       searcher: {
-        tripType: { value: values.tripType, operator: 'eq' },
         departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
         stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
         departureTime: {
           value: values.departureTime && dayjs.utc(values.departureTime).set('second', 0).unix() * 1000,
+          operator: 'eq',
+        },
+        returnTime: {
+          value: values.returnTime && dayjs.utc(values.returnTime).set('second', 0).unix() * 1000,
           operator: 'eq',
         },
       },
@@ -31,15 +38,14 @@ export const getTripPackages = async (
 ): Promise<Awaited<ReturnType<typeof searchRoutesPackage>>['data']> => {
   try {
     const response = await searchRoutesPackage({
+      tripType: values.tripType,
       page,
       searcher: {
-        tripType: { value: values.tripType, operator: 'eq' },
         departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
         stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
         departureTime: {
           value: values.departureTime && dayjs.utc(values.departureTime).set('second', 0).unix() * 1000,
           operator: 'eq',
-          // value: 1682428200000
         },
         merchandises: {
           value: values.merchandises?.value,

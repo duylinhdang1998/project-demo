@@ -44,6 +44,7 @@ export interface Route {
   routePoints: [RoutePoint] | RoutePoint[];
   startPeriod: null | string | number;
   tripType: TripType;
+  status: 'ACTIVE' | 'INACTIVE';
   updatedAt: string;
   vehicle: Vehicle | null;
 }

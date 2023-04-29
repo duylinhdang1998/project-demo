@@ -7,14 +7,15 @@ import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
 export interface SearchRoutes {
+  tripType: RouteOfTicketSale['tripType'];
   page: Pagination;
-  searcher: Searcher<RouteOfTicketSale, 'quantity' | 'departureTime' | 'merchandises'>;
+  searcher: Searcher<RouteOfTicketSale, 'quantity' | 'returnTime' | 'departureTime' | 'merchandises'>;
 }
 
 const RECORDS_PER_PAGE = 4;
-export const searchRoutes = async ({ page, searcher }: SearchRoutes) => {
+export const searchRoutes = async ({ tripType, page, searcher }: SearchRoutes) => {
   const response: AxiosResponse<ResponseSuccess<RouteOfTicketSale> | ResponseFailure> = await fetchAPI.request({
-    url: '/v1.0/company/routes/search',
+    url: tripType === 'MULTI_STOP' ? '/v1.0/company/routes/search/round-trip' : '/v1.0/company/routes/search',
     params: {
       limit: RECORDS_PER_PAGE,
       offset: page * RECORDS_PER_PAGE,

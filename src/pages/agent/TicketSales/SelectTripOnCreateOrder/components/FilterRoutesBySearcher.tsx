@@ -7,11 +7,17 @@ import { Control } from 'react-hook-form';
 import { v4 } from 'uuid';
 import { SelectTripFormValues } from '../SelectTripOnCreateOrder';
 
-const fields: Field[] = [
-  { id: v4(), label: 'departurePoint', type: 'departurePoint' },
-  { id: v4(), label: 'arrivalPoint', type: 'arrivalPoint' },
-  { id: v4(), label: 'departureTime', type: 'datetime', showTime: true, format: 'HH:mm MM-DD-YYYY' },
-];
+const getFields = (tripType: SelectTripFormValues['tripType']): Field[] => {
+  const fields: Field[] = [
+    { id: v4(), label: 'departurePoint', type: 'departurePoint' },
+    { id: v4(), label: 'arrivalPoint', type: 'arrivalPoint' },
+    { id: v4(), label: 'departureTime', type: 'datetime', showTime: true, format: 'HH:mm MM-DD-YYYY' },
+  ];
+  if (tripType === 'MULTI_STOP') {
+    fields.push({ id: v4(), label: 'returnTime', type: 'datetime', showTime: true, format: 'HH:mm MM-DD-YYYY' });
+  }
+  return fields;
+};
 
 const fields2: Field[] = [
   { id: v4(), label: 'departurePoint', type: 'departurePoint' },
@@ -25,15 +31,21 @@ export interface FilterRoutesBySearcherProps {
   loading: boolean;
   control: Control<SelectTripFormValues>;
   page?: 'packageSales' | 'ticketSales';
+  tripType?: SelectTripFormValues['tripType'];
 }
 
-export const FilterRoutesBySearcher = ({ onSubmit, loading, control, page = 'ticketSales' }: FilterRoutesBySearcherProps) => {
+export const FilterRoutesBySearcher = ({ onSubmit, loading, control, page = 'ticketSales', tripType = 'ONE_TRIP' }: FilterRoutesBySearcherProps) => {
   const matches = useMediaQuery('(max-width:768px)');
 
   return (
     <Grid container sx={{ margin: '20px 0' }}>
       <Grid item xs={12} md={11}>
-        <FilterTicket fields={page === 'packageSales' ? fields2 : fields} control={control} filterKey="ticketSales" numberColumns={2.5} />
+        <FilterTicket
+          fields={page === 'packageSales' ? fields2 : getFields(tripType)}
+          control={control}
+          filterKey="ticketSales"
+          numberColumns={2.5}
+        />
       </Grid>
       <Grid item display="flex" xs={12} md={1} sx={{ alignSelf: 'flex-end', justifyContent: 'flex-end' }}>
         <Button loading={loading} onClick={onSubmit} backgroundButton="#1AA6EE" fullWidth={matches}>

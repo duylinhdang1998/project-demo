@@ -21,6 +21,7 @@
   "add_ticket_order": "Add ticket order",
   "select_your_trip": "Select your trip",
   "departureTime": "Departure time",
+  "returnTime": "Return time",
   "create_ticket_order": "Create ticket order",
   "update_ticket_order": "Update ticket order",
   "filter_by": "Filter by",

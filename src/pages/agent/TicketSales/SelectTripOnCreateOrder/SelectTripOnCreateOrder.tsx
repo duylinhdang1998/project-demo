@@ -28,6 +28,7 @@ export interface SelectTripFormValues {
   departurePoint?: { value: string };
   arrivalPoint?: { value: string };
   departureTime?: number;
+  returnTime?: number;
   tripType: RouteOfTicketSale['tripType'];
   departureRoute: RouteOfTicketSale | null;
   merchandises?: { value: string };
@@ -41,6 +42,7 @@ export const SelectTripOnCreateOrder = () => {
       arrivalPoint: undefined,
       departurePoint: undefined,
       departureTime: undefined,
+      returnTime: undefined,
       tripType: 'ONE_TRIP',
       departureRoute: null,
     },
@@ -59,7 +61,12 @@ export const SelectTripOnCreateOrder = () => {
 
   const onSubmit = (values: SelectTripFormValues) => {
     setCurrentPage(1);
-    run(0, values);
+    run(0, {
+      departurePoint: values.departurePoint,
+      arrivalPoint: values.arrivalPoint,
+      tripType: values.tripType,
+      departureTime: values.departureTime,
+    });
   };
 
   const handleSelectTrip = (route: RouteOfTicketSale) => {
@@ -80,7 +87,15 @@ export const SelectTripOnCreateOrder = () => {
       });
     } else {
       if (!departureRoute) {
+        const values = getValues();
         setValue('departureRoute', route);
+        setCurrentPage(1);
+        run(0, {
+          departurePoint: values.arrivalPoint,
+          arrivalPoint: values.departurePoint,
+          tripType: values.tripType,
+          returnTime: values.returnTime,
+        });
       } else {
         navigate(nextUrl, {
           state: {
@@ -124,12 +139,13 @@ export const SelectTripOnCreateOrder = () => {
             onChange={tripType => {
               setValue('tripType', tripType);
               setValue('departureRoute', null);
+              setValue('returnTime', undefined);
               onSubmit(getValues());
             }}
           />
         }
       >
-        <FilterRoutesBySearcher control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} />
+        <FilterRoutesBySearcher tripType={tripType} control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} />
         <Steps step={departureRoute ? 1 : 0} tripType={tripType} />
         <CardTrips
           totalRoutes={data?.pagination.totalRows ?? 0}
