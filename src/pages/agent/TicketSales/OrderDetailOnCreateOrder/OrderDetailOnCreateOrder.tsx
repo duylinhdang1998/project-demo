@@ -17,6 +17,7 @@ import { selectAuth } from 'store/auth/selectors';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
+import { v4 } from 'uuid';
 import { PaymentStatus } from '../../../../components/PaymentStatus';
 import { TicketDetailFormValues } from './@types/FormValues';
 import {
@@ -238,6 +239,7 @@ export const OrderDetailOnCreateOrder = () => {
           lastName: passenger.lastName,
           seatsType: seatsTypeOptions.find(option => option.value === passenger.seatsType),
           typeTicket: typeTicketOptions.find(option => option.value === passenger.typeTicket),
+          uniqKey: v4(),
         })),
       });
     }
