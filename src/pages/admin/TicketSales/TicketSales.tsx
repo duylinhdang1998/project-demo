@@ -20,7 +20,6 @@ import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { TableTicketSales } from './components/TableTicketSales';
 import { fieldsSearch } from './constants';
-import { useMount } from 'ahooks';
 
 const useStyles = makeStyles((theme: Theme) => ({
   buttonSearch: {
@@ -52,10 +51,6 @@ export default function TicketSales() {
   const navigate = useNavigate();
 
   const isAgent = userInfo?.role === 'agent';
-
-  useMount(() => {
-    console.log('ticket sales');
-  });
 
   const onSubmit = (values: FormSearchValues) => {
     dispatch(

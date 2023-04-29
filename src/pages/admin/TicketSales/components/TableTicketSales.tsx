@@ -169,7 +169,7 @@ export const TableTicketSales = () => {
               },
             },
           ];
-          if (row.ticketStatus !== 'USED') {
+          if (row.ticketStatus !== 'USED' && row.ticketStatus !== 'CANCELLED') {
             actions.push({
               id: v4(),
               label: 'cancel',

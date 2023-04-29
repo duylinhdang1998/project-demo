@@ -7,21 +7,11 @@ export const getTrips = async (page: number, values: SelectTripFormValues): Prom
     const response = await searchRoutes({
       page,
       searcher: {
-        departurePoint: { value: 'Tưởng tạo ra test routers cho dễ 1', operator: 'eq' },
-        stopPoint: { value: 'Tưởng tạo ra test routers cho dễ 3', operator: 'eq' },
+        tripType: { value: values.tripType, operator: 'eq' },
+        departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
+        stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
         departureTime: {
-          value: 1682428200000,
-          operator: 'eq',
-        },
-        // tripType: { value: values.tripType, operator: 'eq' },
-        // departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
-        // stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
-        // departureTime: {
-        //   value: values.departureTime && dayjs.utc(values.departureTime).valueOf(),
-        //   operator: 'eq',
-        // },
-        merchandises: {
-          value: values.merchandises?.value,
+          value: values.departureTime && dayjs.utc(values.departureTime).set('second', 0).unix() * 1000,
           operator: 'eq',
         },
       },

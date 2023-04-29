@@ -17,9 +17,10 @@ export interface ReservationProps {
   loading: boolean;
   passengers: Passenger[];
   generalInfomationOfTicket: GeneralInfomationOfOrder;
+  isEditAction: boolean;
 }
 
-export const Reservation = ({ onSubmit, loading, control, errors, generalInfomationOfTicket, passengers }: ReservationProps) => {
+export const Reservation = ({ onSubmit, loading, control, errors, generalInfomationOfTicket, passengers, isEditAction }: ReservationProps) => {
   const { t } = useTranslation(['ticketSales', 'translation']);
 
   const departureTrip: TripInfomationProps['data'] = useMemo(() => {
@@ -64,14 +65,14 @@ export const Reservation = ({ onSubmit, loading, control, errors, generalInfomat
       </Typography>
       <TripInfomation variant={returnTrip ? 'DEPARTURE_TRIP' : 'ONE_TRIP'} data={departureTrip} />
       {returnTrip && <TripInfomation variant={'RETURN_TRIP'} data={returnTrip} />}
-      <AgreeTerms label="accept_term" control={control} errors={errors} />
+      {!isEditAction && <AgreeTerms label="accept_term" control={control} errors={errors} />}
       <TotalPrice
         value={passengers.reduce<number>((result, passenger) => {
           return result + getTotalPriceForTicketOfPassenger({ passenger, generalInfomationOfTicket });
         }, 0)}
       />
       <Button loading={loading} backgroundButton="#1AA6EE" fullWidth sx={{ marginTop: '24px' }} onClick={onSubmit}>
-        {t('translation:book')}
+        {isEditAction ? t('translation:update') : t('translation:book')}
       </Button>
     </Box>
   );

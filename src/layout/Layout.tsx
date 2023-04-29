@@ -64,7 +64,7 @@ export default function Layout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
-  if (statusGetProfile === 'loading') {
+  if (statusGetProfile === 'idle' || statusGetProfile === 'loading') {
     return (
       <Box height="100vh">
         <LoadingScreen />

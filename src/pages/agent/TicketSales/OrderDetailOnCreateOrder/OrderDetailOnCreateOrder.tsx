@@ -110,49 +110,112 @@ export const OrderDetailOnCreateOrder = () => {
 
   const onSubmit = (values: TicketDetailFormValues) => {
     if (generalInfomationOfTicket) {
-      if (generalInfomationOfTicket.type === 'ONE_TRIP') {
-        dispatch(
-          ticketSalesActions.createOrderRequest({
-            type: 'ONE_TRIP',
-            data: {
-              passengers: values.passengers.map(passenger => ({
-                firstName: passenger.firstName,
-                lastName: passenger.lastName,
-                typeTicket: passenger.typeTicket.value as PassengerInTicketSale['typeTicket'],
-                seatsType: passenger.seatsType.value as PassengerInTicketSale['seatsType'],
-              })),
-              email: values.email,
-              departureTime: dayjsToNumber(dayjs(generalInfomationOfTicket.data.dateFormatted)),
-              arrivalPoint: generalInfomationOfTicket.data.routePoint.stopPoint,
-              departurePoint: generalInfomationOfTicket.data.routePoint.departurePoint,
-              routePoint: generalInfomationOfTicket.data.routePoint._id,
-            },
-            onSuccess(ticketSaleOrderCode) {
-              toast(
-                <ToastCustom
-                  type="success"
-                  text={t('translation:add_type_success', {
-                    type: t('ticketSales:ticket').toLowerCase(),
-                  })}
-                />,
-                { className: 'toast-success' },
-              );
-              navigate(isAgent ? `/agent/ticket-sales/${ticketSaleOrderCode}` : `/admin/ticket-sales/${ticketSaleOrderCode}`);
-            },
-            onFailure: message => {
-              toast(
-                <ToastCustom
-                  type="error"
-                  text={t('translation:add_type_error', {
-                    type: t('ticketSales:ticket').toLowerCase(),
-                  })}
-                  description={message}
-                />,
-                { className: 'toast-error' },
-              );
-            },
-          }),
-        );
+      if (isEditAction) {
+        console.log('UPDATE TICKET SALE', values);
+      } else {
+        if (generalInfomationOfTicket.type === 'ONE_TRIP') {
+          dispatch(
+            ticketSalesActions.createOrderRequest({
+              type: 'ONE_TRIP',
+              data: {
+                passengers: values.passengers.map(passenger => ({
+                  firstName: passenger.firstName,
+                  lastName: passenger.lastName,
+                  typeTicket: passenger.typeTicket.value as PassengerInTicketSale['typeTicket'],
+                  seatsType: passenger.seatsType.value as PassengerInTicketSale['seatsType'],
+                })),
+                email: values.email,
+                departureTime: dayjsToNumber(dayjs(generalInfomationOfTicket.data.dateFormatted)),
+                arrivalPoint: generalInfomationOfTicket.data.routePoint.stopPoint,
+                departurePoint: generalInfomationOfTicket.data.routePoint.departurePoint,
+                routePoint: generalInfomationOfTicket.data.routePoint._id,
+              },
+              onSuccess(ticketSaleOrderCode) {
+                toast(
+                  <ToastCustom
+                    type="success"
+                    text={t('translation:add_type_success', {
+                      type: t('ticketSales:ticket').toLowerCase(),
+                    })}
+                  />,
+                  { className: 'toast-success' },
+                );
+                navigate(isAgent ? `/agent/ticket-sales/${ticketSaleOrderCode}` : `/admin/ticket-sales/${ticketSaleOrderCode}`);
+              },
+              onFailure: message => {
+                toast(
+                  <ToastCustom
+                    type="error"
+                    text={t('translation:add_type_error', {
+                      type: t('ticketSales:ticket').toLowerCase(),
+                    })}
+                    description={message}
+                  />,
+                  { className: 'toast-error' },
+                );
+              },
+            }),
+          );
+        }
+        if (generalInfomationOfTicket.type === 'ROUND_TRIP') {
+          dispatch(
+            ticketSalesActions.createOrderRequest({
+              type: 'ROUND_TRIP',
+              data: {
+                departureTrip: {
+                  passengers: values.passengers.map(passenger => ({
+                    firstName: passenger.firstName,
+                    lastName: passenger.lastName,
+                    typeTicket: passenger.typeTicket.value as PassengerInTicketSale['typeTicket'],
+                    seatsType: passenger.seatsType.value as PassengerInTicketSale['seatsType'],
+                  })),
+                  email: values.email,
+                  departureTime: dayjsToNumber(dayjs(generalInfomationOfTicket.data.departureTrip.dateFormatted)),
+                  arrivalPoint: generalInfomationOfTicket.data.departureTrip.routePoint.stopPoint,
+                  departurePoint: generalInfomationOfTicket.data.departureTrip.routePoint.departurePoint,
+                  routePoint: generalInfomationOfTicket.data.departureTrip.routePoint._id,
+                },
+                returnTrip: {
+                  passengers: values.passengers.map(passenger => ({
+                    firstName: passenger.firstName,
+                    lastName: passenger.lastName,
+                    typeTicket: passenger.typeTicket.value as PassengerInTicketSale['typeTicket'],
+                    seatsType: passenger.seatsType.value as PassengerInTicketSale['seatsType'],
+                  })),
+                  email: values.email,
+                  departureTime: dayjsToNumber(dayjs(generalInfomationOfTicket.data.returnTrip.dateFormatted)),
+                  arrivalPoint: generalInfomationOfTicket.data.returnTrip.routePoint.stopPoint,
+                  departurePoint: generalInfomationOfTicket.data.returnTrip.routePoint.departurePoint,
+                  routePoint: generalInfomationOfTicket.data.returnTrip.routePoint._id,
+                },
+              },
+              onSuccess(ticketSaleOrderCode) {
+                toast(
+                  <ToastCustom
+                    type="success"
+                    text={t('translation:add_type_success', {
+                      type: t('ticketSales:ticket').toLowerCase(),
+                    })}
+                  />,
+                  { className: 'toast-success' },
+                );
+                navigate(isAgent ? `/agent/ticket-sales/${ticketSaleOrderCode}` : `/admin/ticket-sales/${ticketSaleOrderCode}`);
+              },
+              onFailure: message => {
+                toast(
+                  <ToastCustom
+                    type="error"
+                    text={t('translation:add_type_error', {
+                      type: t('ticketSales:ticket').toLowerCase(),
+                    })}
+                    description={message}
+                  />,
+                  { className: 'toast-error' },
+                );
+              },
+            }),
+          );
+        }
       }
     }
   };
@@ -195,7 +258,10 @@ export const OrderDetailOnCreateOrder = () => {
   }
   if (generalInfomationOfTicket) {
     return (
-      <LayoutDetail title={t('ticketSales:create_ticket_order')} subTitle={t('ticketSales:ticket_sales')}>
+      <LayoutDetail
+        title={isEditAction ? t('ticketSales:update_ticket_order') : t('ticketSales:create_ticket_order')}
+        subTitle={t('ticketSales:ticket_sales')}
+      >
         <Box width="100%" display="flex" justifyContent="center">
           <Box padding="24px" borderRadius={4} bgcolor="white" width={{ xs: '100%', md: '90%' }}>
             <Grid container spacing={2}>
@@ -209,6 +275,7 @@ export const OrderDetailOnCreateOrder = () => {
                   errors={errors}
                   passengers={passengers}
                   generalInfomationOfTicket={generalInfomationOfTicket}
+                  isEditAction={isEditAction}
                 />
                 <Divider sx={{ margin: '16px 0' }} />
                 <FormVerticle
@@ -236,6 +303,7 @@ export const OrderDetailOnCreateOrder = () => {
                   loading={statusCreateTicketSale === 'loading'}
                   onSubmit={handleSubmit(onSubmit)}
                   passengers={passengers}
+                  isEditAction={isEditAction}
                   generalInfomationOfTicket={generalInfomationOfTicket}
                 />
               </Grid>

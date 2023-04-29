@@ -25,9 +25,10 @@ export interface PassengersProps {
   append: UseFieldArrayAppend<TicketDetailFormValues, 'passengers'>;
   remove: UseFieldArrayRemove;
   generalInfomationOfTicket: GeneralInfomationOfOrder;
+  isEditAction: boolean;
 }
 
-export const Passengers = ({ control, errors, passengers, generalInfomationOfTicket, append, remove }: PassengersProps) => {
+export const Passengers = ({ control, errors, passengers, generalInfomationOfTicket, append, remove, isEditAction }: PassengersProps) => {
   const classes = useStyles();
   const { t } = useTranslation(['ticketSales', 'translation']);
 
@@ -85,6 +86,39 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
     );
   };
 
+  const renderAddButton = () => {
+    if (isEditAction) {
+      return null;
+    }
+    return (
+      <Button
+        variant="outlined"
+        fullWidth
+        sx={{
+          border: '1px solid #1AA6EE',
+          borderStyle: 'dashed !important',
+          color: '#1AA6EE',
+          backgroundColor: 'transparent !important',
+          '&:hover': {
+            color: '#1AA6EE !important',
+          },
+          marginTop: '10px !important',
+        }}
+        startIcon={<AddIcon sx={{ color: '#1AA6EE' }} />}
+        onClick={() => append(getEmptyPassenger())}
+      >
+        {t('ticketSales:add_new_passenger')}
+      </Button>
+    );
+  };
+
+  const renderDeleteButton = (index: number) => {
+    if (isEditAction) {
+      return null;
+    }
+    return <TextWithIcon icon={TrashSvg} text={t('translation:delete')} color="#FF2727" onClick={() => handleOpenDialogDelete(index)} />;
+  };
+
   return (
     <>
       {passengers.map((passenger, index) => {
@@ -99,7 +133,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
               <Typography fontSize={14} fontWeight={700}>
                 {t('ticketSales:passenger')} {index + 1}
               </Typography>
-              <TextWithIcon icon={TrashSvg} text={t('translation:delete')} color="#FF2727" onClick={() => handleOpenDialogDelete(index)} />
+              {renderDeleteButton(index)}
             </Stack>
             <Box my="10px">
               <Grid container spacing={2}>
@@ -118,7 +152,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                             {labelTranslated}
                             <span style={{ marginLeft: '2px', color: '#FF2727' }}>*</span>
                           </InputLabel>
-                          <InputBase {...field} fullWidth placeholder={labelTranslated} className={classes.input} error={!!error} />
+                          <InputBase {...field} disabled={isEditAction} placeholder={labelTranslated} className={classes.input} error={!!error} />
                           {!!error && (
                             <Typography component="p" className={classes.error} fontSize={12}>
                               {messageErr}
@@ -144,7 +178,14 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                             {labelTranslated}
                             <span style={{ marginLeft: '2px', color: '#FF2727' }}>*</span>
                           </InputLabel>
-                          <InputBase {...field} fullWidth placeholder={labelTranslated} className={classes.input} error={!!error} />
+                          <InputBase
+                            {...field}
+                            disabled={isEditAction}
+                            fullWidth
+                            placeholder={labelTranslated}
+                            className={classes.input}
+                            error={!!error}
+                          />
                           {!!error && (
                             <Typography component="p" className={classes.error} fontSize={12}>
                               {messageErr}
@@ -167,7 +208,13 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                       return (
                         <Box>
                           <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
-                          <Select {...field} options={typeTicketOptions} styles={customStyles} placeholder={labelTranslated} />
+                          <Select
+                            {...field}
+                            isDisabled={isEditAction}
+                            options={typeTicketOptions}
+                            styles={customStyles}
+                            placeholder={labelTranslated}
+                          />
                           {!!error && (
                             <Typography component="p" className={classes.error} fontSize={12}>
                               {messageErr}
@@ -190,7 +237,13 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                       return (
                         <Box>
                           <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
-                          <Select {...field} options={seatsTypeOptions} styles={customStyles} placeholder={labelTranslated} />
+                          <Select
+                            {...field}
+                            isDisabled={isEditAction}
+                            options={seatsTypeOptions}
+                            styles={customStyles}
+                            placeholder={labelTranslated}
+                          />
                           {!!error && (
                             <Typography component="p" className={classes.error} fontSize={12}>
                               {messageErr}
@@ -226,24 +279,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
           </Box>
         );
       })}
-      <Button
-        variant="outlined"
-        fullWidth
-        sx={{
-          border: '1px solid #1AA6EE',
-          borderStyle: 'dashed !important',
-          color: '#1AA6EE',
-          backgroundColor: 'transparent !important',
-          '&:hover': {
-            color: '#1AA6EE !important',
-          },
-          marginTop: '10px !important',
-        }}
-        startIcon={<AddIcon sx={{ color: '#1AA6EE' }} />}
-        onClick={() => append(getEmptyPassenger())}
-      >
-        {t('ticketSales:add_new_passenger')}
-      </Button>
+      {renderAddButton()}
       {renderDialogDelete()}
     </>
   );

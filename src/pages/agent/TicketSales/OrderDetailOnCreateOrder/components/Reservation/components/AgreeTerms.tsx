@@ -23,7 +23,7 @@ export const AgreeTerms = ({ control, errors, label }: AgreeTermsProps) => {
         return (
           <>
             <FormControlLabel
-              control={<Checkbox {...field} />}
+              control={<Checkbox {...field} checked={field.value} />}
               label={
                 <Box>
                   <span>
