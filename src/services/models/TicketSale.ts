@@ -45,6 +45,7 @@ export interface TicketSale {
   passengerPresent?: Passenger['_id'];
   createdAt: string;
   updatedAt: string;
+  cancelReason?: string;
   __v: 0;
 }
 

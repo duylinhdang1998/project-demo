@@ -27,7 +27,7 @@ function OrderDetails({ record }: OrderDetailsProps) {
         <Typography fontSize={16} color={theme.palette.grey[100]} fontWeight="700">
           {t('ticketSales:order')} #{record.orderCode}
         </Typography>
-        <TicketStatus status="USED" />
+        <TicketStatus status={record.ticketStatus} />
       </Stack>
       <Divider sx={{ borderColor: '#D7DADC' }} />
       <Box mt="24px" sx={{ maxWidth: 120, maxHeight: 120, marginLeft: 'auto', marginRight: 'auto' }}>
@@ -100,6 +100,14 @@ function OrderDetails({ record }: OrderDetailsProps) {
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
               {UserRoleMappingToLabel[record.rawData.creatorType]}
+            </Typography>
+          }
+        />
+        <Infomation
+          left={t('ticketSales:cancel_reason')}
+          right={
+            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+              {record.cancelReason}
             </Typography>
           }
         />

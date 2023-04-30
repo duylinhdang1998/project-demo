@@ -15,7 +15,6 @@ export interface ColumnTicket {
   createdOn: TicketSale['createdAt'];
   ticketType: TicketSale['ticketType'];
   ticketStatus: TicketSale['ticketStatus'];
-  // FIXME: BE chưa có field này
-  cancelReason?: string;
+  cancelReason: TicketSale['cancelReason'];
   rawData: TicketSale;
 }

@@ -25,7 +25,6 @@ interface Values {
   vehicleName?: Vehicle;
   departurePoints?: { value: string };
   arrivalPoints?: { value: string };
-  // FIXME: Chuyển qua range picker
   departureTime?: dayjs.Dayjs;
 }
 

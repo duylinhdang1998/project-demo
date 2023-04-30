@@ -76,6 +76,7 @@
   "passengers_show_detail": "Detail",
   "passengers_show_less": "Show less",
   "confirm_checkin": "Confirm checkin",
+  "cancel_reason": "Cancel reason",
   "reason": "Reason",
   "ticket_order": "Ticket order",
   "email_field_description": "Required in order to receive the email from confirmation and your ticket.",

@@ -8,8 +8,7 @@ export const ticketSaleModelToColumnTicket = (ticketSale: TicketSale, passenger?
   return {
     _id: ticketSale._id,
     arrivalPoint: ticketSale.arrivalPoint,
-    // FIXME: BE chưa có field này
-    cancelReason: 'Change other trip',
+    cancelReason: ticketSale.cancelReason,
     createdBy: ticketSale.creator,
     createdOn: ticketSale.createdAt,
     departurePoint: ticketSale.departurePoint,

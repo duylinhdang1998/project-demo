@@ -52,7 +52,6 @@ export default function ChangePassword() {
     mode: 'all',
   });
 
-  // FIXME: BE đang trả về lỗi 1003 khi "Old password is wrong"
   const { run: changePasswordRequest, loading } = useChangePassWord({
     onSuccess: data => {
       getNotifcation({
