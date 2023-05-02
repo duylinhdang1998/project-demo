@@ -36,6 +36,7 @@ export interface StopPointsProps {
   remove: UseFieldArrayRemove;
   getValues: UseFormGetValues<StepOneValuesForMultipleStopTrip>;
   setValue: UseFormSetValue<StepOneValuesForMultipleStopTrip>;
+  isEdit?: boolean;
 }
 
 const emptyRoutePoint: RoutePointValues = {
@@ -49,7 +50,7 @@ const emptyRoutePoint: RoutePointValues = {
   vipChildren: 0,
 };
 
-export const StopPoints = ({ append, control, errors, remove, getValues, setValue, routePoints }: StopPointsProps) => {
+export const StopPoints = ({ append, control, errors, remove, getValues, setValue, routePoints, isEdit }: StopPointsProps) => {
   const { t } = useTranslation();
   const classes = useStyles();
   const formVerticleClasses = useFormVerticalStyles();
@@ -121,7 +122,9 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
               <Typography fontSize={14} fontWeight={700}>
                 {t('routers:stop')} {index + 1}
               </Typography>
-              <TextWithIcon icon={TrashSvg} text={t('translation:delete')} color="#FF2727" onClick={() => handleOpenDialogDelete(index)} />
+              {!isEdit && (
+                <TextWithIcon icon={TrashSvg} text={t('translation:delete')} color="#FF2727" onClick={() => handleOpenDialogDelete(index)} />
+              )}
             </Stack>
             <Box my="10px">
               <Grid container spacing={2}>
