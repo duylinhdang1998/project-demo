@@ -49,6 +49,8 @@ export const SelectTripOnCreateOrder = () => {
   });
   const tripType = watch('tripType');
   const departureRoute = watch('departureRoute');
+  watch('departurePoint');
+  watch('arrivalPoint');
 
   const { run, loading, data } = useRequest(getTrips, { manual: true });
 
@@ -61,12 +63,27 @@ export const SelectTripOnCreateOrder = () => {
 
   const onSubmit = (values: SelectTripFormValues) => {
     setCurrentPage(1);
-    run(0, {
-      departurePoint: values.departurePoint,
-      arrivalPoint: values.arrivalPoint,
-      tripType: values.tripType,
-      departureTime: values.departureTime,
-    });
+    if (
+      values.tripType === 'ONE_TRIP' ||
+      (values.tripType === 'MULTI_STOP' && !departureRoute) ||
+      departureRoute?.departurePoint !== values.departurePoint ||
+      departureRoute?.stopPoint !== values.arrivalPoint
+    ) {
+      run(0, {
+        departurePoint: values.departurePoint,
+        arrivalPoint: values.arrivalPoint,
+        tripType: values.tripType,
+        departureTime: values.departureTime,
+      });
+      setValue('departureRoute', null);
+    } else {
+      run(0, {
+        departurePoint: values.arrivalPoint,
+        arrivalPoint: values.departurePoint,
+        tripType: values.tripType,
+        returnTime: values.returnTime,
+      });
+    }
   };
 
   const handleSelectTrip = (route: RouteOfTicketSale) => {
