@@ -1,14 +1,14 @@
 import { FilterTicketProps } from 'components/FilterTicket/FilterTicket';
 import { Option } from 'models/Field';
-import { PaymentStatus, PaymentStatusLabelMapping } from 'models/PaymentStatus';
+import { EPaymentStatus, PaymentStatusLabelMapping } from 'models/PaymentStatus';
 import { v4 as uuidv4 } from 'uuid';
 import { FormSearchValues } from './TicketSales';
 
 const paymentsStatus: Option[] = [
-  { key: uuidv4(), value: PaymentStatus.APPROVED, label: PaymentStatusLabelMapping[PaymentStatus.APPROVED] },
-  { key: uuidv4(), value: PaymentStatus.CREATED, label: PaymentStatusLabelMapping[PaymentStatus.CREATED] },
-  { key: uuidv4(), value: PaymentStatus.PENDING, label: PaymentStatusLabelMapping[PaymentStatus.PENDING] },
-  { key: uuidv4(), value: PaymentStatus.VOIDED, label: PaymentStatusLabelMapping[PaymentStatus.VOIDED] },
+  { key: uuidv4(), value: EPaymentStatus.APPROVED, label: PaymentStatusLabelMapping[EPaymentStatus.APPROVED] },
+  { key: uuidv4(), value: EPaymentStatus.CREATED, label: PaymentStatusLabelMapping[EPaymentStatus.CREATED] },
+  { key: uuidv4(), value: EPaymentStatus.PENDING, label: PaymentStatusLabelMapping[EPaymentStatus.PENDING] },
+  { key: uuidv4(), value: EPaymentStatus.VOIDED, label: PaymentStatusLabelMapping[EPaymentStatus.VOIDED] },
 ];
 
 export const fieldsSearch: FilterTicketProps<FormSearchValues>['fields'] = [

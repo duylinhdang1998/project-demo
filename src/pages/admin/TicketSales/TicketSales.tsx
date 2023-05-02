@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { Option } from 'models/Field';
-import { PaymentStatus } from 'models/PaymentStatus';
+import { EPaymentStatus } from 'models/PaymentStatus';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -36,7 +36,7 @@ export interface FormSearchValues {
   arrivalPoint?: { value: string };
   departureTime?: [dayjs.Dayjs, dayjs.Dayjs];
   order_id?: string;
-  payment_status?: Option<PaymentStatus>;
+  payment_status?: Option<EPaymentStatus>;
 }
 
 export default function TicketSales() {

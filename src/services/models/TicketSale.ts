@@ -1,4 +1,4 @@
-import { PaymentStatus } from 'models/PaymentStatus';
+import { EPaymentStatus } from 'models/PaymentStatus';
 import { Passenger } from './Passenger';
 import { EnumPaymentGateway } from './PaymentGateway';
 import { Route, RoutePoint, RoutePointPriceType } from './Route';
@@ -35,7 +35,7 @@ export interface TicketSale {
   VIPseated: number;
   passengers: PassengerInTicketSale[];
   email: string;
-  paymentStatus: PaymentStatus;
+  paymentStatus: EPaymentStatus;
   paymentType: EnumPaymentGateway;
   ticketType: TicketType;
   ticketDirection: TicketDirection;
