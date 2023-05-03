@@ -132,7 +132,16 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
           },
         ]}
       />
-      <StopPoints append={append} control={control} errors={errors} getValues={getValues} remove={remove} routePoints={fields} setValue={setValue} />
+      <StopPoints
+        append={append}
+        control={control}
+        errors={errors}
+        getValues={getValues}
+        remove={remove}
+        routePoints={fields}
+        setValue={setValue}
+        isEdit={isEdit}
+      />
       <ComboButton
         isSaving={isLoading}
         textOk={isEdit ? t('translation:save') : t('translation:next')}

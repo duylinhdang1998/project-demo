@@ -1,4 +1,4 @@
-import { PaymentStatus } from 'models/PaymentStatus';
+import { EPaymentStatus } from 'models/PaymentStatus';
 import { PaymentGateway } from './PaymentGateway';
 
 export type SubscriptionType = 'TRIAL' | 'STANDARD' | 'PRO' | 'ENTERPRISE';
@@ -44,7 +44,7 @@ export interface SubscriptionOrder {
     paymentCode: string;
     orderType: 'SUBCRIPTION';
     paymentGateWay: PaymentGateway;
-    paymentStatus: PaymentStatus;
+    paymentStatus: EPaymentStatus;
     _id: string;
     createdAt: string;
     updatedAt: string;

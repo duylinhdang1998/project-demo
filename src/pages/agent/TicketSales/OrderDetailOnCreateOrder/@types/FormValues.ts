@@ -14,4 +14,5 @@ export interface TicketDetailFormValues {
   email: string;
   passengers: Passenger[];
   accept_term: boolean;
+  isPaid: boolean;
 }

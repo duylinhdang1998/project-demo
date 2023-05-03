@@ -1,5 +1,5 @@
 import { EnumPaymentGateway } from 'services/models/PaymentGateway';
-import { PaymentStatus } from './PaymentStatus';
+import { EPaymentStatus } from './PaymentStatus';
 
 export enum DeliveryStatus {
   PENDING = 'PENDING',
@@ -28,7 +28,7 @@ export interface PackageSale {
   createdAt: string;
   updatedAt: string;
   __v: number;
-  paymentStatus: PaymentStatus;
+  paymentStatus: EPaymentStatus;
   totalWeight: number;
   totalPrice: number;
   totalQuantity: number;

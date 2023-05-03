@@ -57,6 +57,8 @@ export default function DetailTicketPage() {
     return undefined;
   }, [ticketSalesOfOrder, ticketDirection]);
 
+  console.log(222, record);
+
   const handleSendEmail = () => {
     if (record) {
       dispatch(
@@ -82,7 +84,7 @@ export default function DetailTicketPage() {
   };
 
   useEffect(() => {
-    if (!record && orderCode) {
+    if (orderCode) {
       dispatch(ticketSalesActions.getTicketSaleWithOrderCodeRequest({ orderCode }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -6,6 +6,7 @@ import ToastCustom from 'components/ToastCustom/ToastCustom';
 import dayjs from 'dayjs';
 import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
+import { EPaymentStatus } from 'models/PaymentStatus';
 import { useEffect, useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -34,7 +35,8 @@ const fieldKeys = ['email', 'method'];
 export const OrderDetailOnCreateOrder = () => {
   const { t } = useTranslation(['ticketSales', 'translation']);
 
-  const { statusCreateTicketSale, statusGetTicketSalesOfOrder, ticketSalesOfOrder } = useAppSelector(selectTicketSales);
+  const { statusCreateTicketSale, statusGetTicketSalesOfOrder, statusUpdatePaymentStatusOfOrder, ticketSalesOfOrder } =
+    useAppSelector(selectTicketSales);
   const { userInfo } = useAppSelector(selectAuth);
   const dispatch = useDispatch();
 
@@ -48,10 +50,12 @@ export const OrderDetailOnCreateOrder = () => {
     handleSubmit,
     watch,
     reset,
+    setValue,
   } = useForm<TicketDetailFormValues>({
     defaultValues: {
       accept_term: true,
       passengers: [],
+      isPaid: true,
     },
   });
   const { append, remove } = useFieldArray({
@@ -59,6 +63,7 @@ export const OrderDetailOnCreateOrder = () => {
     name: 'passengers',
   });
   const passengers = watch('passengers');
+  const isPaid = watch('isPaid');
 
   const isAgent = userInfo?.role === 'agent';
 
@@ -111,8 +116,89 @@ export const OrderDetailOnCreateOrder = () => {
 
   const onSubmit = (values: TicketDetailFormValues) => {
     if (generalInfomationOfTicket) {
-      if (isEditAction) {
-        console.log('UPDATE TICKET SALE', values);
+      if (isEditAction && orderCode) {
+        if (ticketSalesOfOrder?.type === 'ONE_TRIP') {
+          dispatch(
+            ticketSalesActions.updatePaymentStatusOfOrderRequest({
+              orderCode,
+              data: {
+                type: 'ONE_TRIP',
+                data: {
+                  paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
+                  ticketCode: ticketSalesOfOrder.data.ticketCode,
+                },
+              },
+              onSuccess(ticketSaleOrderCode) {
+                toast(
+                  <ToastCustom
+                    type="success"
+                    text={t('translation:edit_type_success', {
+                      type: t('ticketSales:ticket').toLowerCase(),
+                    })}
+                  />,
+                  { className: 'toast-success' },
+                );
+                navigate(isAgent ? `/agent/ticket-sales/${ticketSaleOrderCode}` : `/admin/ticket-sales/${ticketSaleOrderCode}`);
+              },
+              onFailure: message => {
+                toast(
+                  <ToastCustom
+                    type="error"
+                    text={t('translation:edit_type_error', {
+                      type: t('ticketSales:ticket').toLowerCase(),
+                    })}
+                    description={message}
+                  />,
+                  { className: 'toast-error' },
+                );
+              },
+            }),
+          );
+        }
+        if (ticketSalesOfOrder?.type === 'ROUND_TRIP') {
+          dispatch(
+            ticketSalesActions.updatePaymentStatusOfOrderRequest({
+              orderCode,
+              data: {
+                type: 'ROUND_TRIP',
+                data: {
+                  departureTicket: {
+                    paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
+                    ticketCode: ticketSalesOfOrder.data.departureTrip.ticketCode,
+                  },
+                  returnTicket: {
+                    paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
+                    ticketCode: ticketSalesOfOrder.data.returnTrip.ticketCode,
+                  },
+                },
+              },
+              onSuccess(ticketSaleOrderCode) {
+                toast(
+                  <ToastCustom
+                    type="success"
+                    text={t('translation:edit_type_success', {
+                      type: t('ticketSales:ticket').toLowerCase(),
+                    })}
+                  />,
+                  { className: 'toast-success' },
+                );
+                navigate(isAgent ? `/agent/ticket-sales/${ticketSaleOrderCode}` : `/admin/ticket-sales/${ticketSaleOrderCode}`);
+              },
+              onFailure: message => {
+                toast(
+                  <ToastCustom
+                    type="error"
+                    text={t('translation:edit_type_error', {
+                      type: t('ticketSales:ticket').toLowerCase(),
+                    })}
+                    description={message}
+                  />,
+                  { className: 'toast-error' },
+                );
+              },
+            }),
+          );
+        }
       } else {
         if (generalInfomationOfTicket.type === 'ONE_TRIP') {
           dispatch(
@@ -241,6 +327,7 @@ export const OrderDetailOnCreateOrder = () => {
           typeTicket: typeTicketOptions.find(option => option.value === passenger.typeTicket),
           uniqKey: v4(),
         })),
+        isPaid: representTicketSale.paymentStatus === 'APPROVED',
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -292,17 +379,27 @@ export const OrderDetailOnCreateOrder = () => {
                       type: 'email',
                       required: true,
                       description: t('ticketSales:email_field_description'),
+                      disabled: isEditAction,
                     },
                   ]}
                 />
                 <Divider sx={{ margin: '16px 0' }} />
-                <PaymentStatus isActive={true} />
+                <PaymentStatus
+                  isActive={isPaid}
+                  onChange={checked => {
+                    if (isEditAction) {
+                      setValue('isPaid', checked);
+                    } else {
+                      setValue('isPaid', true);
+                    }
+                  }}
+                />
               </Grid>
               <Grid item xs={12} md={4}>
                 <Reservation
                   errors={errors}
                   control={control}
-                  loading={statusCreateTicketSale === 'loading'}
+                  loading={statusCreateTicketSale === 'loading' || statusUpdatePaymentStatusOfOrder === 'loading'}
                   onSubmit={handleSubmit(onSubmit)}
                   passengers={passengers}
                   isEditAction={isEditAction}

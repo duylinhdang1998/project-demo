@@ -12,7 +12,7 @@ import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import i18n from 'locales/i18n';
 import { get } from 'lodash-es';
 import { PackageSale } from 'models/PackageSales';
-import { PaymentStatus } from 'models/PaymentStatus';
+import { EPaymentStatus } from 'models/PaymentStatus';
 import { v4 } from 'uuid';
 import CancelPresentationOutlinedIcon from '@mui/icons-material/CancelPresentationOutlined';
 import { SortOrder, getTotal } from '../constants';
@@ -191,7 +191,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         title: () => <div>{i18n.t('packageSales:status')}</div>,
         render: (paymentStatus: PackageSale['paymentStatus']) => (
           <Box display="flex" alignItems="center" justifyContent="center">
-            <Tag text={!!paymentStatus ? paymentStatus : 'NONE'} variant={paymentStatus === PaymentStatus.APPROVED ? 'success' : 'error'} />
+            <Tag text={!!paymentStatus ? paymentStatus : 'NONE'} variant={paymentStatus === EPaymentStatus.APPROVED ? 'success' : 'error'} />
           </Box>
         ),
       },

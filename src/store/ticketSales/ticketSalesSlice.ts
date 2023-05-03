@@ -6,6 +6,11 @@ import { GetTicketSalesOfOrderFailure, GetTicketSalesOfOrderRequest, GetTicketSa
 import { GetTicketSalesFailure, GetTicketSalesRequest, GetTicketSalesSuccess } from './actions/GetTicketSales';
 import { SendEmailFailure, SendEmailRequest, SendEmailSuccess } from './actions/SendEmail';
 import { UpdateOrderStatusFailure, UpdateOrderStatusRequest, UpdateOrderStatusSuccess } from './actions/UpdateOrderStatus';
+import {
+  UpdatePaymentStatusOfOrderFailure,
+  UpdatePaymentStatusOfOrderRequest,
+  UpdatePaymentStatusOfOrderSuccess,
+} from './actions/UpdatePaymentStatusOfOrder';
 
 export interface TicketSalesState {
   statusSendEmail: Status;
@@ -13,6 +18,7 @@ export interface TicketSalesState {
   statusGetTicketSalesOfOrder: Status;
   statusCreateTicketSale: Status;
   queueUpdateOrderStatus: TicketSale['_id'][];
+  statusUpdatePaymentStatusOfOrder: Status;
   ticketSales: TicketSale[];
   currentPage: number;
   totalPages: number;
@@ -33,6 +39,7 @@ const initialState: TicketSalesState = {
   statusGetTicketSales: 'idle',
   statusCreateTicketSale: 'idle',
   queueUpdateOrderStatus: [],
+  statusUpdatePaymentStatusOfOrder: 'idle',
   ticketSales: [],
   currentPage: 0,
   totalPages: 0,
@@ -143,6 +150,26 @@ export const ticketSalesSlice = createSlice({
       return {
         ...state,
         queueUpdateOrderStatus: state.queueUpdateOrderStatus.filter(item => item !== id),
+      };
+    },
+
+    /** <---------- update ticket ----------> */
+    updatePaymentStatusOfOrderRequest: (state, _action: PayloadAction<UpdatePaymentStatusOfOrderRequest>) => {
+      return {
+        ...state,
+        statusUpdatePaymentStatusOfOrder: 'loading',
+      };
+    },
+    updatePaymentStatusOfOrderSuccess: (state, _action: PayloadAction<UpdatePaymentStatusOfOrderSuccess>) => {
+      return {
+        ...state,
+        statusUpdatePaymentStatusOfOrder: 'success',
+      };
+    },
+    updatePaymentStatusOfOrderFailure: (state, _action: PayloadAction<UpdatePaymentStatusOfOrderFailure>) => {
+      return {
+        ...state,
+        statusUpdatePaymentStatusOfOrder: 'failure',
       };
     },
 
