@@ -25,7 +25,6 @@ export const getRoutes = async ({ page, sorter, searcher }: GetRoutes): Promise<
         ...searcher,
         status: {
           operator: 'eq',
-          value: 'INACTIVE',
         },
       }),
     },
