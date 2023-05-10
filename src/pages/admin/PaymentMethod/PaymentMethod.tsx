@@ -7,15 +7,17 @@ import { useTranslation } from 'react-i18next';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import { useGetPaymentMethod, useLoginPaymentGateway, useUpdatePaymentSettings } from 'services/Company/paymentMethods';
+import { useGetPaymentMethod, useLoginPaymentGateway, useRegisterPaypal, useUpdatePaymentSettings } from 'services/Company/paymentMethods';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
-import { get, isEmpty } from 'lodash-es';
+import { get, includes, isEmpty } from 'lodash-es';
 import { styled } from '@mui/material/styles';
 import { getNotifcation } from 'utils/getNotification';
 import Button from 'components/Button/Button';
 import { CheckboxGroup } from 'components/CheckboxGroup/CheckboxGroup';
 import { isEqual } from 'lodash-es';
+import { CheckCircleOutlined } from '@mui/icons-material';
+import { useSearchParams } from 'react-router-dom';
 
 const PaypalButton = styled(Button)({
   backgroundColor: '#263B80',
@@ -28,6 +30,9 @@ const PaypalButton = styled(Button)({
 
 export default function PaymentMethod() {
   const { t } = useTranslation(['account', 'translation']);
+  const [searchParams] = useSearchParams();
+
+  const code = searchParams.get('code');
 
   const { control, handleSubmit, reset } = useForm<{ methods: string[] }>();
 
@@ -37,11 +42,13 @@ export default function PaymentMethod() {
     onSuccess: data => {
       getNotifcation({
         code: data.code,
-        error: t('edit_type_error', { type: t('payment_methods') }),
-        success: t('edit_type_success', { type: t('payment_methods') }),
+        error: t('translation:edit_type_error', { type: t('payment_methods') }),
+        success: t('translation:edit_type_success', { type: t('payment_methods') }),
       });
     },
   });
+
+  const { run: registerPaypal } = useRegisterPaypal();
 
   const methodValueWatch = useWatch({
     control,
@@ -62,6 +69,12 @@ export default function PaymentMethod() {
     }
   }, [data?.data]);
 
+  useEffect(() => {
+    if (!!code) {
+      registerPaypal(code);
+    }
+  }, [code]);
+
   const methods = useMemo(() => {
     if (!isEmpty(data?.data)) {
       return data?.data.map(item => ({
@@ -76,14 +89,23 @@ export default function PaymentMethod() {
   }, [data?.data]);
 
   const onSubmit = (values: any) => {
-    console.log(123, values);
-    // updateMethod({
-    //   method: values.methods,
-    // });
+    const payloadMethod =
+      methods?.map(item => ({
+        method: item.value,
+        status: includes(values.methods, item.value) ? true : false,
+      })) ?? [];
+
+    updateMethod({
+      data: payloadMethod,
+    });
   };
 
-  const handleLogin = async () => {
-    if (methodValueWatch.includes('PAYPAL')) {
+  const handleLogin = (gate: string) => async () => {
+    if (gate === 'PAYPAL') {
+      const response = await getUrlGateWay('v1.0/company/payment/paypal/connect');
+      if (response) {
+        window.open(response, '_self');
+      }
       return;
     }
     const response = await getUrlGateWay('/v1.0/company/payment/stripe-links', {
@@ -91,28 +113,6 @@ export default function PaymentMethod() {
       returnUrl: window.location.href,
     });
     window.open(get(response, 'url', ''), '_blank');
-  };
-
-  const renderButton = () => {
-    return (
-      <Box>
-        <Typography variant="body2" fontWeight={600}>
-          {t('click_button_description_paypal')}
-        </Typography>
-        <Typography variant="body2">{t('subtext_2')}</Typography>
-
-        <PaypalButton
-          sx={{
-            backgroundColor: '#263B80',
-          }}
-          variant="contained"
-          loading={loading2}
-          onClick={handleLogin}
-        >
-          {methodValueWatch.includes('PAYPAL') ? t('login_paypal') : t('login_stripe')}
-        </PaypalButton>
-      </Box>
-    );
   };
 
   return (
@@ -147,8 +147,26 @@ export default function PaymentMethod() {
                       );
                     }}
                   />
-                  {methodValueWatch?.includes('PAYPAL') && renderButton()}
-                  {methodValueWatch?.includes('STRIPE') && renderButton()}
+                  {data?.data?.map(item => (
+                    <Box key={item._id} mb="10px">
+                      <Typography variant="body2" fontWeight={600}>
+                        {t('click_button_description_paypal', { method: item.paymentGateWay?.toLowerCase() })}
+                      </Typography>
+                      <Typography variant="body2">{t('subtext_2', { method: item.paymentGateWay?.toLowerCase() })}</Typography>
+
+                      <PaypalButton
+                        sx={{
+                          backgroundColor: item.paymentGateWay === 'PAYPAL' ? '#263B80' : '#635BFF',
+                        }}
+                        variant="contained"
+                        loading={loading2}
+                        onClick={handleLogin(item.paymentGateWay ?? '')}
+                        startIcon={item.registered ? <CheckCircleOutlined /> : null}
+                      >
+                        {item.paymentGateWay === 'PAYPAL' ? t('login_paypal') : t('login_stripe')}
+                      </PaypalButton>
+                    </Box>
+                  ))}
                 </Box>
                 <ComboButton onSave={handleSubmit(onSubmit)} onCancel={handleCancel} isSaving={updateLoading} />
               </Box>
