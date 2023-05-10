@@ -78,8 +78,8 @@
   "upgrade_subscription_success": "Upgrade subscription successfully!",
   "upgrade_subscription_cancelled": "Subscription order cancelled!",
   "login_paypal": "Connect with Paypal",
-  "click_button_description_paypal": "Click the PayPal button to log in.",
-  "subtext_2": "You'll be prompted for your PayPal account email and password through a secure PayPal login form.",
+  "click_button_description_paypal": "Click the {{method}} button to log in.",
+  "subtext_2": "You'll be prompted for your {{method}} account email and password through a secure {{method}} login form.",
   "login_stripe": "Connect with Stripe",
   "change_pasword_action": "change password action",
   "offline_agent": "Agent (Offline)"
