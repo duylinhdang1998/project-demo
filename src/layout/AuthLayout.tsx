@@ -40,7 +40,7 @@ export default function AuthLayout() {
     return <Navigate to={userInfo.role === 'admin' ? '/admin' : '/agent'} />;
   }
 
-  if (location.pathname === '/' || !isLoggedIn) {
+  if (location.pathname === '/') {
     return <Navigate to="/login" />;
   }
 
