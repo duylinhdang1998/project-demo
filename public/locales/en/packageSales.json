@@ -37,7 +37,7 @@
   "confirm_description_to_change_arrived": "Are you sure merchandise had been arrived to recipient?",
   "order_infomation": "Order infomation",
   "merchandise_cancelled": "CANCALLED",
-  "merchandise_pending": "PENDING",
+  "merchandise_pending": "NOT DELIVERIED",
   "merchandise_deliveried": "DELIVERIED",
   "merchandise_delivering": "DELIVERING",
   "arrived_destination": "Arrived at destination",

@@ -72,7 +72,6 @@ export default function ControlMerchandiseChecking() {
           <Typography variant="h5">
             {t('merchandise_order')} #{data.orderCode}
           </Typography>
-          {/* FIXME: Đâu ra cái này */}
           <MerchandiseStatus status={data.deliveryStatus} />
         </Stack>
         <Divider sx={{ margin: '16px 0' }} />

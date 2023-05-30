@@ -110,8 +110,7 @@ export default function OrderDetailConfirm() {
           left={t('ticketSales:lastName')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {/* FIXME: Cái này lấy đâu ra ? */}
-              Payoun
+              {dataDetails?.sender.lastName}
             </Typography>
           }
         />
@@ -119,8 +118,7 @@ export default function OrderDetailConfirm() {
           left={t('ticketSales:firstName')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {/* FIXME: Cái này lấy đâu ra ? */}
-              Samia
+              {dataDetails?.sender.firstName}
             </Typography>
           }
         />

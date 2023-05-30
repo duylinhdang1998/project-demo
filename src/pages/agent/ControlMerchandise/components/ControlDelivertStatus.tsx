@@ -9,7 +9,6 @@ interface ControlDelivertStatusProps {
   onChange: (value: DeliveryStatus) => void;
 }
 
-// FIXME: Mapping status
 export const ControlDelivertStatus = ({ deliveryStatus, onChange }: ControlDelivertStatusProps) => {
   const { t } = useTranslation(['packageSales', 'dashboard']);
 
@@ -19,8 +18,8 @@ export const ControlDelivertStatus = ({ deliveryStatus, onChange }: ControlDeliv
       <Divider sx={{ marginTop: '16px' }} />
       <Stack paddingY="16px" direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="body2">{t('packageSales:arrived_destination')}</Typography>
-        <Button onClick={() => onChange(DeliveryStatus.PENDING)}>
-          <CheckCircle success={deliveryStatus === DeliveryStatus.PENDING} />
+        <Button onClick={() => onChange(DeliveryStatus.DELIVERING)}>
+          <CheckCircle success={deliveryStatus === DeliveryStatus.DELIVERING} />
         </Button>
       </Stack>
       <Stack
