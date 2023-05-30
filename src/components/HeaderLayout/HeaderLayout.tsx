@@ -1,4 +1,3 @@
-import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, IconButton, Stack, Theme, Toolbar, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -157,22 +156,6 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
             </Typography>
           </Box>
           <Stack direction="row" spacing={{ mobile: 2, desktop: 4 }} alignItems="center">
-            <div className={classes.link}>
-              <LanguageOutlinedIcon sx={{ fontSize: 40, color: '#1AA6EE', marginRight: '10px' }} />
-              <Typography
-                component="span"
-                fontSize="14px"
-                display={{
-                  mobile: 'none',
-                  tablet: 'block',
-                }}
-              >
-                {t('your_website')}:
-              </Typography>
-              <a href="##" className={classes.weblink}>
-                tbus.biz/yourcompany
-              </a>
-            </div>
             <ChangeLanguage />
             <AccountDropdown avatar={getUrlOfResource(profile.profileImage)} name={profile.name} email={profile.email} />
           </Stack>

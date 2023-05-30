@@ -6,7 +6,7 @@ import LayoutDetail from 'layout/LayoutDetail';
 import { DeliveryStatus, PackageSale } from 'models/PackageSales';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { updateDeliveryStatus } from 'services/PackageSales/updateDeliveryStatus';
 import { ServiceException } from 'services/utils/ServiceException';
@@ -20,7 +20,6 @@ export function ControlMerchandiseDetail() {
   const [isUpdating, setIsUpdaing] = useState(false);
 
   const location = useLocation();
-  const navigate = useNavigate();
 
   const dataDetail = useMemo(() => {
     return location.state as PackageSale;
@@ -48,7 +47,7 @@ export function ControlMerchandiseDetail() {
     if (dataDetail.orderCode && openDialogConfirm) {
       setIsUpdaing(true);
       try {
-        const response = await updateDeliveryStatus({ orderCode: dataDetail.orderCode, status: openDialogConfirm });
+        await updateDeliveryStatus({ orderCode: dataDetail.orderCode, status: openDialogConfirm });
         toast(
           <ToastCustom
             type="success"
