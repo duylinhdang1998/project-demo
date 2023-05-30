@@ -42,7 +42,7 @@ export const DomainNotFound = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <Grid item xs={12} md={6} justifyContent="center" alignItems="center" sx={{ padding: '0px 16px' }}>
+      <Grid item xs={12} sm={6} justifyContent="center" alignItems="center" sx={{ padding: '0px 16px' }}>
         <img className={classNames(styles.logo, styles.image)} src={LogoTbus} alt="Tbus" />
         <Typography
           className={styles.title}
@@ -63,7 +63,7 @@ export const DomainNotFound = () => {
           }}
         />
       </Grid>
-      <Grid item xs={12} md={6} sx={{ padding: '0px 16px' }}>
+      <Grid item xs={12} sm={6} sx={{ padding: '0px 16px', textAlign: 'center' }}>
         <img className={styles.image} src={DomainNotFoundImage} alt="Domain not found" />
       </Grid>
     </Grid>
