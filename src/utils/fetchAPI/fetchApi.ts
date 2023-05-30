@@ -1,5 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import env from 'env';
+import { StringMappingToStatusCode } from 'services/models/StatusCode';
+import { isResponseError } from 'services/utils/isResponseError';
+import { getDomainName } from 'utils/getDomainName';
 
 interface Configure {
   configure: AxiosRequestConfig;
@@ -34,6 +36,17 @@ export default class ConfigureAxios {
     this.setAccessToken = setAccessToken;
     this.setRefreshToken = setRefreshToken;
     this.axiosInstance = axios.create(configure);
+    this.axiosInstance.interceptors.response.use(response => {
+      if (
+        isResponseError(response) &&
+        (response.data.code === StringMappingToStatusCode['COMPANY_DOMAIN_IS_NOT_EXIST'] ||
+          response.data.code === StringMappingToStatusCode['COMPANY_NOT_FOUND'])
+      ) {
+        window.location.replace('/404');
+        return response;
+      }
+      return response;
+    });
   }
 
   public create = (cancel = '') => {
@@ -44,7 +57,7 @@ export default class ConfigureAxios {
           ...requestConfig,
           cancelToken: source.token,
           headers: {
-            'X-Host': env.isDevMode ? 'alibaba' : window.location.host.replace(env.baseCmsDomain, ''),
+            'X-Host': getDomainName(),
           },
         });
         if (!!cancel) {

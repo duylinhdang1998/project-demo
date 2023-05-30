@@ -1,0 +1,4 @@
+{
+  "title": "Domain “{{htmlForDomain}}” is currently not registered with the system or has expired",
+  "message": "Please contact {{ htmlForEmail }} for more information"
+}

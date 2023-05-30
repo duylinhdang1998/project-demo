@@ -3,6 +3,7 @@ import { RbacCompany } from 'services/models/RbacCompany';
 import { ResponseFailure, ResponseDetailSuccess } from 'services/models/Response';
 import { UserRole } from 'services/models/UserRole';
 import { ServiceException } from 'services/utils/ServiceException';
+import { isResponseError } from 'services/utils/isResponseError';
 import fetchAPI from 'utils/fetchAPI';
 
 interface ResponseData {
@@ -29,15 +30,14 @@ export const login = async ({ email, password }: Login): Promise<ResponseDetailS
     },
   });
 
-  if (response.data.code === 0) {
-    const response_ = response.data as ResponseDetailSuccess<ResponseData>;
-    if (ACCEPT_ROLES.includes(response_.data.rbacCompany.role)) {
-      return response_;
-    } else {
-      const response_ = response as AxiosResponse<ResponseFailure>;
-      throw new ServiceException(response_.data.message, response_.data);
-    }
+  if (isResponseError(response)) {
+    throw new ServiceException(response.data.message, response.data);
   }
-  const response_ = response as AxiosResponse<ResponseFailure>;
-  throw new ServiceException(response_.data.message, response_.data);
+  const response_ = response.data as ResponseDetailSuccess<ResponseData>;
+  if (ACCEPT_ROLES.includes(response_.data.rbacCompany.role)) {
+    return response_;
+  } else {
+    const response_ = response as AxiosResponse<ResponseFailure>;
+    throw new ServiceException(response_.data.message, response_.data);
+  }
 };

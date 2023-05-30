@@ -6,6 +6,7 @@ import { AdminRoutes } from './admin-routes';
 import { AgentRoutes } from './agent-routes';
 import { RouteObject } from 'react-router-dom';
 import ErrorBoundary2 from 'components/ErrorBoundary/ErrorBoundary2';
+import { DomainNotFound } from 'pages/DomainNotFound/DomainNotFound';
 
 const production = import.meta.env.PROD;
 
@@ -25,6 +26,11 @@ export const getRoutes = (): RouteObject[] => {
           element: <ForgetPassword />,
         },
       ],
+      errorElement: !!production ? <ErrorBoundary2 /> : null,
+    },
+    {
+      path: '/404',
+      element: <DomainNotFound />,
       errorElement: !!production ? <ErrorBoundary2 /> : null,
     },
     {
