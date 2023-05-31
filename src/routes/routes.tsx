@@ -29,7 +29,7 @@ export const getRoutes = (): RouteObject[] => {
       errorElement: !!production ? <ErrorBoundary2 /> : null,
     },
     {
-      path: '/404',
+      path: '/domain-not-found',
       element: <DomainNotFound />,
       errorElement: !!production ? <ErrorBoundary2 /> : null,
     },

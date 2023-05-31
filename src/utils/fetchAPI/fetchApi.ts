@@ -42,7 +42,7 @@ export default class ConfigureAxios {
         (response.data.code === StringMappingToStatusCode['COMPANY_DOMAIN_IS_NOT_EXIST'] ||
           response.data.code === StringMappingToStatusCode['COMPANY_NOT_FOUND'])
       ) {
-        window.location.replace('/404');
+        window.location.replace('/domain-not-found');
         return response;
       }
       return response;
