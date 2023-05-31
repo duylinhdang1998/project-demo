@@ -22,7 +22,9 @@ const useStyles = makeStyles(() => ({
   btnAdd: {
     height: '40px !important',
     padding: '10px 30px !important',
-    marginTop: '16px !important',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
   },
 }));
 
@@ -49,7 +51,7 @@ function BoxSearch({ addTextButton, searchValue, onAdd, onSearch }: BoxSearchPro
   }, [searchValue]);
 
   return (
-    <Box display="flex" justifyContent="space-between" flexDirection={{ xs: 'column', md: 'row' }} alignItems="center">
+    <Box display="flex" gap="16px" justifyContent="space-between" flexDirection={{ xs: 'column', md: 'row' }} alignItems="center">
       <InputBase
         value={searchKey}
         onChange={e => setSearchKey(e.target.value)}

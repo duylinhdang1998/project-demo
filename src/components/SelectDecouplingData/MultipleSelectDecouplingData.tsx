@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { useRequest } from 'ahooks';
 import { Option } from 'models/Field';
 import { equals } from 'ramda';
@@ -15,6 +16,16 @@ export interface MultipleSelectDecouplingDataProps<Model extends AnyObject>
   transformToOption: (model: Model, index?: number) => Option<Model>;
 }
 
+const useStyles = makeStyles(() => {
+  return {
+    placeholder: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    },
+  };
+});
+
 export const HEIGHT = 38;
 export const MultipleSelectDecouplingData = <Model extends AnyObject>({
   values,
@@ -23,6 +34,8 @@ export const MultipleSelectDecouplingData = <Model extends AnyObject>({
   transformToOption,
   ...rest
 }: MultipleSelectDecouplingDataProps<Model>) => {
+  const styles = useStyles();
+
   const { loading, data } = useRequest<Model[], any[]>(service, {
     retryInterval: 1000,
     staleTime: 30000,
@@ -110,6 +123,11 @@ export const MultipleSelectDecouplingData = <Model extends AnyObject>({
             ...(rest.styles?.valueContainer?.(base, props) ?? {}),
             flexWrap: 'nowrap',
           };
+        },
+      }}
+      classNames={{
+        placeholder() {
+          return styles.placeholder;
         },
       }}
     />

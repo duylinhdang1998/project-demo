@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { useRequest } from 'ahooks';
 import { Option } from 'models/Field';
 import { useMemo } from 'react';
@@ -18,6 +19,16 @@ export interface SingleSelectDecouplingDataProps<Model extends AnyObject>
   equalFunc: (model: Model, value: Model | undefined) => boolean;
 }
 
+const useStyles = makeStyles(() => {
+  return {
+    placeholder: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    },
+  };
+});
+
 const HEIGHT = 38;
 export const SingleSelectDecouplingData = <Model extends AnyObject>({
   value,
@@ -27,6 +38,8 @@ export const SingleSelectDecouplingData = <Model extends AnyObject>({
   equalFunc,
   ...rest
 }: SingleSelectDecouplingDataProps<Model>) => {
+  const styles = useStyles();
+
   const { loading, data } = useRequest<Model[], any[]>(service, {
     retryInterval: 1000,
     staleTime: 30000,
@@ -75,6 +88,11 @@ export const SingleSelectDecouplingData = <Model extends AnyObject>({
       }}
       options={options as any}
       isLoading={loading || rest.isLoading}
+      classNames={{
+        placeholder() {
+          return styles.placeholder;
+        },
+      }}
     />
   );
 };

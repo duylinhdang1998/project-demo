@@ -7,7 +7,7 @@ import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { useEffect } from 'react';
-import { Link, Navigate, Outlet, redirect } from 'react-router-dom';
+import { Link, Navigate, Outlet } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
 import { profileActions } from 'store/profile/profileSlice';
 import { selectProfile } from 'store/profile/selectors';

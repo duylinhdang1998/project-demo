@@ -43,4 +43,12 @@ export const customStyles: StylesConfig = {
       color: '#333',
     };
   },
+  placeholder: provided => {
+    return {
+      ...provided,
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    };
+  },
 };

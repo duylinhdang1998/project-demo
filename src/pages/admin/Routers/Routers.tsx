@@ -128,8 +128,16 @@ export default function Routers() {
               </MyButton>
               {userInfo?.role === 'admin' && (
                 <DropdownCustom menuChildren={menuChildren} trigger={['click']} placement="bottomLeft" menuClassName={classes.menuList}>
-                  <MyButton variant="contained" fullWidth backgroundButton="#33CC7F" startIcon={<AddIcon />}>
-                    {t('add_new_trip')}
+                  <MyButton sx={{ minWidth: '121px' }} variant="contained" fullWidth backgroundButton="#33CC7F" startIcon={<AddIcon />}>
+                    <Box
+                      sx={{
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {t('add_new_trip')}
+                    </Box>
                   </MyButton>
                 </DropdownCustom>
               )}

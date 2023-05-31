@@ -130,8 +130,23 @@ export default function TicketSales() {
               >
                 <SearchIcon fontSize="inherit" />
               </Button>
-              <MyButton variant="contained" fullWidth backgroundButton="#33CC7F" onClick={handleAddTicket} startIcon={<AddIcon />}>
-                {t('add_ticket_order')}
+              <MyButton
+                sx={{ minWidth: '92px' }}
+                variant="contained"
+                fullWidth
+                backgroundButton="#33CC7F"
+                onClick={handleAddTicket}
+                startIcon={<AddIcon />}
+              >
+                <Box
+                  sx={{
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {t('add_ticket_order')}
+                </Box>
               </MyButton>
             </Stack>
           </Grid>

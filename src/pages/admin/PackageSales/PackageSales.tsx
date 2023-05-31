@@ -136,9 +136,17 @@ export default function PackageSales() {
                   backgroundButton="#33CC7F"
                   onClick={handleAdd}
                   startIcon={<AddIcon />}
-                  sx={{ padding: '12px 16px !important' }}
+                  sx={{ padding: '12px 16px !important', minWidth: '96px' }}
                 >
-                  {t('add_merchandise')}
+                  <Box
+                    sx={{
+                      overflow: 'hidden',
+                      whiteSpace: 'nowrap',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    {t('add_merchandise')}
+                  </Box>
                 </Button>
               </Stack>
             </Grid>
