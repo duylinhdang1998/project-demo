@@ -5,5 +5,5 @@ export const getDomainName = () => {
 };
 
 export const getDomain = () => {
-  return env.baseCmsDomain;
+  return window.location.host;
 };

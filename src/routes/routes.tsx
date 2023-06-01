@@ -7,49 +7,55 @@ import { AgentRoutes } from './agent-routes';
 import { RouteObject } from 'react-router-dom';
 import ErrorBoundary2 from 'components/ErrorBoundary/ErrorBoundary2';
 import { DomainNotFound } from 'pages/DomainNotFound/DomainNotFound';
-
-const production = import.meta.env.PROD;
+import env from 'env';
+import { DomainValidatorLayout } from 'layout/DomainValidatorLayout';
 
 export const getRoutes = (): RouteObject[] => {
   return [
     {
-      path: '/',
-      element: <AuthLayout />,
+      path: '',
+      element: <DomainValidatorLayout />,
       children: [
-        { path: 'login', index: true, element: <LoginPage /> },
         {
-          path: 'sign-up',
-          element: <SignUp />,
+          path: '/',
+          element: <AuthLayout />,
+          children: [
+            { path: 'login', index: true, element: <LoginPage /> },
+            {
+              path: 'sign-up',
+              element: <SignUp />,
+            },
+            {
+              path: 'forgot-password',
+              element: <ForgetPassword />,
+            },
+          ],
+          errorElement: !env.isDevMode ? <ErrorBoundary2 /> : null,
         },
         {
-          path: 'forgot-password',
-          element: <ForgetPassword />,
+          path: '/domain-not-found',
+          element: <DomainNotFound />,
+          errorElement: !env.isDevMode ? <ErrorBoundary2 /> : null,
+        },
+        {
+          path: '/admin',
+          element: <Layout />,
+          children: AdminRoutes,
+          errorElement: !env.isDevMode ? <ErrorBoundary2 /> : null,
+        },
+        {
+          path: '/agent',
+          element: <Layout />,
+          children: AgentRoutes,
+          errorElement: !env.isDevMode ? <ErrorBoundary2 /> : null,
+        },
+        {
+          path: '/account',
+          element: <Layout />,
+          children: AccountRoutes,
+          errorElement: !env.isDevMode ? <ErrorBoundary2 /> : null,
         },
       ],
-      errorElement: !!production ? <ErrorBoundary2 /> : null,
-    },
-    {
-      path: '/domain-not-found',
-      element: <DomainNotFound />,
-      errorElement: !!production ? <ErrorBoundary2 /> : null,
-    },
-    {
-      path: '/admin',
-      element: <Layout />,
-      children: AdminRoutes,
-      errorElement: !!production ? <ErrorBoundary2 /> : null,
-    },
-    {
-      path: '/agent',
-      element: <Layout />,
-      children: AgentRoutes,
-      errorElement: !!production ? <ErrorBoundary2 /> : null,
-    },
-    {
-      path: '/account',
-      element: <Layout />,
-      children: AccountRoutes,
-      errorElement: !!production ? <ErrorBoundary2 /> : null,
     },
     { path: '*', element: <NotFound /> },
   ];

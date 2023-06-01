@@ -1,3 +1,4 @@
+import { router } from 'App';
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { StringMappingToStatusCode } from 'services/models/StatusCode';
 import { isResponseError } from 'services/utils/isResponseError';
@@ -42,7 +43,7 @@ export default class ConfigureAxios {
         (response.data.code === StringMappingToStatusCode['COMPANY_DOMAIN_IS_NOT_EXIST'] ||
           response.data.code === StringMappingToStatusCode['COMPANY_NOT_FOUND'])
       ) {
-        window.location.replace('/domain-not-found');
+        router.navigate('/domain-not-found');
         return response;
       }
       return response;

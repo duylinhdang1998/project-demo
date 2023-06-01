@@ -1,1 +1,3 @@
-export const getTbusSupportEmail = () => 'support@tbus.com';
+import env from 'env';
+
+export const getTbusSupportEmail = () => env.tbusSupportEmail;

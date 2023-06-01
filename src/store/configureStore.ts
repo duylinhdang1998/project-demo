@@ -1,21 +1,26 @@
 import { configureStore } from '@reduxjs/toolkit';
+import env from 'env';
 import { Middleware, combineReducers } from 'redux';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
-import env from 'env';
 import rootReducers from 'store/rootReducers';
 import rootSaga from 'store/rootSagas';
 
-const persistConfig = {
-  key: 'root',
-  storage,
-  whitelist: ['auth', 'packageSales'],
-};
-
 const sagaMiddleware = createSagaMiddleware();
 const reducers = persistReducer(
-  persistConfig,
+  {
+    key: 'root',
+    storage,
+    whitelist: ['auth'],
+    migrate: state => {
+      const { auth } = (state as RootState | undefined) ?? {};
+      if (auth?.statusLogin === 'loading') {
+        return Promise.resolve(undefined);
+      }
+      return Promise.resolve(state);
+    },
+  },
   combineReducers({
     ...rootReducers,
   }),
