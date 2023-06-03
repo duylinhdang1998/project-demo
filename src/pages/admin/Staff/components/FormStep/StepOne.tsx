@@ -31,6 +31,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
     resetField,
     reset,
     setValue,
+    trigger,
     watch,
   } = useForm<StepOneValues>();
   const office = watch('office');
@@ -120,6 +121,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
               } else {
                 setValue('attach', undefined as any);
               }
+              trigger('attach');
             },
           },
         ]}

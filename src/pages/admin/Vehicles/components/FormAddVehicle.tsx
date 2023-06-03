@@ -39,6 +39,7 @@ function FormAddVehicle() {
     formState: { errors },
     handleSubmit,
     setValue,
+    trigger,
     watch,
     reset,
   } = useForm<Values>({
@@ -203,6 +204,7 @@ function FormAddVehicle() {
                 onChange: resources => {
                   const lastResource = resources[resources.length - 1];
                   setValue('attach', lastResource);
+                  trigger('attach');
                 },
               },
             ]}

@@ -31,6 +31,7 @@ export default function AccountSetting() {
     reset,
     resetField,
     setValue,
+    trigger,
     handleSubmit,
     watch,
   } = useForm<Values>();
@@ -188,6 +189,7 @@ export default function AccountSetting() {
                         } else {
                           setValue('profileImage', undefined as any);
                         }
+                        trigger('profileImage');
                       },
                       resources: profileImage ? [profileImage] : [],
                     },
@@ -206,6 +208,7 @@ export default function AccountSetting() {
                         } else {
                           setValue('logoImage', undefined as any);
                         }
+                        trigger('logoImage');
                       },
                       resources: logoImage ? [logoImage] : [],
                     },
