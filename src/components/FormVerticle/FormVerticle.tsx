@@ -32,8 +32,8 @@ export interface FormVerticleProps<T extends FieldValues> extends Partial<UseCon
   selectProps?: SelectProps;
   isGridHorizon?: boolean;
   indexGridHorizon?: number;
-  errors?: FieldErrors<T>;
-  messages?: Record<string, string>;
+  errors: FieldErrors<T>;
+  messages: Record<string, string>;
 }
 
 export default function FormVerticle<T extends FieldValues>({

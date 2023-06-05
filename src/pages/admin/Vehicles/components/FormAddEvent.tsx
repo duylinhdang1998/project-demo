@@ -64,6 +64,12 @@ function FormAddEvent() {
 
   const messages = useMemo(() => {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
+      if (key === 'attach') {
+        return {
+          ...res,
+          attach_document: t('translation:error_required', { name: t(`vehicles:attach_document`).toLowerCase() }),
+        };
+      }
       return {
         ...res,
         [key]: t('translation:error_required', { name: t(`vehicles:${key}`).toLowerCase() }),
@@ -186,12 +192,14 @@ function FormAddEvent() {
           errors={errors}
           messages={messages}
           control={control}
-          fields={[{ id: 'description', type: 'textarea', placeholder: t('vehicles:description'), label: 'description' }]}
+          fields={[{ id: 'description', type: 'textarea', placeholder: t('vehicles:description'), label: 'description', required: true }]}
           filterKey="vehicles"
         />
       </Box>
       <Box my="16px">
         <FormVerticle
+          errors={errors}
+          messages={messages}
           control={control}
           fields={[
             {
