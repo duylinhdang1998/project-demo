@@ -180,6 +180,7 @@ export default function AccountSetting() {
                       type: 'image_resource',
                       multiple: false,
                       required: true,
+                      withFileInfomation: true,
                       onChange(resources) {
                         const lastResource = resources[resources.length - 1];
                         if (lastResource) {
@@ -199,6 +200,7 @@ export default function AccountSetting() {
                       type: 'image_resource',
                       multiple: false,
                       required: true,
+                      withFileInfomation: true,
                       onChange(resources) {
                         const lastResource = resources[resources.length - 1];
                         if (lastResource) {

@@ -214,6 +214,7 @@ export default function FormVerticle<T extends FieldValues>({
                     className={!!error ? classes.inputError : ''}
                     multiple={i.multiple}
                     resources={i.resources}
+                    withFileInfomation={i.withFileInfomation}
                     disabled={i.disabled}
                     onChange={i.onChange}
                   />

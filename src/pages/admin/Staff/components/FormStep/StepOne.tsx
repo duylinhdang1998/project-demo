@@ -111,6 +111,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             label: 'attach',
             required: true,
             multiple: false,
+            withFileInfomation: false,
             resources: attach ? [attach] : [],
             onChange: resources => {
               const lastResource = resources[resources.length - 1] as Staff['attach'] | undefined;

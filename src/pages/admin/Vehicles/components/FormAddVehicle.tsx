@@ -199,6 +199,7 @@ function FormAddVehicle() {
                 type: 'image_resource',
                 label: 'attach',
                 required: true,
+                withFileInfomation: true,
                 multiple: false,
                 resources: typeof attach === 'object' ? [attach] : [],
                 onChange: resources => {

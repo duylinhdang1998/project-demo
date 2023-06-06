@@ -1,5 +1,5 @@
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Image } from 'antd';
 import Dragger from 'antd/lib/upload/Dragger';
@@ -19,6 +19,9 @@ import 'antd/lib/image/style/css';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { ServiceException } from 'services/utils/ServiceException';
 import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
+import { filesize } from 'filesize';
+import { getNameOfResource } from 'utils/getNameOfResource';
 
 interface FileBase {
   uid: UploadFile['uid'];
@@ -52,6 +55,7 @@ export interface UploadImageResourceProps {
   multiple?: boolean;
   className?: string;
   disabled?: boolean;
+  withFileInfomation?: boolean;
 }
 
 const useStyles = makeStyles(() => ({
@@ -70,11 +74,34 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '50%',
-    padding: '10px',
+    width: '24px',
+    height: '24px',
+  },
+  fileName: {
+    color: '#45485E',
+    fontSize: '14px',
+    marginBottom: '4px',
+  },
+  fileInfomation: {
+    color: '#858C93',
+    fontSize: '12px',
+  },
+  dot: {
+    background: '#858C93',
+    width: '4px',
+    height: '4px',
+    borderRadius: '50%',
   },
 }));
 
-export const UploadImageResource = ({ resources = [], multiple = false, className, disabled = false, onChange }: UploadImageResourceProps) => {
+export const UploadImageResource = ({
+  resources = [],
+  multiple = false,
+  className,
+  disabled = false,
+  withFileInfomation = false,
+  onChange,
+}: UploadImageResourceProps) => {
   const { t } = useTranslation(['translation']);
 
   const classes = useStyles();
@@ -176,22 +203,43 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileListState]);
 
+  const renderFileInfomation = (file: FileItem) => {
+    if (!withFileInfomation) {
+      return null;
+    }
+    return (
+      <Box>
+        <Typography className={classes.fileName}>{file.response && getNameOfResource(file.response)}</Typography>
+        <Stack gap="8px" alignItems="center" flexDirection="row">
+          <Typography className={classes.fileInfomation}>
+            {file.response?.createdAt ? dayjs(file.response.createdAt).format('D, MMMM YYYY [at] h:mm A') : ''}
+          </Typography>
+          <Box className={classes.dot} />
+          <Typography className={classes.fileInfomation}>{file.response?.size && filesize(file.response.size, { round: 2 })}</Typography>
+        </Stack>
+      </Box>
+    );
+  };
+
   const renderImage: ItemRender<FileItem> = (_originNode, antdFile) => {
     const file = antdFile as FileItem;
     if (file.status === 'uploading') {
       return <CircularProgress />;
     }
     return (
-      <Box width="100%" height="170px" position="relative">
-        <Image src={file.url} className={classes.img} />
-        <Box
-          className={classes.imgWrapper}
-          onClick={() => {
-            handleSetFileListStateByInteractive([]);
-          }}
-        >
-          <ClearIcon sx={{ color: '#fff' }} />
+      <Box>
+        <Box marginBottom="8px" width="100%" height="170px" position="relative">
+          <Image src={file.url} className={classes.img} />
+          <Box
+            className={classes.imgWrapper}
+            onClick={() => {
+              handleSetFileListStateByInteractive([]);
+            }}
+          >
+            <ClearIcon sx={{ color: '#fff', width: '10px', height: '10px' }} />
+          </Box>
         </Box>
+        {renderFileInfomation(file)}
       </Box>
     );
   };

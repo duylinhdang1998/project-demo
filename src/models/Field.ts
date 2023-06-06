@@ -89,6 +89,7 @@ export interface UploadImageResourceField extends BaseField {
   onChange: UploadImageResourceProps['onChange'];
   resources: UploadImageResourceProps['resources'];
   multiple: UploadImageResourceProps['multiple'];
+  withFileInfomation: UploadImageResourceProps['withFileInfomation'];
 }
 export interface UploadPDFResourceField extends BaseField {
   type: 'pdf_resource';
