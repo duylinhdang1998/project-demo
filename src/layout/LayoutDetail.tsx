@@ -35,7 +35,13 @@ export default function LayoutDetail({ children, title, subTitle, variant = 'wit
       <HeaderLayout subTitleHeader={subTitle} activeSideBarHeader={title} />
       <Box padding="24px">
         <Stack position="relative" direction={{ mobile: 'column', laptop: 'row' }}>
-          <Box position="absolute" top="0px" left="0px" zIndex={10}>
+          <Box
+            position={{ mobile: 'relative', desktop: 'absolute' }}
+            marginBottom={{ mobile: '16px', desktop: '0px' }}
+            top="0px"
+            left="0px"
+            zIndex={10}
+          >
             <BackButton />
           </Box>
           {children}
