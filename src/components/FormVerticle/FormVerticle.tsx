@@ -91,6 +91,10 @@ export default function FormVerticle<T extends FieldValues>({
                 value: i.required ?? false,
                 message: messageErr,
               },
+              pattern: {
+                value: /^.*\S+.*$/,
+                message: messageErr,
+              },
               ...(i.type === 'email'
                 ? {
                     pattern: {

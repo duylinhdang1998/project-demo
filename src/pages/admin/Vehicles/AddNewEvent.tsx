@@ -31,8 +31,8 @@ export default function AddNewEvent() {
     if (!vehicleId) {
       navigate('/404');
     } else {
+      dispatch(vehiclesActions.getVehicleRequest({ id: vehicleId }));
       if (isEditAction && vehicleEventId) {
-        dispatch(vehiclesActions.getVehicleRequest({ id: vehicleId }));
         dispatch(vehicleEventsActions.getVehicleEventRequest({ id: vehicleEventId }));
       }
     }
