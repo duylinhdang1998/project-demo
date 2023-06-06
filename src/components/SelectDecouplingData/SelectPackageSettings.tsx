@@ -78,6 +78,8 @@ export const SelectPackageSettings = ({
               placeholder={labelTranslated}
               onChange={selected => onChange(selected)}
               values={packageSettings}
+              closeMenuOnSelect={false}
+              blurInputOnSelect={false}
             />
             {!!error && (
               <Typography component="p" className={classes.error} fontSize={12}>

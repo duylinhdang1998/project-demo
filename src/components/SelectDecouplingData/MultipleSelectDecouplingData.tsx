@@ -84,7 +84,6 @@ export const MultipleSelectDecouplingData = <Model extends AnyObject>({
 
   useEffect(() => {
     if (typeof scrollValueRef.current === 'number') {
-      console.log(menuListRef.current, scrollValueRef.current);
       menuListRef.current?.scrollTo(scrollValueRef.current);
     }
   }, [optionValues]);
