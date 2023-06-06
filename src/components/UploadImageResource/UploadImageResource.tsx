@@ -18,6 +18,7 @@ import 'antd/lib/upload/style/css';
 import 'antd/lib/image/style/css';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { ServiceException } from 'services/utils/ServiceException';
+import { useTranslation } from 'react-i18next';
 
 interface FileBase {
   uid: UploadFile['uid'];
@@ -74,6 +75,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const UploadImageResource = ({ resources = [], multiple = false, className, disabled = false, onChange }: UploadImageResourceProps) => {
+  const { t } = useTranslation(['translation']);
+
   const classes = useStyles();
 
   const [loading, setLoading] = useState(false);
@@ -132,10 +135,10 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
       }
     } else {
       if (error === 'INVALID_FILE_SIZE') {
-        toast.error('Image must smaller than 2MB!');
+        toast.error(t('translation:attach_invalid_size'));
       }
       if (error === 'INVALID_TYPE') {
-        toast.error('You can only upload JPG/PNG file!');
+        toast.error(t('translation:attach_invalid_mime_type', { mimeType: 'JPG/PNG' }));
       }
     }
 
@@ -205,7 +208,7 @@ export const UploadImageResource = ({ resources = [], multiple = false, classNam
           className,
         )}
         multiple={multiple}
-        accept="image/*"
+        accept=".jpg,.png"
         fileList={fileListState}
         beforeUpload={beforeUpload}
         itemRender={renderImage}

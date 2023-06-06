@@ -17,6 +17,8 @@ import { uploadPDFResource } from 'services/Resource/uploadPDFResource';
 import './styles.css';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { ServiceException } from 'services/utils/ServiceException';
+import { handleCheckRequirements } from './utils/handleCheckRequirements';
+import { useTranslation } from 'react-i18next';
 interface FileBase {
   uid: UploadFile['uid'];
   name: UploadFile['name'];
@@ -60,6 +62,8 @@ export const UploadPDFResource = ({
   onChange,
   buttonText,
 }: UploadPDFResourceProps) => {
+  const { t } = useTranslation(['translation']);
+
   const [fileListState, setFileListState] = useState<FileItem[]>([]);
   const isStateChangedByResourcesProps = useRef(false);
 
@@ -69,7 +73,7 @@ export const UploadPDFResource = ({
   };
 
   const beforeUpload: UploadProps['beforeUpload'] = async file => {
-    const error = false;
+    const error = handleCheckRequirements({ file });
     if (!error) {
       const sessionId = v4();
       setFileListState(state => {
@@ -111,10 +115,10 @@ export const UploadPDFResource = ({
       }
     } else {
       if (error === 'INVALID_FILE_SIZE') {
-        toast.error('Image must smaller than 2MB!');
+        toast.error(t('translation:attach_invalid_size'));
       }
       if (error === 'INVALID_TYPE') {
-        toast.error('You can only upload JPG/PNG file!');
+        toast.error(t('translation:attach_invalid_mime_type', { mimeType: 'PDF' }));
       }
     }
 
