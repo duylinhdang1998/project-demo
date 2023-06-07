@@ -6,7 +6,7 @@ import fetchAPI from 'utils/fetchAPI';
 
 export interface UpdateVehicleEvent {
   id: VehicleEvent['_id'];
-  data: Pick<VehicleEvent, 'attach' | 'description' | 'extraFees' | 'fuelFees' | 'reminderDate' | 'totalKilometers'>;
+  data: Pick<VehicleEvent, 'attach' | 'description' | 'extraFees' | 'fuelFees' | 'reminderDate' | 'totalKilometers' | 'vehicle'>;
 }
 
 interface ResponseData {

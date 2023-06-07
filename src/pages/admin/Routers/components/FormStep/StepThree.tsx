@@ -83,6 +83,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     handleSubmit,
     reset,
     setValue,
+    trigger,
     watch,
   } = useForm<StepThreeValues>({
     defaultValues: { priceOfRoutePoints: [] },
@@ -262,7 +263,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
             <CalendarIcon />
             <span style={{ marginLeft: 4 }}>{dayjs(selectedSlot[0]).format('dddd, MM/DD/YYYY')}</span>
           </Box>
-          <EditPriceStepThreeOfForm control={control} errors={errors} priceOfRoutePoints={priceOfRoutePoints} setValue={setValue} />
+          <EditPriceStepThreeOfForm control={control} errors={errors} priceOfRoutePoints={priceOfRoutePoints} setValue={setValue} trigger={trigger} />
           <ComboButton
             textCancel={selectedSlot.isCreateDayoffAction ? t('translation:delete') : t('translation:reactive')}
             onCancel={handleOpenDialogConfirmDelete}

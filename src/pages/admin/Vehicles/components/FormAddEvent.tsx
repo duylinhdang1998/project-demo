@@ -101,6 +101,7 @@ function FormAddEvent() {
               fuelFees: value.fuelFees,
               reminderDate: dayjsToNumber(value.reminderDate),
               totalKilometers: value.totalKilometers,
+              vehicle: vehicleEvent.vehicle,
             },
             onSuccess() {
               toast(

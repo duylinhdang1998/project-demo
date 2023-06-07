@@ -25,6 +25,7 @@ import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable
 import { getUrlOfResource } from 'utils/getUrlOfResource';
 import { useStyles } from '../styles';
 import { selectAuth } from 'store/auth/selectors';
+import { getNameOfResource } from 'utils/getNameOfResource';
 
 function TableEvents() {
   const classes = useStyles();
@@ -108,7 +109,7 @@ function TableEvents() {
         title: () => `${t('vehicles:attach_files')}`,
         render: (_, row) => (
           <a className={classes.downloadButton} href={getUrlOfResource(row.attach)} download>
-            {row.attach._id}
+            {getNameOfResource(row.attach)}
           </a>
         ),
         width: 135,
