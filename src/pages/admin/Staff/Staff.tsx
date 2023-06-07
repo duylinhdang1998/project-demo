@@ -57,7 +57,7 @@ export default function Staff() {
         sorter: {},
         searcher: {
           phone: { value: values.phone, operator: 'contains' },
-          lastName: { value: values.name, operator: 'contains' },
+          name: { value: values.name, operator: 'contains' },
           role: { value: values.role?.role, operator: 'eq' },
         },
       }),

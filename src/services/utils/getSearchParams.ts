@@ -10,7 +10,7 @@ export const getSearchParams = <T extends AnyObject>(searcher: Searcher<T>) => {
       if (value) {
         return {
           ...res,
-          [key]: typeof value === 'string' ? value.trim().toLowerCase() : value,
+          [key]: value,
         };
       }
       return res;
@@ -21,7 +21,7 @@ export const getSearchParams = <T extends AnyObject>(searcher: Searcher<T>) => {
         const key = `${searchKey}[${operator}]`;
         return {
           ...result,
-          [key]: typeof value === 'string' ? value.trim().toLowerCase() : value,
+          [key]: value,
         };
       }, {});
 

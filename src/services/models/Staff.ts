@@ -10,6 +10,7 @@ export interface Staff {
   role: UserRole;
   lastName: string;
   firstName: string;
+  name: string;
   email: string;
   phone: string;
   attach: ImageResource;
