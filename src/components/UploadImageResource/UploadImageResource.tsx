@@ -123,7 +123,7 @@ export const UploadImageResource = ({
       setFileListState(state => {
         return state.concat({
           uid: sessionId,
-          name: sessionId,
+          name: file.name,
           url: URL.createObjectURL(file),
           thumbUrl: URL.createObjectURL(file),
           type: file.type,

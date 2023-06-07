@@ -7,7 +7,6 @@ interface HandleCheckRequirements {
 type RT = 'INVALID_TYPE' | 'INVALID_FILE_SIZE' | undefined;
 
 export const handleCheckRequirements = ({ file }: HandleCheckRequirements): RT => {
-  console.log(file.type);
   const isValidType = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'application/pdf';
   if (!isValidType) {
     return 'INVALID_TYPE';

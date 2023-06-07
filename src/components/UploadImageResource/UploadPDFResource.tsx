@@ -19,6 +19,7 @@ import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { ServiceException } from 'services/utils/ServiceException';
 import { handleCheckRequirements } from './utils/handleCheckRequirements';
 import { useTranslation } from 'react-i18next';
+import { getNameOfResource } from 'utils/getNameOfResource';
 interface FileBase {
   uid: UploadFile['uid'];
   name: UploadFile['name'];
@@ -79,7 +80,7 @@ export const UploadPDFResource = ({
       setFileListState(state => {
         return state.concat({
           uid: sessionId,
-          name: sessionId,
+          name: file.name,
           url: undefined,
           thumbUrl: undefined,
           type: file.type,
@@ -164,7 +165,7 @@ export const UploadPDFResource = ({
           <Stack direction="row" spacing={2} alignItems="center">
             <FileIcon />
             <Typography fontSize={14} color="#45485E">
-              {file.name.toUpperCase()}
+              {file.name}
             </Typography>
           </Stack>
           <IconButton>
@@ -179,7 +180,7 @@ export const UploadPDFResource = ({
           <FileIcon />
           <Box>
             <Typography fontSize={14} color="#45485E">
-              {file.response._id}
+              {getNameOfResource(file.response)}
             </Typography>
             <Typography component="span" color="#858C93" fontSize={12}>
               {dayjs(file.response.createdAt).format('DD/MM/YYYY')} <span>{filesize(file.response.size)}</span>
