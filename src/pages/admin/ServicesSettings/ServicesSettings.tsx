@@ -1,40 +1,29 @@
 import { Box } from '@mui/system';
-import { useUpdateEffect } from 'ahooks';
+import { useMount } from 'ahooks';
 import BoxSearch from 'components/BoxSearch/BoxSearch';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { ServiceSetting } from 'services/models/ServiceSetting';
 import { useGetServiceSettings } from 'services/ServiceSetting/Company/getServiceSettings';
 import TableServices from './components/TableServices';
 
 function ServicesSettings() {
   const { t } = useTranslation('serviceSetting');
-  const [listServices, setListServices] = useState<ServiceSetting[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
 
-  const { refresh, loading, run } = useGetServiceSettings(
-    {
-      page: 0,
-      searcher: {
-        title: { value: searchValue, operator: 'contains' },
-      },
-      sorter: {},
-    },
-    {
-      onSuccess: data => {
-        if (data.code === 0) {
-          setListServices(data.data.hits);
-        }
-      },
-    },
-  );
+  const [sortOrder, setSortOrder] = useState<'ascend' | 'descend' | undefined>();
 
-  useUpdateEffect(() => {
-    run();
-  }, [searchValue]);
+  const { refresh, loading, run, data } = useGetServiceSettings();
+
+  useMount(() => {
+    run({
+      page: 0,
+      searcher: {},
+      sorter: {},
+    });
+  });
 
   const handleAdd = () => {
     navigate('/admin/services-settings/add-service');
@@ -48,11 +37,34 @@ function ServicesSettings() {
           onAdd={handleAdd}
           addTextButton={t('add_service')}
           onSearch={value => {
-            console.log({ value });
+            run({
+              page: 0,
+              searcher: {
+                title: { value, operator: 'contains' },
+              },
+              sorter: {},
+            });
+            setSortOrder(undefined);
             setSearchValue(value);
           }}
         />
-        <TableServices dataSource={listServices} onRefresh={refresh} loading={loading} />
+        <TableServices
+          dataSource={data?.data.hits ?? []}
+          onRefresh={refresh}
+          loading={loading}
+          sortOrder={sortOrder}
+          pagination={data?.data.pagination}
+          onFilter={({ page, sorter }) => {
+            setSortOrder(!!sorter.title ? (sorter.title === 'asc' ? 'ascend' : 'descend') : undefined);
+            run({
+              page,
+              sorter,
+              searcher: {
+                title: { value: searchValue, operator: 'contains' },
+              },
+            });
+          }}
+        />
       </Box>
     </Box>
   );

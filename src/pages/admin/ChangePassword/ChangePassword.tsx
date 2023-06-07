@@ -99,7 +99,7 @@ export default function ChangePassword() {
                   rules={{
                     ...(i.label === 'confirmPassword'
                       ? {
-                          validate: (val: string) => val === getValues('newPassword') || "Confirm password doesn't match",
+                          validate: (val: string) => val === getValues('newPassword') || 'Confirm password does not match',
                         }
                       : {}),
                   }}

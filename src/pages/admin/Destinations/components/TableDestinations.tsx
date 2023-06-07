@@ -3,6 +3,7 @@ import { Box, Dialog, DialogTitle, Divider, Grid, IconButton, Stack, Typography 
 import { ColumnsType } from 'antd/es/table';
 import ActionTable, { ActionItem } from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
+import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import DeleteIcon from 'components/SvgIcon/DeleteIcon';
 import EditIcon from 'components/SvgIcon/EditIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
@@ -36,13 +37,16 @@ export default function TableDestinations({ dataSource = [], isLoading, paginati
   const [currentPage, setCurrentPage] = useState(0);
   const [rowSelected, setRowSelected] = useState<Destination>();
 
-  const { run: deleteDestination } = useDeleteDestination({
+  const [openDelete, setOpenDelete] = useState(false);
+
+  const { run: deleteDestination, loading } = useDeleteDestination({
     onSuccess: data => {
       if (data.code === 0) {
         toast(<ToastCustom type="success" text={t('translation:delete_type_success', { type: t('destination').toLowerCase() })} />, {
           className: 'toast-success',
         });
         onRefresh?.();
+        setOpenDelete(false);
       } else {
         toast(
           <ToastCustom
@@ -65,10 +69,11 @@ export default function TableDestinations({ dataSource = [], isLoading, paginati
 
   const handleClose = () => {
     setOpen(false);
+    setOpenDelete(false);
   };
 
-  const handleDelete = (id: string) => {
-    deleteDestination(id);
+  const handleDelete = () => {
+    deleteDestination(rowSelected?._id ?? '');
   };
 
   const removeKeyDetails = (key: string) => {
@@ -94,7 +99,8 @@ export default function TableDestinations({ dataSource = [], isLoading, paginati
       label: 'delete',
       icon: <DeleteIcon />,
       onClick: row => {
-        handleDelete(row?._id ?? '');
+        setOpenDelete(true);
+        setRowSelected(row);
       },
       color: '#FF2727',
     },
@@ -173,6 +179,15 @@ export default function TableDestinations({ dataSource = [], isLoading, paginati
           </Grid>
         </Box>
       </Dialog>
+
+      <DialogConfirm
+        openDialog={openDelete}
+        title={t('translation:delete_type', { type: t('destination').toLowerCase() })}
+        subTitle={t('translation:delete_destination')}
+        onClose={handleClose}
+        onOk={handleDelete}
+        loading={loading}
+      />
     </Box>
   );
 }

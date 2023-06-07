@@ -57,7 +57,7 @@ function InputAuth<T extends FieldValues>({
       rules={{
         required: {
           value: true,
-          message: t('error_required', { name: nameInput }),
+          message: t('error_required', { name: t(`${nameInput}`).toLowerCase() }),
         },
         ...(type === 'email'
           ? {

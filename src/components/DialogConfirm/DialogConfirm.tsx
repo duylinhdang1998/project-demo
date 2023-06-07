@@ -12,6 +12,8 @@ export interface DialogConfirmProps {
   cancelButtonText?: string;
   okButtonText?: string;
   onClose?: () => void;
+  onOk?: () => void;
+  loading?: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -33,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-function DialogConfirm({ openDialog, okButtonText, cancelButtonText, title, subTitle, onClose }: DialogConfirmProps) {
+function DialogConfirm({ openDialog, okButtonText, cancelButtonText, title, subTitle, onClose, onOk, loading }: DialogConfirmProps) {
   const classes = useStyles();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -55,8 +57,12 @@ function DialogConfirm({ openDialog, okButtonText, cancelButtonText, title, subT
   };
 
   const handleYes = () => {
-    navigate(-1);
-    handleClose();
+    if (typeof onOk === 'function') {
+      onOk?.();
+    } else {
+      navigate(-1);
+      handleClose();
+    }
   };
 
   return (
@@ -88,6 +94,7 @@ function DialogConfirm({ openDialog, okButtonText, cancelButtonText, title, subT
           backgroundButton="#1aa6ee"
           onClick={handleYes}
           autoFocus
+          loading={loading}
         >
           {okButtonText ?? t('yes')}
         </Button>

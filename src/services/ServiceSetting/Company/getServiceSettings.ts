@@ -2,6 +2,7 @@ import { useRequest } from 'ahooks';
 import { Options } from 'ahooks/lib/useRequest/src/types';
 import { AxiosResponse } from 'axios';
 import { Pagination, Searcher, Sorter } from 'services/@types/SearchParams';
+import { ParamsSettings } from 'services/models/Response';
 import { ServiceSetting } from 'services/models/ServiceSetting';
 import { getSearchParams } from 'services/utils/getSearchParams';
 import { getSortParams } from 'services/utils/getSortParams';
@@ -49,9 +50,10 @@ export const getServiceSettings = async ({ page, sorter, searcher }: GetServiceS
   return response.data;
 };
 
-export const useGetServiceSettings = (params: GetServiceSettings, option?: Options<ResponseSuccess, any>) => {
-  return useRequest(() => getServiceSettings(params), {
+export const useGetServiceSettings = (option?: Options<ResponseSuccess, any>) => {
+  return useRequest<ResponseSuccess, [ParamsSettings<ServiceSetting>]>(getServiceSettings, {
     ...option,
+    manual: true,
   });
 };
 
