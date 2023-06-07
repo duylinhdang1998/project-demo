@@ -72,7 +72,7 @@ export default function TableDestinations({ dataSource = [], isLoading, paginati
   };
 
   const removeKeyDetails = (key: string) => {
-    const keys = ['_id', 'createdAt', 'updatedAt', '__v', 'title', 'company'];
+    const keys = ['_id', 'createdAt', 'updatedAt', '__v', 'title', 'company', 'status'];
     return keys.includes(key);
   };
 
