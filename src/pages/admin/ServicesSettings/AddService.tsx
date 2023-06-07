@@ -59,8 +59,8 @@ export default function AddService() {
     onSuccess: data => {
       getNotifcation({
         code: data.code,
-        success: t('add_service_success'),
-        error: t('add_service_error'),
+        success: t('add_new_service_success'),
+        error: t('add_new_service_error'),
         onSuccess: () => {
           navigate(-1);
           reset({
