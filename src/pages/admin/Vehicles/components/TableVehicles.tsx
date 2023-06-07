@@ -80,6 +80,7 @@ function TableVehicles() {
           );
         },
         sorter: () => 0,
+        width: 380,
       },
       {
         key: 'registrationId',
@@ -87,6 +88,8 @@ function TableVehicles() {
         title: () => t('vehicles:registrationId'),
         render: (_, record) => <Typography variant="body2">{record.registrationId}</Typography>,
         align: 'center',
+        sorter: () => 0,
+        width: 290,
       },
       {
         key: 'ECOseats',
@@ -94,7 +97,6 @@ function TableVehicles() {
         title: () => t('vehicles:ECOseats'),
         render: (_, record) => <Typography variant="body2">{record.ECOseats}</Typography>,
         align: 'center',
-        sorter: true,
       },
       {
         key: 'VIPseats',
@@ -102,7 +104,6 @@ function TableVehicles() {
         title: () => t('vehicles:VIPseats'),
         render: (_, record) => <Typography variant="body2">{record.VIPseats}</Typography>,
         align: 'center',
-        sorter: true,
       },
       {
         key: 'action',
