@@ -62,7 +62,7 @@ export default function AddService() {
         success: t('add_new_service_success'),
         error: t('add_new_service_error'),
         onSuccess: () => {
-          navigate(-1);
+          navigate('/admin/services-settings');
           reset({
             title: '',
             icon: '',
@@ -79,6 +79,13 @@ export default function AddService() {
         code: data.code,
         success: t('edit_service_success'),
         error: t('edit_service_error'),
+        onSuccess: () => {
+          navigate('/admin/services-settings');
+          reset({
+            title: '',
+            icon: '',
+          });
+        },
       });
     },
   });
@@ -119,7 +126,12 @@ export default function AddService() {
     return <LoadingScreen />;
   }
   return (
-    <LayoutDetail subTitle={t('service_settings')} title={t('translation:create_new', { type: t('translation:service') })}>
+    <LayoutDetail
+      subTitle={t('service_settings')}
+      title={
+        params.id ? t('translation:edit_type', { type: t('translation:service') }) : t('translation:create_new', { type: t('translation:service') })
+      }
+    >
       <FadeIn>
         <Box width="100%" display="flex" justifyContent="center">
           <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
