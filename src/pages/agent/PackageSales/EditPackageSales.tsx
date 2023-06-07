@@ -48,6 +48,7 @@ export default function EditPackageSales() {
     reset,
     watch,
     setValue,
+    trigger,
   } = useForm<FieldValues>({
     defaultValues: {
       merchandise: [{ weight: '', price: '' }],
@@ -96,6 +97,7 @@ export default function EditPackageSales() {
       });
       getRouteDetail(dataDetails.route);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataDetails]);
 
   useEffect(() => {
@@ -154,6 +156,7 @@ export default function EditPackageSales() {
               method={methodWatch}
               onChange={value => {
                 setValue('method', value);
+                trigger('method');
               }}
             />
           </Box>

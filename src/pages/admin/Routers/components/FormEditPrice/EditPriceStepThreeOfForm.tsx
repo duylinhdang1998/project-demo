@@ -7,7 +7,7 @@ import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/Sing
 import { Dayjs } from 'dayjs';
 import { get } from 'lodash-es';
 import { useMemo } from 'react';
-import { Control, Controller, FieldErrors, UseFormSetValue } from 'react-hook-form';
+import { Control, Controller, FieldErrors, UseFormSetValue, UseFormTrigger } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { getListDestinations } from 'services/Destinations/getListDestinations';
 import { RoutePoint } from 'services/models/Route';
@@ -35,9 +35,10 @@ interface EditPriceStepThreeOfFromProps {
   errors: FieldErrors<EditPriceStepThreeOfFormValues>;
   priceOfRoutePoints: EditPriceStepThreeOfFormValues['priceOfRoutePoints'];
   setValue: UseFormSetValue<EditPriceStepThreeOfFormValues>;
+  trigger: UseFormTrigger<EditPriceStepThreeOfFormValues>;
 }
 
-export const EditPriceStepThreeOfForm = ({ control, errors, priceOfRoutePoints, setValue }: EditPriceStepThreeOfFromProps) => {
+export const EditPriceStepThreeOfForm = ({ control, errors, priceOfRoutePoints, setValue, trigger }: EditPriceStepThreeOfFromProps) => {
   const { t } = useTranslation(['routers', 'translation']);
   const classes = useStyles();
   const formVerticleClasses = useFormVerticalStyles();
@@ -121,6 +122,7 @@ export const EditPriceStepThreeOfForm = ({ control, errors, priceOfRoutePoints, 
                       placeholder={labelTranslated}
                       onChange={selected => {
                         setValue(getPathNameForStopPoint(index), selected?.value as string);
+                        trigger(getPathNameForStopPoint(index));
                       }}
                     />
                     {!!error && (

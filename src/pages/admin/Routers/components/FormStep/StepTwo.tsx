@@ -40,6 +40,7 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
     getValues,
     reset,
     setValue,
+    trigger,
     watch,
   } = useForm<StepTwoValues>();
   const days = watch('days');
@@ -75,7 +76,15 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
       <Typography color="#0C1132" fontWeight={700} fontSize={14} mb="10px">
         {t('routers:days_of_the_week')}
       </Typography>
-      <SelectDaysOfWeek control={control} name="days" onChange={values => setValue('days', values)} values={days ?? []} />
+      <SelectDaysOfWeek
+        control={control}
+        name="days"
+        onChange={values => {
+          setValue('days', values);
+          trigger('days');
+        }}
+        values={days ?? []}
+      />
       <Typography color="#0C1132" fontWeight={700} fontSize={14} my="10px">
         {t('routers:active_period')}
       </Typography>

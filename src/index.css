@@ -19,3 +19,7 @@ input[name='rfs-q'] {
   border-radius: 4px;
   font-size: 14px;
 }
+
+body .tox-notifications-container {
+  display: none !important;
+}

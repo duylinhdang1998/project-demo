@@ -21,6 +21,7 @@ import {
   UseFieldArrayRemove,
   UseFormGetValues,
   UseFormSetValue,
+  UseFormTrigger,
 } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { getListDestinations } from 'services/Destinations/getListDestinations';
@@ -35,6 +36,7 @@ export interface StopPointsProps {
   append: UseFieldArrayAppend<StepOneValuesForMultipleStopTrip, 'routePoints'>;
   remove: UseFieldArrayRemove;
   getValues: UseFormGetValues<StepOneValuesForMultipleStopTrip>;
+  trigger: UseFormTrigger<StepOneValuesForMultipleStopTrip>;
   setValue: UseFormSetValue<StepOneValuesForMultipleStopTrip>;
   isEdit?: boolean;
 }
@@ -50,7 +52,7 @@ const emptyRoutePoint: RoutePointValues = {
   vipChildren: 0,
 };
 
-export const StopPoints = ({ append, control, errors, remove, getValues, setValue, routePoints, isEdit }: StopPointsProps) => {
+export const StopPoints = ({ append, control, errors, remove, getValues, setValue, trigger, routePoints, isEdit }: StopPointsProps) => {
   const { t } = useTranslation();
   const classes = useStyles();
   const formVerticleClasses = useFormVerticalStyles();
@@ -166,6 +168,7 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
                             placeholder={labelTranslated}
                             onChange={selected => {
                               setValue(routePointPathInFormValues, selected?.value as string);
+                              trigger(routePointPathInFormValues);
                             }}
                           />
                           {!!error && (

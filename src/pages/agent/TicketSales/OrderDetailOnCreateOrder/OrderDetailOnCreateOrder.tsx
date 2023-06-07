@@ -51,6 +51,7 @@ export const OrderDetailOnCreateOrder = () => {
     watch,
     reset,
     setValue,
+    trigger,
   } = useForm<TicketDetailFormValues>({
     defaultValues: {
       accept_term: true,
@@ -392,6 +393,7 @@ export const OrderDetailOnCreateOrder = () => {
                     } else {
                       setValue('isPaid', true);
                     }
+                    trigger('isPaid');
                   }}
                 />
               </Grid>

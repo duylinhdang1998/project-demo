@@ -52,6 +52,7 @@ function FormAddEvent() {
     handleSubmit,
     resetField,
     setValue,
+    trigger,
     watch,
   } = useForm<Values>();
   const attach = watch('attach_document');
@@ -212,6 +213,7 @@ function FormAddEvent() {
               onChange: resources => {
                 const lastResource = resources[resources.length - 1];
                 setValue('attach_document', lastResource);
+                trigger('attach_document');
               },
               buttonText: t('vehicles:attach_document'),
             },

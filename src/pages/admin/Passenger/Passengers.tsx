@@ -146,6 +146,7 @@ export default function Passengers() {
             required
             onChange={value => {
               emailEditorForm.setValue('description', value);
+              emailEditorForm.trigger('description');
             }}
           />
           <Stack sx={{ marginTop: '24px' }} direction="row" justifyContent="space-between" alignItems="center">

@@ -179,6 +179,7 @@ function FormAddVehicle() {
             messages={messages}
             onChange={values => {
               setValue('services', values);
+              trigger('services');
             }}
           />
           <Merchandises
@@ -188,6 +189,7 @@ function FormAddVehicle() {
             messages={messages}
             onChange={values => {
               setValue('merchandises', values);
+              trigger('merchandises');
             }}
           />
           <FormVerticle

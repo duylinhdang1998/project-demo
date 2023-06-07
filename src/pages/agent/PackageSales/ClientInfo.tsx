@@ -57,6 +57,7 @@ export default function ClientInfo() {
     reset,
     watch,
     setValue,
+    trigger,
   } = useForm<FieldValues>({
     defaultValues: {
       merchandise: [{ weight: '', price: '' }],
@@ -142,6 +143,7 @@ export default function ClientInfo() {
               method={methodWatch}
               onChange={value => {
                 setValue('method', value);
+                trigger('method');
               }}
             />
           </Box>

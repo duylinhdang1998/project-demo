@@ -41,6 +41,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
     handleSubmit,
     getValues,
     setValue,
+    trigger,
     reset,
     watch,
   } = useForm<StepOneValuesForMultipleStopTrip>({
@@ -109,6 +110,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
             vehicle,
             onChange: vehicle => {
               setValue('vehicle', vehicle as StepOneValuesForMultipleStopTrip['vehicle']);
+              trigger('vehicle');
             },
             required: true,
           },
@@ -119,6 +121,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
             destination: departurePoint,
             onChange: departurePoint => {
               setValue('departurePoint', departurePoint as StepOneValuesForMultipleStopTrip['departurePoint']);
+              trigger('departurePoint');
             },
             required: true,
           },
@@ -137,6 +140,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
         control={control}
         errors={errors}
         getValues={getValues}
+        trigger={trigger}
         remove={remove}
         routePoints={fields}
         setValue={setValue}

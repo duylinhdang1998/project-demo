@@ -25,7 +25,7 @@ const fieldKeys: Array<keyof Values> = ['content', 'footerText', 'sidebar'];
 function ContentManager() {
   const { t } = useTranslation(['account', 'translation', 'message_error']);
 
-  const { handleSubmit, setValue, watch } = useForm<Values>();
+  const { handleSubmit, setValue, trigger, watch } = useForm<Values>();
   const contentValueOfForm = watch('content');
   const sidebarValueOfForm = watch('sidebar');
   const footerTextValueOfForm = watch('footerText');
@@ -99,21 +99,41 @@ function ContentManager() {
               {t('account:content')}
             </Typography>
             <Box my="20px">
-              <ForContentField contentValueOfForm={contentValueOfForm} onChange={value => setValue('content', value)} />
+              <ForContentField
+                contentValueOfForm={contentValueOfForm}
+                onChange={value => {
+                  setValue('content', value);
+                  trigger('content');
+                }}
+              />
             </Box>
             <Divider sx={{ borderStyle: 'dashed' }} />
             <Box my="20px">
               <Typography fontWeight={700} color="#0C1132" my="10px">
                 {t('translation:sideBar')}
               </Typography>
-              <ForSidebarNFooterField valueOfForm={sidebarValueOfForm ?? ''} onChange={value => setValue('sidebar', value)} variant="sidebar" />
+              <ForSidebarNFooterField
+                valueOfForm={sidebarValueOfForm ?? ''}
+                onChange={value => {
+                  setValue('sidebar', value);
+                  trigger('sidebar');
+                }}
+                variant="sidebar"
+              />
             </Box>
             <Divider sx={{ borderStyle: 'dashed' }} />
             <Box my="20px">
               <Typography fontWeight={700} color="#0C1132" my="10px">
                 {t('translation:footer')}
               </Typography>
-              <ForSidebarNFooterField valueOfForm={footerTextValueOfForm} onChange={value => setValue('footerText', value)} variant="footer" />
+              <ForSidebarNFooterField
+                valueOfForm={footerTextValueOfForm}
+                onChange={value => {
+                  setValue('footerText', value);
+                  trigger('footerText');
+                }}
+                variant="footer"
+              />
             </Box>
             <ComboButton onSave={handleSubmit(onSubmit)} isSaving={statusUpdateContent === 'loading'} onCancel={handleCancel} />
           </CardWhite>
