@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
 import AntTable from 'components/AntTable/AntTable';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -14,6 +14,9 @@ import { useDeleteService } from 'services/ServiceSetting/Company/getServiceSett
 import { ServiceException } from 'services/utils/ServiceException';
 import { getUrlOfResource } from 'utils/getUrlOfResource';
 import ActionService from './ActionService';
+import { ParamsSettings } from 'services/models/Response';
+import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
+import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 
 const useStyles = makeStyles(() => ({
   icon: {
@@ -26,12 +29,19 @@ interface Props {
   dataSource: ServiceSetting[];
   onRefresh?: () => void;
   loading?: boolean;
+  pagination?: {
+    totalRows?: number;
+  };
+  onFilter?: (params: ParamsSettings<ServiceSetting>) => void;
+  sortOrder?: 'ascend' | 'descend';
 }
 
-function TableServices({ dataSource, onRefresh, loading }: Props) {
+function TableServices({ dataSource, onRefresh, loading, onFilter, pagination, sortOrder }: Props) {
   const { t } = useTranslation('serviceSetting');
   const classes = useStyles();
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(0);
+
   const { run: deleteService } = useDeleteService({
     onSuccess: data => {
       if (data.code === 0) {
@@ -64,7 +74,8 @@ function TableServices({ dataSource, onRefresh, loading }: Props) {
           {value}
         </Typography>
       ),
-      sorter: (a, b) => (a.title ?? '' > (b.title ?? '') ? 1 : -1),
+      sortOrder: !!sortOrder ? sortOrder : undefined,
+      sorter: () => 0,
     },
     {
       key: 'icon',
@@ -89,6 +100,12 @@ function TableServices({ dataSource, onRefresh, loading }: Props) {
         loading={loading}
         pagination={{
           pageSize: 10,
+          total: pagination?.totalRows,
+          current: currentPage + 1,
+        }}
+        onChange={(pagination, _, sorter, extra) => {
+          setCurrentPage(getPaginationFromAntdTable({ pagination, extra }));
+          onFilter?.({ page: getPaginationFromAntdTable({ pagination, extra }), sorter: getSorterParamsFromAntdTable({ sorter }), searcher: {} });
         }}
       />
     </Box>

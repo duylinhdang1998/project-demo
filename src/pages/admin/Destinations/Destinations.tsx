@@ -16,7 +16,6 @@ export default function Destinations() {
   const [sortOrder, setSortOrder] = useState<'ascend' | 'descend' | undefined>();
 
   useMount(() => {
-    console.log('Destination mount ');
     run({
       page: 0,
       searcher: {},
