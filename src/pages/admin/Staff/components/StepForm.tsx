@@ -16,6 +16,7 @@ import { toDayjs } from 'utils/toDayjs';
 import { Staff } from 'services/models/Staff';
 import { omit } from 'lodash-es';
 import { ALL_DAYS_OPTION_VALUE } from 'components/SelectDaysOfWeek/SelectDaysOfWeek';
+import { useNavigate } from 'react-router-dom';
 
 const steps = ['Step 1', 'Step 2', 'Step 3'];
 
@@ -37,6 +38,7 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
 
   const { t } = useTranslation(['translation']);
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const { statusCreateStaff, statusUpdateStaffInfo, statusUpdateDayActive, staff } = useAppSelector(selectStaffs);
   const dispatch = useAppDispatch();
@@ -48,8 +50,12 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
   const backStep = () => {
     if (activeStep === 0) {
       return;
+    } else {
+      setActiveStep(prevActiveStep => prevActiveStep - 1);
+      if (staff) {
+        navigate(`/admin/staffs/${staff._id}`);
+      }
     }
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
   const handleSubmitStep1 = (formValues: StepOneValues) => {

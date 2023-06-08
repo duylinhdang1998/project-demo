@@ -23,7 +23,7 @@ export const updateStaffInfo = async ({ data, staffId }: UpdateStaffInfo) => {
     data: {
       ...data,
       staffId,
-      attach: data.attach._id,
+      attach: data.attach?._id,
     },
   });
   if (response.data.code === 0) {

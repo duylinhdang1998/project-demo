@@ -12,8 +12,8 @@ export const createStaff = async (data: CreateStaff) => {
     url: '/v1.0/company/staffs/information',
     data: {
       ...data,
-      attach: data.attach._id,
-      office: data.office._id,
+      attach: data.attach?._id,
+      office: data.office?._id,
     },
   });
   if (response.data.code === 0) {

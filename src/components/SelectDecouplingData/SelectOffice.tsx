@@ -15,7 +15,7 @@ export interface SelectOfficeProps {
   isDisabled?: boolean;
   filterKey?: string;
   label: string;
-  office: Office;
+  office?: Office;
   onChange: (office: Office | undefined) => void;
 }
 

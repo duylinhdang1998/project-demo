@@ -6,14 +6,14 @@ import { UserRole } from './UserRole';
 export interface Staff {
   _id: string;
   company: string;
-  office: Office;
+  office?: Office;
   role: UserRole;
   lastName: string;
   firstName: string;
   name: string;
   email: string;
   phone: string;
-  attach: ImageResource;
+  attach?: ImageResource;
   presenceDay: Array<DayInWeek>;
   dayOff: number[];
   createdAt: string;

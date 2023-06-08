@@ -81,7 +81,7 @@ function TableStaff() {
         key: 'office',
         dataIndex: 'office',
         title: () => t('office_title'),
-        render: (_, row) => <Typography variant="body2">{row.office.title}</Typography>,
+        render: (_, row) => <Typography variant="body2">{row.office?.title}</Typography>,
         align: 'center',
         sorter: () => 0,
         width: 300,

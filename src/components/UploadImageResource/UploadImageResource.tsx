@@ -256,7 +256,7 @@ export const UploadImageResource = ({
           className,
         )}
         multiple={multiple}
-        accept=".jpg,.png"
+        accept="image/png, image/jpeg, image/jpg"
         fileList={fileListState}
         beforeUpload={beforeUpload}
         itemRender={renderImage}
