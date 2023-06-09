@@ -89,6 +89,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             id: 'office',
             label: 'office',
             required: true,
+            disabled: isEdit,
             office,
             onChange: office => {
               resetField('office', { defaultValue: office });
