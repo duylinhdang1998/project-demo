@@ -12,9 +12,9 @@ const paymentsStatus: Option[] = [
 ];
 
 export const fieldsSearch: FilterTicketProps<FormSearchValues>['fields'] = [
-  { id: uuidv4(), label: 'departurePoint', type: 'departurePoint', numberColumn: 2.1 },
-  { id: uuidv4(), label: 'arrivalPoint', type: 'arrivalPoint', numberColumn: 2.1 },
-  { id: uuidv4(), label: 'departureTime', type: 'date_range', format: 'MM/DD/YYYY - HH:mm' },
-  { id: uuidv4(), label: 'payment_status', options: paymentsStatus, type: 'select', isClearable: true, numberColumn: 1.9 },
-  { id: uuidv4(), label: 'order_id', type: 'text', placeholder: 'order_id', numberColumn: 2.1 },
+  { id: uuidv4(), required: undefined, label: 'departurePoint', type: 'departurePoint', numberColumn: 2.1 },
+  { id: uuidv4(), required: undefined, label: 'arrivalPoint', type: 'arrivalPoint', numberColumn: 2.1 },
+  { id: uuidv4(), required: undefined, label: 'departureTime', type: 'date_range', format: 'MM/DD/YYYY - HH:mm' },
+  { id: uuidv4(), required: undefined, label: 'payment_status', options: paymentsStatus, type: 'select', isClearable: true, numberColumn: 1.9 },
+  { id: uuidv4(), required: undefined, label: 'order_id', type: 'text', placeholder: 'order_id', numberColumn: 2.1 },
 ];

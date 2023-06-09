@@ -109,7 +109,11 @@ export default function Routers() {
           <Grid item xs={12} md={userInfo?.role === 'admin' ? 8 : 10}>
             <FilterTicket
               control={control}
-              fields={userInfo?.role === 'admin' ? fieldsSearch : [...fieldsSearch, { id: uuidv4(), label: 'registrationId', type: 'text' }]}
+              fields={
+                userInfo?.role === 'admin'
+                  ? fieldsSearch
+                  : [...fieldsSearch, { id: uuidv4(), required: undefined, label: 'registrationId', type: 'text' }]
+              }
               filterKey="routers"
               numberColumns={userInfo?.role === 'admin' ? 2.5 : 2}
             />

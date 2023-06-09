@@ -157,7 +157,7 @@ export default function AccountSetting() {
                   errors={errors}
                   messages={messages}
                   control={control}
-                  fields={[{ id: 'email', label: 'email', type: 'text', disabled: true }]}
+                  fields={[{ id: 'email', label: 'email', type: 'text', disabled: true, required: true }]}
                   filterKey="account"
                 />
                 <FormVerticle

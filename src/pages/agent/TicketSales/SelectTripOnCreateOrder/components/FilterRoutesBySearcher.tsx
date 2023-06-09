@@ -9,21 +9,21 @@ import { SelectTripFormValues } from '../SelectTripOnCreateOrder';
 
 const getFields = (tripType: SelectTripFormValues['tripType']): Field[] => {
   const fields: Field[] = [
-    { id: v4(), label: 'departurePoint', type: 'departurePoint' },
-    { id: v4(), label: 'arrivalPoint', type: 'arrivalPoint' },
-    { id: v4(), label: 'departureTime', type: 'datetime', showTime: true, format: 'HH:mm MM-DD-YYYY' },
+    { id: v4(), required: undefined, label: 'departurePoint', type: 'departurePoint' },
+    { id: v4(), required: undefined, label: 'arrivalPoint', type: 'arrivalPoint' },
+    { id: v4(), required: undefined, label: 'departureTime', type: 'datetime', showTime: true, format: 'HH:mm MM-DD-YYYY' },
   ];
   if (tripType === 'MULTI_STOP') {
-    fields.push({ id: v4(), label: 'returnTime', type: 'datetime', showTime: true, format: 'HH:mm MM-DD-YYYY' });
+    fields.push({ id: v4(), required: undefined, label: 'returnTime', type: 'datetime', showTime: true, format: 'HH:mm MM-DD-YYYY' });
   }
   return fields;
 };
 
 const fields2: Field[] = [
-  { id: v4(), label: 'departurePoint', type: 'departurePoint' },
-  { id: v4(), label: 'arrivalPoint', type: 'arrivalPoint' },
-  { id: v4(), label: 'merchandises', type: 'packageSettings' },
-  { id: v4(), label: 'departureTime', type: 'datetime', showTime: true, format: 'HH:mm MM-DD-YYYY' },
+  { id: v4(), required: undefined, label: 'departurePoint', type: 'departurePoint' },
+  { id: v4(), required: undefined, label: 'arrivalPoint', type: 'arrivalPoint' },
+  { id: v4(), required: undefined, label: 'merchandises', type: 'packageSettings' },
+  { id: v4(), required: undefined, label: 'departureTime', type: 'datetime', showTime: true, format: 'HH:mm MM-DD-YYYY' },
 ];
 
 export interface FilterRoutesBySearcherProps {

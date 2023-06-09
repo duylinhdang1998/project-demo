@@ -207,7 +207,10 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                       const messageErr = t('translation:error_required', { name: labelTranslated });
                       return (
                         <Box>
-                          <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
+                          <InputLabel className={classes.label}>
+                            {labelTranslated}
+                            {isRequired && <span className={classes.error}>*</span>}
+                          </InputLabel>
                           <Select
                             {...field}
                             isDisabled={isEditAction}
@@ -236,7 +239,10 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                       const messageErr = t('translation:error_required', { name: labelTranslated });
                       return (
                         <Box>
-                          <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
+                          <InputLabel className={classes.label}>
+                            {labelTranslated}
+                            {isRequired && <span className={classes.error}>*</span>}
+                          </InputLabel>
                           <Select
                             {...field}
                             isDisabled={isEditAction}
@@ -262,7 +268,10 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                       const labelTranslated = `${t('ticketSales:price')} (${getAppCurrencySymbol()})`;
                       return (
                         <Box>
-                          <InputLabel className={classes.label}>{labelTranslated}</InputLabel>
+                          <InputLabel className={classes.label}>
+                            {labelTranslated}
+                            {isRequired && <span className={classes.error}>*</span>}
+                          </InputLabel>
                           <InputNumber
                             className={classes.inputNumber}
                             value={getTotalPriceForTicketOfPassenger({ generalInfomationOfTicket, passenger })}

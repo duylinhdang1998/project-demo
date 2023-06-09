@@ -53,6 +53,7 @@ export const ServiceSettings = ({ errors, messages, control, services, onChange 
           values: services,
           onChange: onChange,
           id: 'services',
+          required: true,
           equalsFunc(input, optionValue) {
             const input_ = input as Vehicle['services'][number];
             const optionValue_ = optionValue as Vehicle['services'][number];

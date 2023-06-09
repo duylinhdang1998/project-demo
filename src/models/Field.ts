@@ -20,7 +20,7 @@ export interface Option<T = string> {
 
 interface BaseField {
   prefix?: string;
-  required?: boolean;
+  required: boolean | undefined;
   showTime?: boolean;
   messageErr?: string;
   id?: string;

@@ -114,7 +114,7 @@ export default function FormVerticle<T extends FieldValues>({
             render={({ field }) => (
               <Box>
                 <InputLabel htmlFor={i.label} className={classes.label}>
-                  {t(`${i.label}`)}
+                  {t(`${i.label}`)} {i.required && <span className={classes.error}>*</span>}
                 </InputLabel>
                 <InputNumber
                   {...field}
@@ -147,7 +147,9 @@ export default function FormVerticle<T extends FieldValues>({
       case 'checkbox': {
         return (
           <>
-            <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+            <InputLabel className={classes.label}>
+              {t(`${i.label}`)} {i.required && <span className={classes.error}>*</span>}
+            </InputLabel>
             <Stack direction="row" justifyContent="space-between" spacing={2}>
               {i.options?.map(c => (
                 <Controller
@@ -188,7 +190,9 @@ export default function FormVerticle<T extends FieldValues>({
             render={({ field }) => {
               return (
                 <Box>
-                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <InputLabel className={classes.label}>
+                    {t(`${i.label}`)} {i.required && <span className={classes.error}>*</span>}
+                  </InputLabel>
                   <UploadImageResource multiple={false} resources={[]} onChange={field.onChange} />
                 </Box>
               );
@@ -209,7 +213,9 @@ export default function FormVerticle<T extends FieldValues>({
             render={() => {
               return (
                 <Box>
-                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <InputLabel className={classes.label}>
+                    {t(`${i.label}`)} {i.required && <span className={classes.error}>*</span>}
+                  </InputLabel>
                   <UploadImageResource
                     className={!!error ? classes.inputError : ''}
                     multiple={i.multiple}
@@ -242,7 +248,9 @@ export default function FormVerticle<T extends FieldValues>({
             render={() => {
               return (
                 <Box>
-                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <InputLabel className={classes.label}>
+                    {t(`${i.label}`)} {i.required && <span className={classes.error}>*</span>}
+                  </InputLabel>
                   <UploadPDFResource
                     className={!!error ? classes.inputError : ''}
                     multiple={i.multiple}
@@ -275,7 +283,9 @@ export default function FormVerticle<T extends FieldValues>({
             render={() => {
               return (
                 <Box>
-                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <InputLabel className={classes.label}>
+                    {t(`${i.label}`)} {i.required && <span className={classes.error}>*</span>}
+                  </InputLabel>
                   <CheckboxGroup options={i.options ?? []} onChange={i.onChange} values={i.values} equalsFunc={i.equalsFunc} />
                   {!!error && (
                     <Typography component="p" className={classes.error} fontSize={12}>
@@ -301,7 +311,9 @@ export default function FormVerticle<T extends FieldValues>({
             render={() => {
               return (
                 <Box>
-                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <InputLabel className={classes.label}>
+                    {t(`${i.label}`)} {i.required && <span className={classes.error}>*</span>}
+                  </InputLabel>
                   <Select
                     isSearchable
                     isDisabled={i.disabled}
@@ -346,7 +358,9 @@ export default function FormVerticle<T extends FieldValues>({
 
               return (
                 <Box>
-                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <InputLabel className={classes.label}>
+                    {t(`${i.label}`)} {i.required && <span className={classes.error}>*</span>}
+                  </InputLabel>
                   <DatePicker
                     disabled={i.disabled}
                     picker={i.picker}
@@ -381,7 +395,9 @@ export default function FormVerticle<T extends FieldValues>({
             name={i.label as Path<T>}
             render={({ field }) => (
               <Box>
-                <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                <InputLabel className={classes.label}>
+                  {t(`${i.label}`)} {i.required && <span className={classes.error}>*</span>}
+                </InputLabel>
                 <Select
                   {...selectProps}
                   {...field}
@@ -416,7 +432,7 @@ export default function FormVerticle<T extends FieldValues>({
               return (
                 <Box>
                   <InputLabel htmlFor={i.label} className={classes.label}>
-                    {t(`${i.label}`)}
+                    {t(`${i.label}`)} {i.required && <span className={classes.error}>*</span>}
                   </InputLabel>
                   {/* @ts-ignore */}
                   <TextareaAutosize

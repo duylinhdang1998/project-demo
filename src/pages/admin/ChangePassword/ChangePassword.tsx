@@ -15,14 +15,17 @@ import { getNotifcation } from 'utils/getNotification';
 const fieldChanges: Field[] = [
   {
     id: uuidv4(),
+    required: true,
     label: 'currentPassword',
   },
   {
     id: uuidv4(),
+    required: true,
     label: 'newPassword',
   },
   {
     id: uuidv4(),
+    required: true,
     label: 'confirmPassword',
   },
 ];

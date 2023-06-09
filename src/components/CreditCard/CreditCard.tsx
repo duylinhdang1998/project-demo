@@ -42,11 +42,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const fields: SimpleField[] = [
-  { id: uuid(), label: 'card_number', type: 'text', placeholder: 'number' },
-  { id: uuid(), label: 'card_name', type: 'text', placeholder: 'name' },
-  { id: uuid(), label: 'card_valid', type: 'text', placeholder: 'expiry' },
-  { id: uuid(), label: 'card_cvc', type: 'text', placeholder: 'cvc' },
-  { id: uuid(), label: 'postal_code', type: 'text', placeholder: 'postal_code' },
+  { id: uuid(), label: 'card_number', type: 'text', required: true, placeholder: 'number' },
+  { id: uuid(), label: 'card_name', type: 'text', required: true, placeholder: 'name' },
+  { id: uuid(), label: 'card_valid', type: 'text', required: true, placeholder: 'expiry' },
+  { id: uuid(), label: 'card_cvc', type: 'text', required: true, placeholder: 'cvc' },
+  { id: uuid(), label: 'postal_code', type: 'text', required: true, placeholder: 'postal_code' },
 ];
 
 function CreditCard() {

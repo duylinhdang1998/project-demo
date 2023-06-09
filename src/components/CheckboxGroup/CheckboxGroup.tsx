@@ -1,6 +1,6 @@
-import { Stack, Checkbox, CheckboxProps, FormControlLabel } from '@mui/material';
+import { Checkbox, CheckboxProps, FormControlLabel, Stack } from '@mui/material';
 import { equals } from 'ramda';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useStyles } from './styles';
 
 export type OptionValue = any;
@@ -24,33 +24,27 @@ export const CheckboxGroup = ({ options, values, onChange, equalsFunc, horizonta
   const classes = useStyles();
 
   const [valuesState, setValuesState] = useState<OptionValue[]>([]);
-  const isStateChangedByResourcesProps = useRef(false);
 
   const handleChange =
     (value: OptionValue): CheckboxProps['onChange'] =>
     e => {
-      isStateChangedByResourcesProps.current = false;
       if (e.target.checked) {
-        setValuesState(state => state.concat(value));
+        const nextState = valuesState.concat(value);
+        setValuesState(nextState);
+        onChange?.(nextState);
       } else {
-        setValuesState(state => state.filter(item => !equalsFunc(item, value)));
+        const nextState = valuesState.filter(item => !equalsFunc(item, value));
+        setValuesState(nextState);
+        onChange?.(nextState);
       }
     };
 
   useEffect(() => {
     if (!equals(values, valuesState)) {
-      isStateChangedByResourcesProps.current = true;
       setValuesState(values);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
-
-  useEffect(() => {
-    if (!isStateChangedByResourcesProps.current) {
-      onChange(valuesState);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [valuesState]);
 
   return (
     <Stack direction={horizontal ? 'row' : 'column'} justifyContent="space-between" spacing={2} flexWrap="wrap">
