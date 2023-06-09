@@ -3,8 +3,7 @@ import { Box } from '@mui/system';
 import 'antd/lib/checkbox/style/css';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
-import { useStyles } from 'components/FormVerticle/styles';
-import { SelectDaysOfWeek, ALL_DAYS_OPTION_VALUE, options } from 'components/SelectDaysOfWeek/SelectDaysOfWeek';
+import { ALL_DAYS_OPTION_VALUE, SelectDaysOfWeek, options } from 'components/SelectDaysOfWeek/SelectDaysOfWeek';
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash-es';
 import { Field } from 'models/Field';
@@ -32,7 +31,6 @@ interface StepTwoProps {
   isLoading?: boolean;
 }
 export default function StepTwo({ onCancel, onNextStep, values, isLoading }: StepTwoProps) {
-  const classes = useStyles();
   const { t } = useTranslation(['routers', 'translation']);
 
   const {
@@ -44,7 +42,11 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
     setValue,
     trigger,
     watch,
-  } = useForm<StepTwoValues>();
+  } = useForm<StepTwoValues>({
+    defaultValues: {
+      days: [],
+    },
+  });
   const days = watch('days');
 
   const messages = useMemo(() => {
@@ -67,7 +69,7 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
         ...values,
         fromDate: toDayjs({ value: values.fromDate }),
         toDate: toDayjs({ value: values.toDate }),
-        days: values.days.length === options.length - 1 ? [ALL_DAYS_OPTION_VALUE, ...values.days] : values.days,
+        days: values.days.length === options.length - 1 ? [ALL_DAYS_OPTION_VALUE, ...values.days] : values.days ?? [],
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,7 +78,7 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
   return (
     <Box my="24px">
       <Typography color="#0C1132" fontWeight={700} fontSize={14} mb="10px">
-        {t('routers:days_of_the_week')} <span className={classes.error}>*</span>
+        {t('routers:days_of_the_week')}
       </Typography>
       <SelectDaysOfWeek
         control={control}
