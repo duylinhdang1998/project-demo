@@ -3,6 +3,7 @@ import { Box } from '@mui/system';
 import 'antd/lib/checkbox/style/css';
 import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
 import FormVerticle from 'components/FormVerticle/FormVerticle';
+import { useStyles } from 'components/FormVerticle/styles';
 import { SelectDaysOfWeek, ALL_DAYS_OPTION_VALUE, options } from 'components/SelectDaysOfWeek/SelectDaysOfWeek';
 import dayjs from 'dayjs';
 import { isEmpty } from 'lodash-es';
@@ -31,6 +32,7 @@ interface StepTwoProps {
   isLoading?: boolean;
 }
 export default function StepTwo({ onCancel, onNextStep, values, isLoading }: StepTwoProps) {
+  const classes = useStyles();
   const { t } = useTranslation(['routers', 'translation']);
 
   const {
@@ -74,7 +76,7 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
   return (
     <Box my="24px">
       <Typography color="#0C1132" fontWeight={700} fontSize={14} mb="10px">
-        {t('routers:days_of_the_week')}
+        {t('routers:days_of_the_week')} <span className={classes.error}>*</span>
       </Typography>
       <SelectDaysOfWeek
         control={control}
