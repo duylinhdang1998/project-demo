@@ -209,7 +209,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                         <Box>
                           <InputLabel className={classes.label}>
                             {labelTranslated}
-                            {isRequired && <span className={classes.error}>*</span>}
+                            <span className={classes.error}>*</span>
                           </InputLabel>
                           <Select
                             {...field}
@@ -241,7 +241,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                         <Box>
                           <InputLabel className={classes.label}>
                             {labelTranslated}
-                            {isRequired && <span className={classes.error}>*</span>}
+                            <span className={classes.error}>*</span>
                           </InputLabel>
                           <Select
                             {...field}
@@ -270,7 +270,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                         <Box>
                           <InputLabel className={classes.label}>
                             {labelTranslated}
-                            {isRequired && <span className={classes.error}>*</span>}
+                            <span className={classes.error}>*</span>
                           </InputLabel>
                           <InputNumber
                             className={classes.inputNumber}
