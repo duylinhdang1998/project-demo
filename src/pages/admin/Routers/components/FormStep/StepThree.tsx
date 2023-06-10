@@ -119,7 +119,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
 
   const handleOpenDialogEdit: CalendarProps['onSelectSlot'] = event => {
     if (route) {
-      const selected = event.slots[0];
+      const selected = new Date(event.slots[0].setHours(12));
       const isWorkingDay = route.dayActives.includes(DayInWeekMappingToString[selected.getDay()]);
       if (isWorkingDay && isDateClampRouterPeriod(selected.getTime())) {
         setSelectedSlot({

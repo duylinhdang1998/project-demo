@@ -54,7 +54,7 @@
   "SUBSCRIPTION_NOT_FOUND": 2300,
   "SUBSCRIPTION_PLAN_NOT_FOUND": 2301,
   "SUBSCRIPTION_NOT_ALLOW_UPDATED": 2302,
-  "SUBSCRIPTION_EXPIRED": 2303,
+  "SUBSCRIPTION_EXPIRED": "Subscription Expired: Please renew to continue accessing our services. Contact support for assistance",
   "SUBSCRIPTION_UPDATE_PAYMENT_ID_ERROR": 2304,
   "ROUTE_UPDATE_PRICE_ERROR": "Failed to update the price for the route. Please try again later or contact support for assistance.",
   "ROUTE_REMOVE_ERROR": "Failed to remove the route. Please try again later or contact support for assistance.",

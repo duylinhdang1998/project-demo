@@ -38,7 +38,7 @@ export interface Route {
   departurePoint: string;
   departureTime: string;
   endPeriod: null | string | number;
-  particularDays: Array<string | number>;
+  particularDays: Array<number>;
   particularPrices: ParticularPrice[];
   routeCode: string;
   routePoints: [RoutePoint] | RoutePoint[];

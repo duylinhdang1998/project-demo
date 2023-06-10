@@ -38,12 +38,15 @@ export default class ConfigureAxios {
     this.setRefreshToken = setRefreshToken;
     this.axiosInstance = axios.create(configure);
     this.axiosInstance.interceptors.response.use(response => {
-      if (
-        isResponseError(response) &&
-        (response.data.code === StringMappingToStatusCode['COMPANY_DOMAIN_IS_NOT_EXIST'] ||
-          response.data.code === StringMappingToStatusCode['COMPANY_NOT_FOUND'])
-      ) {
-        router.navigate('/domain-not-found');
+      if (isResponseError(response)) {
+        if (
+          response.data.code === StringMappingToStatusCode['COMPANY_DOMAIN_IS_NOT_EXIST'] ||
+          response.data.code === StringMappingToStatusCode['COMPANY_NOT_FOUND']
+        ) {
+          router.navigate('/domain-not-found');
+        } else if (response.data.code === StringMappingToStatusCode['SUBSCRIPTION_EXPIRED']) {
+          router.navigate('/account/subscription-package');
+        }
         return response;
       }
       return response;

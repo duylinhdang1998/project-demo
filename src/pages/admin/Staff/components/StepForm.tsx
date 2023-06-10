@@ -129,8 +129,8 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
         staffsActions.updateActiveDaysRequest({
           data: {
             presenceDay: formValues.days.filter(item => item !== ALL_DAYS_OPTION_VALUE) as Staff['presenceDay'],
-            periodFrom: dayjsToNumber(formValues.fromDate),
-            periodTo: dayjsToNumber(formValues.toDate),
+            periodFrom: dayjsToNumber(formValues.fromDate.set('h', 12)),
+            periodTo: dayjsToNumber(formValues.toDate.set('h', 12)),
             staffId: staff._id,
           },
           onSuccess() {

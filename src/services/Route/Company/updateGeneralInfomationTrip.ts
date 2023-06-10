@@ -4,6 +4,8 @@ import { Route, RoutePoint, RoutePointPriceType } from 'services/models/Route';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
+type ResponseData = true;
+
 export interface UpdateGeneralInfomationTrip {
   data: Pick<Route, 'vehicle' | 'departureTime' | 'departurePoint'> & {
     stopPoints: Array<
@@ -19,7 +21,7 @@ export interface UpdateGeneralInfomationTrip {
 }
 
 export const updateGeneralInfomationTrip = async ({ data, routeCode }: UpdateGeneralInfomationTrip) => {
-  const response: AxiosResponse<ResponseDetailSuccess<Route> | ResponseFailure> = await fetchAPI.request({
+  const response: AxiosResponse<ResponseDetailSuccess<ResponseData> | ResponseFailure> = await fetchAPI.request({
     method: 'PUT',
     url: `/v1.0/company/routes/${routeCode}/normal/update`,
     data: {
@@ -34,7 +36,7 @@ export const updateGeneralInfomationTrip = async ({ data, routeCode }: UpdateGen
     },
   });
   if (response.data.code === 0) {
-    return response.data as ResponseDetailSuccess<Route>;
+    return response.data as ResponseDetailSuccess<ResponseData>;
   }
   const response_ = response as AxiosResponse<ResponseFailure>;
   throw new ServiceException(response_.data.message, response_.data);

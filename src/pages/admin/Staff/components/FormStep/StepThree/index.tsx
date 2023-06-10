@@ -130,7 +130,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         }}
         onSelecting={() => false}
         onSelectSlot={event => {
-          const selected = event.slots[0];
+          const selected = new Date(event.slots[0].setHours(12));
           const isWorkingDay = staff.presenceDay.includes(DayInWeekMappingToString[selected.getDay()]);
           if (isWorkingDay && isDateClampStaffPeriod(selected.getTime())) {
             const isDeleteDayOffAction = staff.dayOff.find(item => isTimestampEqualDayInYear(item, selected.getTime()));

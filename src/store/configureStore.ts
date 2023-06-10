@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import env from 'env';
 import { Middleware, combineReducers } from 'redux';
+import logger from 'redux-logger';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
@@ -27,7 +28,7 @@ const reducers = persistReducer(
 );
 const middlewares: Middleware[] = [sagaMiddleware];
 if (env.isDevMode) {
-  // middlewares.push(logger);
+  middlewares.push(logger);
 }
 
 const store = configureStore({

@@ -284,8 +284,8 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
           data: {
             routeCode: route?.routeCode,
             dayActives: formValues.days.filter(item => item !== ALL_DAYS_OPTION_VALUE) as Route['dayActives'],
-            endPeriod: dayjsToNumber(formValues.toDate),
-            startPeriod: dayjsToNumber(formValues.fromDate),
+            endPeriod: dayjsToNumber(formValues.toDate.set('h', 12)),
+            startPeriod: dayjsToNumber(formValues.fromDate.set('h', 12)),
           },
           onSuccess() {
             toast(
