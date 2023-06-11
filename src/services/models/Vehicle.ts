@@ -17,6 +17,7 @@ export interface Vehicle {
   services: Array<Omit<ServiceSetting, 'icon'> & { icon: ServiceSetting['icon']['_id'] }>;
   updatedAt: string;
   vehicleEvents?: VehicleEvent[];
+  brandModel: string;
 }
 
 export interface VehicleEvent {
