@@ -120,13 +120,13 @@ export default function ChangePassword() {
                           }
                         : {}),
                     }}
-                    error={!!errors[i.label as (typeof keys)[number]]}
+                    error={
+                      isNewPasswordField ? !!errors[i.label as (typeof keys)[number]] && isSubmitted : !!errors[i.label as (typeof keys)[number]]
+                    }
                     messageErr={
-                      isNewPasswordField && isSubmitted ? (
-                        <FieldError fieldMessage={errors.newPassword?.message} fieldValue={watch('newPassword')} />
-                      ) : (
-                        get(errors, `${i.label}.message`, '')
-                      )
+                      isNewPasswordField
+                        ? isSubmitted && <FieldError fieldMessage={errors.newPassword?.message} fieldValue={watch('newPassword')} />
+                        : get(errors, `${i.label}.message`, '')
                     }
                   />
                 );
