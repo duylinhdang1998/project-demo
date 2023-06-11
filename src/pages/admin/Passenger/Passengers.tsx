@@ -95,9 +95,11 @@ export default function Passengers() {
     dispatch(
       passengersActions.getPassengersRequest({
         page: 0,
-        sorter: {},
+        sorter: {
+          createdAt: 'desc',
+        },
         searcher: {
-          lastName: { operator: 'contains', value: values.name },
+          name: { operator: 'contains', value: values.name },
           phone: { operator: 'contains', value: values.phone },
           email: { operator: 'contains', value: values.email },
         },
@@ -109,7 +111,9 @@ export default function Passengers() {
     dispatch(
       passengersActions.getPassengersRequest({
         page: 0,
-        sorter: {},
+        sorter: {
+          createdAt: 'desc',
+        },
         searcher: {},
       }),
     );

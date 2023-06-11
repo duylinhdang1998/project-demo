@@ -53,7 +53,9 @@ export default function Vehicles() {
     dispatch(
       vehiclesActions.getVehiclesRequest({
         page: 0,
-        sorter: {},
+        sorter: {
+          createdAt: 'desc',
+        },
         searcher: {
           registrationId: { value: values.registrationId, operator: 'contains' },
           brandModel: { value: values.vehicle, operator: 'contains' },
@@ -67,7 +69,9 @@ export default function Vehicles() {
       vehiclesActions.getVehiclesRequest({
         page: 0,
         searcher: {},
-        sorter: {},
+        sorter: {
+          createdAt: 'desc',
+        },
       }),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps

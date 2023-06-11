@@ -7,6 +7,7 @@ export interface Passenger {
   country: string;
   firstName: string;
   lastName: string;
+  name: string;
   phone: string;
   status: 'BLOCK' | 'ACTIVE';
   createdAt: string;

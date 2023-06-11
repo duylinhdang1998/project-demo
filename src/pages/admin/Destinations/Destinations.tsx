@@ -19,7 +19,9 @@ export default function Destinations() {
     run({
       page: 0,
       searcher: {},
-      sorter: {},
+      sorter: {
+        createdAt: 'desc',
+      },
     });
   });
 
@@ -40,7 +42,9 @@ export default function Destinations() {
               searcher: {
                 title: { value, operator: 'contains' },
               },
-              sorter: {},
+              sorter: {
+                createdAt: 'desc',
+              },
             });
             setSortOrder(undefined);
             setSearchValue(value);

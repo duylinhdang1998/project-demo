@@ -85,7 +85,9 @@ export default function Routers() {
             operator: 'eq',
           },
         },
-        sorter: {},
+        sorter: {
+          createdAt: 'desc',
+        },
       }),
     );
   };
@@ -95,7 +97,9 @@ export default function Routers() {
       routesActions.getRoutesRequest({
         page: 0,
         searcher: {},
-        sorter: {},
+        sorter: {
+          createdAt: 'desc',
+        },
       }),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps

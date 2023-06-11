@@ -52,7 +52,7 @@ export const SelectDestination = ({
         return (
           <Box>
             <InputLabel className={classes.label}>
-              {labelTranslated}{' '}{isRequired && <span className={classes.error}>*</span>}
+              {labelTranslated} {isRequired && <span className={classes.error}>*</span>}
             </InputLabel>
             <SingleSelectDecouplingData
               isDisabled={isDisabled}
