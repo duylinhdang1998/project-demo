@@ -12,6 +12,7 @@ import InputAuth from 'components/InputAuth/InputAuth';
 import SelectCountry from 'components/SelectCountry/SelectCountry';
 import TextWithLink from 'components/TextWithLink/TextWithLink';
 import { useStyles } from './styles';
+import { FieldError } from 'components/InputAuth/FieldError';
 
 interface Values {
   email: string;
@@ -27,7 +28,8 @@ function SignUp() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitted },
+    watch,
   } = useForm<Values>({
     defaultValues: {
       email: '',
@@ -83,7 +85,9 @@ function SignUp() {
         iconStart={PasswordIcon}
         type="password"
         error={!!errors.password}
-        messageErr={get(errors, 'password.message', '')}
+        messageErr={
+          isSubmitted ? <FieldError fieldMessage={errors.password?.message} fieldValue={watch('password')} /> : get(errors, 'password.message', '')
+        }
       />
       <Controller control={control} name="country" render={({ field }) => <SelectCountry {...field} />} />
       <Controller

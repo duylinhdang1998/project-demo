@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import { forgotPasswordSetNewPassword } from 'services/Auth/Company/forgotPasswordSetNewPassword';
 import { ServiceException } from 'services/utils/ServiceException';
 import { useStyles } from './styles';
+import { FieldError } from 'components/InputAuth/FieldError';
 
 export interface StepThreeValues {
   password: string;
@@ -29,8 +30,9 @@ export const StepThree = ({ session }: StepThreeProps) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitted },
     getValues,
+    watch,
   } = useForm<StepThreeValues>({
     defaultValues: { password: '', repassword: '' },
   });
@@ -68,7 +70,9 @@ export const StepThree = ({ session }: StepThreeProps) => {
           iconStart={PasswordIcon}
           type="password"
           error={!!errors.password}
-          messageErr={get(errors, 'password.message', '')}
+          messageErr={
+            isSubmitted ? <FieldError fieldMessage={errors.password?.message} fieldValue={watch('password')} /> : get(errors, 'password.message', '')
+          }
         />
         <InputAuth
           control={control}

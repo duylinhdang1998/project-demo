@@ -1,6 +1,6 @@
 import { InputAdornment, InputBase, InputBaseProps, InputLabel, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import EyeNonIcon from 'assets/images/eye-non.svg';
@@ -14,7 +14,7 @@ export interface InputAuthProps<T extends FieldValues> extends InputBaseProps {
   nameInput: UseControllerProps<T>['name'];
   control: UseControllerProps<T>['control'];
   rules?: UseControllerProps<T>['rules'];
-  messageErr?: string;
+  messageErr?: ReactNode;
 }
 
 function InputAuth<T extends FieldValues>({

@@ -11,6 +11,8 @@ import InputAuth from 'components/InputAuth/InputAuth';
 import { Field } from 'models/Field';
 import { useChangePassWord } from 'services/ChangePassword/changePassword';
 import { getNotifcation } from 'utils/getNotification';
+import { FieldError, PASSWORD_VALID_PATTERN_MESSAGE } from 'components/InputAuth/FieldError';
+import { isStrongPassword } from 'regexes/isStrongPassword';
 
 const fieldChanges: Field[] = [
   {
@@ -43,9 +45,10 @@ export default function ChangePassword() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitted },
     getValues,
     reset,
+    watch,
   } = useForm<Values>({
     defaultValues: {
       currentPassword: '',
@@ -91,25 +94,43 @@ export default function ChangePassword() {
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
             <Box>
-              {fieldChanges.map(i => (
-                <InputAuth
-                  control={control}
-                  nameInput={i.label as (typeof keys)[number]}
-                  labelText={t(`${i.label}`)}
-                  id={i.label}
-                  placeholder={t(`${i.label}`)}
-                  type="password"
-                  rules={{
-                    ...(i.label === 'confirmPassword'
-                      ? {
-                          validate: (val: string) => val === getValues('newPassword') || 'Confirm password does not match',
-                        }
-                      : {}),
-                  }}
-                  error={!!errors[i.label as (typeof keys)[number]]}
-                  messageErr={get(errors, `${i.label}.message`, '')}
-                />
-              ))}
+              {fieldChanges.map(i => {
+                const isNewPasswordField = i.label === 'newPassword';
+                const isConfirmPasswordField = i.label === 'confirmPassword';
+                return (
+                  <InputAuth
+                    control={control}
+                    nameInput={i.label as (typeof keys)[number]}
+                    labelText={t(`${i.label}`)}
+                    id={i.label}
+                    placeholder={t(`${i.label}`)}
+                    type="password"
+                    rules={{
+                      ...(isConfirmPasswordField
+                        ? {
+                            validate: (val: string) => val === getValues('newPassword') || 'Confirm password does not match',
+                          }
+                        : {}),
+                      ...(isNewPasswordField
+                        ? {
+                            pattern: {
+                              value: isStrongPassword,
+                              message: PASSWORD_VALID_PATTERN_MESSAGE,
+                            },
+                          }
+                        : {}),
+                    }}
+                    error={!!errors[i.label as (typeof keys)[number]]}
+                    messageErr={
+                      isNewPasswordField && isSubmitted ? (
+                        <FieldError fieldMessage={errors.newPassword?.message} fieldValue={watch('newPassword')} />
+                      ) : (
+                        get(errors, `${i.label}.message`, '')
+                      )
+                    }
+                  />
+                );
+              })}
             </Box>
             <ComboButton onCancel={handleCancel} onSave={handleSubmit(onSubmit)} isSaving={loading} />
           </Box>
