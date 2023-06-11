@@ -88,14 +88,16 @@ export default function FilterTicket<T extends FieldValues>({
           <Controller
             name={i.label as Path<T>}
             control={control}
-            render={({ field }) => (
-              <Box>
-                <InputLabel className={classes.label}>
-                  {t(`${i.label}`)} {i.required ? <span style={{ color: '#FF2727' }}>*</span> : null}{' '}
-                </InputLabel>
-                <InputBase fullWidth {...inputProps} {...field} placeholder={t(`${i.label}`)} className={classes.input} />
-              </Box>
-            )}
+            render={({ field }) => {
+              return (
+                <Box>
+                  <InputLabel className={classes.label}>
+                    {t(`${i.label}`)} {i.required ? <span style={{ color: '#FF2727' }}>*</span> : null}{' '}
+                  </InputLabel>
+                  <InputBase fullWidth {...inputProps} {...field} placeholder={t(`${i.label}`)} className={classes.input} />
+                </Box>
+              );
+            }}
           />
         );
       case 'select':

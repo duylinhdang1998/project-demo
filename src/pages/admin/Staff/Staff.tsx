@@ -67,7 +67,7 @@ export default function Staff() {
   useEffect(() => {
     reset({
       phone: !Array.isArray(currentSearcher.phone) ? currentSearcher.phone?.value : undefined,
-      name: !Array.isArray(currentSearcher.lastName) ? currentSearcher.lastName?.value : undefined,
+      name: !Array.isArray(currentSearcher.name) ? currentSearcher.name?.value : undefined,
       role: {
         role: !Array.isArray(currentSearcher.role) ? currentSearcher.role?.value : undefined,
       },
