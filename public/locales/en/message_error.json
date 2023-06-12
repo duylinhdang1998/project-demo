@@ -33,6 +33,7 @@
   "OFFICE_MANAGER_PHONE_DUPLICATE": "Sorry, the phone number you provided has already been used",
   "PACKAGE_SETTING_MANAGER_UPDATE_ERROR": "There was an error while updating the package settings. Please try again later or contact support if the problem persists",
   "PACKAGE_SETTING_NOT_FOUND": "The requested package settings could not be found. Please ensure that the package settings exist and the provided URL is correct",
+  "PACKAGE_SETTING_TITLE_EXISTED": "The specified package setting title already exists",
   "SERVICE_SETTING_MANAGER_UPDATE_ERROR": "An error occurred while attempting to update the service settings. Please try again or contact our support team for further assistance.",
   "SERVICE_SETTING_NOT_FOUND": "Service setting not found.",
   "PASSENGER_NOT_FOUND": "Passenger not found or they have been previously blocked.",
