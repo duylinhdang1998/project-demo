@@ -88,9 +88,5 @@
   "currentPassword": "current password",
   "newPassword": "new password",
   "confirmPassword": "confirm new password",
-  "password_must_at_lease_one_uppercase_letter": "Your password must contain at least one uppercase letter",
-  "password_must_at_lease_one_lowercase_letter": "Your password must contain at least one lowercase letter",
-  "password_must_at_lease_one_special_character": "Your password must contain at least one special character",
-  "password_must_at_lease_one_number_character": "Your password must contain at least one number",
-  "password_must_at_lease_8_character": "Your password must be at least 8 characters long"
+  "password_is_not_strong": "Please choose a password that is at least 8 characters long and includes an uppercase letter, a lowercase letter, a special character, and a number."
 }
