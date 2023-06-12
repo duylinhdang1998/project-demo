@@ -78,7 +78,7 @@ export const SingleSelectDecouplingData = <Model extends AnyObject>({
   return (
     <Select
       {...rest}
-      maxMenuHeight={options.length < 8 ? HEIGHT * options.length : undefined}
+      maxMenuHeight={options.length < 8 ? HEIGHT * options.length + 2 : undefined}
       isMulti={false}
       loadingMessage={({ inputValue }) => <Typography>{inputValue}</Typography>}
       components={{ MenuList: Options }}

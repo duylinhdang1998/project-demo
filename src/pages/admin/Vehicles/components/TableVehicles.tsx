@@ -73,7 +73,7 @@ function TableVehicles() {
               </Box>
               <Box mx="5px">
                 <Typography variant="body2" textAlign="left">
-                  {record.brand} - {record.model}
+                  {record.brandModel}
                 </Typography>
               </Box>
             </Box>

@@ -44,6 +44,11 @@ export const MultipleSelectDecouplingData = <Model extends AnyObject>({
   const menuListRef = useRef<FixedSizeList<ListChildComponentProps>>(null);
   const scrollValueRef = useRef<number | null>(null);
 
+  const options = useMemo(() => {
+    return data?.map(transformToOption) ?? [];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
   const optionValues = useMemo(() => {
     const selectedValues = data?.filter(dataItem => {
       return values?.find(item => equals(item, dataItem));
@@ -91,6 +96,7 @@ export const MultipleSelectDecouplingData = <Model extends AnyObject>({
   return (
     <Select
       {...rest}
+      maxMenuHeight={options.length < 8 ? HEIGHT * options.length + 2 : undefined}
       // @ts-ignore
       isMulti
       loadingMessage={({ inputValue }) => <Typography>{inputValue}</Typography>}
@@ -111,7 +117,7 @@ export const MultipleSelectDecouplingData = <Model extends AnyObject>({
           onChange?.([], actionMeta);
         }
       }}
-      options={data?.map(transformToOption) as any}
+      options={options as any}
       isLoading={loading || rest.isLoading}
       closeMenuOnSelect={false}
       hideSelectedOptions={false}
