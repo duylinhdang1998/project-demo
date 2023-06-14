@@ -161,16 +161,8 @@ export const UploadPDFResource = ({
     const file = antdFile as FileItem;
     if (file.status === 'uploading') {
       return (
-        <Stack direction="row" spacing={2} alignItems="center" py="10px" justifyContent="space-between">
-          <Stack direction="row" spacing={2} alignItems="center">
-            <FileIcon />
-            <Typography fontSize={14} color="#45485E">
-              {file.name}
-            </Typography>
-          </Stack>
-          <IconButton>
-            <CircularProgress />
-          </IconButton>
+        <Stack direction="row" spacing={2} alignItems="center" py="10px" justifyContent="center">
+          <CircularProgress />
         </Stack>
       );
     }
@@ -183,7 +175,7 @@ export const UploadPDFResource = ({
               {getNameOfResource(file.response)}
             </Typography>
             <Typography component="span" color="#858C93" fontSize={12}>
-              {dayjs(file.response.createdAt).format('DD/MM/YYYY')} <span>{filesize(file.response.size)}</span>
+              {dayjs(file.response.createdAt).format('Do, MMMM YYYY [at] hh:mm A')} <span>{filesize(file.response.size, { round: 2 })}</span>
             </Typography>
           </Box>
         </Stack>
