@@ -202,7 +202,7 @@ export default function DetailTicketPage() {
           left={t('ticketSales:departureTime')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dayjs(record.departureTime).format('MM/DD/YYYY - HH[H]mm')}
+              {dayjs(record.departureTime).format('DD/MM/YYYY - HH[H]mm')}
             </Typography>
           }
         />
@@ -236,7 +236,7 @@ export default function DetailTicketPage() {
           left={t('ticketSales:created_on')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dayjs(record.createdOn).format('MM/DD/YYYY - HH[H]mm')}
+              {dayjs(record.createdOn).format('DD/MM/YYYY - HH[H]mm')}
             </Typography>
           }
         />

@@ -20,7 +20,7 @@ function OrderDetailView({ data }: OrderDetailViewProps) {
     return {
       orderCode: data.orderCode,
       trip: [data.departurePoint, data.arrivalPoint],
-      date: dayjs(data.departureTime).format('MM/DD/YYYY - HH:mm'),
+      date: dayjs(data.departureTime).format('DD/MM/YYYY - HH:mm'),
       sender_name: `${data.sender.firstName} ${data.sender.lastName}`,
       sender_mobile: data.sender.mobile,
       recipent_name: `${data.recipent.firstName} ${data.recipent.lastName}`,

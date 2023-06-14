@@ -164,7 +164,7 @@ export default function ControlTicket() {
           />
           <Infomation left={t('ticketSales:lastName')} right={get(ticketSale?.passengers, 0)?.lastName} />
           <Infomation left={t('ticketSales:firstName')} right={get(ticketSale?.passengers, 0)?.firstName} />
-          <Infomation left={t('ticketSales:date_time')} right={dayjs(ticketSale?.departureTime).format('MM/DD/YYYY - HH[H]mm')} />
+          <Infomation left={t('ticketSales:date_time')} right={dayjs(ticketSale?.departureTime).format('DD/MM/YYYY - HH[H]mm')} />
           <Infomation
             left={t('ticketSales:number_of_pax')}
             right={
@@ -191,7 +191,7 @@ export default function ControlTicket() {
             }
           />
           <Infomation left={t('ticketSales:created_by')} right={UserRoleMappingToLabel[ticketSale.creatorType]} />
-          <Infomation left={t('ticketSales:created_on')} right={dayjs(ticketSale?.createdAt).format('MM/DD/YYYY - HH[H]mm')} />
+          <Infomation left={t('ticketSales:created_on')} right={dayjs(ticketSale?.createdAt).format('DD/MM/YYYY - HH[H]mm')} />
           <Infomation left={t('ticketSales:total')} right={`${ticketSale?.totalPrice}${getAppCurrencySymbol()}`} />
         </Box>
         {ticketSale.ticketStatus === 'PENDING' && (

@@ -114,7 +114,7 @@ export default function CreatePackageOrders() {
                       duration={t('ticketSales:duration_minutes', { duration: routeItem.durationTime })}
                       vehicle={routeItem.vehicle}
                       onSelect={() => handleSelect(routeItem)}
-                      dateTime={dayjs(routeItem.dateQuery).format('MM/DD/YYYY')}
+                      dateTime={dayjs(routeItem.dateQuery).format('DD/MM/YYYY')}
                     />
                   </Grid>
                 );

@@ -23,7 +23,7 @@ export const PaymentDetail = ({ record }: PaymentDetailProps) => {
           {t('ticketSales:created_on')}
         </Typography>
         <Typography fontSize={14} color={theme.palette.grey[300]} fontWeight="400">
-          {dayjs(record.createdOn).format('MM/DD/YYYY - HH[H]mm')}
+          {dayjs(record.createdOn).format('DD/MM/YYYY - HH[H]mm')}
         </Typography>
       </Box>
       <Box display="flex" justifyContent="space-between" alignItems="center">

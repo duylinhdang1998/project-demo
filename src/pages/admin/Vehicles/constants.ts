@@ -45,7 +45,7 @@ export const fieldsAddEvent: Field[] = [
     label: 'reminderDate',
     type: 'datetime',
     required: true,
-    format: 'MM/DD/YYYY HH:mm',
+    format: 'DD/MM/YYYY HH:mm',
     showTime: true,
   },
   {

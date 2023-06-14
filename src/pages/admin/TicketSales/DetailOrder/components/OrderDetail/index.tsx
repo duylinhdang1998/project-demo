@@ -73,7 +73,7 @@ function OrderDetails({ record }: OrderDetailsProps) {
           left={t('ticketSales:departureTime')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dayjs(record.departureTime).format('MM/DD/YYYY - HH[H]mm')}
+              {dayjs(record.departureTime).format('DD/MM/YYYY - HH[H]mm')}
             </Typography>
           }
         />

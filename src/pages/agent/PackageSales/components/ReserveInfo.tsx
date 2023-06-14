@@ -136,7 +136,7 @@ const ReserveInfo = ({ onBook, loading, routeDetail, control, errors, isEdit }: 
       <Typography variant="body2" component="p" marginBottom="16px" fontWeight={700}>
         {t('date')}
       </Typography>
-      <TextWithIcon icon={ClockSvg} color="#45485E" text={dayjs(get(location, 'state.departureTime', undefined)).format('MM/DD/YYYY HH:mm')} />
+      <TextWithIcon icon={ClockSvg} color="#45485E" text={dayjs(get(location, 'state.departureTime', undefined)).format('DD/MM/YYYY HH:mm')} />
       <Typography variant="body2" component="p" margin="16px 0" fontWeight={700}>
         {t('trip')}
       </Typography>

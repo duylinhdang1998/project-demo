@@ -93,7 +93,7 @@ export const TableTicketSales = () => {
         width: 145,
         sorter: () => 0,
         render: (_, row) => {
-          return <AntTableColumnDisplayAsTypograph>{dayjs(row.departureTime).format('MM/DD/YYYY - HH[H]mm')}</AntTableColumnDisplayAsTypograph>;
+          return <AntTableColumnDisplayAsTypograph>{dayjs(row.departureTime).format('DD/MM/YYYY - HH[H]mm')}</AntTableColumnDisplayAsTypograph>;
         },
       },
       {

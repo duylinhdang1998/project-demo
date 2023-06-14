@@ -82,7 +82,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
     if (!!values && !isEmpty(values)) {
       reset({
         ...values,
-        departureTime: toDayjs({ value: values.departureTime, format: 'MM-DD-YYY HH:mm' }),
+        departureTime: toDayjs({ value: values.departureTime, format: 'DD-MM-YYY HH:mm' }),
         routePoints: values.routePoints.map(routePoint => ({
           ...routePoint,
           duration: routePoint.duration,
@@ -131,7 +131,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
             type: 'datetime',
             showTime: true,
             required: true,
-            format: 'MM-DD-YYYY HH:mm',
+            format: 'DD-MM-YYYY HH:mm',
           },
         ]}
       />

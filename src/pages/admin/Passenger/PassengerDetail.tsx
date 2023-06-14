@@ -148,7 +148,7 @@ export default function PassengerDetail() {
                 {isEditAction ? t('translation:edit_type', { type: t('passenger:passenger').toLowerCase() }) : t('passenger:details').toLowerCase()}
               </Typography>
               <Typography color="rgba(71, 84, 97, 1)" fontSize="14px">
-                {t('passenger:account_created')} {dayjs(new Date(passenger?.createdAt as string)).format('MM/DD/YYYY')}
+                {t('passenger:account_created')} {dayjs(new Date(passenger?.createdAt as string)).format('DD/MM/YYYY')}
               </Typography>
             </Stack>
             <Divider sx={{ margin: '16px 0' }} />

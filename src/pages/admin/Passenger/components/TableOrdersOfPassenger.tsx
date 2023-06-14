@@ -72,7 +72,7 @@ function TableOrdersOfPassenger({ orders }: TableOrdersOfPassengerProps) {
                   ))}
                 </TableCell>
                 <TableCell className={classNames(classes.tableCell, classes.tableCellValue)} align="center">
-                  {dayjs(createdAt).format('MM/DD/YYYY HH:mm')}
+                  {dayjs(createdAt).format('DD/MM/YYYY HH:mm')}
                 </TableCell>
               </TableRow>
             ))}

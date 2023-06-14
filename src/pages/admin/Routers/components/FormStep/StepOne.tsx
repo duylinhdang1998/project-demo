@@ -71,7 +71,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
       reset({
         ...values,
         arrivalDuration: values.arrivalDuration,
-        departureTime: toDayjs({ value: values.departureTime, format: 'MM-DD-YYY HH:mm' }),
+        departureTime: toDayjs({ value: values.departureTime, format: 'DD-MM-YYY HH:mm' }),
         routePointId: values.routePointId,
       });
     }
@@ -119,7 +119,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             type: 'datetime',
             showTime: true,
             required: true,
-            format: 'MM-DD-YYYY HH:mm',
+            format: 'DD-MM-YYYY HH:mm',
           },
           {
             id: 'arrivalPoint',

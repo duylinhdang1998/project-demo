@@ -99,7 +99,7 @@ function TableEvents() {
         key: 'reminderDate',
         dataIndex: 'reminderDate',
         title: () => `${t('vehicles:date')}`,
-        render: (_, row) => <Typography variant="body2">{dayjs(row.reminderDate).format('MM/DD/YYYY')}</Typography>,
+        render: (_, row) => <Typography variant="body2">{dayjs(row.reminderDate).format('DD/MM/YYYY')}</Typography>,
         width: 135,
         align: 'center',
       },

@@ -7,7 +7,7 @@ export const fieldsSearch: Field[] = [
   { id: uuidv4(), required: undefined, label: 'from', type: 'text', placeholder: 'order_id' },
   { id: uuidv4(), required: undefined, label: 'recipient', type: 'text', placeholder: 'order_id' },
   { id: uuidv4(), required: undefined, label: 'orderId', type: 'text', placeholder: 'order_id' },
-  { id: uuidv4(), required: undefined, label: 'departureTime', type: 'date_range', format: 'MM/DD/YYYY - HH:mm' },
+  { id: uuidv4(), required: undefined, label: 'departureTime', type: 'date_range', format: 'DD/MM/YYYY - HH:mm' },
 ];
 
 export const agentFieldSearch: Field[] = [

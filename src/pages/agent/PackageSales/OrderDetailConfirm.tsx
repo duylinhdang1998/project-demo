@@ -137,7 +137,7 @@ export default function OrderDetailConfirm() {
           left={t('ticketSales:departureTime')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dayjs(dataDetails?.departureTime).format('MM/DD/YYYY - HH[H]mm')}
+              {dayjs(dataDetails?.departureTime).format('DD/MM/YYYY - HH[H]mm')}
             </Typography>
           }
         />
@@ -203,7 +203,7 @@ export default function OrderDetailConfirm() {
           left={t('ticketSales:created_on')}
           right={
             <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {dayjs(dataDetails?.createdAt).format('MM/DD/YYYY - HH[H]mm')}
+              {dayjs(dataDetails?.createdAt).format('DD/MM/YYYY - HH[H]mm')}
             </Typography>
           }
         />
