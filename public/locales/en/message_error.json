@@ -38,7 +38,7 @@
   "SERVICE_SETTING_NOT_FOUND": "Service setting not found.",
   "PASSENGER_NOT_FOUND": "Passenger not found or they have been previously blocked.",
   "PASSENGER_REGISTER_ERROR": "There was an error encountered during the passenger registration process. Please try again or contact our support team for assistance.",
-  "PASSENGER_VALIDATE_EMAIL_INVALID": "Please provide a valid email address for verification.",
+  "PASSENGER_VALIDATE_EMAIL_INVALID": "We regret to inform you that the email you have attempted to register is already associated with an existing account. Please choose a different email address to proceed with the registration process.",
   "PASSENGER_FORGOT_PASS_SESSION_INVALID": "Please initiate a new password recovery session.",
   "PASSENGER_FORGOT_PASS_OTP_NOT_EMPTY": "Please provide a valid OTP for password recovery.",
   "PASSENGER_FORGOT_PASS_OTP_INVALID": "Please provide a valid OTP for password recovery.",
