@@ -7,8 +7,6 @@ import { FormSearchValues } from './TicketSales';
 const paymentsStatus: Option[] = [
   { key: uuidv4(), value: EPaymentStatus.APPROVED, label: PaymentStatusLabelMapping[EPaymentStatus.APPROVED] },
   { key: uuidv4(), value: EPaymentStatus.CREATED, label: PaymentStatusLabelMapping[EPaymentStatus.CREATED] },
-  { key: uuidv4(), value: EPaymentStatus.PENDING, label: PaymentStatusLabelMapping[EPaymentStatus.PENDING] },
-  { key: uuidv4(), value: EPaymentStatus.VOIDED, label: PaymentStatusLabelMapping[EPaymentStatus.VOIDED] },
 ];
 
 export const fieldsSearch: FilterTicketProps<FormSearchValues>['fields'] = [

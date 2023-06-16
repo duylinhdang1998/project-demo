@@ -80,8 +80,11 @@ export default function TicketSales() {
             operator: 'contains',
           },
           paymentStatus: {
-            value: values.payment_status?.value,
-            operator: 'eq',
+            value:
+              values.payment_status?.value === EPaymentStatus.APPROVED
+                ? EPaymentStatus.APPROVED
+                : [EPaymentStatus.CREATED, EPaymentStatus.PENDING, EPaymentStatus.VOIDED],
+            operator: 'in',
           },
         },
         sorter: {
