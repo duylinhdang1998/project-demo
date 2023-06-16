@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Dialog, Stack, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
@@ -17,6 +17,7 @@ import ActionService from './ActionService';
 import { ParamsSettings } from 'services/models/Response';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
+import Button from 'components/Button/Button';
 
 const useStyles = makeStyles(() => ({
   icon: {
@@ -42,13 +43,23 @@ function TableServices({ dataSource, onRefresh, loading, onFilter, pagination, s
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { run: deleteService } = useDeleteService({
+  const [openDeleteService, setOpenDeleteService] = useState<ServiceSetting | null>(null);
+
+  const handleOpenDialogDelete = (record: ServiceSetting) => {
+    setOpenDeleteService(record);
+  };
+  const handleCloseDialogDelete = () => {
+    setOpenDeleteService(null);
+  };
+
+  const { loading: isDeleting, run: deleteService } = useDeleteService({
     onSuccess: data => {
       if (data.code === 0) {
         toast(<ToastCustom type="success" text={t('delete_service_success')} />, {
           className: 'toast-success',
         });
         onRefresh?.();
+        handleCloseDialogDelete();
       } else {
         toast(<ToastCustom type="error" text={t('delete_service_error)')} description={ServiceException.getMessageError(data.code)} />, {
           className: 'toast-error',
@@ -57,13 +68,61 @@ function TableServices({ dataSource, onRefresh, loading, onFilter, pagination, s
     },
   });
 
-  const handleDelete = (item: ServiceSetting) => () => {
+  const handleDelete = async (item: ServiceSetting) => {
     deleteService(item._id);
   };
 
   const handleEdit = (item: ServiceSetting) => () => {
     navigate('/admin/services-settings/' + item._id);
   };
+
+  const renderModalConfirmDelete = () => {
+    if (openDeleteService === null) {
+      return null;
+    }
+    return (
+      <Dialog open onClose={handleCloseDialogDelete}>
+        <Box padding="24px" style={{ maxWidth: 311, textAlign: 'center' }}>
+          <Typography marginBottom="24px" fontSize="16px" fontWeight={700}>
+            {t('translation:delete_record_title')}
+          </Typography>
+          <Typography marginBottom="30px" fontSize="14px" fontWeight={400}>
+            {t('translation:delete_record_message')}
+          </Typography>
+          <Stack direction="row" alignItems="center">
+            <Button
+              variant="outlined"
+              sx={{
+                margin: '0 6px',
+                color: '#1AA6EE',
+                padding: '10px 40px',
+              }}
+              onClick={handleCloseDialogDelete}
+            >
+              {t('translation:cancel')}
+            </Button>
+            <Button
+              loading={isDeleting}
+              sx={{
+                margin: '0 8px',
+                color: '#FFFFFF',
+                padding: '10px 40px',
+              }}
+              backgroundButton="rgba(255, 39, 39, 1)"
+              onClick={() => {
+                if (openDeleteService) {
+                  handleDelete(openDeleteService);
+                }
+              }}
+            >
+              {t('translation:delete')}
+            </Button>
+          </Stack>
+        </Box>
+      </Dialog>
+    );
+  };
+
   const columns: ColumnsType<ServiceSetting> = [
     {
       key: 'title',
@@ -87,7 +146,7 @@ function TableServices({ dataSource, onRefresh, loading, onFilter, pagination, s
     {
       key: 'action',
       title: () => t('service_action'),
-      render: (_, item) => <ActionService onDelete={handleDelete(item)} onEdit={handleEdit(item)} />,
+      render: (_, item) => <ActionService onDelete={() => handleOpenDialogDelete(item)} onEdit={handleEdit(item)} />,
       align: 'center',
     },
   ];
@@ -108,6 +167,7 @@ function TableServices({ dataSource, onRefresh, loading, onFilter, pagination, s
           onFilter?.({ page: getPaginationFromAntdTable({ pagination, extra }), sorter: getSorterParamsFromAntdTable({ sorter }), searcher: {} });
         }}
       />
+      {renderModalConfirmDelete()}
     </Box>
   );
 }
