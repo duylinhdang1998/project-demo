@@ -81,6 +81,8 @@ const useStyles = makeStyles(() => ({
     color: '#45485E',
     fontSize: '14px',
     marginBottom: '4px',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
   },
   fileInfomation: {
     color: '#858C93',
