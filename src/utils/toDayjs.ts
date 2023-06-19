@@ -8,5 +8,6 @@ interface AnyToMoment {
 }
 
 export const toDayjs = ({ value, format }: AnyToMoment) => {
-  return dayjs(value, format);
+  const valueInDayjs = dayjs(value, format);
+  return valueInDayjs.isValid() ? valueInDayjs : undefined;
 };

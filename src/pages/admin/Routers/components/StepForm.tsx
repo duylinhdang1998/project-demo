@@ -21,6 +21,8 @@ import StepOne, { StepOneValuesForOneStopTrip } from './FormStep/StepOne';
 import StepOneMultiple, { RoutePointValues, StepOneValuesForMultipleStopTrip } from './FormStep/StepOneMultiple';
 import StepThree from './FormStep/StepThree';
 import StepTwo, { StepTwoValues } from './FormStep/StepTwo';
+import { useNavigate } from 'react-router-dom';
+import { Dayjs } from 'dayjs';
 
 const steps = ['Step 1', 'Step 2', 'Step 3'];
 
@@ -47,9 +49,12 @@ interface StepFormProps {
 
 export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFormProps) {
   const [activeStep, setActiveStep] = useState(0);
-  const [stepOneValues, setStepOneValues] = useState<StepOneValuesForOneStopTrip | StepOneValuesForMultipleStopTrip | undefined>(undefined);
-  const [stepTwoValues, setStepTwoValues] = useState<StepTwoValues | undefined>(undefined);
+  const [stepOneValues, setStepOneValues] = useState<Partial<StepOneValuesForOneStopTrip> | Partial<StepOneValuesForMultipleStopTrip> | undefined>(
+    undefined,
+  );
+  const [stepTwoValues, setStepTwoValues] = useState<Partial<StepTwoValues> | undefined>(undefined);
 
+  const navigate = useNavigate();
   const { t } = useTranslation(['translation']);
   const classes = useStyles();
 
@@ -65,6 +70,9 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
       return;
     }
     setActiveStep(prevActiveStep => prevActiveStep - 1);
+    if (route) {
+      navigate(`/admin/routers/${route.tripType === 'ONE_TRIP' ? 'update-oneway' : 'update-multi'}/${route.routeCode}`);
+    }
   };
 
   const handleSubmitStep1ForOneStopTrip = (formValues: StepOneValuesForOneStopTrip) => {
@@ -328,7 +336,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             if (routePointValue.routeType === 'MAIN_ROUTE') {
               const value: RoutePointValues = {
                 stop_point: routePointValue.stopPoint,
-                duration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }),
+                duration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }) as Dayjs,
                 ecoAdult: routePointValue.ECOPrices?.ADULT as number,
                 ecoChildren: routePointValue.ECOPrices?.CHILD as number,
                 ecoStudent: routePointValue.ECOPrices?.STUDENT as number,
@@ -378,7 +386,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
             if (routePointValue.routeType === 'MAIN_ROUTE') {
               const value: RoutePointValues = {
                 stop_point: routePointValue.stopPoint,
-                duration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }),
+                duration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }) as Dayjs,
                 ecoAdult: routePointValue.ECOPrices?.ADULT as number,
                 ecoChildren: routePointValue.ECOPrices?.CHILD as number,
                 ecoStudent: routePointValue.ECOPrices?.STUDENT as number,
@@ -411,8 +419,8 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
       }
       setStepTwoValues({
         days: sourceToCopy.dayActives,
-        fromDate: toDayjs({ value: sourceToCopy.startPeriod }),
-        toDate: toDayjs({ value: sourceToCopy.endPeriod }),
+        fromDate: sourceToCopy.startPeriod ? toDayjs({ value: sourceToCopy.startPeriod }) : undefined,
+        toDate: sourceToCopy.endPeriod ? toDayjs({ value: sourceToCopy.endPeriod }) : undefined,
       });
     }
   }, [isMulti, sourceToCopy]);

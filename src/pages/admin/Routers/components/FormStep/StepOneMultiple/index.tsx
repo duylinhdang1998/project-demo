@@ -29,7 +29,7 @@ interface StepOneMultipleProps {
   onNextStep?: (values: StepOneValuesForMultipleStopTrip) => void;
   onCancel?: (values: StepOneValuesForMultipleStopTrip) => void;
   isEdit?: boolean;
-  values?: StepOneValuesForMultipleStopTrip;
+  values?: Partial<StepOneValuesForMultipleStopTrip>;
   isLoading?: boolean;
 }
 
@@ -83,7 +83,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
       reset({
         ...values,
         departureTime: toDayjs({ value: values.departureTime, format: 'DD-MM-YYY HH:mm' }),
-        routePoints: values.routePoints.map(routePoint => ({
+        routePoints: values.routePoints?.map(routePoint => ({
           ...routePoint,
           duration: routePoint.duration,
         })),

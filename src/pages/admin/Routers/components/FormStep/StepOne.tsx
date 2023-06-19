@@ -26,7 +26,7 @@ export interface StepOneProps {
   onNextStep?: (values: StepOneValuesForOneStopTrip) => void;
   onCancel?: (values: StepOneValuesForOneStopTrip) => void;
   isEdit?: boolean;
-  values?: StepOneValuesForOneStopTrip;
+  values?: Partial<StepOneValuesForOneStopTrip>;
   isLoading?: boolean;
 }
 

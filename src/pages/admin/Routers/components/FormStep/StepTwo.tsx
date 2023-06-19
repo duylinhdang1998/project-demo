@@ -27,7 +27,7 @@ export interface StepTwoValues {
 interface StepTwoProps {
   onCancel?: (values: StepTwoValues) => void;
   onNextStep?: (values: StepTwoValues) => void;
-  values?: StepTwoValues;
+  values?: Partial<StepTwoValues>;
   isLoading?: boolean;
 }
 export default function StepTwo({ onCancel, onNextStep, values, isLoading }: StepTwoProps) {
@@ -60,16 +60,18 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
   }, [t]);
 
   const onSubmit = (values: StepTwoValues) => {
+    console.log(111, values);
     onNextStep?.(values);
   };
 
   useEffect(() => {
+    console.log(333, values);
     if (!!values && !isEmpty(values)) {
       reset({
         ...values,
-        fromDate: toDayjs({ value: values.fromDate }),
-        toDate: toDayjs({ value: values.toDate }),
-        days: values.days.length === options.length - 1 ? [ALL_DAYS_OPTION_VALUE, ...values.days] : values.days ?? [],
+        fromDate: values.fromDate ? toDayjs({ value: values.fromDate }) : undefined,
+        toDate: values.toDate ? toDayjs({ value: values.toDate }) : undefined,
+        days: values.days?.length === options.length - 1 ? [ALL_DAYS_OPTION_VALUE, ...values.days] : values.days ?? [],
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

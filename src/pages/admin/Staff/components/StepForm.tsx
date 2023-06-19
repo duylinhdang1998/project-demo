@@ -33,8 +33,8 @@ interface StepFormProps {
 
 export default function StepForm({ isEditAction, startStep }: StepFormProps) {
   const [activeStep, setActiveStep] = useState(startStep);
-  const [stepOneValues, setStepOneValues] = useState<StepOneValues | undefined>(undefined);
-  const [stepTwoValues, setStepTwoValues] = useState<StepTwoValues | undefined>(undefined);
+  const [stepOneValues, setStepOneValues] = useState<Partial<StepOneValues> | undefined>(undefined);
+  const [stepTwoValues, setStepTwoValues] = useState<Partial<StepTwoValues> | undefined>(undefined);
 
   const { t } = useTranslation(['translation']);
   const classes = useStyles();

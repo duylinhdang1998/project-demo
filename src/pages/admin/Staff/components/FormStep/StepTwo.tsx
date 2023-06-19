@@ -27,7 +27,7 @@ export interface StepTwoValues {
 interface StepTwoProps {
   onCancel?: (values: StepTwoValues) => void;
   onNextStep?: (values: StepTwoValues) => void;
-  values?: StepTwoValues;
+  values?: Partial<StepTwoValues>;
   isLoading?: boolean;
 }
 export default function StepTwo({ onCancel, onNextStep, values, isLoading }: StepTwoProps) {
@@ -68,7 +68,7 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
         ...values,
         fromDate: toDayjs({ value: values.fromDate }),
         toDate: toDayjs({ value: values.toDate }),
-        days: values.days.length === options.length - 1 ? [ALL_DAYS_OPTION_VALUE, ...values.days] : values.days ?? [],
+        days: values.days?.length === options.length - 1 ? [ALL_DAYS_OPTION_VALUE, ...values.days] : values.days ?? [],
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
