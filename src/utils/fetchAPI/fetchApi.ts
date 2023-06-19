@@ -44,7 +44,10 @@ export default class ConfigureAxios {
           response.data.code === StringMappingToStatusCode['COMPANY_NOT_FOUND']
         ) {
           router.navigate('/domain-not-found');
-        } else if (response.data.code === StringMappingToStatusCode['SUBSCRIPTION_EXPIRED']) {
+        } else if (
+          response.data.code === StringMappingToStatusCode['SUBSCRIPTION_EXPIRED'] ||
+          response.data.code === StringMappingToStatusCode['COMPANY_SUBCRIPTION_IS_EXPIRED']
+        ) {
           router.navigate('/account/subscription-package');
         }
         return response;

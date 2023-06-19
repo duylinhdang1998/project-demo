@@ -99,9 +99,9 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
             {t('account:subscription_expire_warning_message', {
               totalTrialDays,
               totalRemainingTrialDays,
-              subscriptionName: subscriptions
-                .find(subscription => subscription.subscriptionType === currentSubscription?.subscriptionType)
-                ?.name?.toLowerCase(),
+              subscriptionName:
+                subscriptions.find(subscription => subscription.subscriptionType === currentSubscription?.subscriptionType)?.name?.toLowerCase() ??
+                currentSubscription?.subscriptionType.toLowerCase(),
             })}{' '}
             <Typography
               onClick={() => navigate('/account/subscription-package')}
