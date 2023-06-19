@@ -33,8 +33,8 @@ export const SelectArrivalPoint = ({
   const { t } = useTranslation(['translation', filterKey]);
   const classes = useStyles();
 
-  const error = errors && errors['arrivalPoint'];
-  const messageErr = messages && messages['arrivalPoint'];
+  const error = errors && errors[label];
+  const messageErr = messages && messages[label];
 
   const labelTranslated = filterKey ? t(`${filterKey}:${label}`) : t(label);
 

@@ -33,8 +33,8 @@ export const SelectDestination = ({
   const { t } = useTranslation(['translation', filterKey]);
   const classes = useStyles();
 
-  const error = errors && errors['destination'];
-  const messageErr = messages && messages['destination'];
+  const error = errors && errors[label];
+  const messageErr = messages && messages[label];
 
   const labelTranslated = filterKey ? t(`${filterKey}:${label}`) : t(label);
 

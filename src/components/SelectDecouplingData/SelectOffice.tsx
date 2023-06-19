@@ -33,8 +33,8 @@ export const SelectOffice = ({
   const { t } = useTranslation(['translation', filterKey]);
   const classes = useStyles();
 
-  const error = errors && errors['office'];
-  const messageErr = messages && messages['office'];
+  const error = errors && errors[label];
+  const messageErr = messages && messages[label];
 
   const labelTranslated = filterKey ? t(`${filterKey}:${label}`) : t(label);
 

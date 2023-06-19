@@ -33,8 +33,8 @@ export const SelectPackageSettings = ({
   const { t } = useTranslation(['translation', filterKey]);
   const classes = useStyles();
 
-  const error = errors && errors['packageSetting'];
-  const messageErr = messages && messages['packageSetting'];
+  const error = errors && errors[label];
+  const messageErr = messages && messages[label];
 
   const labelTranslated = filterKey ? t(`${filterKey}:${label}`) : t(label);
 

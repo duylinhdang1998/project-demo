@@ -33,8 +33,8 @@ export const SelectVehicle = ({
   const { t } = useTranslation(['translation', filterKey]);
   const classes = useStyles();
 
-  const error = errors && errors['vehicle'];
-  const messageErr = messages && messages['vehicle'];
+  const error = errors && errors[label];
+  const messageErr = messages && messages[label];
   const labelTranslated = filterKey ? t(`${filterKey}:${label}`) : t(label);
 
   return (
@@ -68,7 +68,7 @@ export const SelectVehicle = ({
               }}
               transformToOption={model => ({
                 key: model._id,
-                label: model.brand,
+                label: model.brandModel,
                 value: model,
               })}
               equalFunc={(model, input) => model._id === input?._id}

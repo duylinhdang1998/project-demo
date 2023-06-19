@@ -348,7 +348,7 @@ export default function FilterTicket<T extends FieldValues>({
                     }}
                     transformToOption={model => ({
                       key: model._id,
-                      label: model.brand,
+                      label: model.brandModel,
                       value: model,
                     })}
                     equalFunc={(model, input) => model._id === input?._id}

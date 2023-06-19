@@ -33,8 +33,10 @@ export const SelectDeparturePoint = ({
   const { t } = useTranslation(['translation', filterKey]);
   const classes = useStyles();
 
-  const error = errors && errors['departurePoint'];
-  const messageErr = messages && messages['departurePoint'];
+  const error = errors && errors[label];
+  const messageErr = messages && messages[label];
+
+  console.log(errors, error, messageErr);
 
   const labelTranslated = filterKey ? t(`${filterKey}:${label}`) : t(label);
 
@@ -52,7 +54,7 @@ export const SelectDeparturePoint = ({
         return (
           <Box>
             <InputLabel className={classes.label}>
-              {labelTranslated}{' '}{isRequired && <span className={classes.error}>*</span>}
+              {labelTranslated} {isRequired && <span className={classes.error}>*</span>}
             </InputLabel>
             <SingleSelectDecouplingData
               isDisabled={isDisabled}

@@ -40,8 +40,8 @@ export const SelectRole = ({
   const { t } = useTranslation(['translation', filterKey]);
   const classes = useStyles();
 
-  const error = errors && errors['role'];
-  const messageErr = messages && messages['role'];
+  const error = errors && errors[label];
+  const messageErr = messages && messages[label];
 
   const labelTranslated = filterKey ? t(`${filterKey}:${label}`) : t(label);
 
@@ -59,7 +59,7 @@ export const SelectRole = ({
         return (
           <Box>
             <InputLabel className={classes.label}>
-              {labelTranslated}{' '}{isRequired && <span className={classes.error}>*</span>}
+              {labelTranslated} {isRequired && <span className={classes.error}>*</span>}
             </InputLabel>
             <SingleSelectDecouplingData
               isSearchable
