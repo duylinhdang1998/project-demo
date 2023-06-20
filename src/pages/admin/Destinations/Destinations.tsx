@@ -40,7 +40,7 @@ export default function Destinations() {
             run({
               page: 0,
               searcher: {
-                title: { value, operator: 'contains' },
+                title: { value: value.trim(), operator: 'contains' },
               },
               sorter: {
                 createdAt: 'desc',
@@ -61,7 +61,7 @@ export default function Destinations() {
               page,
               sorter,
               searcher: {
-                title: { value: searchValue, operator: 'contains' },
+                title: { value: searchValue.trim(), operator: 'contains' },
               },
             });
           }}
