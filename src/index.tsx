@@ -1,4 +1,5 @@
 import 'antd/lib/dropdown/style/css';
+import 'antd/lib/message/style/css';
 import GlobalErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import { GlobalProvider } from 'context/GlobalContext';
 import 'index.css';

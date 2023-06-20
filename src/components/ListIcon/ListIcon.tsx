@@ -111,6 +111,7 @@ function ListIcon({ props, isEdit, defaultIcon }: Props) {
         className="avatar-uploader"
         multiple={false}
         showUploadList={false}
+        accept="image/png, image/jpeg, image/jpg"
         action="https://api.tbus.biz/v1.0/resources/image"
         headers={{
           Authorization: `${authSelector.token}`,
