@@ -111,7 +111,7 @@ function TableRoutes() {
       {
         key: 'routePoints.durationTime',
         dataIndex: 'routePoints.durationTime',
-        title: () => <Typography variant="headerTable">{t('routers:arrivalDuration')}</Typography>,
+        title: () => <Typography variant="headerTable">{t('routers:arrivalTime')}</Typography>,
         sorter: true,
         render: (_, row) => {
           const mainRoutes = row.routePoints.filter(routePoint => routePoint.routeType === 'MAIN_ROUTE');
@@ -120,8 +120,8 @@ function TableRoutes() {
         },
       },
       {
-        key: 'vehicle.brand',
-        dataIndex: 'vehicle.brand',
+        key: 'vehicle.brandModel',
+        dataIndex: 'vehicle.brandModel',
         title: () => <Typography variant="headerTable">{t('routers:vehicle')}</Typography>,
         sorter: true,
         render: (_, row) => (

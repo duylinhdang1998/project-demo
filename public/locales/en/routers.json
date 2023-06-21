@@ -14,6 +14,7 @@
   "multi_stops_trip": "Multi stops trip",
   "stop_address": "Stop address",
   "arrivalDuration": "Arrival duration time",
+  "arrivalTime": "Arrival time",
   "config_prices_per_passenger": "Configure prices per passenger",
   "eco_tickets": "ECO tickets",
   "vip_tickets": "VIP tickets",

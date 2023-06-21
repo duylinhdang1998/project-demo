@@ -119,7 +119,8 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
             type: 'datetime',
             showTime: true,
             required: true,
-            format: 'DD-MM-YYYY HH:mm',
+            picker: 'time',
+            format: 'HH:mm',
           },
           {
             id: 'arrivalPoint',
