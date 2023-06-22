@@ -60,12 +60,10 @@ export default function StepTwo({ onCancel, onNextStep, values, isLoading }: Ste
   }, [t]);
 
   const onSubmit = (values: StepTwoValues) => {
-    console.log(111, values);
     onNextStep?.(values);
   };
 
   useEffect(() => {
-    console.log(333, values);
     if (!!values && !isEmpty(values)) {
       reset({
         ...values,

@@ -68,8 +68,6 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
   const vehicle = watch('vehicle');
   const departurePoint = watch('departurePoint');
 
-  console.log(111, errors);
-
   const [open, setOpen] = useState(false);
 
   const handleClose = () => setOpen(false);

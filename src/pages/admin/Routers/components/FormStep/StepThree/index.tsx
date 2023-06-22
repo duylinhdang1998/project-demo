@@ -18,7 +18,7 @@ import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { useState } from 'react';
-import { Calendar, CalendarProps, dateFnsLocalizer, Event, SlotInfo, Views } from 'react-big-calendar';
+import { Calendar, CalendarProps, SlotInfo, Views, dateFnsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -27,13 +27,15 @@ import { toast } from 'react-toastify';
 import { DayInWeekMappingToString } from 'services/models/DayInWeek';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
-import { createArrayDateFromRange } from 'utils/createArrayDateFromRange';
 import { dateClamp } from 'utils/dateClamp';
 import { isTimestampEqualDayInYear } from 'utils/handleTimestampWithDayInYear';
 import { minutesToTimeString } from 'utils/timeStringNMinutes';
 import { toDayjs } from 'utils/toDayjs';
-import { EditPriceStepThreeOfForm, EditPriceStepThreeOfFormValues } from '../FormEditPrice/EditPriceStepThreeOfForm';
-import './styles.scss';
+import { EditPriceStepThreeOfForm, EditPriceStepThreeOfFormValues } from '../../FormEditPrice/EditPriceStepThreeOfForm';
+import '../styles.scss';
+import { getDayoffsEvent } from './utils/getDayoffsEvent';
+import { getDayoffsOutsidePresenceDay } from './utils/getDayoffsOutsidePresenceDay';
+import { getEditedDaysEvent } from './utils/getEditedDaysEvent';
 
 const locales = {
   'en-US': enUS,
@@ -413,31 +415,9 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           return {};
         }}
         events={[
-          ...route.dayoffs.map<Event>(dayoff => ({
-            start: new Date(dayoff),
-            end: new Date(dayoff),
-            allDay: true,
-            title: t('translation:off'),
-          })),
-          ...route.particularDays.map<Event>(particularDay => ({
-            start: new Date(particularDay),
-            end: new Date(particularDay),
-            title: t('translation:edited'),
-          })),
-          ...(typeof route.startPeriod === 'number' && typeof route.endPeriod === 'number'
-            ? createArrayDateFromRange({
-                start: route.startPeriod,
-                end: route.endPeriod,
-                isNeedIgnore(date) {
-                  return route.dayActives.includes(DayInWeekMappingToString[date.getDay()]);
-                },
-              }).map(item => ({
-                start: new Date(item),
-                end: new Date(item),
-                allDay: true,
-                title: t('translation:off'),
-              }))
-            : []),
+          ...getDayoffsEvent(route, t('translation:off')),
+          ...getDayoffsOutsidePresenceDay(route, t('translation:off')),
+          ...getEditedDaysEvent(route, t('translation:edited')),
         ]}
       />
       <ComboButton
