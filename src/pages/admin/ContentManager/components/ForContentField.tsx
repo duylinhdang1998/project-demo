@@ -10,16 +10,17 @@ import { getUrlOfResource } from 'utils/getUrlOfResource';
 export interface ForContentFieldProps {
   contentValueOfForm: string;
   onChange: (value: string) => void;
+  control?: any;
+  name?: any;
 }
 
 export const ForContentField = ({ contentValueOfForm, onChange }: ForContentFieldProps) => {
   return (
     <Editor
       apiKey={env.tinyMCEApiKey}
-      initialValue={contentValueOfForm}
-      onChange={e => {
-        const data = e.target.getContent();
-        onChange(data);
+      value={contentValueOfForm}
+      onEditorChange={value => {
+        onChange(value);
       }}
       init={{
         height: 500,

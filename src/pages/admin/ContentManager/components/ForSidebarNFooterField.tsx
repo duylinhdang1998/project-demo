@@ -19,10 +19,9 @@ export const ForSidebarNFooterField = ({ valueOfForm, onChange, variant }: ForSi
     >
       <Editor
         apiKey={env.tinyMCEApiKey}
-        initialValue={valueOfForm}
-        onChange={e => {
-          const data = e.target.getContent();
-          onChange(data);
+        value={valueOfForm}
+        onEditorChange={value => {
+          onChange(value);
         }}
         init={{
           height: variant === 'footer' ? 169 : 376,
