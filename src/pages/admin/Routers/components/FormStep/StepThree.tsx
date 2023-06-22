@@ -261,7 +261,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           <Divider sx={{ marginY: '16px' }} />
           <Box className={classes.selectedDate}>
             <CalendarIcon />
-            <span style={{ marginLeft: 4 }}>{dayjs(selectedSlot[0]).format('dddd, DD/MM/YYYY')}</span>
+            <span style={{ marginLeft: 4 }}>{dayjs(selectedSlot.date).format('dddd, DD/MM/YYYY')}</span>
           </Box>
           <EditPriceStepThreeOfForm control={control} errors={errors} priceOfRoutePoints={priceOfRoutePoints} setValue={setValue} trigger={trigger} />
           <ComboButton

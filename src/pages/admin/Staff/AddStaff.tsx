@@ -7,16 +7,18 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { selectStaffs } from 'store/staffs/selectors';
 import { staffsActions } from 'store/staffs/staffsSlice';
 import StepForm from './components/StepForm';
+import { clamp, isNumber } from 'lodash-es';
 
 export default function AddStaff() {
   const { t } = useTranslation(['translation, staff', 'message_error']);
 
   const { staffId } = useParams();
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { statusGetStaff, staff } = useAppSelector(selectStaffs);
   const dispatch = useAppDispatch();
@@ -32,6 +34,14 @@ export default function AddStaff() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditAction]);
 
+  useEffect(() => {
+    if (searchParams.has('step')) {
+      searchParams.delete('step');
+      setSearchParams(searchParams);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
   if (statusGetStaff === 'loading') {
     return <LoadingScreen />;
   }
@@ -40,6 +50,8 @@ export default function AddStaff() {
     return <EmptyScreen description={t('message_error:STAFF_NOT_FOUND')} />;
   }
 
+  const step = searchParams.get('step');
+  const startStep = isNumber(step) ? clamp(step, 0, 2) : 0;
   return (
     <FadeIn>
       <LayoutDetail
@@ -54,7 +66,7 @@ export default function AddStaff() {
       >
         <Box width="100%" display="flex" justifyContent="center">
           <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
-            <StepForm isEditAction={isEditAction} startStep={location.state?.isConsultSchedule ? 2 : 0} />
+            <StepForm isEditAction={isEditAction} startStep={step ? startStep : location.state?.isConsultSchedule ? 2 : 0} />
           </Box>
         </Box>
       </LayoutDetail>

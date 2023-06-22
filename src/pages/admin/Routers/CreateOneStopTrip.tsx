@@ -7,17 +7,19 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import LayoutDetail from 'layout/LayoutDetail';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { Route } from 'services/models/Route';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
 import StepForm from './components/StepForm';
+import { clamp, isNumber } from 'lodash-es';
 
 export default function CreateOneStopTrip() {
   const { t } = useTranslation(['routers', 'translation', 'message_error']);
 
   const { routeCode } = useParams();
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { statusGetRoute, route } = useAppSelector(selectRoutes);
   const dispatch = useAppDispatch();
@@ -34,6 +36,14 @@ export default function CreateOneStopTrip() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditAction]);
 
+  useEffect(() => {
+    if (searchParams.has('step')) {
+      searchParams.delete('step');
+      setSearchParams(searchParams);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
   if (statusGetRoute === 'loading') {
     return <LoadingScreen />;
   }
@@ -41,6 +51,9 @@ export default function CreateOneStopTrip() {
   if (isEditAction && (statusGetRoute === 'failure' || (!route && statusGetRoute === 'success'))) {
     return <EmptyScreen description={t('message_error:ROUTE_NOT_FOUND')} />;
   }
+
+  const step = searchParams.get('step');
+  const startStep = isNumber(step) ? clamp(step, 0, 2) : 0;
 
   return (
     <FadeIn>
@@ -50,7 +63,7 @@ export default function CreateOneStopTrip() {
       >
         <Box width="100%" display="flex" justifyContent="center">
           <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
-            <StepForm isEditAction={isEditAction} sourceToCopy={sourceToCopy} />
+            <StepForm startStep={startStep} isEditAction={isEditAction} sourceToCopy={sourceToCopy} />
           </Box>
         </Box>
       </LayoutDetail>

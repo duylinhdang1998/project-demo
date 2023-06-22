@@ -16,7 +16,7 @@ import { toDayjs } from 'utils/toDayjs';
 import { Staff } from 'services/models/Staff';
 import { omit } from 'lodash-es';
 import { ALL_DAYS_OPTION_VALUE } from 'components/SelectDaysOfWeek/SelectDaysOfWeek';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const steps = ['Step 1', 'Step 2', 'Step 3'];
 
@@ -40,6 +40,8 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
   const classes = useStyles();
   const navigate = useNavigate();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const { statusCreateStaff, statusUpdateStaffInfo, statusUpdateDayActive, staff } = useAppSelector(selectStaffs);
   const dispatch = useAppDispatch();
 
@@ -51,9 +53,10 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
     if (activeStep === 0) {
       return;
     } else {
-      setActiveStep(prevActiveStep => prevActiveStep - 1);
+      const nextStep = activeStep - 1;
+      setActiveStep(nextStep);
       if (staff) {
-        navigate(`/admin/staffs/${staff._id}`);
+        navigate(`/admin/staffs/${staff._id}?step=${nextStep}`);
       }
     }
   };
@@ -194,7 +197,11 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
               setStepOneValues(values);
               backStep();
             }}
-            onNextStep={handleSubmitStep1}
+            onNextStep={values => {
+              searchParams.delete('step');
+              setSearchParams(searchParams);
+              handleSubmitStep1(values);
+            }}
           />
         );
       case 1:
@@ -206,7 +213,11 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
               setStepTwoValues(values);
               backStep();
             }}
-            onNextStep={handleSubmitStep2}
+            onNextStep={values => {
+              searchParams.delete('step');
+              setSearchParams(searchParams);
+              handleSubmitStep2(values);
+            }}
           />
         );
       case 2:

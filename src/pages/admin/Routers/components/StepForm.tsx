@@ -2,14 +2,16 @@ import { Box, Divider, Step, StepLabel, Stepper, Typography } from '@mui/materia
 import { makeStyles } from '@mui/styles';
 import { ALL_DAYS_OPTION_VALUE } from 'components/SelectDaysOfWeek/SelectDaysOfWeek';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { Dayjs } from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Route } from 'services/models/Route';
 import { CreateMultipleStopTrip } from 'services/Route/Company/createMultipleStopTrip';
 import { CreateOneStopTrip } from 'services/Route/Company/createOneStopTrip';
+import { Route } from 'services/models/Route';
 import { UpdateTripRequest } from 'store/routes/actions/UpdateTrip';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
@@ -21,8 +23,6 @@ import StepOne, { StepOneValuesForOneStopTrip } from './FormStep/StepOne';
 import StepOneMultiple, { RoutePointValues, StepOneValuesForMultipleStopTrip } from './FormStep/StepOneMultiple';
 import StepThree from './FormStep/StepThree';
 import StepTwo, { StepTwoValues } from './FormStep/StepTwo';
-import { useNavigate } from 'react-router-dom';
-import { Dayjs } from 'dayjs';
 
 const steps = ['Step 1', 'Step 2', 'Step 3'];
 
@@ -45,18 +45,22 @@ interface StepFormProps {
   isMulti?: boolean;
   isEditAction?: boolean;
   sourceToCopy?: Route;
+  startStep: number;
 }
 
-export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFormProps) {
-  const [activeStep, setActiveStep] = useState(0);
+export default function StepForm({ isMulti, isEditAction, sourceToCopy, startStep }: StepFormProps) {
+  const [activeStep, setActiveStep] = useState(startStep);
   const [stepOneValues, setStepOneValues] = useState<Partial<StepOneValuesForOneStopTrip> | Partial<StepOneValuesForMultipleStopTrip> | undefined>(
     undefined,
   );
   const [stepTwoValues, setStepTwoValues] = useState<Partial<StepTwoValues> | undefined>(undefined);
 
   const navigate = useNavigate();
+
   const { t } = useTranslation(['translation']);
   const classes = useStyles();
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { statusCreateRoute, statusUpdateRoute, statusUpdateDayActive, route } = useAppSelector(selectRoutes);
   const dispatch = useAppDispatch();
@@ -69,9 +73,10 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
     if (activeStep === 0) {
       return;
     }
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
+    const nextStep = activeStep - 1;
+    setActiveStep(nextStep);
     if (route) {
-      navigate(`/admin/routers/${route.tripType === 'ONE_TRIP' ? 'update-oneway' : 'update-multi'}/${route.routeCode}`);
+      navigate(`/admin/routers/${route.tripType === 'ONE_TRIP' ? 'update-oneway' : 'update-multi'}/${route.routeCode}?step=${nextStep}`);
     }
   };
 
@@ -451,7 +456,11 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
               setStepOneValues(values);
               backStep();
             }}
-            onNextStep={handleSubmitStep1ForOneStopTrip}
+            onNextStep={values => {
+              searchParams.delete('step');
+              setSearchParams(searchParams);
+              handleSubmitStep1ForOneStopTrip(values);
+            }}
           />
         );
       case 1:
@@ -463,7 +472,11 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy }: StepFo
               setStepTwoValues(values);
               backStep();
             }}
-            onNextStep={handleSubmitStep2}
+            onNextStep={values => {
+              searchParams.delete('step');
+              setSearchParams(searchParams);
+              handleSubmitStep2(values);
+            }}
           />
         );
       case 2:
