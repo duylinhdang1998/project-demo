@@ -107,6 +107,14 @@ export default function EditPriceARoutePointNCreateTrip({ control, errors, isMul
                               name: t('routers:prices').toLowerCase(),
                             }),
                           },
+                          validate: (value: string) => {
+                            const value_ = Number(value);
+                            if (isNaN(value_) || value_ <= 0) {
+                              return t('translation:error_required', {
+                                name: t('routers:prices').toLowerCase(),
+                              });
+                            }
+                          },
                         }}
                       />
                     </TableCell>

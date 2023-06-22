@@ -46,7 +46,19 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
     watch,
   } = useForm<StepOneValuesForMultipleStopTrip>({
     defaultValues: {
-      routePoints: [],
+      routePoints: [
+        {
+          duration: undefined,
+          ecoAdult: undefined,
+          ecoChildren: undefined,
+          ecoStudent: undefined,
+          routePointId: undefined,
+          stop_point: undefined,
+          vipAdult: undefined,
+          vipChildren: undefined,
+          vipStudent: undefined,
+        },
+      ],
     },
   });
   const { fields, append, remove } = useFieldArray({
@@ -55,6 +67,8 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
   });
   const vehicle = watch('vehicle');
   const departurePoint = watch('departurePoint');
+
+  console.log(111, errors);
 
   const [open, setOpen] = useState(false);
 
@@ -131,7 +145,8 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
             type: 'datetime',
             showTime: true,
             required: true,
-            format: 'DD-MM-YYYY HH:mm',
+            picker: 'time',
+            format: 'HH:mm',
           },
         ]}
       />

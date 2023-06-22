@@ -26,6 +26,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { getListDestinations } from 'services/Destinations/getListDestinations';
 import { disabledDate } from 'utils/disableDate';
+import { timeStringToMinutes } from 'utils/timeStringNMinutes';
 import { RoutePointValues, StepOneValuesForMultipleStopTrip } from '../..';
 import { useStyles } from './styles';
 
@@ -124,7 +125,7 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
               <Typography fontSize={14} fontWeight={700}>
                 {t('routers:stop')} {index + 1}
               </Typography>
-              {!isEdit && (
+              {!isEdit && routePoints.length > 1 && (
                 <TextWithIcon icon={TrashSvg} text={t('translation:delete')} color="#FF2727" onClick={() => handleOpenDialogDelete(index)} />
               )}
             </Stack>
@@ -134,6 +135,9 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
                   <Controller
                     control={control}
                     name={routePointPathInFormValues}
+                    rules={{
+                      required: true,
+                    }}
                     render={() => {
                       const labelTranslated = t('routers:stop_point');
                       const error = get(errors, routePointPathInFormValues);
@@ -185,10 +189,23 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
                   <Controller
                     control={control}
                     name={durationPathInFormValues}
+                    rules={{
+                      required: true,
+                      validate: (value: dayjs.Dayjs | null) => {
+                        if (!value) {
+                          return;
+                        }
+                        const minutes = timeStringToMinutes(value.format('HH:mm'));
+                        if (minutes <= 0) {
+                          return t('routers:duration_time_invalid');
+                        }
+                      },
+                    }}
                     render={({ field }) => {
                       const labelTranslated = t('routers:arrivalDuration');
                       const error = get(errors, durationPathInFormValues);
                       const messageErr = t('translation:error_required', { name: labelTranslated.toLowerCase() });
+
                       return (
                         <Box>
                           <InputLabel htmlFor={`duration-${f.id}`} className={formVerticleClasses.label}>
