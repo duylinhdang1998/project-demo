@@ -3,13 +3,13 @@ import { Route } from 'services/models/Route';
 import { isTimestampEqualDayInYear } from 'utils/handleTimestampWithDayInYear';
 
 export const getEditedDaysEvent = (route: Route, title: string) => {
-  return route.particularDays.reduce<Event[]>((result, dayoff) => {
-    if (route.dayoffs.find(dayoff => isTimestampEqualDayInYear(dayoff, dayoff))) {
+  return route.particularDays.reduce<Event[]>((result, particularDay) => {
+    if (route.dayoffs.find(dayoff => isTimestampEqualDayInYear(particularDay, dayoff))) {
       return result;
     } else {
       return result.concat({
-        start: new Date(dayoff),
-        end: new Date(dayoff),
+        start: new Date(particularDay),
+        end: new Date(particularDay),
         allDay: true,
         title,
       });
