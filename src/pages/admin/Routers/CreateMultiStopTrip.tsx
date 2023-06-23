@@ -44,8 +44,9 @@ export default function CreateMultiStopTrip() {
     return <EmptyScreen description={t('message_error:ROUTE_NOT_FOUND')} />;
   }
 
-  const step = searchParams.get('step');
+  const step = Number(searchParams.get('step'));
   const startStep = isNumber(step) ? clamp(step, 0, 2) : 0;
+
   return (
     <FadeIn>
       <LayoutDetail

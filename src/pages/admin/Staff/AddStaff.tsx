@@ -42,8 +42,9 @@ export default function AddStaff() {
     return <EmptyScreen description={t('message_error:STAFF_NOT_FOUND')} />;
   }
 
-  const step = searchParams.get('step');
+  const step = Number(searchParams.get('step'));
   const startStep = isNumber(step) ? clamp(step, 0, 2) : 0;
+
   return (
     <FadeIn>
       <LayoutDetail

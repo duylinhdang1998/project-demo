@@ -50,6 +50,7 @@ interface StepFormProps {
 
 export default function StepForm({ isMulti, isEditAction, sourceToCopy, startStep }: StepFormProps) {
   const [activeStep, setActiveStep] = useState(startStep);
+
   const [stepOneValues, setStepOneValues] = useState<Partial<StepOneValuesForOneStopTrip> | Partial<StepOneValuesForMultipleStopTrip> | undefined>(
     undefined,
   );
