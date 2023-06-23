@@ -19,7 +19,7 @@ export default function CreateMultiStopTrip() {
 
   const { routeCode } = useParams();
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const { statusGetRoute, route } = useAppSelector(selectRoutes);
   const dispatch = useAppDispatch();
@@ -35,14 +35,6 @@ export default function CreateMultiStopTrip() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditAction]);
-
-  useEffect(() => {
-    if (searchParams.has('step')) {
-      searchParams.delete('step');
-      setSearchParams(searchParams);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
 
   if (statusGetRoute === 'loading') {
     return <LoadingScreen />;

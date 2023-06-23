@@ -18,7 +18,7 @@ export default function AddStaff() {
 
   const { staffId } = useParams();
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const { statusGetStaff, staff } = useAppSelector(selectStaffs);
   const dispatch = useAppDispatch();
@@ -33,14 +33,6 @@ export default function AddStaff() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditAction]);
-
-  useEffect(() => {
-    if (searchParams.has('step')) {
-      searchParams.delete('step');
-      setSearchParams(searchParams);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
 
   if (statusGetStaff === 'loading') {
     return <LoadingScreen />;

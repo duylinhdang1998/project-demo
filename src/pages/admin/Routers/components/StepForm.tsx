@@ -76,7 +76,10 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
     const nextStep = activeStep - 1;
     setActiveStep(nextStep);
     if (route) {
-      navigate(`/admin/routers/${route.tripType === 'ONE_TRIP' ? 'update-oneway' : 'update-multi'}/${route.routeCode}?step=${nextStep}`);
+      const nextUrl = `/admin/routers/${route.tripType === 'ONE_TRIP' ? 'update-oneway' : 'update-multi'}/${route.routeCode}?step=${nextStep}`;
+      navigate(nextUrl, {
+        replace: true,
+      });
     }
   };
 
