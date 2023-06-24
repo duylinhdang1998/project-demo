@@ -11,8 +11,8 @@ export const getTrips = async (
       tripType: values.tripType,
       page,
       searcher: {
-        departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
-        stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
+        departurePoint: { value: values.departurePoint?.value, operator: 'contains' },
+        stopPoint: { value: values.arrivalPoint?.value, operator: 'contains' },
         departureTime: {
           value: values.departureTime && dayjs.utc(values.departureTime).set('second', 0).unix() * 1000,
           operator: 'eq',
@@ -41,8 +41,8 @@ export const getTripPackages = async (
       tripType: values.tripType,
       page,
       searcher: {
-        departurePoint: { value: values.departurePoint?.value, operator: 'eq' },
-        stopPoint: { value: values.arrivalPoint?.value, operator: 'eq' },
+        departurePoint: { value: values.departurePoint?.value, operator: 'contains' },
+        stopPoint: { value: values.arrivalPoint?.value, operator: 'contains' },
         departureTime: {
           value: values.departureTime && dayjs.utc(values.departureTime).set('second', 0).unix() * 1000,
           operator: 'eq',

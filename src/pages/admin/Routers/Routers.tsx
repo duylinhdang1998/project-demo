@@ -70,11 +70,11 @@ export default function Routers() {
         searcher: {
           departurePoint: {
             value: values.departurePoints?.value,
-            operator: 'eq',
+            operator: 'contains',
           },
           'routePoints.stopPoint': {
             value: values.arrivalPoints?.value,
-            operator: 'eq',
+            operator: 'contains',
           },
           departureTime: {
             value: values.departureTime ? dayjsToString(values.departureTime, 'HH:mm') : undefined,

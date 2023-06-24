@@ -59,11 +59,11 @@ export default function TicketSales() {
         searcher: {
           departurePoint: {
             value: values.departurePoint?.value,
-            operator: 'eq',
+            operator: 'contains',
           },
           arrivalPoint: {
             value: values.arrivalPoint?.value,
-            operator: 'eq',
+            operator: 'contains',
           },
           departureTime: [
             {

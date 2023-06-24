@@ -24,6 +24,7 @@ export const getRoutes = async ({ page, sorter, searcher }: GetRoutes): Promise<
       ...getSearchParams<Route>({
         ...searcher,
         status: {
+          value: 'ACTIVE',
           operator: 'eq',
         },
       }),

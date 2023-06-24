@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useRequest } from 'ahooks';
+import { Empty } from 'antd';
 import { Option } from 'models/Field';
 import { useMemo } from 'react';
 import Select, { ActionMeta, GroupBase, Props as SelectProps, PropsValue, SelectComponentsConfig } from 'react-select';
@@ -61,14 +62,34 @@ export const SingleSelectDecouplingData = <Model extends AnyObject>({
     const initialOffset = options.indexOf(value) * HEIGHT;
 
     if (!Array.isArray(children)) {
-      return null;
+      return (
+        <Box padding="8px">
+          <Empty />
+        </Box>
+      );
     }
 
     return (
-      <List width="100%" height={maxHeight} itemCount={children.length} itemSize={HEIGHT} initialScrollOffset={initialOffset}>
+      <List
+        width="100%"
+        height={children.length < 8 ? HEIGHT * children.length + 2 : maxHeight}
+        itemCount={children.length}
+        itemSize={HEIGHT}
+        initialScrollOffset={initialOffset}
+      >
         {({ index, style }) => (
           <Box style={style}>
-            <Typography sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{children[index]}</Typography>
+            <Typography
+              sx={{
+                div: {
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                  overflow: 'hidden',
+                },
+              }}
+            >
+              {children[index]}
+            </Typography>
           </Box>
         )}
       </List>
