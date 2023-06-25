@@ -49,7 +49,7 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, dur
   return (
     <Box className={mainClasses.root} padding="24px 16px" marginBottom="20px">
       <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" spacing={2} alignItems="flex-start">
-        <Box className="ticket_sales_custom_timeline_container">
+        <Box flex="1 1 30%" className="ticket_sales_custom_timeline_container">
           <Timeline mode="left" className={mainClasses.timeline}>
             <Timeline.Item color="#333" label={timeStart}>
               {placeStart}
