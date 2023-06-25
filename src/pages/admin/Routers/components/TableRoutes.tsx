@@ -126,7 +126,7 @@ function TableRoutes() {
         sorter: true,
         render: (_, row) => (
           <Box>
-            <Typography variant="body2">{row.vehicle?.brand}</Typography>
+            <Typography variant="body2">{row.vehicle?.brandModel}</Typography>
             <Typography variant="body2">{row.vehicle?.registrationId}</Typography>
           </Box>
         ),
