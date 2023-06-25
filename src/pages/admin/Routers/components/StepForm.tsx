@@ -121,7 +121,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
             toast(
               <ToastCustom
                 type="success"
-                text={t('translation:add_type_success', {
+                text={t('translation:edit_type_success', {
                   type: t('routers:trip').toLowerCase(),
                 })}
               />,
@@ -230,7 +230,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
             toast(
               <ToastCustom
                 type="success"
-                text={t('translation:add_type_success', {
+                text={t('translation:edit_type_success', {
                   type: t('routers:trip').toLowerCase(),
                 })}
               />,
