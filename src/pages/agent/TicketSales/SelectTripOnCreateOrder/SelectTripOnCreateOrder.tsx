@@ -53,6 +53,8 @@ export const SelectTripOnCreateOrder = () => {
   watch('departurePoint');
   watch('arrivalPoint');
 
+  console.log(watch());
+
   const { run, loading, data } = useRequest(getTrips, { manual: true });
 
   const [currentPage, setCurrentPage] = useState(1);

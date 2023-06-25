@@ -284,7 +284,7 @@ export default function FilterTicket<T extends FieldValues>({
                       label: model.value.title,
                       value: model,
                     })}
-                    equalFunc={(model, value) => model.value === value?.value}
+                    equalFunc={isEqual}
                     value={field.value}
                     styles={customStyles as any}
                     placeholder={t(`${i.label}`)}
