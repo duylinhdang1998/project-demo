@@ -9,7 +9,7 @@ import fetchAPI from 'utils/fetchAPI';
 export interface SearchRoutes {
   tripType: RouteOfTicketSale['tripType'];
   page: Pagination;
-  searcher: Searcher<RouteOfTicketSale, 'quantity' | 'returnTime' | 'departureTime' | 'merchandises'>;
+  searcher: Searcher<RouteOfTicketSale, 'quantity' | 'returnTime' | 'departureTime' | 'merchandises' | 'stopPointCode' | 'departurePointCode'>;
 }
 
 const RECORDS_PER_PAGE = 4;

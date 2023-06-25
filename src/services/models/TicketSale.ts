@@ -54,6 +54,7 @@ export interface RouteOfTicketSale {
   company: Route['company'];
   routeCode: Route['routeCode'];
   departurePoint: RoutePoint['departurePoint'];
+  departurePointCode: RoutePoint['departurePointCode'];
   stopPoint: RoutePoint['stopPoint'];
   stopPointCode: RoutePoint['stopPointCode'];
   durationTime: RoutePoint['durationTime'];

@@ -15,6 +15,7 @@ export interface RoutePoint {
   company: string;
   createdAt: string;
   departurePoint: string;
+  departurePointCode: string;
   durationTime: number;
   isChanged: boolean;
   routeCode: string;
