@@ -45,7 +45,7 @@ export const getTripPackages = async (
         stopPoint: { value: values.arrivalPoint?.value, operator: 'contains' },
         departureTime: {
           value: values.departureTime && dayjs.utc(values.departureTime).set('second', 0).unix() * 1000,
-          operator: 'eq',
+          operator: 'gte',
         },
         merchandises: {
           value: values.merchandises?.value,

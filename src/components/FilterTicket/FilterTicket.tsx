@@ -9,15 +9,15 @@ import { Field } from 'models/Field';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
-import { UserRole } from 'services/models/UserRole';
+import { getListDestinations } from 'services/Destinations/getListDestinations';
 import { getOffices } from 'services/OfficesManager/Company/getOffices';
+import { getPackageSettings } from 'services/PackageSetting/Company/getPackageSettings';
 import { getListArrivals } from 'services/Route/Company/getListArrivals';
 import { getListDepartures } from 'services/Route/Company/getListDepartures';
 import { getVehicles } from 'services/Vehicle/Company/getVehicles';
-import { customStyles } from './customStyles';
-import { getListDestinations } from 'services/Destinations/getListDestinations';
+import { UserRole } from 'services/models/UserRole';
 import { disabledDate } from 'utils/disableDate';
-import { getPackageSettings } from 'services/PackageSetting/Company/getPackageSettings';
+import { customStyles } from './customStyles';
 
 export interface FilterTicketProps<T extends FieldValues> {
   fields?: Array<Field & { numberColumn?: number }>;
@@ -81,6 +81,7 @@ export default function FilterTicket<T extends FieldValues>({
 }: FilterTicketProps<T>) {
   const classes = useStyles();
   const { t } = useTranslation(filterKey);
+
   const renderUIFields = (i: Field) => {
     switch (i.type) {
       case 'text':

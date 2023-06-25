@@ -6,6 +6,7 @@ import { Field } from 'models/Field';
 import { Control } from 'react-hook-form';
 import { v4 } from 'uuid';
 import { SelectTripFormValues } from '../SelectTripOnCreateOrder';
+import { useMemo } from 'react';
 
 const getFields = (tripType: SelectTripFormValues['tripType']): Field[] => {
   const fields: Field[] = [
@@ -37,11 +38,15 @@ export interface FilterRoutesBySearcherProps {
 export const FilterRoutesBySearcher = ({ onSubmit, loading, control, page = 'ticketSales', tripType = 'ONE_TRIP' }: FilterRoutesBySearcherProps) => {
   const matches = useMediaQuery('(max-width:768px)');
 
+  const fieldsSearchTripType = useMemo(() => {
+    return getFields(tripType);
+  }, [tripType]);
+
   return (
     <Grid container sx={{ margin: '20px 0' }}>
       <Grid item xs={12} md={11}>
         <FilterTicket
-          fields={page === 'packageSales' ? fields2 : getFields(tripType)}
+          fields={page === 'packageSales' ? fields2 : fieldsSearchTripType}
           control={control}
           filterKey="ticketSales"
           numberColumns={2.5}

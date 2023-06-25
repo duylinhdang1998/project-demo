@@ -41,8 +41,8 @@ export const SelectTripOnCreateOrder = () => {
     defaultValues: {
       arrivalPoint: undefined,
       departurePoint: undefined,
-      departureTime: undefined,
-      returnTime: undefined,
+      departureTime: dayjs().set('h', 0).set('m', 0) as any,
+      returnTime: dayjs().add(1, 'd').set('h', 0).set('m', 0) as any,
       tripType: 'ONE_TRIP',
       departureRoute: null,
     },
