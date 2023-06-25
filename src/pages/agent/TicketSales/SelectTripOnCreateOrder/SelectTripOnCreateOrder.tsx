@@ -42,7 +42,7 @@ export const SelectTripOnCreateOrder = () => {
       arrivalPoint: undefined,
       departurePoint: undefined,
       departureTime: dayjs().set('h', 0).set('m', 0) as any,
-      returnTime: dayjs().add(1, 'd').set('h', 0).set('m', 0) as any,
+      returnTime: dayjs().set('h', 0).set('m', 0) as any,
       tripType: 'ONE_TRIP',
       departureRoute: null,
     },
@@ -156,7 +156,7 @@ export const SelectTripOnCreateOrder = () => {
             onChange={tripType => {
               setValue('tripType', tripType);
               setValue('departureRoute', null);
-              setValue('returnTime', undefined);
+              setValue('returnTime', dayjs().set('h', 0).set('m', 0) as any);
               onSubmit(getValues());
             }}
           />
