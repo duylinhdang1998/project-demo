@@ -9,7 +9,7 @@ import { useStyles as useFormVerticalStyles } from 'components/FormVerticle/styl
 import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import dayjs from 'dayjs';
-import { get } from 'lodash-es';
+import { get, isEqual } from 'lodash-es';
 import EditPriceARoutePointNCreateTrip from 'pages/admin/Routers/components/FormEditPrice/EditPriceARoutePointNCreateTrip';
 import { useState } from 'react';
 import {
@@ -174,7 +174,7 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
                               label: model.value.title,
                               value: model,
                             })}
-                            equalFunc={(model, input) => model.value === input?.value}
+                            equalFunc={isEqual}
                             styles={customStyles as any}
                             placeholder={labelTranslated}
                             onChange={selected => {
