@@ -17,10 +17,14 @@ export const getTrips = async (
           value: values.departureTime && dayjs.utc(values.departureTime).set('second', 0).unix() * 1000,
           operator: 'eq',
         },
-        returnTime: {
-          value: values.returnTime && dayjs.utc(values.returnTime).set('second', 0).unix() * 1000,
-          operator: 'eq',
-        },
+        ...(values.tripType === 'MULTI_STOP'
+          ? {
+              returnTime: {
+                value: values.returnTime && dayjs.utc(values.returnTime).set('second', 0).unix() * 1000,
+                operator: 'eq',
+              },
+            }
+          : {}),
       },
     });
     return response.data;
