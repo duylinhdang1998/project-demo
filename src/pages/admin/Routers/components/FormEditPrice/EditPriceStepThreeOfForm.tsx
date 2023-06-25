@@ -5,7 +5,7 @@ import { customStyles } from 'components/FilterTicket/customStyles';
 import { useStyles as useFormVerticalStyles } from 'components/FormVerticle/styles';
 import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import { Dayjs } from 'dayjs';
-import { get } from 'lodash-es';
+import { get, isEqual } from 'lodash-es';
 import { useMemo } from 'react';
 import { Control, Controller, FieldErrors, UseFormSetValue, UseFormTrigger } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,7 @@ import { getListDestinations } from 'services/Destinations/getListDestinations';
 import { RoutePoint } from 'services/models/Route';
 import { disabledDate } from 'utils/disableDate';
 import { useStyles } from './useStyles';
+import { Result } from 'components/SelectDecouplingData/SelectDestination';
 
 interface Item {
   ecoAdult: number;
@@ -22,7 +23,7 @@ interface Item {
   ecoChildren: number;
   vipChildren: number;
   routePointId: RoutePoint['_id'];
-  stopPoint: RoutePoint['stopPoint'];
+  stopPoint: Result;
   durationTime: Dayjs;
 }
 
@@ -107,21 +108,26 @@ export const EditPriceStepThreeOfForm = ({ control, errors, priceOfRoutePoints, 
                             sorter: {},
                             isGetAll: true,
                           });
-                          return response.data.hits.map(item => ({ value: item.title as string }));
+                          return response.data.hits.map(item => ({
+                            value: {
+                              _id: item._id,
+                              title: item.title,
+                            } as Result,
+                          }));
                         } catch {
                           return [];
                         }
                       }}
                       transformToOption={model => ({
-                        key: model.value,
-                        label: model.value,
+                        key: model.value._id,
+                        label: model.value.title,
                         value: model,
                       })}
-                      equalFunc={(model, input) => model.value === input?.value}
+                      equalFunc={isEqual}
                       styles={customStyles as any}
                       placeholder={labelTranslated}
                       onChange={selected => {
-                        setValue(getPathNameForStopPoint(index), selected?.value as string);
+                        setValue(getPathNameForStopPoint(index), selected?.value);
                         trigger(getPathNameForStopPoint(index));
                       }}
                     />

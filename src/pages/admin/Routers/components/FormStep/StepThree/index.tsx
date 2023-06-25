@@ -146,7 +146,10 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
                 value: minutesToTimeString(routePoint.durationTime),
                 format: 'HH:mm',
               }),
-              stopPoint: routePoint.stopPoint,
+              stopPoint: {
+                _id: routePoint.stopPointCode,
+                title: routePoint.stopPoint,
+              },
             };
           }),
         });

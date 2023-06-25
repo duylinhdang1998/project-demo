@@ -43,8 +43,8 @@ export interface StopPointsProps {
   isEdit?: boolean;
 }
 
-const emptyRoutePoint: RoutePointValues = {
-  stop_point: { _id: '', title: undefined },
+const emptyRoutePoint: Omit<RoutePointValues, 'stop_point'> & { stop_point: RoutePointValues['stop_point'] | undefined } = {
+  stop_point: undefined,
   routePointId: undefined,
   duration: dayjs().hour(0).minute(0),
   ecoAdult: 0,
@@ -72,7 +72,7 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
   };
 
   const handleAppend = () => {
-    append(emptyRoutePoint);
+    append(emptyRoutePoint as any);
   };
 
   const renderDialogDelete = () => {
