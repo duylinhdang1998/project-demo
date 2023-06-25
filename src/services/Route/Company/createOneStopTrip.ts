@@ -6,10 +6,12 @@ import fetchAPI from 'utils/fetchAPI';
 import { uniqArrayTimestampWithDayInYearNSetHours12 } from 'utils/handleTimestampWithDayInYear';
 
 export type CreateOneStopTrip = Pick<Route, 'vehicle' | 'departureTime' | 'departurePoint'> & {
+  pointCode: Route['departurePointCode'];
   stopPoints: [
     Pick<RoutePoint, 'durationTime' | 'stopPoint'> & {
       ECOPrices: Array<{ passengerType: RoutePointPriceType; price: number }>;
       VIPPrices: Array<{ passengerType: RoutePointPriceType; price: number }>;
+      pointCode: RoutePoint['stopPointCode'];
     },
   ];
   tripType: Extract<Route['tripType'], 'ONE_TRIP'>;

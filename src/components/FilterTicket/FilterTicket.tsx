@@ -12,12 +12,12 @@ import Select, { Props as SelectProps } from 'react-select';
 import { getListDestinations } from 'services/Destinations/getListDestinations';
 import { getOffices } from 'services/OfficesManager/Company/getOffices';
 import { getPackageSettings } from 'services/PackageSetting/Company/getPackageSettings';
-import { getListArrivals } from 'services/Route/Company/getListArrivals';
-import { getListDepartures } from 'services/Route/Company/getListDepartures';
 import { getVehicles } from 'services/Vehicle/Company/getVehicles';
 import { UserRole } from 'services/models/UserRole';
 import { disabledDate } from 'utils/disableDate';
 import { customStyles } from './customStyles';
+import { Result } from 'components/SelectDecouplingData/SelectDestination';
+import { isEqual } from 'lodash-es';
 
 export interface FilterTicketProps<T extends FieldValues> {
   fields?: Array<Field & { numberColumn?: number }>;
@@ -263,15 +263,25 @@ export default function FilterTicket<T extends FieldValues>({
                     isSearchable
                     service={async () => {
                       try {
-                        const response = await getListDepartures({});
-                        return response.data.map(item => ({ value: item }));
+                        const response = await getListDestinations({
+                          page: 0,
+                          searcher: {},
+                          sorter: {},
+                          isGetAll: true,
+                        });
+                        return response.data.hits.map(item => ({
+                          value: {
+                            _id: item._id,
+                            title: item.title,
+                          } as Result,
+                        }));
                       } catch {
                         return [];
                       }
                     }}
                     transformToOption={model => ({
-                      key: model.value,
-                      label: model.value,
+                      key: model.value._id,
+                      label: model.value.title,
                       value: model,
                     })}
                     equalFunc={(model, value) => model.value === value?.value}
@@ -299,18 +309,28 @@ export default function FilterTicket<T extends FieldValues>({
                     isSearchable
                     service={async () => {
                       try {
-                        const response = await getListArrivals({});
-                        return response.data.map(item => ({ value: item }));
+                        const response = await getListDestinations({
+                          page: 0,
+                          searcher: {},
+                          sorter: {},
+                          isGetAll: true,
+                        });
+                        return response.data.hits.map(item => ({
+                          value: {
+                            _id: item._id,
+                            title: item.title,
+                          } as Result,
+                        }));
                       } catch {
                         return [];
                       }
                     }}
                     transformToOption={model => ({
-                      key: model.value,
-                      label: model.value,
+                      key: model.value._id,
+                      label: model.value.title,
                       value: model,
                     })}
-                    equalFunc={(model, input) => model.value === input?.value}
+                    equalFunc={isEqual}
                     value={field.value}
                     styles={customStyles as any}
                     placeholder={t(`${i.label}`)}
@@ -412,7 +432,7 @@ export default function FilterTicket<T extends FieldValues>({
                       label: model.label,
                       value: model,
                     })}
-                    equalFunc={(model, input) => model.value === input?.value}
+                    equalFunc={isEqual}
                     value={field.value}
                     styles={customStyles as any}
                     placeholder={t(`${i.label}`)}

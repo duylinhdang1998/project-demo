@@ -21,9 +21,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
 import dayjs from 'dayjs';
 import TablePackageSales from './components/TablePackageSales';
+import { Result } from 'components/SelectDecouplingData/SelectDestination';
 
 interface Values {
-  destination?: { value: string };
+  destination?: { value: Result };
   from: string;
   recipient: string;
   orderId: string;
@@ -55,7 +56,7 @@ export default function PackageSales() {
     const searcher: Searcher<PackageSale> = {
       arrivalPoint: {
         operator: 'eq',
-        value: values.destination?.value,
+        value: values.destination?.value._id,
       },
       orderCode: {
         value: values.orderId,

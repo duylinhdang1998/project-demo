@@ -20,13 +20,14 @@ import { FilterRoutesBySearcher } from './components/FilterRoutesBySearcher';
 import { FilterRoutesByTripType } from './components/FilterRoutesByTripType';
 import { Steps } from './components/Steps';
 import { getTrips } from './utils/getTrips';
+import { Result } from 'components/SelectDecouplingData/SelectDestination';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export interface SelectTripFormValues {
-  departurePoint?: { value: string };
-  arrivalPoint?: { value: string };
+  departurePoint?: { value: Result };
+  arrivalPoint?: { value: Result };
   departureTime?: number;
   returnTime?: number;
   tripType: RouteOfTicketSale['tripType'];

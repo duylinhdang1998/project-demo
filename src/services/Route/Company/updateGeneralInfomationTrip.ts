@@ -8,8 +8,10 @@ type ResponseData = true;
 
 export interface UpdateGeneralInfomationTrip {
   data: Pick<Route, 'vehicle' | 'departureTime' | 'departurePoint'> & {
+    pointCode: Route['departurePointCode'];
     stopPoints: Array<
       Pick<RoutePoint, 'durationTime' | 'stopPoint'> & {
+        pointCode: RoutePoint['stopPointCode'];
         routePointId: RoutePoint['_id'];
         ECOPrices: Array<{ passengerType: RoutePointPriceType; price: number }>;
         VIPPrices: Array<{ passengerType: RoutePointPriceType; price: number }>;

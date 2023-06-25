@@ -20,6 +20,7 @@ import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { TableTicketSales } from './components/TableTicketSales';
 import { fieldsSearch } from './constants';
+import { Result } from 'components/SelectDecouplingData/SelectDestination';
 
 const useStyles = makeStyles((theme: Theme) => ({
   buttonSearch: {
@@ -32,8 +33,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export interface FormSearchValues {
-  departurePoint?: { value: string };
-  arrivalPoint?: { value: string };
+  departurePoint?: { value: Result };
+  arrivalPoint?: { value: Result };
   departureTime?: [dayjs.Dayjs, dayjs.Dayjs];
   order_id?: string;
   payment_status?: Option<EPaymentStatus>;
@@ -58,12 +59,12 @@ export default function TicketSales() {
         page: 0,
         searcher: {
           departurePoint: {
-            value: values.departurePoint?.value,
-            operator: 'contains',
+            value: values.departurePoint?.value._id,
+            operator: 'eq',
           },
           arrivalPoint: {
-            value: values.arrivalPoint?.value,
-            operator: 'contains',
+            value: values.arrivalPoint?.value._id,
+            operator: 'eq',
           },
           departureTime: [
             {

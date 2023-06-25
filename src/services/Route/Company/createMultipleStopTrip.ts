@@ -6,6 +6,7 @@ import fetchAPI from 'utils/fetchAPI';
 import { CreateOneStopTrip } from './createOneStopTrip';
 
 export type CreateMultipleStopTrip = Pick<Route, 'vehicle' | 'departureTime' | 'departurePoint'> & {
+  pointCode: Route['departurePointCode'];
   stopPoints: Array<CreateOneStopTrip['stopPoints'][0]>;
   tripType: Extract<Route['tripType'], 'MULTI_STOP'>;
 };

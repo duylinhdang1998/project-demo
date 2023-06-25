@@ -12,14 +12,15 @@ import { Vehicle } from 'services/models/Vehicle';
 import { toDayjs } from 'utils/toDayjs';
 import { EditPriceARoutePointFormValues } from '../../FormEditPrice/EditPriceARoutePointNCreateTrip';
 import { StopPoints } from './components/StopPoints/StopPoints';
+import { Result } from 'components/SelectDecouplingData/SelectDestination';
 
 export interface RoutePointValues extends EditPriceARoutePointFormValues {
-  stop_point: string;
+  stop_point: Result;
   duration: dayjs.Dayjs;
 }
 export interface StepOneValuesForMultipleStopTrip {
   vehicle: Vehicle | null;
-  departurePoint: string;
+  departurePoint: Result;
   departureTime: dayjs.Dayjs;
   routePoints: RoutePointValues[];
 }

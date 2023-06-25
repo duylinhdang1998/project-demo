@@ -20,11 +20,12 @@ import { dayjsToString } from 'utils/dayjsToString';
 import { v4 as uuidv4 } from 'uuid';
 import TableRoutes from './components/TableRoutes';
 import { fieldsSearch } from './constants';
+import { Result } from 'components/SelectDecouplingData/SelectDestination';
 
 interface Values {
   vehicleName?: Vehicle;
-  departurePoints?: { value: string };
-  arrivalPoints?: { value: string };
+  departurePoints?: { value: Result };
+  arrivalPoints?: { value: Result };
   departureTime?: dayjs.Dayjs;
 }
 
@@ -68,13 +69,13 @@ export default function Routers() {
       routesActions.getRoutesRequest({
         page: 0,
         searcher: {
-          departurePoint: {
-            value: values.departurePoints?.value,
-            operator: 'contains',
+          departurePointCode: {
+            value: values.departurePoints?.value._id,
+            operator: 'eq',
           },
-          'routePoints.stopPoint': {
-            value: values.arrivalPoints?.value,
-            operator: 'contains',
+          'routePoints.stopPointCode': {
+            value: values.arrivalPoints?.value._id,
+            operator: 'eq',
           },
           departureTime: {
             value: values.departureTime ? dayjsToString(values.departureTime, 'HH:mm') : undefined,

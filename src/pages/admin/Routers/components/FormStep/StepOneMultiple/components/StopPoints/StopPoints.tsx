@@ -29,6 +29,7 @@ import { disabledDate } from 'utils/disableDate';
 import { timeStringToMinutes } from 'utils/timeStringNMinutes';
 import { RoutePointValues, StepOneValuesForMultipleStopTrip } from '../..';
 import { useStyles } from './styles';
+import { Result } from 'components/SelectDecouplingData/SelectDestination';
 
 export interface StopPointsProps {
   control: Control<StepOneValuesForMultipleStopTrip>;
@@ -43,7 +44,8 @@ export interface StopPointsProps {
 }
 
 const emptyRoutePoint: RoutePointValues = {
-  stop_point: '',
+  stop_point: { _id: '', title: undefined },
+  routePointId: undefined,
   duration: dayjs().hour(0).minute(0),
   ecoAdult: 0,
   vipAdult: 0,
@@ -142,13 +144,13 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
                       const labelTranslated = t('routers:stop_point');
                       const error = get(errors, routePointPathInFormValues);
                       const messageErr = t('translation:error_required', { name: labelTranslated.toLowerCase() });
-                      const value = get(getValues(), routePointPathInFormValues) ?? '';
+                      const value: Result | undefined = get(getValues(), routePointPathInFormValues) ?? undefined;
                       return (
                         <Box>
                           <InputLabel className={formVerticleClasses.label}>{labelTranslated}</InputLabel>
                           <SingleSelectDecouplingData
                             isSearchable
-                            value={{ value }}
+                            value={value ? { value } : undefined}
                             service={async () => {
                               try {
                                 const response = await getListDestinations({
@@ -157,21 +159,26 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
                                   sorter: {},
                                   isGetAll: true,
                                 });
-                                return response.data.hits.map(item => ({ value: item.title as string }));
+                                return response.data.hits.map(item => ({
+                                  value: {
+                                    _id: item._id,
+                                    title: item.title,
+                                  } as Result,
+                                }));
                               } catch {
                                 return [];
                               }
                             }}
                             transformToOption={model => ({
-                              key: model.value,
-                              label: model.value,
+                              key: model.value._id,
+                              label: model.value.title,
                               value: model,
                             })}
                             equalFunc={(model, input) => model.value === input?.value}
                             styles={customStyles as any}
                             placeholder={labelTranslated}
                             onChange={selected => {
-                              setValue(routePointPathInFormValues, selected?.value as string);
+                              setValue(routePointPathInFormValues, selected?.value as Result);
                               trigger(routePointPathInFormValues);
                             }}
                           />

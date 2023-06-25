@@ -85,8 +85,9 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
   };
 
   const handleSubmitStep1ForOneStopTrip = (formValues: StepOneValuesForOneStopTrip) => {
-    const data: Pick<UpdateTripRequest['data'] | CreateOneStopTrip, 'departurePoint' | 'departureTime' | 'tripType' | 'vehicle'> = {
-      departurePoint: formValues.departurePoint,
+    const data: Pick<UpdateTripRequest['data'] | CreateOneStopTrip, 'departurePoint' | 'departureTime' | 'tripType' | 'vehicle' | 'pointCode'> = {
+      departurePoint: formValues.departurePoint.title as string,
+      pointCode: formValues.departurePoint._id as string,
       departureTime: dayjsToString(formValues.departureTime, 'HH:mm'),
       tripType: 'ONE_TRIP',
       vehicle: formValues.vehicle,
@@ -100,7 +101,8 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
               {
                 routePointId: formValues.routePointId as string,
                 durationTime: timeStringToMinutes(formValues.arrivalDuration.format('HH:mm')),
-                stopPoint: formValues.arrivalPoint,
+                stopPoint: formValues.arrivalPoint.title as string,
+                pointCode: formValues.arrivalPoint._id as string,
                 ECOPrices: [
                   { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
                   { passengerType: 'CHILD', price: Number(formValues.ecoChildren) },
@@ -149,7 +151,8 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
             stopPoints: [
               {
                 durationTime: timeStringToMinutes(formValues.arrivalDuration.format('HH:mm')),
-                stopPoint: formValues.arrivalPoint,
+                stopPoint: formValues.arrivalPoint.title as string,
+                pointCode: formValues.arrivalPoint._id as string,
                 ECOPrices: [
                   { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
                   { passengerType: 'CHILD', price: Number(formValues.ecoChildren) },
@@ -191,21 +194,25 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
   };
 
   const handleSubmitStep1ForMultipleStopTrip = (formValues: StepOneValuesForMultipleStopTrip) => {
-    const data: Pick<UpdateTripRequest['data'] | CreateMultipleStopTrip, 'departurePoint' | 'departureTime' | 'tripType' | 'vehicle'> = {
-      departurePoint: formValues.departurePoint,
-      departureTime: dayjsToString(formValues.departureTime, 'HH:mm'),
-      tripType: 'MULTI_STOP',
-      vehicle: formValues.vehicle,
-    };
+    const data: Pick<UpdateTripRequest['data'] | CreateMultipleStopTrip, 'departurePoint' | 'pointCode' | 'departureTime' | 'tripType' | 'vehicle'> =
+      {
+        departurePoint: formValues.departurePoint.title as string,
+        pointCode: formValues.departurePoint._id as string,
+        departureTime: dayjsToString(formValues.departureTime, 'HH:mm'),
+        tripType: 'MULTI_STOP',
+        vehicle: formValues.vehicle,
+      };
     if (isEditAction && route) {
       dispatch(
         routesActions.updateTripRequest({
           routeCode: route.routeCode,
           data: {
             ...data,
+            pointCode: route.departurePointCode,
             stopPoints: formValues.routePoints.map(routePoint => ({
               durationTime: timeStringToMinutes(routePoint.duration.format('HH:mm')),
-              stopPoint: routePoint.stop_point,
+              stopPoint: routePoint.stop_point.title as string,
+              pointCode: routePoint.stop_point._id as string,
               routePointId: routePoint.routePointId as string,
               ECOPrices: [
                 { passengerType: 'ADULT', price: Number(routePoint.ecoAdult) },
@@ -252,7 +259,8 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
             ...data,
             stopPoints: formValues.routePoints.map(routePoint => ({
               durationTime: timeStringToMinutes(routePoint.duration.format('HH:mm')),
-              stopPoint: routePoint.stop_point,
+              stopPoint: routePoint.stop_point.title as string,
+              pointCode: routePoint.stop_point._id as string,
               ECOPrices: [
                 { passengerType: 'ADULT', price: Number(routePoint.ecoAdult) },
                 { passengerType: 'CHILD', price: Number(routePoint.ecoChildren) },
@@ -339,12 +347,15 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
       if (isMulti) {
         setStepOneValues({
           vehicle: route.vehicle,
-          departurePoint: route.departurePoint,
+          departurePoint: { title: route.departurePoint, _id: route.departurePointCode },
           departureTime: toDayjs({ value: route.departureTime, format: 'HH:mm' }),
           routePoints: route.routePoints.reduce<StepOneValuesForMultipleStopTrip['routePoints']>((result, routePointValue) => {
             if (routePointValue.routeType === 'MAIN_ROUTE') {
               const value: RoutePointValues = {
-                stop_point: routePointValue.stopPoint,
+                stop_point: {
+                  title: routePointValue.stopPoint,
+                  _id: routePointValue.stopPointCode,
+                },
                 duration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }) as Dayjs,
                 ecoAdult: routePointValue.ECOPrices?.ADULT as number,
                 ecoChildren: routePointValue.ECOPrices?.CHILD as number,
@@ -363,9 +374,15 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
         const routePointValue = route.routePoints[0];
         setStepOneValues({
           vehicle: route.vehicle,
-          departurePoint: route.departurePoint,
+          departurePoint: {
+            title: route.departurePoint,
+            _id: route.departurePointCode,
+          },
           departureTime: toDayjs({ value: route.departureTime, format: 'HH:mm' }),
-          arrivalPoint: routePointValue.stopPoint,
+          arrivalPoint: {
+            title: routePointValue.stopPoint,
+            _id: routePointValue.stopPointCode,
+          },
           arrivalDuration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }),
           ecoAdult: routePointValue.ECOPrices?.ADULT as number,
           ecoChildren: routePointValue.ECOPrices?.CHILD as number,
@@ -389,12 +406,12 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
       if (isMulti) {
         setStepOneValues({
           vehicle: sourceToCopy.vehicle,
-          departurePoint: sourceToCopy.departurePoint,
+          departurePoint: { title: sourceToCopy.departurePoint, _id: sourceToCopy.departurePointCode },
           departureTime: toDayjs({ value: sourceToCopy.departureTime, format: 'HH:mm' }),
           routePoints: sourceToCopy.routePoints.reduce<StepOneValuesForMultipleStopTrip['routePoints']>((result, routePointValue) => {
             if (routePointValue.routeType === 'MAIN_ROUTE') {
               const value: RoutePointValues = {
-                stop_point: routePointValue.stopPoint,
+                stop_point: { title: routePointValue.stopPoint, _id: routePointValue.stopPointCode },
                 duration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }) as Dayjs,
                 ecoAdult: routePointValue.ECOPrices?.ADULT as number,
                 ecoChildren: routePointValue.ECOPrices?.CHILD as number,
@@ -413,9 +430,9 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
         const routePointValue = sourceToCopy.routePoints[0];
         setStepOneValues({
           vehicle: sourceToCopy.vehicle,
-          departurePoint: sourceToCopy.departurePoint,
+          departurePoint: { title: sourceToCopy.departurePoint, _id: sourceToCopy.departurePointCode },
           departureTime: toDayjs({ value: sourceToCopy.departureTime, format: 'HH:mm' }),
-          arrivalPoint: routePointValue.stopPoint,
+          arrivalPoint: { title: routePointValue.stopPoint, _id: routePointValue.stopPointCode },
           arrivalDuration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }),
           ecoAdult: routePointValue.ECOPrices?.ADULT as number,
           ecoChildren: routePointValue.ECOPrices?.CHILD as number,

@@ -36,6 +36,7 @@ export interface Route {
   dayActives: Array<DayInWeek>;
   dayoffs: number[];
   departurePoint: string;
+  departurePointCode: string;
   departureTime: string;
   endPeriod: null | string | number;
   particularDays: Array<number>;

@@ -11,13 +11,14 @@ import { Route } from 'services/models/Route';
 import { Vehicle } from 'services/models/Vehicle';
 import { toDayjs } from 'utils/toDayjs';
 import EditPriceARoutePointNCreateTrip, { EditPriceARoutePointFormValues } from '../FormEditPrice/EditPriceARoutePointNCreateTrip';
+import { Result } from 'components/SelectDecouplingData/SelectDestination';
 
 const fieldKeys: Array<keyof Route | string> = ['vehicle', 'departurePoint', 'arrivalPoint', 'departureTime', 'arrivalDuration'];
 
 export interface StepOneValuesForOneStopTrip extends EditPriceARoutePointFormValues {
   vehicle: Vehicle | null;
-  departurePoint: string;
-  arrivalPoint: string;
+  departurePoint: Result;
+  arrivalPoint: Result;
   departureTime: dayjs.Dayjs;
   arrivalDuration: dayjs.Dayjs;
 }

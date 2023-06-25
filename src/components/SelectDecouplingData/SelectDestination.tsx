@@ -6,6 +6,12 @@ import { useTranslation } from 'react-i18next';
 import { getListDestinations } from 'services/Destinations/getListDestinations';
 import { Destination } from 'services/models/Destination';
 import { useStyles } from './styles';
+import { isEqual } from 'lodash-es';
+
+export interface Result {
+  _id: Destination['_id'];
+  title: Destination['title'];
+}
 
 export interface SelectDestinationProps {
   errors?: FieldErrors<any>;
@@ -15,8 +21,8 @@ export interface SelectDestinationProps {
   isDisabled?: boolean;
   filterKey?: string;
   label: string;
-  destination: Destination['title'];
-  onChange: (destination: Destination['title']) => void;
+  destination: Result;
+  onChange: (destination?: Result) => void;
 }
 
 export const SelectDestination = ({
@@ -67,20 +73,27 @@ export const SelectDestination = ({
                     sorter: {},
                     isGetAll: true,
                   });
-                  return response.data.hits.map(item => ({ value: item.title as string }));
+                  return response.data.hits.map(item => ({
+                    value: {
+                      _id: item._id as string,
+                      title: item.title as string,
+                    },
+                  }));
                 } catch {
                   return [];
                 }
               }}
               transformToOption={model => ({
-                key: model.value,
-                label: model.value,
+                key: model.value._id,
+                label: model.value.title,
                 value: model,
               })}
-              equalFunc={(model, input) => model.value === input?.value}
+              equalFunc={isEqual}
               styles={customStyles as any}
               placeholder={labelTranslated}
-              onChange={selected => onChange(selected?.value)}
+              onChange={selected => {
+                onChange(selected?.value);
+              }}
             />
             {!!error && (
               <Typography component="p" className={classes.error} fontSize={12}>
