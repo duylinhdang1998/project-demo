@@ -49,7 +49,14 @@
   }
 
   .selectable {
-    background: rgba(255, 39, 39, 0.05);
+    background: rgba(255, 39, 39, 0.05) !important;
+  }
+  .rbc-off-range-bg {
+    background-color: #e6e6e6 !important;
+  }
+  .rbc-day-bg,
+  .rbc-today {
+    background-color: #ffffff;
   }
 }
 
