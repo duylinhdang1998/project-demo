@@ -84,17 +84,19 @@ export default function FilterTicket<T extends FieldValues>({
   const classes = useStyles();
   const { t } = useTranslation([filterKey, 'translation']);
 
-  const renderErrors = (label: string) => (
-    <div style={{ marginTop: 5 }}>
-      {errors[label as Path<T>] && (
-        <span style={{ color: '#FF2727', fontSize: 12 }}>
-          {t(`translation:${get(errors, `${label as Path<T>}.message`, '')}`, {
-            name: t(label).toLowerCase(),
-          })}
-        </span>
-      )}
-    </div>
-  );
+  const renderErrors = (label: string) => {
+    return (
+      <div style={{ marginTop: 5 }}>
+        {!!errors?.[label] ? (
+          <span style={{ color: '#FF2727', fontSize: 12 }}>
+            {t(`translation:${get(errors, `${label}.message`, '')}`, {
+              name: t(label).toLowerCase(),
+            })}
+          </span>
+        ) : null}
+      </div>
+    );
+  };
 
   const renderUIFields = (i: Field) => {
     switch (i.type) {
