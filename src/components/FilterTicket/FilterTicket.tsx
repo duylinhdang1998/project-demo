@@ -17,7 +17,7 @@ import { UserRole } from 'services/models/UserRole';
 import { disabledDate } from 'utils/disableDate';
 import { customStyles } from './customStyles';
 import { Result } from 'components/SelectDecouplingData/SelectDestination';
-import { isEqual } from 'lodash-es';
+import { get, isEqual } from 'lodash-es';
 
 export interface FilterTicketProps<T extends FieldValues> {
   fields?: Array<Field & { numberColumn?: number }>;
@@ -28,6 +28,7 @@ export interface FilterTicketProps<T extends FieldValues> {
   numberColumns?: number;
   gap?: string | number;
   flexWrap?: GridProps['flexWrap'];
+  errors?: any;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -78,9 +79,22 @@ export default function FilterTicket<T extends FieldValues>({
   numberColumns = 2,
   gap = '24px',
   flexWrap = 'wrap',
+  errors,
 }: FilterTicketProps<T>) {
   const classes = useStyles();
-  const { t } = useTranslation(filterKey);
+  const { t } = useTranslation([filterKey, 'translation']);
+
+  const renderErrors = (label: string) => (
+    <div style={{ marginTop: 5 }}>
+      {errors[label as Path<T>] && (
+        <span style={{ color: '#FF2727', fontSize: 12 }}>
+          {t(`translation:${get(errors, `${label as Path<T>}.message`, '')}`, {
+            name: t(label).toLowerCase(),
+          })}
+        </span>
+      )}
+    </div>
+  );
 
   const renderUIFields = (i: Field) => {
     switch (i.type) {
@@ -126,9 +140,17 @@ export default function FilterTicket<T extends FieldValues>({
           <Controller
             control={control}
             name={i.label as Path<T>}
+            rules={{
+              required: {
+                value: !!i.required,
+                message: t('error_required', { type: t(`${i.label}`).toLowerCase() }),
+              },
+            }}
             render={({ field }) => (
               <Box>
-                <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                <InputLabel className={classes.label}>
+                  {t(`${i.label}`)} {i.required ? <span style={{ color: '#FF2727' }}>*</span> : null}
+                </InputLabel>
                 <DatePicker
                   showTime={i.showTime}
                   format={i.format}
@@ -138,6 +160,7 @@ export default function FilterTicket<T extends FieldValues>({
                   className={classes.datePicker}
                   disabledDate={disabledDate as any}
                 />
+                {renderErrors(i.label)}
               </Box>
             )}
           />
@@ -254,10 +277,18 @@ export default function FilterTicket<T extends FieldValues>({
           <Controller
             control={control}
             name={i.label as Path<T>}
+            rules={{
+              required: {
+                value: !!i.required,
+                message: t('error_required', { type: t(`${i.label}`).toLowerCase() }),
+              },
+            }}
             render={({ field }) => {
               return (
                 <Box>
-                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <InputLabel className={classes.label}>
+                    {t(`${i.label}`)} {i.required ? <span style={{ color: '#FF2727' }}>*</span> : null}
+                  </InputLabel>
                   <SingleSelectDecouplingData
                     isClearable
                     isSearchable
@@ -290,6 +321,7 @@ export default function FilterTicket<T extends FieldValues>({
                     placeholder={t(`${i.label}`)}
                     onChange={field.onChange}
                   />
+                  {renderErrors(i.label)}
                 </Box>
               );
             }}
@@ -300,10 +332,18 @@ export default function FilterTicket<T extends FieldValues>({
           <Controller
             control={control}
             name={i.label as Path<T>}
+            rules={{
+              required: {
+                value: !!i.required,
+                message: t('error_required', { type: t(`${i.label}`).toLowerCase() }),
+              },
+            }}
             render={({ field }) => {
               return (
                 <Box>
-                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <InputLabel className={classes.label}>
+                    {t(`${i.label}`)} {i.required ? <span style={{ color: '#FF2727' }}>*</span> : null}
+                  </InputLabel>
                   <SingleSelectDecouplingData
                     isClearable
                     isSearchable
@@ -336,6 +376,7 @@ export default function FilterTicket<T extends FieldValues>({
                     placeholder={t(`${i.label}`)}
                     onChange={field.onChange}
                   />
+                  {renderErrors(i.label)}
                 </Box>
               );
             }}
@@ -412,10 +453,18 @@ export default function FilterTicket<T extends FieldValues>({
           <Controller
             control={control}
             name={i.label as Path<T>}
+            rules={{
+              required: {
+                value: !!i.required,
+                message: t('error_required', { type: t(`${i.label}`).toLowerCase() }),
+              },
+            }}
             render={({ field }) => {
               return (
                 <Box>
-                  <InputLabel className={classes.label}>{t(`${i.label}`)}</InputLabel>
+                  <InputLabel className={classes.label}>
+                    {t(`${i.label}`)} {i.required ? <span style={{ color: '#FF2727' }}>*</span> : null}
+                  </InputLabel>
                   <SingleSelectDecouplingData
                     isClearable
                     isSearchable
@@ -438,6 +487,7 @@ export default function FilterTicket<T extends FieldValues>({
                     placeholder={t(`${i.label}`)}
                     onChange={field.onChange}
                   />
+                  {renderErrors(i.label)}
                 </Box>
               );
             }}

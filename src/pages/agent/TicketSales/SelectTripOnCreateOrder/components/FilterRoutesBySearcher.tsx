@@ -21,10 +21,10 @@ const getFields = (tripType: SelectTripFormValues['tripType']): Field[] => {
 };
 
 const fields2: Field[] = [
-  { id: v4(), required: undefined, label: 'departurePoint', type: 'departurePoint' },
-  { id: v4(), required: undefined, label: 'arrivalPoint', type: 'arrivalPoint' },
-  { id: v4(), required: undefined, label: 'merchandises', type: 'packageSettings' },
-  { id: v4(), required: undefined, label: 'departureTime', type: 'datetime', showTime: true, format: 'HH:mm DD-MM-YYYY' },
+  { id: v4(), required: true, label: 'departurePoint', type: 'departurePoint' },
+  { id: v4(), required: true, label: 'arrivalPoint', type: 'arrivalPoint' },
+  { id: v4(), required: true, label: 'merchandises', type: 'packageSettings' },
+  { id: v4(), required: true, label: 'departureTime', type: 'datetime', showTime: true, format: 'HH:mm DD-MM-YYYY' },
 ];
 
 export interface FilterRoutesBySearcherProps {
@@ -33,9 +33,17 @@ export interface FilterRoutesBySearcherProps {
   control: Control<SelectTripFormValues>;
   page?: 'packageSales' | 'ticketSales';
   tripType?: SelectTripFormValues['tripType'];
+  errors?: any;
 }
 
-export const FilterRoutesBySearcher = ({ onSubmit, loading, control, page = 'ticketSales', tripType = 'ONE_TRIP' }: FilterRoutesBySearcherProps) => {
+export const FilterRoutesBySearcher = ({
+  onSubmit,
+  loading,
+  control,
+  page = 'ticketSales',
+  tripType = 'ONE_TRIP',
+  errors,
+}: FilterRoutesBySearcherProps) => {
   const matches = useMediaQuery('(max-width:768px)');
 
   const fieldsSearchTripType = useMemo(() => {
@@ -50,6 +58,7 @@ export const FilterRoutesBySearcher = ({ onSubmit, loading, control, page = 'tic
           control={control}
           filterKey="ticketSales"
           numberColumns={2.5}
+          errors={errors}
         />
       </Grid>
       <Grid item display="flex" xs={12} md={1} sx={{ alignSelf: 'flex-end', justifyContent: 'flex-end' }}>

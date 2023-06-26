@@ -48,7 +48,12 @@ export default function CreatePackageOrders() {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
 
-  const { control, handleSubmit, getValues } = useForm<SelectTripFormValues>({
+  const {
+    control,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm<SelectTripFormValues>({
     defaultValues: {
       arrivalPoint: undefined,
       departurePoint: undefined,
@@ -90,7 +95,7 @@ export default function CreatePackageOrders() {
   return (
     <LayoutDetail title={t('create_package_orders')} subTitle={t('package_sales')}>
       <CardWhite title={t('select_your_trip')}>
-        <FilterRoutesBySearcher control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} page="packageSales" />
+        <FilterRoutesBySearcher control={control} loading={loading} errors={errors} onSubmit={handleSubmit(onSubmit)} page="packageSales" />
         {isEmpty(data?.hits) ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /> : null}
 
         {!isEmpty(data?.hits) && (
