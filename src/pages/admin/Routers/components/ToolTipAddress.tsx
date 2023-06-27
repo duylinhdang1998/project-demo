@@ -4,11 +4,13 @@ import { Timeline } from 'antd';
 import 'antd/lib/timeline/style/css';
 import { Fragment, memo, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RoutePoint } from 'services/models/Route';
+import { RoutePoint, Route } from 'services/models/Route';
 import './styles.css';
+import { addMinutesToTimeString } from 'utils/addMinutesToTimeString';
 
 interface ToolTipAddressProps {
   children?: ReactNode;
+  departureTime: Route['departureTime'];
   routePoints: RoutePoint[];
 }
 
@@ -23,7 +25,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function ToolTipAddress({ children, routePoints }: ToolTipAddressProps) {
+function ToolTipAddress({ children, routePoints, departureTime }: ToolTipAddressProps) {
   const classes = useStyles();
   const { t } = useTranslation(['routers']);
   return (
@@ -40,7 +42,7 @@ function ToolTipAddress({ children, routePoints }: ToolTipAddressProps) {
           <Box className="custom_timeline_container_router" marginTop="20px">
             <Timeline mode="left">
               {routePoints.map(routePoint => (
-                <Timeline.Item key={routePoint._id} color="#333" label={routePoint.durationTime}>
+                <Timeline.Item key={routePoint._id} color="#333" label={addMinutesToTimeString(departureTime, routePoint.durationTime)}>
                   {routePoint.stopPoint}
                 </Timeline.Item>
               ))}

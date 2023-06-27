@@ -80,7 +80,7 @@ function TableRoutes() {
           const routesInTooltip = mainRoutes.slice(0, -1);
           if (isMultipleStops) {
             return (
-              <ToolTipAddress routePoints={routesInTooltip}>
+              <ToolTipAddress departureTime={row.departureTime} routePoints={routesInTooltip}>
                 <TextWithIcon text={startPoint} icon={MapPinIcon} color="#2D9AFF" />
                 <TextWithIcon
                   text={t('routers:quantity_addresses', {
