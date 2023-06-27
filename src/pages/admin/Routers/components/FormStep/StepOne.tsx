@@ -150,12 +150,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
         {t('routers:config_prices_per_passenger')}
       </Typography>
       <EditPriceARoutePointNCreateTrip errors={errors} control={control as any} isMulti={false} />
-      <ComboButton
-        isSaving={isLoading}
-        textOk={isEdit ? t('translation:save') : t('translation:next')}
-        onCancel={handleCancel}
-        onSave={handleSubmit(handleSave)}
-      />
+      <ComboButton isSaving={isLoading} textOk={t('translation:next')} onCancel={handleCancel} onSave={handleSubmit(handleSave)} />
       <DialogConfirm
         openDialog={open}
         title={t('translation:cancel_type', { type: t(`routers:${isEdit ? 'edit_trip' : 'trip'}`).toLowerCase() })}

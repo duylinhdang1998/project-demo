@@ -160,12 +160,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
         setValue={setValue}
         isEdit={isEdit}
       />
-      <ComboButton
-        isSaving={isLoading}
-        textOk={isEdit ? t('translation:save') : t('translation:next')}
-        onCancel={handleCancel}
-        onSave={handleSubmit(handleSave)}
-      />
+      <ComboButton isSaving={isLoading} textOk={t('translation:next')} onCancel={handleCancel} onSave={handleSubmit(handleSave)} />
       <DialogConfirm
         openDialog={open}
         title={t('translation:cancel_type', { type: t(`routers:${isEdit ? 'edit_trip' : 'trip'}`).toLowerCase() })}
