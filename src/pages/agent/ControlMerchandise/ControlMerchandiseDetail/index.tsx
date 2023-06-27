@@ -82,7 +82,6 @@ export function ControlMerchandiseDetail() {
     if (!openDialogConfirm) {
       return null;
     }
-    // FIXME: Mapping status
     if (openDialogConfirm === DeliveryStatus.DELIVERED) {
       return (
         <DialogConfirmChangeStatusToDeliveriedNArrived
@@ -93,7 +92,6 @@ export function ControlMerchandiseDetail() {
         />
       );
     }
-    // FIXME: Mapping status
     if (openDialogConfirm === DeliveryStatus.DELIVERING) {
       return (
         <DialogConfirmChangeStatusToDeliveriedNArrived

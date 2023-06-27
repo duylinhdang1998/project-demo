@@ -7,7 +7,7 @@ import { isEmpty } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Route } from 'services/models/Route';
+import { Route, RoutePoint } from 'services/models/Route';
 import { Vehicle } from 'services/models/Vehicle';
 import { toDayjs } from 'utils/toDayjs';
 import { EditPriceARoutePointFormValues } from '../../FormEditPrice/EditPriceARoutePointNCreateTrip';
@@ -23,6 +23,7 @@ export interface StepOneValuesForMultipleStopTrip {
   departurePoint: Result;
   departureTime: dayjs.Dayjs;
   routePoints: RoutePointValues[];
+  routePointsDeleted: Array<RoutePoint['_id']>;
 }
 const fieldKeys: Array<keyof Route> = ['vehicle', 'departurePoint', 'departureTime'];
 
@@ -47,6 +48,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
     watch,
   } = useForm<StepOneValuesForMultipleStopTrip>({
     defaultValues: {
+      routePointsDeleted: [],
       routePoints: [
         {
           duration: undefined,
@@ -95,6 +97,7 @@ export default function StepOneMultiple({ onCancel, onNextStep, isEdit, values, 
     if (!!values && !isEmpty(values)) {
       reset({
         ...values,
+        routePointsDeleted: [],
         departureTime: toDayjs({ value: values.departureTime, format: 'DD-MM-YYY HH:mm' }),
         routePoints: values.routePoints?.map(routePoint => ({
           ...routePoint,

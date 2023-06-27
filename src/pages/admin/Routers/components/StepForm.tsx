@@ -195,6 +195,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
   };
 
   const handleSubmitStep1ForMultipleStopTrip = (formValues: StepOneValuesForMultipleStopTrip) => {
+    console.log(111, formValues);
     const data: Pick<UpdateTripRequest['data'] | CreateMultipleStopTrip, 'departurePoint' | 'pointCode' | 'departureTime' | 'tripType' | 'vehicle'> =
       {
         departurePoint: formValues.departurePoint.title as string,

@@ -55,7 +55,7 @@ const emptyRoutePoint: Omit<RoutePointValues, 'stop_point'> & { stop_point: Rout
   vipChildren: 0,
 };
 
-export const StopPoints = ({ append, control, errors, remove, getValues, setValue, trigger, routePoints, isEdit }: StopPointsProps) => {
+export const StopPoints = ({ append, control, errors, remove, getValues, setValue, trigger, routePoints }: StopPointsProps) => {
   const { t } = useTranslation();
   const classes = useStyles();
   const formVerticleClasses = useFormVerticalStyles();
@@ -105,6 +105,10 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
               backgroundButton="rgba(255, 39, 39, 1)"
               onClick={() => {
                 remove(openDeleteRoutePoint);
+                const routePointId = routePoints[openDeleteRoutePoint].routePointId;
+                if (routePointId) {
+                  setValue('routePointsDeleted', getValues().routePointsDeleted.concat(routePointId));
+                }
                 handleCloseDialogDelete();
               }}
             >
@@ -127,7 +131,7 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
               <Typography fontSize={14} fontWeight={700}>
                 {t('routers:stop')} {index + 1}
               </Typography>
-              {!isEdit && routePoints.length > 1 && (
+              {routePoints.length > 1 && (
                 <TextWithIcon icon={TrashSvg} text={t('translation:delete')} color="#FF2727" onClick={() => handleOpenDialogDelete(index)} />
               )}
             </Stack>
