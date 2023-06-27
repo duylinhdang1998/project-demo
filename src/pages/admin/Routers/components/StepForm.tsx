@@ -23,6 +23,7 @@ import StepOne, { StepOneValuesForOneStopTrip } from './FormStep/StepOne';
 import StepOneMultiple, { RoutePointValues, StepOneValuesForMultipleStopTrip } from './FormStep/StepOneMultiple';
 import StepThree from './FormStep/StepThree';
 import StepTwo, { StepTwoValues } from './FormStep/StepTwo';
+import { getMainRoutePoints } from '../utils/getRoutePointsWithRouteType';
 
 const steps = ['Step 1', 'Step 2', 'Step 3'];
 
@@ -349,7 +350,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
           vehicle: route.vehicle,
           departurePoint: { title: route.departurePoint, _id: route.departurePointCode },
           departureTime: toDayjs({ value: route.departureTime, format: 'HH:mm' }),
-          routePoints: route.routePoints.reduce<StepOneValuesForMultipleStopTrip['routePoints']>((result, routePointValue) => {
+          routePoints: getMainRoutePoints(route.routePoints).reduce<StepOneValuesForMultipleStopTrip['routePoints']>((result, routePointValue) => {
             if (routePointValue.routeType === 'MAIN_ROUTE') {
               const value: RoutePointValues = {
                 stop_point: {
@@ -408,23 +409,26 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
           vehicle: sourceToCopy.vehicle,
           departurePoint: { title: sourceToCopy.departurePoint, _id: sourceToCopy.departurePointCode },
           departureTime: toDayjs({ value: sourceToCopy.departureTime, format: 'HH:mm' }),
-          routePoints: sourceToCopy.routePoints.reduce<StepOneValuesForMultipleStopTrip['routePoints']>((result, routePointValue) => {
-            if (routePointValue.routeType === 'MAIN_ROUTE') {
-              const value: RoutePointValues = {
-                stop_point: { title: routePointValue.stopPoint, _id: routePointValue.stopPointCode },
-                duration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }) as Dayjs,
-                ecoAdult: routePointValue.ECOPrices?.ADULT as number,
-                ecoChildren: routePointValue.ECOPrices?.CHILD as number,
-                ecoStudent: routePointValue.ECOPrices?.STUDENT as number,
-                vipAdult: routePointValue.VIPPrices?.ADULT as number,
-                vipChildren: routePointValue.VIPPrices?.CHILD as number,
-                vipStudent: routePointValue.VIPPrices?.STUDENT as number,
-                routePointId: undefined,
-              };
-              return result.concat(value as RoutePointValues);
-            }
-            return result;
-          }, []),
+          routePoints: getMainRoutePoints(sourceToCopy.routePoints).reduce<StepOneValuesForMultipleStopTrip['routePoints']>(
+            (result, routePointValue) => {
+              if (routePointValue.routeType === 'MAIN_ROUTE') {
+                const value: RoutePointValues = {
+                  stop_point: { title: routePointValue.stopPoint, _id: routePointValue.stopPointCode },
+                  duration: toDayjs({ value: minutesToTimeString(routePointValue.durationTime), format: 'HH:mm' }) as Dayjs,
+                  ecoAdult: routePointValue.ECOPrices?.ADULT as number,
+                  ecoChildren: routePointValue.ECOPrices?.CHILD as number,
+                  ecoStudent: routePointValue.ECOPrices?.STUDENT as number,
+                  vipAdult: routePointValue.VIPPrices?.ADULT as number,
+                  vipChildren: routePointValue.VIPPrices?.CHILD as number,
+                  vipStudent: routePointValue.VIPPrices?.STUDENT as number,
+                  routePointId: undefined,
+                };
+                return result.concat(value as RoutePointValues);
+              }
+              return result;
+            },
+            [],
+          ),
         });
       } else {
         const routePointValue = sourceToCopy.routePoints[0];

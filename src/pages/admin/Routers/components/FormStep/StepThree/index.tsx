@@ -36,6 +36,7 @@ import '../styles.scss';
 import { getDayoffsEvent } from './utils/getDayoffsEvent';
 import { getDayoffsOutsidePresenceDay } from './utils/getDayoffsOutsidePresenceDay';
 import { getEditedDaysEvent } from './utils/getEditedDaysEvent';
+import { getMainRoutePoints } from 'pages/admin/Routers/utils/getRoutePointsWithRouteType';
 
 const locales = {
   'en-US': enUS,
@@ -129,7 +130,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           isCreateDayoffAction: !route.dayoffs.find(dayoff => isTimestampEqualDayInYear(dayoff, selected.getTime())),
         });
         reset({
-          priceOfRoutePoints: route.routePoints.map(routePoint => {
+          priceOfRoutePoints: getMainRoutePoints(route.routePoints).map(routePoint => {
             const particularPrice = route.particularPrices.find(item => {
               const applyDay = dayjs(item.applyDay);
               return isTimestampEqualDayInYear(applyDay.valueOf(), selected.getTime()) && routePoint._id === item.routePoint;

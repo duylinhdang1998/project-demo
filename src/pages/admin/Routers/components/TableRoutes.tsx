@@ -29,6 +29,7 @@ import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable
 import { v4 as uuid } from 'uuid';
 import { DialogMultiStopTripDetail } from './DialogMultiStopTripDetail/DialogMultiStopTripDetail';
 import ToolTipAddress from './ToolTipAddress';
+import { getMainRoutePoints } from '../utils/getRoutePointsWithRouteType';
 
 function TableRoutes() {
   const { t } = useTranslation(['routers', 'translation']);
@@ -74,7 +75,7 @@ function TableRoutes() {
         sorter: true,
         render: (_, row) => {
           const isMultipleStops = row.tripType === 'MULTI_STOP';
-          const mainRoutes = row.routePoints.filter(routePoint => routePoint.routeType === 'MAIN_ROUTE');
+          const mainRoutes = getMainRoutePoints(row.routePoints);
           const lastRoutePoint = mainRoutes[mainRoutes.length - 1];
           const startPoint = row.departurePoint;
           const routesInTooltip = mainRoutes.slice(0, -1);
@@ -114,7 +115,7 @@ function TableRoutes() {
         title: () => <Typography variant="headerTable">{t('routers:arrivalTime')}</Typography>,
         sorter: true,
         render: (_, row) => {
-          const mainRoutes = row.routePoints.filter(routePoint => routePoint.routeType === 'MAIN_ROUTE');
+          const mainRoutes = getMainRoutePoints(row.routePoints);
           const lastRoute = mainRoutes[mainRoutes.length - 1];
           return <Typography variant="body2">{addMinutesToTimeString(row.departureTime, lastRoute.durationTime)}</Typography>;
         },

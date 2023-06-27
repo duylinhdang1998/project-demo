@@ -6,6 +6,7 @@ import { LocationIcon } from 'components/SvgIcon/LocationIcon';
 import { useMemo } from 'react';
 import { DialogMultiStopTripDetailProps } from './DialogMultiStopTripDetail';
 import { addMinutesToTimeString } from 'utils/addMinutesToTimeString';
+import { getMainRoutePoints } from '../../utils/getRoutePointsWithRouteType';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -29,7 +30,7 @@ export const MainRoute = ({ route }: Pick<DialogMultiStopTripDetailProps, 'route
   const classes = useStyles();
 
   const mainRoutePoints = useMemo(() => {
-    return route.routePoints.filter(routePoint => routePoint.routeType === 'MAIN_ROUTE');
+    return getMainRoutePoints(route.routePoints);
   }, [route]);
 
   const renderStartMark = () => {
