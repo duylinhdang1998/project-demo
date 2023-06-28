@@ -79,7 +79,7 @@ function TableRoutes() {
           const lastRoutePoint = mainRoutes[mainRoutes.length - 1];
           const startPoint = row.departurePoint;
           const routesInTooltip = mainRoutes.slice(0, -1);
-          if (isMultipleStops) {
+          if (isMultipleStops && !isEmpty(routesInTooltip)) {
             return (
               <ToolTipAddress departureTime={row.departureTime} routePoints={routesInTooltip}>
                 <TextWithIcon text={startPoint} icon={MapPinIcon} color="#2D9AFF" />

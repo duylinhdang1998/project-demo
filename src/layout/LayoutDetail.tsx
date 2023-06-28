@@ -44,7 +44,9 @@ export default function LayoutDetail({ children, title, subTitle, variant = 'wit
           >
             <BackButton />
           </Box>
-          {children}
+          <Box marginLeft={{ laptop: '62px', mobile: undefined }} flex="1">
+            {children}
+          </Box>
         </Stack>
       </Box>
     </Box>

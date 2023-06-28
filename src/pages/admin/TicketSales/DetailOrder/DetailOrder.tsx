@@ -114,21 +114,23 @@ export default function DetailTicketPage() {
           </Grid>
         </Grid>
         <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={2} my="24px">
-          <Button
-            onClick={handleViewRelateOrder}
-            variant="outlined"
-            sx={{
-              padding: '12px 16px',
-              backgroundColor: '#fff',
-              '&:hover': {
+          {record.ticketType === 'ROUND_TRIP' && (
+            <Button
+              onClick={handleViewRelateOrder}
+              variant="outlined"
+              sx={{
+                padding: '12px 16px',
                 backgroundColor: '#fff',
-                color: '#1AA6EE',
-              },
-            }}
-            startIcon={<ArrowOutward />}
-          >
-            {t('ticketSales:view_relate_order')}
-          </Button>
+                '&:hover': {
+                  backgroundColor: '#fff',
+                  color: '#1AA6EE',
+                },
+              }}
+              startIcon={<ArrowOutward />}
+            >
+              {t('ticketSales:view_relate_order')}
+            </Button>
+          )}
           <Button
             onClick={handleSendEmail}
             loading={statusSendEmail === 'loading'}
