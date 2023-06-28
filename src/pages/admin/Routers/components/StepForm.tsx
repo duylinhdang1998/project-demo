@@ -142,6 +142,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
               { className: 'toast-error' },
             );
           },
+          isHasDeleteStopPointAction: false,
         }),
       );
     } else {
@@ -195,7 +196,6 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
   };
 
   const handleSubmitStep1ForMultipleStopTrip = (formValues: StepOneValuesForMultipleStopTrip) => {
-    console.log(111, formValues);
     const data: Pick<UpdateTripRequest['data'] | CreateMultipleStopTrip, 'departurePoint' | 'pointCode' | 'departureTime' | 'tripType' | 'vehicle'> =
       {
         departurePoint: formValues.departurePoint.title as string,
@@ -252,6 +252,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
               { className: 'toast-error' },
             );
           },
+          isHasDeleteStopPointAction: formValues.routePointsDeleted.length > 0,
         }),
       );
     } else {

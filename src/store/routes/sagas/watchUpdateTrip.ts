@@ -3,15 +3,23 @@ import { updateGeneralInfomationTrip } from 'services/Route/Company/updateGenera
 import { getRoute } from 'services/Route/Company/getRoute';
 import { ServiceException } from 'services/utils/ServiceException';
 import { routesActions } from '../routesSlice';
+import { updateGeneralInfomationTripWhenHasRoutePointDeleted } from 'services/Route/Company/updateGeneralInfomationTripWhenHasRoutePointDeleted';
 
 function* handleUpdateTrip({ payload }: ReturnType<typeof routesActions.updateTripRequest>) {
   // FIXME: BE chưa cung cấp đủ api -> Chưa làm trường hợp xóa route point và edit route point
-  const { data, routeCode, onFailure, onSuccess } = payload;
+  const { data, isHasDeleteStopPointAction, routeCode, onFailure, onSuccess } = payload;
   try {
-    yield retry(3, 1000, updateGeneralInfomationTrip, {
-      data,
-      routeCode,
-    });
+    if (isHasDeleteStopPointAction) {
+      yield retry(3, 1000, updateGeneralInfomationTripWhenHasRoutePointDeleted, {
+        data,
+        routeCode,
+      });
+    } else {
+      yield retry(3, 1000, updateGeneralInfomationTrip, {
+        data,
+        routeCode,
+      });
+    }
     const detailResponse: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, {
       routeCode,
     });
