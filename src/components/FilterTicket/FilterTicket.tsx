@@ -85,6 +85,9 @@ export default function FilterTicket<T extends FieldValues>({
   const { t } = useTranslation([filterKey, 'translation']);
 
   const renderErrors = (label: string) => {
+    if (!errors?.[label]) {
+      return null;
+    }
     return (
       <div style={{ marginTop: 5 }}>
         {!!errors?.[label] ? (
@@ -502,7 +505,7 @@ export default function FilterTicket<T extends FieldValues>({
 
   return (
     <Box className="filter-ticket" width="100%">
-      <Grid container spacing={gap} columns={10} flexWrap={flexWrap}>
+      <Grid container alignItems="flex-end" spacing={gap} columns={10} flexWrap={flexWrap}>
         {fields?.map(i => (
           <Grid key={i.id} item xs={10} sm={5} md={i.numberColumn ? i.numberColumn : numberColumns}>
             {renderUIFields(i)}
