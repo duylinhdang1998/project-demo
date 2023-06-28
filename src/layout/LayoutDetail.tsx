@@ -24,7 +24,7 @@ export default function LayoutDetail({ children, title, subTitle, variant = 'wit
             {addNewItemButtonProps && <AddNewItemButton {...addNewItemButtonProps} />}
           </Stack>
           <Stack direction={{ mobile: 'column', laptop: 'row' }} spacing={{ xs: '30px', lg: '60px' }}>
-            {children}
+            <Box flex="1">{children}</Box>
           </Stack>
         </Box>
       </Box>
