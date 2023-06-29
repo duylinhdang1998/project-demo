@@ -59,9 +59,10 @@ export const FilterRoutesBySearcher = ({
           filterKey="ticketSales"
           numberColumns={2.5}
           errors={errors}
+          alignItems="flex-start"
         />
       </Grid>
-      <Grid item display="flex" xs={12} md={1} sx={{ alignSelf: 'flex-end', justifyContent: 'flex-end' }}>
+      <Grid item display="flex" xs={12} md={1} pt="24px" sx={{ justifyContent: 'flex-end' }}>
         <Button loading={loading} onClick={onSubmit} backgroundButton="#1AA6EE" fullWidth={matches}>
           <SearchIcon />
         </Button>

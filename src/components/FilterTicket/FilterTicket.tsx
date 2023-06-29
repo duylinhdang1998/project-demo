@@ -29,6 +29,7 @@ export interface FilterTicketProps<T extends FieldValues> {
   gap?: string | number;
   flexWrap?: GridProps['flexWrap'];
   errors?: any;
+  alignItems?: GridProps['alignItems'];
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -80,13 +81,14 @@ export default function FilterTicket<T extends FieldValues>({
   gap = '24px',
   flexWrap = 'wrap',
   errors,
+  alignItems = 'flex-end',
 }: FilterTicketProps<T>) {
   const classes = useStyles();
   const { t } = useTranslation([filterKey, 'translation']);
 
   const renderErrors = (label: string) => {
     if (!errors?.[label]) {
-      return null;
+      return <div />;
     }
     return (
       <div style={{ marginTop: 5 }}>
@@ -505,7 +507,7 @@ export default function FilterTicket<T extends FieldValues>({
 
   return (
     <Box className="filter-ticket" width="100%">
-      <Grid container alignItems="flex-end" spacing={gap} columns={10} flexWrap={flexWrap}>
+      <Grid container alignItems={alignItems} spacing={gap} columns={10} flexWrap={flexWrap}>
         {fields?.map(i => (
           <Grid key={i.id} item xs={10} sm={5} md={i.numberColumn ? i.numberColumn : numberColumns}>
             {renderUIFields(i)}
