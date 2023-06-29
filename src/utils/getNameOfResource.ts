@@ -4,6 +4,9 @@ export const getNameOfResource = (resource: ImageResource | PDFResource | undefi
   if (!resource) {
     return '';
   }
+  if ('filename' in resource) {
+    return resource.filename;
+  }
   const splited = resource.publicUrl?.split('/');
   return splited[splited.length - 1];
 };

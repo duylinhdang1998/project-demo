@@ -2,6 +2,7 @@ export interface ImageResource {
   publicUrl: string;
   thumbnail: string;
   thumbnail2x: string;
+  filename: string;
   size: number;
   mimetype: `image/${string}`;
   uploader: string;
