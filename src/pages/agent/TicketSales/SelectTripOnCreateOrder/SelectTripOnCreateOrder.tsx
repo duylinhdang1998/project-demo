@@ -38,12 +38,19 @@ export interface SelectTripFormValues {
 export const SelectTripOnCreateOrder = () => {
   const { t } = useTranslation(['ticketSales']);
 
-  const { control, handleSubmit, getValues, setValue, watch } = useForm<SelectTripFormValues>({
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    getValues,
+    setValue,
+    watch,
+  } = useForm<SelectTripFormValues>({
     defaultValues: {
       arrivalPoint: undefined,
       departurePoint: undefined,
-      departureTime: dayjs().set('h', 0).set('m', 0) as any,
-      returnTime: dayjs().set('h', 0).set('m', 0) as any,
+      departureTime: undefined,
+      returnTime: undefined,
       tripType: 'ONE_TRIP',
       departureRoute: null,
     },
@@ -52,8 +59,6 @@ export const SelectTripOnCreateOrder = () => {
   const departureRoute = watch('departureRoute');
   watch('departurePoint');
   watch('arrivalPoint');
-
-  console.log(watch());
 
   const { run, loading, data } = useRequest(getTrips, { manual: true });
 
@@ -159,13 +164,13 @@ export const SelectTripOnCreateOrder = () => {
             onChange={tripType => {
               setValue('tripType', tripType);
               setValue('departureRoute', null);
-              setValue('returnTime', dayjs().set('h', 0).set('m', 0) as any);
+              setValue('returnTime', undefined);
               onSubmit(getValues());
             }}
           />
         }
       >
-        <FilterRoutesBySearcher tripType={tripType} control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} />
+        <FilterRoutesBySearcher errors={errors} tripType={tripType} control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} />
         <Steps step={departureRoute ? 1 : 0} tripType={tripType} />
         <CardTrips
           totalRoutes={data?.pagination.totalRows ?? 0}

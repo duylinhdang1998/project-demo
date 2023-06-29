@@ -14,13 +14,21 @@ export const getTrips = async (
         departurePointCode: { value: values.departurePoint?.value._id, operator: 'eq' },
         stopPointCode: { value: values.arrivalPoint?.value._id, operator: 'eq' },
         departureTime: {
-          value: values.departureTime && dayjs.utc(values.departureTime).set('second', 0).unix() * 1000,
+          value:
+            dayjs
+              .utc(values.departureTime ?? undefined)
+              .set('second', 0)
+              .unix() * 1000,
           operator: 'gte',
         },
         ...(values.tripType === 'MULTI_STOP'
           ? {
               returnTime: {
-                value: values.returnTime && dayjs.utc(values.returnTime).set('second', 0).unix() * 1000,
+                value:
+                  dayjs
+                    .utc(values.returnTime ?? undefined)
+                    .set('second', 0)
+                    .unix() * 1000,
                 operator: 'gte',
               },
             }
