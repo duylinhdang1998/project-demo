@@ -46,9 +46,7 @@ export default function PackageSales() {
     getListPkgSales({
       page: 0,
       searcher: {},
-      sorter: {
-        createdAt: 'desc',
-      },
+      sorter: {},
     });
   });
 
@@ -87,9 +85,7 @@ export default function PackageSales() {
     getListPkgSales({
       page: 0,
       searcher,
-      sorter: {
-        createdAt: 'desc',
-      },
+      sorter: {},
     });
   };
 

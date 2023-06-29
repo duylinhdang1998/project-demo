@@ -54,9 +54,7 @@ export default function Staff() {
     dispatch(
       staffsActions.getStaffsRequest({
         page: 0,
-        sorter: {
-          createdAt: 'desc',
-        },
+        sorter: {},
         searcher: {
           phone: { value: values.phone, operator: 'contains' },
           name: { value: values.name, operator: 'contains' },
@@ -81,9 +79,7 @@ export default function Staff() {
     dispatch(
       staffsActions.getStaffsRequest({
         page: 0,
-        sorter: {
-          createdAt: 'desc',
-        },
+        sorter: {},
         searcher: {},
       }),
     );

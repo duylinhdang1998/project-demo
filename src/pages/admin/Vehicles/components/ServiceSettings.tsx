@@ -14,9 +14,7 @@ const getServiceSettings_ = async () => {
     const response = await getServiceSettings({
       page: 0,
       searcher: {},
-      sorter: {
-        createdAt: 'desc',
-      },
+      sorter: {},
     });
     return response.data.hits;
   } catch {

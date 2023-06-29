@@ -88,9 +88,7 @@ export default function TicketSales() {
             operator: 'in',
           },
         },
-        sorter: {
-          createdAt: 'desc',
-        },
+        sorter: {},
       }),
     );
   };
@@ -104,9 +102,7 @@ export default function TicketSales() {
       ticketSalesActions.getTicketSalesRequest({
         page: 0,
         searcher: {},
-        sorter: {
-          createdAt: 'desc',
-        },
+        sorter: {},
       }),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps

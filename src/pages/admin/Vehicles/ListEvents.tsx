@@ -32,9 +32,7 @@ export default function ListEvents() {
         vehicleEventsActions.getVehicleEventsRequest({
           page: 0,
           searcher: {},
-          sorter: {
-            createdAt: 'desc',
-          },
+          sorter: {},
           vehicleId,
         }),
       );

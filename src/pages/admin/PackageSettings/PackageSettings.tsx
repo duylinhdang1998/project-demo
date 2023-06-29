@@ -24,9 +24,7 @@ export default function PackageSettings() {
     dispatch(
       packageSettingsActions.getPackageSettingsRequest({
         page: 0,
-        sorter: {
-          createdAt: 'desc',
-        },
+        sorter: {},
         searcher: {},
       }),
     );
@@ -43,9 +41,7 @@ export default function PackageSettings() {
             dispatch(
               packageSettingsActions.getPackageSettingsRequest({
                 page: 0,
-                sorter: {
-                  createdAt: 'desc',
-                },
+                sorter: {},
                 searcher: {
                   title: { value, operator: 'contains' },
                 },

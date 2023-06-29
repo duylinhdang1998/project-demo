@@ -95,9 +95,7 @@ export default function Passengers() {
     dispatch(
       passengersActions.getPassengersRequest({
         page: 0,
-        sorter: {
-          createdAt: 'desc',
-        },
+        sorter: {},
         searcher: {
           name: { operator: 'contains', value: values.name },
           phone: { operator: 'contains', value: values.phone },
@@ -111,9 +109,7 @@ export default function Passengers() {
     dispatch(
       passengersActions.getPassengersRequest({
         page: 0,
-        sorter: {
-          createdAt: 'desc',
-        },
+        sorter: {},
         searcher: {},
       }),
     );

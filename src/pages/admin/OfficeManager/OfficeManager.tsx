@@ -24,9 +24,7 @@ export default function OfficeManager() {
     dispatch(
       officesManagerActions.getOfficesRequest({
         page: 0,
-        sorter: {
-          createdAt: 'desc',
-        },
+        sorter: {},
         searcher: {},
       }),
     );
@@ -43,9 +41,7 @@ export default function OfficeManager() {
             dispatch(
               officesManagerActions.getOfficesRequest({
                 page: 0,
-                sorter: {
-                  createdAt: 'desc',
-                },
+                sorter: {},
                 searcher: {
                   title: { value, operator: 'contains' },
                 },

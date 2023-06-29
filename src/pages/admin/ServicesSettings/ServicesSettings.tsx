@@ -21,9 +21,7 @@ function ServicesSettings() {
     run({
       page: 0,
       searcher: {},
-      sorter: {
-        createdAt: 'desc',
-      },
+      sorter: {},
     });
   });
 
@@ -44,9 +42,7 @@ function ServicesSettings() {
               searcher: {
                 title: { value, operator: 'contains' },
               },
-              sorter: {
-                createdAt: 'desc',
-              },
+              sorter: {},
             });
             setSortOrder(undefined);
             setSearchValue(value);
