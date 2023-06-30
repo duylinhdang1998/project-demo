@@ -80,7 +80,7 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, dur
             }
             className={mainClasses.img}
           />
-          <Typography variant="body2">{vehicle?.brand}</Typography>
+          <Typography variant="body2">{vehicle?.brandModel}</Typography>
         </Stack>
         <Stack spacing={2} direction="row" alignItems="center">
           {vehicle?.services.map((service, index) => {
