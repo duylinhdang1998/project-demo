@@ -110,7 +110,7 @@ const ReserveInfo = ({ onBook, loading, routeDetail, control, errors, isEdit }: 
             <>
               <FormControlLabel
                 control={<Checkbox {...field} checked={field.value} sx={{ paddingY: 0 }} />}
-                label={`${t('ticketSales:policy_privacy', { busName: routeDetail?.vehicle?.model })}`}
+                label={t('ticketSales:term_create_ticket_sale')}
                 sx={{
                   alignItems: 'flex-start !important',
                   '.MuiFormControlLabel-label': {
