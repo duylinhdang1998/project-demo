@@ -27,6 +27,7 @@ import {
   LocationStateForCreateOrderRoundTrip,
 } from './@types/GeneralInfomationOfOrder';
 import { Passengers } from './components/Passengers';
+import { getEmptyPassenger } from './components/Passengers/utils';
 import { seatsTypeOptions, typeTicketOptions } from './components/Passengers/const';
 import { Reservation } from './components/Reservation';
 
@@ -55,7 +56,7 @@ export const OrderDetailOnCreateOrder = () => {
   } = useForm<TicketDetailFormValues>({
     defaultValues: {
       accept_term: true,
-      passengers: [],
+      passengers: [getEmptyPassenger()],
       isPaid: true,
     },
   });

@@ -113,7 +113,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
   };
 
   const renderDeleteButton = (index: number) => {
-    if (isEditAction) {
+    if (isEditAction || passengers.length <= 1) {
       return null;
     }
     return <TextWithIcon icon={TrashSvg} text={t('translation:delete')} color="#FF2727" onClick={() => handleOpenDialogDelete(index)} />;
