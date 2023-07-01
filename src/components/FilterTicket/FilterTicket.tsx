@@ -3,8 +3,10 @@ import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
+import { Result } from 'components/SelectDecouplingData/SelectDestination';
 import { labelOfRole } from 'components/SelectDecouplingData/SelectRole';
 import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
+import { get, isEqual } from 'lodash-es';
 import { Field } from 'models/Field';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -14,10 +16,7 @@ import { getOffices } from 'services/OfficesManager/Company/getOffices';
 import { getPackageSettings } from 'services/PackageSetting/Company/getPackageSettings';
 import { getVehicles } from 'services/Vehicle/Company/getVehicles';
 import { UserRole } from 'services/models/UserRole';
-import { disabledDate } from 'utils/disableDate';
 import { customStyles } from './customStyles';
-import { Result } from 'components/SelectDecouplingData/SelectDestination';
-import { get, isEqual } from 'lodash-es';
 
 export interface FilterTicketProps<T extends FieldValues> {
   fields?: Array<Field & { numberColumn?: number }>;
@@ -165,7 +164,6 @@ export default function FilterTicket<T extends FieldValues>({
                   value={field.value as any}
                   onChange={field.onChange}
                   className={classes.datePicker}
-                  disabledDate={disabledDate as any}
                 />
                 {renderErrors(i.label)}
               </Box>
@@ -448,7 +446,6 @@ export default function FilterTicket<T extends FieldValues>({
                     value={field.value as any}
                     onChange={field.onChange}
                     className={classes.datePicker}
-                    disabledDate={disabledDate as any}
                   />
                 </Box>
               );
