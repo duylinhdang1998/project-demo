@@ -1,7 +1,8 @@
-import { PickerDateProps } from 'antd/lib/date-picker/generatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 
-export const disabledDate: PickerDateProps<Dayjs>['disabledDate'] = current => {
-  // Can not select days before today and today
-  return current && current < dayjs().startOf('day');
+export const disabledDate = (current: Dayjs, bottom = dayjs(), top?: Dayjs) => {
+  if (top) {
+    return current && current < bottom.startOf('day') && current > top.startOf('day');
+  }
+  return current && current < bottom.startOf('day');
 };

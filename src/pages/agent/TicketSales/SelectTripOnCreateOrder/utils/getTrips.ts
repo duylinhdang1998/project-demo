@@ -30,6 +30,9 @@ export const getTrips = async (
             }
           : {}),
       },
+      sorter: {
+        createdAt: 'desc',
+      },
     });
     return response.data;
   } catch (error) {
@@ -59,6 +62,9 @@ export const getTripPackages = async (
           value: values.merchandises?.value,
           operator: 'eq',
         },
+      },
+      sorter: {
+        createdAt: 'desc',
       },
     });
     return response.data;

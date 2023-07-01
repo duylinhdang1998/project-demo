@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { addMinutesToTimeString } from 'utils/addMinutesToTimeString';
 import CardSelectTrip from './components/CardSelectTrip';
+import { formatDuration } from 'utils/formatDuration';
 
 interface CardTripsProps {
   loading: boolean;
@@ -18,7 +19,7 @@ interface CardTripsProps {
 }
 
 export const CardTrips = ({ loading, totalRoutes, routes, currentPage, setCurrentPage, onSelect }: CardTripsProps) => {
-  const { t } = useTranslation(['ticketSales']);
+  const { t } = useTranslation(['ticketSales', 'translation']);
 
   if (loading) {
     return (
@@ -46,7 +47,7 @@ export const CardTrips = ({ loading, totalRoutes, routes, currentPage, setCurren
                 timeEnd={addMinutesToTimeString(routeItem.route.departureTime, routeItem.durationTime)}
                 placeStart={routeItem.departurePoint}
                 placeEnd={routeItem.stopPoint}
-                duration={t('ticketSales:duration_minutes', { duration: routeItem.durationTime })}
+                duration={t('ticketSales:about_duration', { duration: formatDuration(routeItem.durationTime) })}
                 vehicle={routeItem.vehicle}
                 onSelect={() => onSelect(routeItem)}
                 dateTime={depatureTime.isValid() ? depatureTime.format('DD/MM/YYYY') : ''}

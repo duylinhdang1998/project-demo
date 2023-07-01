@@ -19,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { resetOrderInformation } from 'store/packageSales/packageSalesSlice';
 import { getTripPackages } from '../TicketSales/SelectTripOnCreateOrder/utils/getTrips';
 import dayjs from 'dayjs';
+import { formatDuration } from 'utils/formatDuration';
 
 const useStyles = makeStyles((theme: Theme) => ({
   buttonSearch: {
@@ -116,7 +117,7 @@ export default function CreatePackageOrders() {
                       timeEnd={addMinutesToTimeString(routeItem.route.departureTime, routeItem.durationTime)}
                       placeStart={routeItem.departurePoint}
                       placeEnd={routeItem.stopPoint}
-                      duration={t('ticketSales:duration_minutes', { duration: routeItem.durationTime })}
+                      duration={t('ticketSales:about_duration', { duration: formatDuration(routeItem.durationTime) })}
                       vehicle={routeItem.vehicle}
                       onSelect={() => handleSelect(routeItem)}
                       dateTime={dayjs(routeItem.dateQuery).format('DD/MM/YYYY')}
