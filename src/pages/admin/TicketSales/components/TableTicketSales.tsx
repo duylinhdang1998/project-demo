@@ -20,7 +20,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { TicketTypeLabelMapping } from 'services/models/TicketSale';
-import { RECORDS_PER_PAGE } from 'services/TicketSale/getTicketSales';
 import { selectAuth } from 'store/auth/selectors';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
@@ -189,10 +188,10 @@ export const TableTicketSales = () => {
   }, [isAgent, navigate, t]);
 
   const dataSource: ColumnTicket[] = useMemo(() => {
-    const result: ColumnTicket[] = [];
+    let result: ColumnTicket[] = [];
     ticketSales.forEach(ticketSale => {
       ticketSale.passengers.forEach(passenger => {
-        result.push(ticketSaleModelToColumnTicket(ticketSale, passenger));
+        result = result.concat(ticketSaleModelToColumnTicket(ticketSale, passenger));
       });
     });
     return result;
@@ -255,7 +254,7 @@ export const TableTicketSales = () => {
           total: totalRows,
           showLessItems: true,
           showSizeChanger: false,
-          pageSize: RECORDS_PER_PAGE,
+          pageSize: undefined,
           current: currentPage + 1,
         }}
         onChange={(pagination, _, sorter, extra) => {
