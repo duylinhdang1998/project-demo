@@ -79,20 +79,28 @@ export const SelectTripOnCreateOrder = () => {
       departureRoute?.departurePoint !== values.departurePoint ||
       departureRoute?.stopPoint !== values.arrivalPoint
     ) {
-      run(0, {
-        departurePoint: values.departurePoint,
-        arrivalPoint: values.arrivalPoint,
-        tripType: values.tripType,
-        departureTime: values.departureTime,
-      });
+      run(
+        0,
+        {
+          departurePoint: values.departurePoint,
+          arrivalPoint: values.arrivalPoint,
+          tripType: values.tripType,
+          departureTime: values.departureTime,
+        },
+        false,
+      );
       setValue('departureRoute', null);
     } else {
-      run(0, {
-        departurePoint: values.arrivalPoint,
-        arrivalPoint: values.departurePoint,
-        tripType: values.tripType,
-        returnTime: values.returnTime,
-      });
+      run(
+        0,
+        {
+          departurePoint: values.arrivalPoint,
+          arrivalPoint: values.departurePoint,
+          tripType: values.tripType,
+          returnTime: values.returnTime,
+        },
+        false,
+      );
     }
   };
 
@@ -117,14 +125,18 @@ export const SelectTripOnCreateOrder = () => {
         const values = getValues();
         setValue('departureRoute', route);
         setCurrentPage(1);
-        run(0, {
-          departurePoint: values.arrivalPoint,
-          arrivalPoint: values.departurePoint,
-          tripType: values.tripType,
-          returnTime: values.returnTime,
-        });
+        run(
+          0,
+          {
+            departurePoint: values.arrivalPoint,
+            arrivalPoint: values.departurePoint,
+            tripType: values.tripType,
+            returnTime: values.returnTime,
+          },
+          true,
+        );
       } else {
-        if (departureRoute.departurePoint === route.stopPoint && route.stopPoint === route.departurePoint) {
+        if (departureRoute.departurePoint === route.stopPoint && departureRoute.stopPoint === route.departurePoint) {
           navigate(nextUrl, {
             state: {
               type: 'ROUND_TRIP',
@@ -165,7 +177,7 @@ export const SelectTripOnCreateOrder = () => {
   };
 
   useEffect(() => {
-    run(currentPage - 1, getValues());
+    run(currentPage - 1, getValues(), !!departureRoute);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
