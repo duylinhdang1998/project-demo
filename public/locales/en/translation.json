@@ -92,6 +92,8 @@
   "confirmPassword": "confirm new password",
   "password_is_not_strong": "Please choose a password that is at least 8 characters long and includes an uppercase letter, a lowercase letter, a special character, and a number.",
   "hour_and_0minute": "{{ hours }} hour",
+  "0hour_and_minute": "{{ minutes }} minute",
+  "0hour_and_minutes": "{{ minutes }} minutes",
   "hour_and_minute": "{{ hours }} hour and {{ minutes }} minute",
   "hour_and_minutes": "{{ hours }} hour and {{ minutes }} minutes",
   "hours_and_0minute": "{{ hours }} hours",

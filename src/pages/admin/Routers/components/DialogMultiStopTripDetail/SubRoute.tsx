@@ -208,7 +208,7 @@ export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiSto
         <Box className={classes.titleIcon} />
         <Typography className={classes.titleText}>{t('routers:Sub_routes')}</Typography>
       </Stack>
-      {subRoutes.slice(RECORD_PER_PAGE * (currentPage - 1), RECORD_PER_PAGE * currentPage + 1).map(routePoint => {
+      {subRoutes.slice(RECORD_PER_PAGE * (currentPage - 1), RECORD_PER_PAGE * currentPage).map(routePoint => {
         return (
           <Box key={routePoint.routeCode} padding="16px" className={classes.routePointContainer}>
             <Grid container spacing={2}>

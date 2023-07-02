@@ -5,6 +5,7 @@ import { SelectTripFormValues } from '../SelectTripOnCreateOrder';
 export const getTrips = async (
   page: number,
   values: Omit<SelectTripFormValues, 'departureRoute'>,
+  isReturnTrip: boolean,
 ): Promise<Awaited<ReturnType<typeof searchRoutes>>['data']> => {
   try {
     const response = await searchRoutes({
@@ -14,12 +15,14 @@ export const getTrips = async (
         departurePointCode: { value: values.departurePoint?.value._id, operator: 'eq' },
         stopPointCode: { value: values.arrivalPoint?.value._id, operator: 'eq' },
         departureTime: {
-          value: values.departureTime
+          value: isReturnTrip
+            ? undefined
+            : values.departureTime
             ? dayjs.utc(values.departureTime).set('second', 0).unix() * 1000
             : dayjs().set('h', 0).set('m', 0).set('s', 0).unix() * 1000,
           operator: 'gte',
         },
-        ...(values.tripType === 'MULTI_STOP'
+        ...(values.tripType === 'MULTI_STOP' && isReturnTrip
           ? {
               returnTime: {
                 value: values.returnTime
@@ -30,9 +33,7 @@ export const getTrips = async (
             }
           : {}),
       },
-      sorter: {
-        _id: 'desc',
-      },
+      sorter: {},
     });
     return response.data;
   } catch (error) {
@@ -63,9 +64,7 @@ export const getTripPackages = async (
           operator: 'eq',
         },
       },
-      sorter: {
-        _id: 'desc',
-      },
+      sorter: {},
     });
     return response.data;
   } catch {

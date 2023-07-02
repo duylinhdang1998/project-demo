@@ -3,6 +3,7 @@ import { UpdateGeneralInfomationTrip } from 'services/Route/Company/updateGenera
 
 export interface UpdateTripRequest extends UpdateGeneralInfomationTrip {
   isHasDeleteStopPointAction: boolean;
+  isHasNewStopPointAction: boolean;
   onSuccess: () => void;
   onFailure: OnFailureWithMessageOfStatusCode;
 }

@@ -1,4 +1,5 @@
 import { AxiosResponse } from 'axios';
+import { omit } from 'lodash-es';
 import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response';
 import { Route, RoutePoint, RoutePointPriceType } from 'services/models/Route';
 import { ServiceException } from 'services/utils/ServiceException';
@@ -33,7 +34,7 @@ export const updateGeneralInfomationTripWhenHasRoutePointDeleted = async ({
       ...data,
       vehicle: data.vehicle?._id,
       stopPoints: data.stopPoints.map(routePoint => ({
-        ...routePoint,
+        ...omit(routePoint, 'routePointId'),
         durationTime: Number(routePoint.durationTime),
         ECOPrices: routePoint.ECOPrices.map(ECOPrice => ({ ...ECOPrice, price: Number(ECOPrice.price) })),
         VIPPrices: routePoint.VIPPrices.map(VIPPrice => ({ ...VIPPrice, price: Number(VIPPrice.price) })),

@@ -1,6 +1,6 @@
 import { AnyObject, Sorter } from 'services/@types/SearchParams';
 
-export const getSortParams = <T extends AnyObject>(sorter: Sorter<T>) => {
+export const getSortParams = <T extends AnyObject>(sorter: Sorter<T>, withDefault = true) => {
   return Object.keys(sorter).reduce<Sorter<T>>(
     (res, sorterKey) => {
       const key = `${sorterKey}[sort]`;
@@ -9,8 +9,10 @@ export const getSortParams = <T extends AnyObject>(sorter: Sorter<T>) => {
         [key]: sorter[sorterKey],
       };
     },
-    {
-      'createdAt[sort]': 'desc',
-    } as Sorter<T>,
+    withDefault
+      ? ({
+          'createdAt[sort]': 'desc',
+        } as Sorter<T>)
+      : {},
   );
 };

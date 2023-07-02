@@ -22,7 +22,7 @@ export const searchRoutes = async ({ tripType, page, searcher, sorter }: SearchR
       limit: RECORDS_PER_PAGE,
       offset: page * RECORDS_PER_PAGE,
       ...getSearchParams(searcher),
-      ...getSortParams(sorter),
+      ...getSortParams(sorter, false),
     },
   });
   if (response.data.code === 0) {
