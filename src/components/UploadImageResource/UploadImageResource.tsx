@@ -156,7 +156,7 @@ export const UploadImageResource = ({
         setFileListState(state => {
           return state.filter(item => item.uid !== sessionId);
         });
-        toast(<ToastCustom type="error" description={ServiceException.getMessageError(error)} text={`${file.name} file upload failed.`} />, {
+        toast(<ToastCustom type="error" text={ServiceException.getMessageError(error)} />, {
           className: 'toast-error',
         });
       } finally {

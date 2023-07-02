@@ -21,6 +21,8 @@ import { FilterRoutesByTripType } from './components/FilterRoutesByTripType';
 import { Steps } from './components/Steps';
 import { getTrips } from './utils/getTrips';
 import { Result } from 'components/SelectDecouplingData/SelectDestination';
+import { toast } from 'react-toastify';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -122,29 +124,42 @@ export const SelectTripOnCreateOrder = () => {
           returnTime: values.returnTime,
         });
       } else {
-        navigate(nextUrl, {
-          state: {
-            type: 'ROUND_TRIP',
-            data: {
-              departureTrip: {
-                dateFormatted: departureRoute.dateQuery,
-                vehicle: departureRoute.vehicle,
-                routePoint: {
-                  ...departureRoute,
-                  vehicle: departureRoute.vehicle?._id,
+        if (departureRoute.departurePoint === route.stopPoint && route.stopPoint === route.departurePoint) {
+          navigate(nextUrl, {
+            state: {
+              type: 'ROUND_TRIP',
+              data: {
+                departureTrip: {
+                  dateFormatted: departureRoute.dateQuery,
+                  vehicle: departureRoute.vehicle,
+                  routePoint: {
+                    ...departureRoute,
+                    vehicle: departureRoute.vehicle?._id,
+                  },
+                },
+                returnTrip: {
+                  dateFormatted: route.dateQuery,
+                  vehicle: route.vehicle,
+                  routePoint: {
+                    ...route,
+                    vehicle: route.vehicle?._id,
+                  },
                 },
               },
-              returnTrip: {
-                dateFormatted: route.dateQuery,
-                vehicle: route.vehicle,
-                routePoint: {
-                  ...route,
-                  vehicle: route.vehicle?._id,
-                },
-              },
+            } as LocationStateForCreateOrderRoundTrip,
+          });
+        } else {
+          toast(
+            <ToastCustom
+              type="error"
+              description={t('ticketSales:return_trip_invalid_description')}
+              text={t('ticketSales:return_trip_invalid_title')}
+            />,
+            {
+              className: 'toast-error',
             },
-          } as LocationStateForCreateOrderRoundTrip,
-        });
+          );
+        }
       }
     }
   };
