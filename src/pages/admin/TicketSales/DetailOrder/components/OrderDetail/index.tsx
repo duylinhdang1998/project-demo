@@ -27,7 +27,7 @@ function OrderDetails({ record }: OrderDetailsProps) {
         <Typography fontSize={16} color={theme.palette.grey[100]} fontWeight="700">
           {t('ticketSales:order')} #{record.orderCode}
         </Typography>
-        <TicketStatus status={record.ticketStatus} />
+        <TicketStatus status={record.ticketStatus} sx={{ textTransform: 'uppercase !important' }} />
       </Stack>
       <Divider sx={{ borderColor: '#D7DADC' }} />
       <Box mt="24px" sx={{ maxWidth: 120, maxHeight: 120, marginLeft: 'auto', marginRight: 'auto' }}>

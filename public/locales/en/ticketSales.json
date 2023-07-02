@@ -69,9 +69,9 @@
   "terms_agree_invalid": "You must agree with our terms",
   "created_by": "Created by",
   "order": "Order",
-  "ticket_cancelled": "CANCALLED",
-  "ticket_used": "USED",
-  "ticket_pending": "PENDING",
+  "ticket_cancelled": "Cancelled",
+  "ticket_used": "Used",
+  "ticket_pending": "Pending",
   "ticketType": "Ticket type",
   "passengers_show_detail": "Detail",
   "passengers_show_less": "Show less",
@@ -85,5 +85,6 @@
   "vehicle": "Vehicle",
   "view_relate_order": "View relate order",
   "type": "Type",
-  "merchandises": "Package"
+  "merchandises": "Package",
+  "ticket_status": "Ticket status"
 }

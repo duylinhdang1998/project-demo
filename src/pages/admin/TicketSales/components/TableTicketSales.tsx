@@ -29,6 +29,7 @@ import { v4 } from 'uuid';
 import { ticketSaleModelToColumnTicket } from '../utils/ticketSaleModelToColumnTicket';
 import { ColumnTicket } from './ColumnTicket';
 import { DialogConfirmChangeStatusToCancel } from './DialogConfirmChangeStatusToCancel';
+import { TicketStatus } from 'components/TicketStatus/TicketStatus';
 
 export const TableTicketSales = () => {
   const { t } = useTranslation(['ticketSales', 'translation']);
@@ -65,7 +66,7 @@ export const TableTicketSales = () => {
       {
         key: 'passengers.firstName',
         dataIndex: 'passengers.firstName',
-        width: 88,
+        width: 85,
         title: () => <AntTableColumnTitle>{t('ticketSales:firstName')}</AntTableColumnTitle>,
         render: (_, row) => {
           return <AntTableColumnDisplayAsTypograph>{row.firstName}</AntTableColumnDisplayAsTypograph>;
@@ -74,7 +75,7 @@ export const TableTicketSales = () => {
       {
         key: 'trip',
         dataIndex: 'trip',
-        width: 140,
+        width: 135,
         title: () => <AntTableColumnTitle>{t('ticketSales:trip')}</AntTableColumnTitle>,
         render: (_, row) => {
           return (
@@ -89,10 +90,15 @@ export const TableTicketSales = () => {
         key: 'departureTime',
         dataIndex: 'departureTime',
         title: () => <AntTableColumnTitle>{t('ticketSales:departureTime')}</AntTableColumnTitle>,
-        width: 145,
+        width: 125,
         sorter: () => 0,
         render: (_, row) => {
-          return <AntTableColumnDisplayAsTypograph>{dayjs(row.departureTime).format('DD/MM/YYYY - HH[H]mm')}</AntTableColumnDisplayAsTypograph>;
+          return (
+            <Box>
+              <AntTableColumnDisplayAsTypograph>{dayjs(row.departureTime).format('DD/MM/YYYY')}</AntTableColumnDisplayAsTypograph>
+              <AntTableColumnDisplayAsTypograph>{dayjs(row.departureTime).format('HH[H]mm')}</AntTableColumnDisplayAsTypograph>
+            </Box>
+          );
         },
       },
       {
@@ -107,10 +113,33 @@ export const TableTicketSales = () => {
         },
       },
       {
+        key: 'ticketStatus',
+        dataIndex: 'ticketStatus',
+        title: () => <AntTableColumnTitle>{t('ticketSales:ticket_status')}</AntTableColumnTitle>,
+        width: 90,
+        align: 'center',
+        sorter: () => 0,
+        render: (_, row) => {
+          return (
+            <TicketStatus
+              sx={{
+                border: 'none !important',
+                textTransform: 'capitalize !important',
+                fontSize: '12px !important',
+                fontWeight: '400 !important',
+                display: 'inline-block !important',
+                padding: '2px 16px !important',
+              }}
+              status={row.ticketStatus}
+            />
+          );
+        },
+      },
+      {
         key: 'paymentStatus',
         dataIndex: 'paymentStatus',
         title: () => <AntTableColumnTitle>{t('ticketSales:payment_status')}</AntTableColumnTitle>,
-        width: 120,
+        width: 130,
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
@@ -127,7 +156,7 @@ export const TableTicketSales = () => {
         key: 'orderCode',
         dataIndex: 'orderCode',
         title: () => <AntTableColumnTitle>{t('ticketSales:order_id')}</AntTableColumnTitle>,
-        width: 100,
+        width: 55,
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
@@ -138,7 +167,7 @@ export const TableTicketSales = () => {
         key: 'ticketType',
         dataIndex: 'ticketType',
         title: () => <AntTableColumnTitle>{t('ticketSales:type')}</AntTableColumnTitle>,
-        width: 120,
+        width: 85,
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
@@ -182,7 +211,7 @@ export const TableTicketSales = () => {
           return <ActionTable actions={actions} row={row} />;
         },
         align: 'center',
-        width: 70,
+        width: 20,
       },
     ];
   }, [isAgent, navigate, t]);

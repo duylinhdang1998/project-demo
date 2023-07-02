@@ -145,7 +145,7 @@ export default function ControlTicket() {
           <Typography variant="h5">
             {t('ticketSales:order')} #{ticketSale?.orderCode}
           </Typography>
-          <TicketStatus status={ticketSale.ticketStatus} />
+          <TicketStatus status={ticketSale.ticketStatus} sx={{ textTransform: 'uppercase !important' }} />
         </Stack>
         <Divider sx={{ margin: '16px 0' }} />
         <Box marginBottom="24px">

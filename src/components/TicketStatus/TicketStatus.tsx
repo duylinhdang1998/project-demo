@@ -1,12 +1,12 @@
-import { Box } from '@mui/material';
+import { Box, BoxProps } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { TicketStatus as TTicketStatus } from 'services/models/TicketSale';
 
-interface TicketStatusProps {
+interface TicketStatusProps extends BoxProps {
   status: TTicketStatus;
 }
 
-export const TicketStatus = ({ status }: TicketStatusProps) => {
+export const TicketStatus = ({ status, ...props }: TicketStatusProps) => {
   const { t } = useTranslation(['ticketSales']);
 
   const labelMapping: Record<TicketStatusProps['status'], string> = {
@@ -29,6 +29,7 @@ export const TicketStatus = ({ status }: TicketStatusProps) => {
 
   return (
     <Box
+      {...props}
       sx={{
         backgroundColor: backgroundMapping[status],
         color: colorMapping[status],
@@ -37,6 +38,7 @@ export const TicketStatus = ({ status }: TicketStatusProps) => {
         padding: '8px',
         border: `1px solid currentColor`,
         borderRadius: '4px',
+        ...props.sx,
       }}
     >
       {labelMapping[status]}
