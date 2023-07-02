@@ -22,10 +22,10 @@ const getFields = (tripType: SelectTripFormValues['tripType']): Field[] => {
 };
 
 const fields2: FilterTicketProps<any>['fields'] = [
-  { id: v4(), required: true, label: 'departurePoint', type: 'departurePoint' },
-  { id: v4(), required: true, label: 'arrivalPoint', type: 'arrivalPoint' },
-  { id: v4(), required: true, label: 'merchandises', type: 'packageSettings' },
-  { id: v4(), required: true, label: 'departureTime', type: 'datetime', showTime: true, format: 'HH:mm DD-MM-YYYY', disabledDate: disabledDate },
+  { id: v4(), required: false, label: 'departurePoint', type: 'departurePoint' },
+  { id: v4(), required: false, label: 'arrivalPoint', type: 'arrivalPoint' },
+  { id: v4(), required: false, label: 'merchandises', type: 'packageSettings' },
+  { id: v4(), required: false, label: 'departureTime', type: 'datetime', showTime: true, format: 'HH:mm DD-MM-YYYY', disabledDate: disabledDate },
 ];
 
 export interface FilterRoutesBySearcherProps {

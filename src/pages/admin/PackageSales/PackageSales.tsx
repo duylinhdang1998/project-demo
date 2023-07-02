@@ -59,11 +59,11 @@ export default function PackageSales() {
         value: values.orderId,
         operator: 'contains',
       },
-      'sender.firstName': {
+      senderFullName: {
         value: values.from?.trim(),
         operator: 'contains',
       },
-      'recipent.firstName': {
+      recipentFullName: {
         value: values.recipient?.trim(),
         operator: 'contains',
       },

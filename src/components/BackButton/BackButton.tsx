@@ -18,10 +18,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-function BackButton() {
+interface Props {
+  onBack?: () => void;
+}
+
+function BackButton({ onBack }: Props) {
   const classes = useStyles();
   const navigate = useNavigate();
-  const handleBack = () => navigate(-1);
+  const handleBack = () => {
+    if (!!onBack) {
+      onBack();
+    } else {
+      navigate(-1);
+    }
+  };
   return (
     <Button variant="contained" className={classes.container} fullWidth={false} onClick={handleBack}>
       <ArrowBackIcon sx={{ color: '#fff', fontSize: '22px' }} />

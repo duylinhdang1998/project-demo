@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { get } from 'lodash-es';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRequest } from 'ahooks';
 import { getRoutePkgDetail } from 'services/Route/Company/getRoute';
 import { PaymentMethod } from 'components/PaymentMethod';
@@ -18,6 +18,7 @@ import { EnumPaymentGateway } from 'services/models/PaymentGateway';
 import { useSelector } from 'react-redux';
 import { selectAuth } from 'store/auth/selectors';
 import { PackageSale } from 'models/PackageSales';
+import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 
 interface StateLocation {
   merchandise: {
@@ -46,6 +47,9 @@ export interface FieldValues {
 export default function ClientInfo() {
   const { t } = useTranslation(['packageSales', 'ticketSales', 'translation']);
   const location = useLocation();
+
+  const [open, setOpen] = useState(false);
+
   const selectedRoute: RouteOfTicketSale = get(location, 'state.selectedRoute', undefined);
   const defaultPackageSale: PackageSale = get(location, 'state.defaultPackage', undefined);
   const authentication = useSelector(selectAuth);
@@ -126,8 +130,19 @@ export default function ClientInfo() {
     createPackageSale(payload);
   };
 
+  const handleDialogConfirm = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOke = () => {
+    navigate(-1);
+  };
+
   return (
-    <LayoutDetail title={t('create_package_orders')} subTitle={t('package_sales')}>
+    <LayoutDetail title={t('create_package_orders')} subTitle={t('package_sales')} onBack={handleDialogConfirm}>
       <Grid container spacing="24px">
         <Grid item xs={12} md={8}>
           <Box bgcolor="#fff" borderRadius="4px" width="100%" padding="24px">
@@ -158,6 +173,13 @@ export default function ClientInfo() {
           </Box>
         </Grid>
       </Grid>
+      <DialogConfirm
+        openDialog={open}
+        title={t('translation:cancel_type', { type: t('package_sales').toLowerCase() })}
+        subTitle={t('translation:leave_page')}
+        onClose={handleClose}
+        onOk={handleOke}
+      />
     </LayoutDetail>
   );
 }

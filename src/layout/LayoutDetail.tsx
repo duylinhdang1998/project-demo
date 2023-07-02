@@ -11,16 +11,17 @@ interface LayoutDetailProps {
   children: ReactNode;
   variant?: 'withTable' | 'withoutTable';
   addNewItemButtonProps?: AddNewItemButtonProps;
+  onBack?: () => void;
 }
 
-export default function LayoutDetail({ children, title, subTitle, variant = 'withoutTable', addNewItemButtonProps }: LayoutDetailProps) {
+export default function LayoutDetail({ children, title, subTitle, variant = 'withoutTable', addNewItemButtonProps, onBack }: LayoutDetailProps) {
   if (variant === 'withTable') {
     return (
       <Box>
         <HeaderLayout subTitleHeader={subTitle} activeSideBarHeader={title} />
         <Box padding="24px">
           <Stack direction="row" justifyContent="space-between">
-            <BackButton />
+            <BackButton onBack={onBack} />
             {addNewItemButtonProps && <AddNewItemButton {...addNewItemButtonProps} />}
           </Stack>
           <Stack direction={{ mobile: 'column', laptop: 'row' }} spacing={{ xs: '30px', lg: '60px' }}>
@@ -42,7 +43,7 @@ export default function LayoutDetail({ children, title, subTitle, variant = 'wit
             left="0px"
             zIndex={10}
           >
-            <BackButton />
+            <BackButton onBack={onBack} />
           </Box>
           <Box marginLeft={{ laptop: '62px', mobile: undefined }} flex="1">
             {children}
