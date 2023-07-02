@@ -42,7 +42,6 @@ export default function PackageSales() {
   const { control, handleSubmit } = useForm<Values>();
 
   useMount(() => {
-    console.log('mountign package sales');
     getListPkgSales({
       page: 0,
       searcher: {},
@@ -53,20 +52,20 @@ export default function PackageSales() {
   const onSubmit = (values: Values) => {
     const searcher: Searcher<PackageSale> = {
       arrivalPoint: {
-        operator: 'eq',
-        value: values.destination?.value._id,
+        operator: 'contains',
+        value: values.destination?.value.title?.trim(),
       },
       orderCode: {
         value: values.orderId,
-        operator: 'eq',
+        operator: 'contains',
       },
       'sender.firstName': {
-        value: values.from,
-        operator: 'eq',
+        value: values.from?.trim(),
+        operator: 'contains',
       },
       'recipent.firstName': {
-        value: values.recipient,
-        operator: 'eq',
+        value: values.recipient?.trim(),
+        operator: 'contains',
       },
       departureTime: [
         {

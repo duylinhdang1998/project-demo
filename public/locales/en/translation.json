@@ -81,6 +81,8 @@
   "reactive": "Reactive",
   "delete_package_success": "Delete package successfully!",
   "delete_package_error": "Delete package error",
+  "cancel_package_error": "Cancel package error",
+  "cancel_package_success": "Cancel package successfully!",
   "attach_invalid_size": "Attach must smaller than 2MB!",
   "attach_invalid_mime_type": "You can only upload {{mimeType}} file!",
   "delete_type": "Delete {{type}}",

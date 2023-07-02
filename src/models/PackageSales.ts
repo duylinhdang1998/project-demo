@@ -33,6 +33,7 @@ export interface PackageSale {
   totalPrice: number;
   totalQuantity: number;
   paymentMethod: EnumPaymentGateway;
+  orderStatus: OrderStatus;
 }
 
 interface Merchandise {

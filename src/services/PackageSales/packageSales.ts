@@ -10,7 +10,7 @@ import { getSearchParams } from 'services/utils/getSearchParams';
 import { getSortParams } from 'services/utils/getSortParams';
 import fetchAPI from 'utils/fetchAPI';
 
-const RECORDS_PER_PAGE = 5;
+const RECORDS_PER_PAGE = 10;
 export interface PackageSalePayload {
   route?: string;
   departurePoint?: string;

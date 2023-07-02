@@ -71,7 +71,7 @@ export default function EditPackageSales() {
         success: t('update_package_sale_success'),
         error: t('update_package_sale_error'),
         onSuccess: () => {
-          reset();
+          // reset();
           navigate(-1);
         },
       });

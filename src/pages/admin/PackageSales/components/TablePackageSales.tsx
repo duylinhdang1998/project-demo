@@ -2,7 +2,7 @@ import React, { memo, useMemo } from 'react';
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
-import { CalendarIcon, MapPinIcon } from 'assets';
+import { MapPinIcon } from 'assets';
 import ActionTable from 'components/ActionTable/ActionTable';
 import { AntTableColumnTitle } from 'components/AntTableColumnTitle/AntTableColumnTitle';
 import EditIcon from 'components/SvgIcon/EditIcon';
@@ -11,7 +11,7 @@ import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import i18n from 'locales/i18n';
 import { get } from 'lodash-es';
-import { PackageSale } from 'models/PackageSales';
+import { OrderStatus, PackageSale } from 'models/PackageSales';
 import { EPaymentStatus } from 'models/PaymentStatus';
 import { v4 } from 'uuid';
 import CancelPresentationOutlinedIcon from '@mui/icons-material/CancelPresentationOutlined';
@@ -51,8 +51,8 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
     onSuccess: (data: any) => {
       getNotifcation({
         code: data.code,
-        error: t('translation:delete_package_error'),
-        success: t('translation:delete_package_success'),
+        error: t('translation:cancel_package_error'),
+        success: t('translation:cancel_package_success'),
         onSuccess: () => {
           onRefresh?.();
         },
@@ -74,11 +74,13 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
   const columnsPackage: ColumnsType<PackageSale> = useMemo(() => {
     return [
       {
-        key: 'orderId',
+        key: 'orderCode',
         dataIndex: 'orderCode',
         align: 'center',
         width: 140,
         title: () => <div>{i18n.t('packageSales:orderId')}</div>,
+        sorter: () => 0,
+        sortOrder: get(sortOrder, 'orderCode', null),
       },
       {
         key: 'destination',
@@ -97,20 +99,13 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
                 }}
                 color="#1AA6EE"
               />
-              <TextWithIcon
-                icon={CalendarIcon}
-                text={item.arrivalPoint}
-                typography={{
-                  fontSize: '12px',
-                }}
-                color="#1AA6EE"
-              />
+              <TextWithIcon icon={MapPinIcon} text={item.arrivalPoint} typography={{ fontSize: '14px' }} color="#1AA6EE" />
             </div>
           );
         },
       },
       {
-        key: 'from',
+        key: 'sender',
         dataIndex: 'sender',
         align: 'left',
         title: () => <div>{i18n.t('packageSales:from')}</div>,
@@ -124,6 +119,8 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
             </Typography>
           </div>
         ),
+        sorter: () => 0,
+        sortOrder: get(sortOrder, 'sender', null),
       },
       {
         key: 'recipent',
@@ -140,6 +137,8 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
             </Typography>
           </div>
         ),
+        sorter: () => 0,
+        sortOrder: get(sortOrder, 'recipent', null),
       },
       {
         key: 'qty',
@@ -153,9 +152,11 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
             </Typography>
           </div>
         ),
+        sorter: () => 0,
+        sortOrder: get(sortOrder, 'qty', null),
       },
       {
-        key: 'weight',
+        key: 'totalWeight',
         dataIndex: 'merchandises',
         align: 'center',
         title: () => <div>{i18n.t('packageSales:weight')}</div>,
@@ -170,7 +171,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         sortOrder: get(sortOrder, 'weight', null),
       },
       {
-        key: 'price',
+        key: 'totalPrice',
         dataIndex: 'merchandises',
         align: 'center',
         title: () => <div>{i18n.t('packageSales:price')}</div>,
@@ -185,15 +186,33 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         sortOrder: get(sortOrder, 'price', null),
       },
       {
-        key: 'status',
+        key: 'paymentStatus',
         dataIndex: 'paymentStatus',
         align: 'center',
-        title: () => <div>{i18n.t('packageSales:status')}</div>,
+        title: () => <div>{i18n.t('packageSales:payment_status')}</div>,
         render: (paymentStatus: PackageSale['paymentStatus']) => (
           <Box display="flex" alignItems="center" justifyContent="center">
             <Tag text={!!paymentStatus ? paymentStatus : 'NONE'} variant={paymentStatus === EPaymentStatus.APPROVED ? 'success' : 'error'} />
           </Box>
         ),
+        sorter: () => 0,
+        sortOrder: get(sortOrder, 'paymentStatus', null),
+      },
+      {
+        key: 'orderStatus',
+        dataIndex: 'orderStatus',
+        title: () => <AntTableColumnTitle>{t('packageSales:order_status')}</AntTableColumnTitle>,
+        width: 90,
+        align: 'center',
+        render: (value: OrderStatus) => {
+          return (
+            <Box display="flex" alignItems="center" justifyContent="center">
+              <Tag text={value} variant={value === OrderStatus.SUCCESS ? 'success' : 'error'} />
+            </Box>
+          );
+        },
+        sorter: () => 0,
+        sortOrder: get(sortOrder, 'orderStatus', null),
       },
       {
         key: 'action',
@@ -264,7 +283,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         dataSource={dataSource}
         rowKey={record => record._id ?? ''}
         pagination={{
-          pageSize: 5,
+          pageSize: 10,
           total: pagination.totalRows,
           current: currentPage + 1,
         }}

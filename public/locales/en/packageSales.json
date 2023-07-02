@@ -54,5 +54,7 @@
   "add_package_sale_success": "Add package sale success",
   "add_package_sale_failed": "Add package sale failed",
   "update_package_sale_success": "Update package sale success",
-  "update_package_sale_error": "Update package sale failed"
+  "update_package_sale_error": "Update package sale failed",
+  "order_status": "Order Status",
+  "order_success": "Success"
 }
