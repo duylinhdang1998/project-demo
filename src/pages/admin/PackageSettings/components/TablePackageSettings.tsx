@@ -1,27 +1,27 @@
 import ClearIcon from '@mui/icons-material/Clear';
-import { Dialog, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
+import { Dialog, Divider, IconButton, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/lib/table';
-import { memo, useMemo, useState, Fragment } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { v4 as uuid } from 'uuid';
 import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
 import Button from 'components/Button/Button';
+import { DialogTitle } from 'components/DialogTitle/DialogTitle';
 import DeleteIcon from 'components/SvgIcon/DeleteIcon';
 import EditIcon from 'components/SvgIcon/EditIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { PackageSetting } from 'services/models/PackageSetting';
+import { memo, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { RECORDS_PER_PAGE } from 'services/PackageSetting/Company/getPackageSettings';
+import { PackageSetting } from 'services/models/PackageSetting';
 import { packageSettingsActions } from 'store/packageSettings/packageSettingsSlice';
 import { selectPackageSettings } from 'store/packageSettings/selectors';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
-import { DialogTitle } from 'components/DialogTitle/DialogTitle';
+import { v4 as uuid } from 'uuid';
 
 const PROPERTIES_IN_DIALOG: Array<keyof Pick<PackageSetting, 'title' | 'description'>> = ['title', 'description'];
 
@@ -200,19 +200,19 @@ function TablePackageSettings() {
             </IconButton>
           </Stack>
           <Divider variant="middle" sx={{ margin: '16px 0' }} />
-          <Grid container spacing={2}>
+          <Box display="flex" flexDirection="column" gap="8px">
             {openPackageSettingDetail &&
               PROPERTIES_IN_DIALOG.map(property => (
-                <Fragment key={property}>
-                  <Grid item xs={3}>
-                    <Typography variant="body2">{t(`packageSettings:${property}`)}:</Typography>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <Typography variant="body2">{openPackageSettingDetail[property]}</Typography>
-                  </Grid>
-                </Fragment>
+                <Box display="flex" key={property}>
+                  <Typography minWidth="100px" flexBasis="33.33%" variant="body2">
+                    {t(`packageSettings:${property}`)}:
+                  </Typography>
+                  <Typography flex={1} variant="body2">
+                    {openPackageSettingDetail[property]}
+                  </Typography>
+                </Box>
               ))}
-          </Grid>
+          </Box>
         </Box>
       </Dialog>
     );

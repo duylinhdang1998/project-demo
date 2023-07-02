@@ -31,7 +31,7 @@ export const getTrips = async (
           : {}),
       },
       sorter: {
-        createdAt: 'desc',
+        _id: 'desc',
       },
     });
     return response.data;
@@ -64,7 +64,7 @@ export const getTripPackages = async (
         },
       },
       sorter: {
-        createdAt: 'desc',
+        _id: 'desc',
       },
     });
     return response.data;
