@@ -134,7 +134,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
             toast(
               <ToastCustom
                 type="error"
-                text={t('translation:add_type_error', {
+                text={t('translation:edit_type_error', {
                   type: t('routers:trip').toLowerCase(),
                 })}
                 description={message}
@@ -170,15 +170,6 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
             ],
           } as CreateOneStopTrip,
           onSuccess() {
-            toast(
-              <ToastCustom
-                type="success"
-                text={t('translation:add_type_success', {
-                  type: t('routers:new_trip').toLowerCase(),
-                })}
-              />,
-              { className: 'toast-success' },
-            );
             nextStep();
           },
           onFailure: message => {
@@ -245,7 +236,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
             toast(
               <ToastCustom
                 type="error"
-                text={t('translation:add_type_error', {
+                text={t('translation:edit_type_error', {
                   type: t('routers:trip').toLowerCase(),
                 })}
                 description={message}
@@ -279,15 +270,6 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
             })),
           } as CreateMultipleStopTrip,
           onSuccess() {
-            toast(
-              <ToastCustom
-                type="success"
-                text={t('translation:add_type_success', {
-                  type: t('routers:trip').toLowerCase(),
-                })}
-              />,
-              { className: 'toast-success' },
-            );
             nextStep();
           },
           onFailure: message => {
@@ -318,22 +300,24 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
             startPeriod: dayjsToNumber(formValues.fromDate.set('h', 12)),
           },
           onSuccess() {
-            toast(
-              <ToastCustom
-                type="success"
-                text={t('translation:edit_type_success', {
-                  type: t('routers:trip').toLowerCase(),
-                })}
-              />,
-              { className: 'toast-success' },
-            );
+            if (isEditAction) {
+              toast(
+                <ToastCustom
+                  type="success"
+                  text={t('translation:edit_type_success', {
+                    type: t('routers:trip').toLowerCase(),
+                  })}
+                />,
+                { className: 'toast-success' },
+              );
+            }
             nextStep();
           },
           onFailure: message => {
             toast(
               <ToastCustom
                 type="error"
-                text={t('translation:edit_type_error', {
+                text={t(isEditAction ? 'translation:edit_type_error' : 'translation:add_type_error', {
                   type: t('routers:trip').toLowerCase(),
                 })}
                 description={message}

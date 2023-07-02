@@ -433,7 +433,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           toast(
             <ToastCustom
               type="success"
-              text={t('translation:edit_type_success', {
+              text={t(isEdit ? 'translation:edit_type_success' : 'translation:add_type_success', {
                 type: t('routers:trip').toLowerCase(),
               })}
             />,
