@@ -17,9 +17,10 @@ import { getPackageSettings } from 'services/PackageSetting/Company/getPackageSe
 import { getVehicles } from 'services/Vehicle/Company/getVehicles';
 import { UserRole } from 'services/models/UserRole';
 import { customStyles } from './customStyles';
+import { disabledDate } from 'utils/disableDate';
 
 export interface FilterTicketProps<T extends FieldValues> {
-  fields?: Array<Field & { numberColumn?: number }>;
+  fields?: Array<Field & { numberColumn?: number; disabledDate?: typeof disabledDate }>;
   inputProps?: InputBaseProps;
   selectProps?: SelectProps;
   filterKey?: string;
@@ -102,7 +103,7 @@ export default function FilterTicket<T extends FieldValues>({
     );
   };
 
-  const renderUIFields = (i: Field) => {
+  const renderUIFields = (i: Required<FilterTicketProps<T>>['fields'][number]) => {
     switch (i.type) {
       case 'text':
         return (
@@ -161,6 +162,8 @@ export default function FilterTicket<T extends FieldValues>({
                   showTime={i.showTime}
                   format={i.format}
                   picker={i.picker}
+                  // @ts-ignore
+                  disabledDate={i.disabledDate}
                   value={field.value as any}
                   onChange={field.onChange}
                   className={classes.datePicker}
@@ -446,6 +449,8 @@ export default function FilterTicket<T extends FieldValues>({
                     value={field.value as any}
                     onChange={field.onChange}
                     className={classes.datePicker}
+                    // @ts-ignore
+                    disabledDate={i.disabledDate}
                   />
                 </Box>
               );

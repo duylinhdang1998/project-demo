@@ -143,6 +143,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
             );
           },
           isHasDeleteStopPointAction: false,
+          isHasNewStopPointAction: false,
         }),
       );
     } else {
@@ -253,6 +254,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
             );
           },
           isHasDeleteStopPointAction: formValues.routePointsDeleted.length > 0,
+          isHasNewStopPointAction: !!formValues.routePoints.find(routePoint => !routePoint.routePointId),
         }),
       );
     } else {
