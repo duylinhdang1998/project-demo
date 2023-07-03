@@ -21,13 +21,7 @@ export const getRoutes = async ({ page, sorter, searcher }: GetRoutes): Promise<
       limit: RECORDS_PER_PAGE,
       offset: page * RECORDS_PER_PAGE,
       ...getSortParams(sorter),
-      ...getSearchParams<Route>({
-        ...searcher,
-        status: {
-          value: 'ACTIVE',
-          operator: 'eq',
-        },
-      }),
+      ...getSearchParams<Route>(searcher),
     },
   });
   if (response.data.code === 0) {
