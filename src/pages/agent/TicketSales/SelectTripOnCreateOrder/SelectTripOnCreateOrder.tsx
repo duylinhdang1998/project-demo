@@ -65,6 +65,7 @@ export const SelectTripOnCreateOrder = () => {
   const { run, loading, data } = useRequest(getTrips, { manual: true });
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentSearcher, setCurrentSearcher] = useState<SelectTripFormValues>(getValues());
 
   const navigate = useNavigate();
 
@@ -72,6 +73,7 @@ export const SelectTripOnCreateOrder = () => {
   const isAgent = userInfo?.role === 'agent';
 
   const onSubmit = (values: SelectTripFormValues) => {
+    setCurrentSearcher(values);
     setCurrentPage(1);
     if (
       values.tripType === 'ONE_TRIP' ||
@@ -177,7 +179,7 @@ export const SelectTripOnCreateOrder = () => {
   };
 
   useEffect(() => {
-    run(currentPage - 1, getValues(), !!departureRoute);
+    run(currentPage - 1, currentSearcher, !!departureRoute);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
