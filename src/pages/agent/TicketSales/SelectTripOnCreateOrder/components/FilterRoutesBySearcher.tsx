@@ -11,12 +11,20 @@ import { disabledDate } from 'utils/disableDate';
 
 const getFields = (tripType: SelectTripFormValues['tripType']): Field[] => {
   const fields: FilterTicketProps<any>['fields'] = [
-    { id: v4(), required: true, label: 'departurePoint', type: 'departurePoint' },
-    { id: v4(), required: true, label: 'arrivalPoint', type: 'arrivalPoint' },
-    { id: v4(), required: true, label: 'departureTime', type: 'datetime', showTime: true, format: 'HH:mm DD-MM-YYYY', disabledDate: disabledDate },
+    { id: v4(), required: undefined, label: 'departurePoint', type: 'departurePoint' },
+    { id: v4(), required: undefined, label: 'arrivalPoint', type: 'arrivalPoint' },
+    {
+      id: v4(),
+      required: undefined,
+      label: 'departureTime',
+      type: 'datetime',
+      showTime: true,
+      format: 'HH:mm DD-MM-YYYY',
+      disabledDate: disabledDate,
+    },
   ];
   if (tripType === 'MULTI_STOP') {
-    fields.push({ id: v4(), required: true, label: 'returnTime', type: 'datetime', showTime: true, format: 'HH:mm DD-MM-YYYY' });
+    fields.push({ id: v4(), required: undefined, label: 'returnTime', type: 'datetime', showTime: true, format: 'HH:mm DD-MM-YYYY' });
   }
   return fields;
 };
