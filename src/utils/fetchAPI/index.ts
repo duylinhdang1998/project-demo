@@ -8,7 +8,7 @@ const axiosConfig = new ConfigureAxios({
   configure: {
     method: 'GET',
     baseURL: env.apiEndPoint,
-    timeout: 10000,
+    timeout: 30000,
     paramsSerializer: qs.stringify,
   },
   setAccessToken() {
