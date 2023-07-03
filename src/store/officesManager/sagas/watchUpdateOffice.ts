@@ -1,4 +1,4 @@
-import { put, retry, takeLeading } from 'redux-saga/effects';
+import { call, put, takeLeading } from 'redux-saga/effects';
 import { updateOffice } from 'services/OfficesManager/Company/updateOffice';
 import { ServiceException } from 'services/utils/ServiceException';
 import { officesManagerActions } from '../officesManagerSlice';
@@ -6,7 +6,7 @@ import { officesManagerActions } from '../officesManagerSlice';
 function* handleUpdateOffice({ payload }: ReturnType<typeof officesManagerActions.updateOfficeRequest>) {
   const { id, data, targetOffice, onFailure, onSuccess } = payload;
   try {
-    yield retry(3, 1000, updateOffice, { data, id });
+    yield call(updateOffice, { data, id });
     yield put(
       officesManagerActions.updateOfficeSuccess({
         data: {

@@ -1,4 +1,4 @@
-import { put, retry, takeLeading } from 'redux-saga/effects';
+import { call, put, takeLeading } from 'redux-saga/effects';
 import { updatePackageSetting } from 'services/PackageSetting/Company/updatePackageSetting';
 import { ServiceException } from 'services/utils/ServiceException';
 import { packageSettingsActions } from '../packageSettingsSlice';
@@ -6,7 +6,7 @@ import { packageSettingsActions } from '../packageSettingsSlice';
 function* handleUpdatePackageSetting({ payload }: ReturnType<typeof packageSettingsActions.updatePackageSettingRequest>) {
   const { id, data, targetPackageSetting, onFailure, onSuccess } = payload;
   try {
-    yield retry(3, 1000, updatePackageSetting, { data, id });
+    yield call(updatePackageSetting, { data, id });
     yield put(
       packageSettingsActions.updatePackageSettingSuccess({
         data: {

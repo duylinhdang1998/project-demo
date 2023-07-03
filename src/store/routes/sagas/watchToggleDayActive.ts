@@ -1,4 +1,4 @@
-import { put, retry, takeLeading } from 'redux-saga/effects';
+import { call, put, takeLeading } from 'redux-saga/effects';
 import { toggleDayActive } from 'services/Route/Company/toggleDayActive';
 import { ServiceException } from 'services/utils/ServiceException';
 import { isTimestampEqualDayInYear } from 'utils/handleTimestampWithDayInYear';
@@ -7,7 +7,7 @@ import { routesActions } from '../routesSlice';
 function* handleToggleDayActive({ payload }: ReturnType<typeof routesActions.toggleDayActiveRequest>) {
   const { targetRoute, data, onFailure, onSuccess } = payload;
   try {
-    yield retry(3, 1000, toggleDayActive, data);
+    yield call(toggleDayActive, data);
     yield put(
       routesActions.toggleDayActiveSuccess({
         data: {

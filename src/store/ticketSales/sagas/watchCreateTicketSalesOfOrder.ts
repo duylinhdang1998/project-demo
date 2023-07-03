@@ -1,4 +1,4 @@
-import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { call, put, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { createTicketSaleOneTrip } from 'services/TicketSale/createTicketSaleOneTrip';
 import { createTicketSaleRoundTrip } from 'services/TicketSale/createTicketSaleRoundTrip';
 import { ServiceException } from 'services/utils/ServiceException';
@@ -8,14 +8,14 @@ function* handleCreateTicketSalesOfOrder({ payload }: ReturnType<typeof ticketSa
   const { onFailure, onSuccess } = payload;
   try {
     if (payload.type === 'ONE_TRIP') {
-      const { data }: SagaReturnType<typeof createTicketSaleOneTrip> = yield retry(3, 1000, createTicketSaleOneTrip, {
+      const { data }: SagaReturnType<typeof createTicketSaleOneTrip> = yield call(createTicketSaleOneTrip, {
         ...payload.data,
       });
       yield put(ticketSalesActions.createOrderSuccess({ data }));
       onSuccess(data.orderCode);
     }
     if (payload.type === 'ROUND_TRIP') {
-      const { data }: SagaReturnType<typeof createTicketSaleRoundTrip> = yield retry(3, 1000, createTicketSaleRoundTrip, {
+      const { data }: SagaReturnType<typeof createTicketSaleRoundTrip> = yield call(createTicketSaleRoundTrip, {
         ...payload.data,
       });
       yield put(ticketSalesActions.createOrderSuccess({ data }));

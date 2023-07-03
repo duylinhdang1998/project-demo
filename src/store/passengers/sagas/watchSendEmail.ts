@@ -1,4 +1,4 @@
-import { put, retry, takeLeading } from 'redux-saga/effects';
+import { call, put, takeLeading } from 'redux-saga/effects';
 import { sendEmail } from 'services/Passenger/sendEmail';
 import { ServiceException } from 'services/utils/ServiceException';
 import { passengersActions } from '../passengersSlice';
@@ -6,7 +6,7 @@ import { passengersActions } from '../passengersSlice';
 function* handleSendEmail({ payload }: ReturnType<typeof passengersActions.sendEmailRequest>) {
   const { data, onFailure, onSuccess } = payload;
   try {
-    yield retry(3, 1000, sendEmail, data);
+    yield call(sendEmail, data);
     yield put(passengersActions.sendEmailSuccess({}));
     onSuccess();
   } catch (error) {

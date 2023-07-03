@@ -1,4 +1,4 @@
-import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { call, put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { updateGeneralInfomationTrip } from 'services/Route/Company/updateGeneralInfomationTrip';
 import { getRoute } from 'services/Route/Company/getRoute';
 import { ServiceException } from 'services/utils/ServiceException';
@@ -10,12 +10,12 @@ function* handleUpdateTrip({ payload }: ReturnType<typeof routesActions.updateTr
   const { data, isHasDeleteStopPointAction, isHasNewStopPointAction, routeCode, onFailure, onSuccess } = payload;
   try {
     if (isHasDeleteStopPointAction || isHasNewStopPointAction) {
-      yield retry(3, 1000, updateGeneralInfomationTripWhenHasRoutePointDeleted, {
+      yield call(updateGeneralInfomationTripWhenHasRoutePointDeleted, {
         data,
         routeCode,
       });
     } else {
-      yield retry(3, 1000, updateGeneralInfomationTrip, {
+      yield call(updateGeneralInfomationTrip, {
         data,
         routeCode,
       });

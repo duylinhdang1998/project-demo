@@ -1,4 +1,4 @@
-import { put, retry, takeLeading } from 'redux-saga/effects';
+import { call, put, takeLeading } from 'redux-saga/effects';
 import { updateOrderStatus } from 'services/TicketSale/updateOrderStatus';
 import { ServiceException } from 'services/utils/ServiceException';
 import { ticketSalesActions } from '../ticketSalesSlice';
@@ -6,7 +6,7 @@ import { ticketSalesActions } from '../ticketSalesSlice';
 function* handleOrderStatus({ payload }: ReturnType<typeof ticketSalesActions.updateOrderStatusRequest>) {
   const { orderCode, ticketStatus, reason, targetTicket, onFailure, onSuccess } = payload;
   try {
-    yield retry(3, 1000, updateOrderStatus, { orderCode, ticketStatus, reason });
+    yield call(updateOrderStatus, { orderCode, ticketStatus, reason });
     yield put(
       ticketSalesActions.updateOrderStatusSuccess({
         data: {

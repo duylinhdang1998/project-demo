@@ -1,4 +1,4 @@
-import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { call, put, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { createStaff } from 'services/Staff/Company/createStaff';
 import { ServiceException } from 'services/utils/ServiceException';
 import { staffsActions } from '../staffsSlice';
@@ -6,7 +6,7 @@ import { staffsActions } from '../staffsSlice';
 function* handleCreateStaff({ payload }: ReturnType<typeof staffsActions.createStaffRequest>) {
   const { data, onFailure, onSuccess } = payload;
   try {
-    const response: SagaReturnType<typeof createStaff> = yield retry(3, 1000, createStaff, data);
+    const response: SagaReturnType<typeof createStaff> = yield call(createStaff, data);
     yield put(staffsActions.createStaffSuccess({ data: response.data }));
     onSuccess();
   } catch (error) {

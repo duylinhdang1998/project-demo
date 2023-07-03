@@ -1,4 +1,4 @@
-import { put, retry, takeLeading } from 'redux-saga/effects';
+import { call, put, takeLeading } from 'redux-saga/effects';
 import { deleteOffice } from 'services/OfficesManager/Company/deleteOffice';
 import { ServiceException } from 'services/utils/ServiceException';
 import { officesManagerActions } from '../officesManagerSlice';
@@ -6,7 +6,7 @@ import { officesManagerActions } from '../officesManagerSlice';
 function* handleDeleteOffice({ payload }: ReturnType<typeof officesManagerActions.deleteOfficeRequest>) {
   const { id, onFailure, onSuccess } = payload;
   try {
-    yield retry(3, 1000, deleteOffice, payload);
+    yield call(deleteOffice, payload);
     yield put(officesManagerActions.deleteOfficeSuccess({ id }));
     onSuccess();
   } catch (error) {

@@ -1,4 +1,4 @@
-import { put, retry, takeLeading } from 'redux-saga/effects';
+import { call, put, takeLeading } from 'redux-saga/effects';
 import { deleteStaff } from 'services/Staff/Company/deleteStaff';
 import { ServiceException } from 'services/utils/ServiceException';
 import { staffsActions } from '../staffsSlice';
@@ -6,7 +6,7 @@ import { staffsActions } from '../staffsSlice';
 function* handleDeleteStaff({ payload }: ReturnType<typeof staffsActions.deleteStaffRequest>) {
   const { id, onFailure, onSuccess } = payload;
   try {
-    yield retry(3, 1000, deleteStaff, payload);
+    yield call(deleteStaff, payload);
     yield put(staffsActions.deleteStaffSuccess({ id }));
     onSuccess();
   } catch (error) {

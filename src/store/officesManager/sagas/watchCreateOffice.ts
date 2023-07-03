@@ -1,4 +1,4 @@
-import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { call, put, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { createOffice } from 'services/OfficesManager/Company/createOffice';
 import { ServiceException } from 'services/utils/ServiceException';
 import { officesManagerActions } from '../officesManagerSlice';
@@ -6,7 +6,7 @@ import { officesManagerActions } from '../officesManagerSlice';
 function* handleCreateOffice({ payload }: ReturnType<typeof officesManagerActions.createOfficeRequest>) {
   const { data: formData, onFailure, onSuccess } = payload;
   try {
-    const { data }: SagaReturnType<typeof createOffice> = yield retry(3, 1000, createOffice, formData);
+    const { data }: SagaReturnType<typeof createOffice> = yield call(createOffice, formData);
     yield put(officesManagerActions.createOfficeSuccess({ data }));
     onSuccess();
   } catch (error) {

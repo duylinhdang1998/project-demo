@@ -1,4 +1,4 @@
-import { put, retry, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { updateProfile } from 'services/Company/updateProfile';
 import { ServiceException } from 'services/utils/ServiceException';
 import { profileActions } from '../../profile/profileSlice';
@@ -6,7 +6,7 @@ import { profileActions } from '../../profile/profileSlice';
 function* handleUpdateProfile({ payload }: ReturnType<typeof profileActions.updateProfileRequest>) {
   const { data, targetProfile, onSuccess, onFailure } = payload;
   try {
-    yield retry(3, 1000, updateProfile, data);
+    yield call(updateProfile, data);
     yield put(
       profileActions.updateProfileSuccess({
         data: {

@@ -1,4 +1,4 @@
-import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { call, put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { createOneStopTrip } from 'services/Route/Company/createOneStopTrip';
 import { getRoute } from 'services/Route/Company/getRoute';
 import { ServiceException } from 'services/utils/ServiceException';
@@ -7,7 +7,7 @@ import { routesActions } from '../routesSlice';
 function* handleCreateOneStopTrip({ payload }: ReturnType<typeof routesActions.createOneStopTripRequest>) {
   const { data, onFailure, onSuccess } = payload;
   try {
-    const response: SagaReturnType<typeof createOneStopTrip> = yield retry(3, 1000, createOneStopTrip, data);
+    const response: SagaReturnType<typeof createOneStopTrip> = yield call(createOneStopTrip, data);
     const detailResponse: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, {
       routeCode: response.data.routeCode,
     });

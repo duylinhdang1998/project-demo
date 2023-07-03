@@ -1,4 +1,4 @@
-import { put, retry, SagaReturnType, select, takeLeading } from 'redux-saga/effects';
+import { call, put, retry, SagaReturnType, select, takeLeading } from 'redux-saga/effects';
 import { getRoute } from 'services/Route/Company/getRoute';
 import { updateActiveDays } from 'services/Route/Company/updateActiveDays';
 import { ServiceException } from 'services/utils/ServiceException';
@@ -9,7 +9,7 @@ function* handleUpdateActiveDays({ payload }: ReturnType<typeof routesActions.up
   const { data, onFailure, onSuccess } = payload;
   try {
     const { route }: SagaReturnType<typeof selectRoutes> = yield select(selectRoutes);
-    const response: SagaReturnType<typeof updateActiveDays> = yield retry(3, 1000, updateActiveDays, data);
+    const response: SagaReturnType<typeof updateActiveDays> = yield call(updateActiveDays, data);
     if (route) {
       yield put(
         routesActions.updateActiveDaysSuccess({

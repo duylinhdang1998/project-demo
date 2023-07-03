@@ -1,4 +1,4 @@
-import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { call, put, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { sendEmail } from 'services/TicketSale/sendEmail';
 import { ServiceException } from 'services/utils/ServiceException';
 import { ticketSalesActions } from '../ticketSalesSlice';
@@ -6,7 +6,7 @@ import { ticketSalesActions } from '../ticketSalesSlice';
 function* handleSendEmail({ payload }: ReturnType<typeof ticketSalesActions.sendEmailRequest>) {
   const { orderCode, onFailure, onSuccess } = payload;
   try {
-    const { data }: SagaReturnType<typeof sendEmail> = yield retry(3, 1000, sendEmail, { orderCode });
+    const { data }: SagaReturnType<typeof sendEmail> = yield call(sendEmail, { orderCode });
     yield put(ticketSalesActions.sendEmailSuccess({ data }));
     onSuccess();
   } catch (error) {

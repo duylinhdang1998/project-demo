@@ -1,4 +1,4 @@
-import { put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { call, put, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { ServiceException } from 'services/utils/ServiceException';
 import { createVehicle } from 'services/Vehicle/Company/createVehicle';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
@@ -6,7 +6,7 @@ import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 function* handleCreateVehicle({ payload }: ReturnType<typeof vehiclesActions.createVehicleRequest>) {
   const { data: formData, onFailure, onSuccess } = payload;
   try {
-    const { data }: SagaReturnType<typeof createVehicle> = yield retry(3, 1000, createVehicle, formData);
+    const { data }: SagaReturnType<typeof createVehicle> = yield call(createVehicle, formData);
     yield put(vehiclesActions.createVehicleSuccess({ data }));
     onSuccess();
   } catch (error) {

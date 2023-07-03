@@ -1,4 +1,4 @@
-import { put, retry, SagaReturnType, takeLatest } from 'redux-saga/effects';
+import { call, put, SagaReturnType, takeLatest } from 'redux-saga/effects';
 import { updateContent } from 'services/ContentManager/Company/updateContent';
 import { ServiceException } from 'services/utils/ServiceException';
 import { contentManagerActions } from '../contentManagerSlice';
@@ -6,7 +6,7 @@ import { contentManagerActions } from '../contentManagerSlice';
 function* handleUpdateContent({ payload }: ReturnType<typeof contentManagerActions.updateContentRequest>) {
   const { data, onSuccess, onFailure } = payload;
   try {
-    const response: SagaReturnType<typeof updateContent> = yield retry(3, 1000, updateContent, { data });
+    const response: SagaReturnType<typeof updateContent> = yield call(updateContent, { data });
     yield put(contentManagerActions.updateContentSuccess({ data: response.data }));
     onSuccess();
   } catch (error) {

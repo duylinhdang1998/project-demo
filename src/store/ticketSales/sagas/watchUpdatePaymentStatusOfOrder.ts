@@ -1,4 +1,4 @@
-import { all, put, retry, takeLeading } from 'redux-saga/effects';
+import { all, call, put, takeLeading } from 'redux-saga/effects';
 import { updatePaymentStatusOfOrder } from 'services/TicketSale/updatePaymentStatusOfOrder';
 import { ServiceException } from 'services/utils/ServiceException';
 import { ticketSalesActions } from '../ticketSalesSlice';
@@ -7,17 +7,17 @@ function* handleUpdatePaymentStatusOfOrder({ payload }: ReturnType<typeof ticket
   const { data, orderCode, onFailure, onSuccess } = payload;
   try {
     if (data.type === 'ONE_TRIP') {
-      yield retry(3, 1000, updatePaymentStatusOfOrder, {
+      yield call(updatePaymentStatusOfOrder, {
         paymentStatus: data.data.paymentStatus,
         ticketCode: data.data.ticketCode,
       });
     } else {
       yield all([
-        retry(3, 1000, updatePaymentStatusOfOrder, {
+        call(updatePaymentStatusOfOrder, {
           paymentStatus: data.data.departureTicket.paymentStatus,
           ticketCode: data.data.departureTicket.ticketCode,
         }),
-        retry(3, 1000, updatePaymentStatusOfOrder, {
+        call(updatePaymentStatusOfOrder, {
           paymentStatus: data.data.returnTicket.paymentStatus,
           ticketCode: data.data.returnTicket.ticketCode,
         }),

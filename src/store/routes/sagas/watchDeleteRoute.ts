@@ -1,4 +1,4 @@
-import { put, retry, takeLeading } from 'redux-saga/effects';
+import { call, put, takeLeading } from 'redux-saga/effects';
 import { deleteRoute } from 'services/Route/Company/deleteRoute';
 import { ServiceException } from 'services/utils/ServiceException';
 import { routesActions } from '../routesSlice';
@@ -6,7 +6,7 @@ import { routesActions } from '../routesSlice';
 function* handleDeleteRoute({ payload }: ReturnType<typeof routesActions.deleteRouteRequest>) {
   const { routeCode, onFailure, onSuccess } = payload;
   try {
-    yield retry(3, 1000, deleteRoute, payload);
+    yield call(deleteRoute, payload);
     yield put(routesActions.deleteRouteSuccess({ routeCode }));
     onSuccess();
   } catch (error) {

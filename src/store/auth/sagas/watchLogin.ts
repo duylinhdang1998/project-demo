@@ -1,11 +1,11 @@
-import { put, retry, SagaReturnType, takeLatest } from 'redux-saga/effects';
+import { call, put, SagaReturnType, takeLatest } from 'redux-saga/effects';
 import { login } from 'services/Auth/Company/login';
 import { ServiceException } from 'services/utils/ServiceException';
 import { authActions } from '../authSlice';
 function* handleLogin({ payload }: ReturnType<typeof authActions.loginRequest>) {
   const { password, email, onFailure, onSuccess } = payload;
   try {
-    const { data }: SagaReturnType<typeof login> = yield retry(3, 1000, login, {
+    const { data }: SagaReturnType<typeof login> = yield call(login, {
       email,
       password,
     });

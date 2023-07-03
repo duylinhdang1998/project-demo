@@ -1,4 +1,4 @@
-import { all, put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
+import { all, call, put, retry, SagaReturnType, takeLeading } from 'redux-saga/effects';
 import { createDayExceptions } from 'services/Staff/Company/createDayExceptions';
 import { createDayOff } from 'services/Staff/Company/createDayOff';
 import { getStaff } from 'services/Staff/Company/getStaff';
@@ -19,7 +19,7 @@ function* handleUpdateDayOffNDayExceptions({ payload }: ReturnType<typeof staffs
         dayExceptions: data.dayExceptions,
       }),
     ]);
-    const response: SagaReturnType<typeof getStaff> = yield retry(3, 1000, getStaff, { id: data.staffId });
+    const response: SagaReturnType<typeof getStaff> = yield call(getStaff, { id: data.staffId });
     yield put(
       staffsActions.updateDayOffNDayExceptionsSuccess({
         data: response.data,
