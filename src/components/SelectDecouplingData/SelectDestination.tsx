@@ -88,7 +88,7 @@ export const SelectDestination = ({
                 label: model.value.title,
                 value: model,
               })}
-              equalFunc={isEqual}
+              equalFunc={(a, b) => isEqual(a?.value?._id, b?.value?._id)}
               styles={customStyles as any}
               placeholder={labelTranslated}
               onChange={selected => {

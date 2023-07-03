@@ -93,6 +93,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
       tripType: 'ONE_TRIP',
       vehicle: formValues.vehicle,
     };
+    console.log({ formValues, data });
     if (isEditAction && route) {
       dispatch(
         routesActions.updateTripRequest({
@@ -202,7 +203,6 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
           routeCode: route.routeCode,
           data: {
             ...data,
-            pointCode: route.departurePointCode,
             stopPoints: formValues.routePoints.map(routePoint => ({
               durationTime: timeStringToMinutes(routePoint.duration.format('HH:mm')),
               stopPoint: routePoint.stop_point.title as string,

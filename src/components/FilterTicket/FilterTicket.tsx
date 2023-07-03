@@ -323,7 +323,7 @@ export default function FilterTicket<T extends FieldValues>({
                       label: model.value.title,
                       value: model,
                     })}
-                    equalFunc={isEqual}
+                    equalFunc={(a, b) => isEqual(a?.value?._id, b?.value?._id)}
                     value={field.value}
                     styles={customStyles as any}
                     placeholder={t(`${i.label}`)}
@@ -378,7 +378,7 @@ export default function FilterTicket<T extends FieldValues>({
                       label: model.value.title,
                       value: model,
                     })}
-                    equalFunc={isEqual}
+                    equalFunc={(a, b) => isEqual(a?.value?._id, b?.value?._id)}
                     value={field.value}
                     styles={customStyles as any}
                     placeholder={t(`${i.label}`)}
@@ -490,7 +490,7 @@ export default function FilterTicket<T extends FieldValues>({
                       label: model.label,
                       value: model,
                     })}
-                    equalFunc={isEqual}
+                    equalFunc={(a, b) => isEqual(a?.value, b?.value)}
                     value={field.value}
                     styles={customStyles as any}
                     placeholder={t(`${i.label}`)}
