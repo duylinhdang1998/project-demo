@@ -1,0 +1,15 @@
+{
+"add_service": "Ajouter un service",
+"service_title": "Titre du service",
+"service_icon": "Icône",
+"service_action": "Action",
+"icon": "Icône",
+"search_icon": "Rechercher une icône...",
+"service_settings": "Paramètres du service",
+"add_new_service_success": "Ajout du nouveau service réussi",
+"add_new_service_error": "Échec de l'ajout du nouveau service",
+"edit_service_success": "Modification du service réussie",
+"edit_service_error": "Échec de la modification du service",
+"delete_service_success": "Suppression du service réussie",
+"delete_service_error": "Échec de la suppression du service"
+}
