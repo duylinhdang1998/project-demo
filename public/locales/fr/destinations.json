@@ -1,0 +1,9 @@
+{
+"address": "Adresse",
+"title": "Titre",
+"zipCode": "Code postal",
+"city": "Ville",
+"country": "Pays",
+"destinations": "Destinations",
+"destination": "Destination"
+}
