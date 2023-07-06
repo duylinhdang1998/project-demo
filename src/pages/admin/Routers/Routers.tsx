@@ -9,7 +9,7 @@ import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 import TableRoutes from './components/TableRoutes';
 import { fieldsSearch } from './constants';
 import { Result } from 'components/SelectDecouplingData/SelectDestination';
+import { Field } from 'models/Field';
 
 interface Values {
   vehicleName?: Vehicle;
@@ -102,22 +103,19 @@ export default function Routers() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const fields: Field[] = useMemo(() => {
+    return userInfo?.role === 'admin'
+      ? fieldsSearch
+      : [...fieldsSearch, { id: uuidv4(), required: undefined, label: 'registrationId', type: 'text' }];
+  }, [userInfo?.role]);
+
   return (
     <Box>
       <HeaderLayout activeSideBarHeader={t('routers')} />
       <Box p="24px">
         <Grid container spacing={2}>
           <Grid item xs={12} md={userInfo?.role === 'admin' ? 8 : 10}>
-            <FilterTicket
-              control={control}
-              fields={
-                userInfo?.role === 'admin'
-                  ? fieldsSearch
-                  : [...fieldsSearch, { id: uuidv4(), required: undefined, label: 'registrationId', type: 'text' }]
-              }
-              filterKey="routers"
-              numberColumns={userInfo?.role === 'admin' ? 2.5 : 2}
-            />
+            <FilterTicket control={control} fields={fields} filterKey="routers" numberColumns={userInfo?.role === 'admin' ? 2.5 : 2} />
           </Grid>
           <Grid
             item

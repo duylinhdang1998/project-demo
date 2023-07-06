@@ -66,6 +66,10 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
 
+  const fieldsStepOne = useMemo(() => {
+    return getFieldsStepOne(isEdit);
+  }, [isEdit]);
+
   return (
     <Box my="24px">
       <FormVerticle
@@ -95,7 +99,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
               resetField('office', { defaultValue: office });
             },
           },
-          ...getFieldsStepOne(isEdit),
+          ...fieldsStepOne,
         ]}
         indexGridHorizon={-1}
         isGridHorizon
