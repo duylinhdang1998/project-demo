@@ -61,6 +61,7 @@
   "ROUTE_UPDATE_PRICE_ERROR": "Failed to update the price for the route. Please try again later or contact support for assistance.",
   "ROUTE_REMOVE_ERROR": "Failed to remove the route. Please try again later or contact support for assistance.",
   "ROUTE_UPDATE_ERROR": "Failed to update the route information. Please try again later or contact support for assistance.",
+  "ROUTE_DURATION_MUST_BE_ASC": "Stop points duration must be ascending.",
   "ROUTE_ONE_TRIP_NOT_FOUND": "The specified trip for the route could not be found. Please verify that the trip exists and the provided details are correct.",
   "ROUTE_FROM_GT_TO_TIME": "The 'from' time must be earlier than the 'to' time. Please enter valid times for the route",
   "ROUTE_MULTI_GT_TO_TIME": "The 'to' time must be later than the 'from' time for each stop on the route. Please enter valid times",
