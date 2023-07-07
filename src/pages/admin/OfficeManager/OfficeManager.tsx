@@ -36,6 +36,7 @@ export default function OfficeManager() {
       <HeaderLayout activeSideBarHeader={t('account:offices_manager')} />
       <Box padding="24px">
         <BoxSearch
+          placeholder={t('translation:search_by_type', { type: t('account:title').toLowerCase() })}
           searchValue={!Array.isArray(currentSearcher.title) ? currentSearcher.title?.value : undefined}
           onSearch={value => {
             dispatch(

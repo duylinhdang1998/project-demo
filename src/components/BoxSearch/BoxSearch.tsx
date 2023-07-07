@@ -31,11 +31,12 @@ const useStyles = makeStyles(() => ({
 interface BoxSearchProps {
   searchValue?: string;
   addTextButton?: string;
+  placeholder?: string;
   onAdd?: () => void;
   onSearch?: (value: string) => void;
 }
 
-function BoxSearch({ addTextButton, searchValue, onAdd, onSearch }: BoxSearchProps) {
+function BoxSearch({ addTextButton, searchValue, placeholder, onAdd, onSearch }: BoxSearchProps) {
   const { t } = useTranslation('translation');
   const classes = useStyles();
   const matches = useMediaQuery('(min-width:1366px)');
@@ -55,7 +56,7 @@ function BoxSearch({ addTextButton, searchValue, onAdd, onSearch }: BoxSearchPro
       <InputBase
         value={searchKey}
         onChange={e => setSearchKey(e.target.value)}
-        placeholder={t('translation:search')}
+        placeholder={placeholder ?? t('translation:search')}
         endAdornment={
           <InputAdornment position="end">
             <SearchIcon />

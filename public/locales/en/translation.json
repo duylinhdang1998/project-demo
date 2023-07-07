@@ -7,6 +7,7 @@
   "no": "No",
   "leave_page": "Are you sure, you want to leave this page without completing your action?",
   "search": "Search",
+  "search_by_type": "Search by {{ type }}...",
   "edit": "Edit",
   "detail": "Detail",
   "update": "Update",

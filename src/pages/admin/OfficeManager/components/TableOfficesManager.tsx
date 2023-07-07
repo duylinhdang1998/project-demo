@@ -191,7 +191,9 @@ function TableOfficesManager() {
       <Dialog open onClose={handleCloseDialogDetail}>
         <Box padding="24px">
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <DialogTitle>{openOfficeDetail?.title}</DialogTitle>
+            <DialogTitle maxWidth="80%" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
+              {openOfficeDetail?.title}
+            </DialogTitle>
             <IconButton onClick={handleCloseDialogDetail}>
               <ClearIcon />
             </IconButton>
