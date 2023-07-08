@@ -95,6 +95,7 @@
   "PASSENGER_OLD_PW_INVALID": "Old password is not correct",
   "COMPANY_SUBCRIPTION_IS_EXPIRED": "The company's subscription has expired. Please renew subscription to continue",
   "COMPANY_DOMAIN_IS_EXIST": "Domain already registered!",
+  "COMPANY_EMAIL_IS_EXIST": "We regret to inform you that the email you have attempted to register is already associated with an existing account. Please choose a different email address to proceed with the registration process.",
   "RBAC_OLD_PW_INVALID": "Old password is not correct",
   "PAYMENT_PAYPAL_CONNECT_ERROR": "2512",
   "PAYMENT_GW_NOT_CONNECTED": "2513",
