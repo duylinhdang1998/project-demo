@@ -36,8 +36,8 @@ function LoginPage() {
     formState: { errors },
   } = useForm<Values>({
     defaultValues: {
-      email: 'alibaba.transport@gmail.com',
-      password: '12345678',
+      email: '',
+      password: '',
     },
     mode: 'all',
   });
