@@ -5,6 +5,7 @@ import { Control, Controller, FieldErrors, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { UserRole } from 'services/models/UserRole';
 import { useStyles } from './styles';
+import { useMemo } from 'react';
 
 export const labelOfRole: Record<UserRole, string> = {
   COMPANY_ADMIN: 'Admin',
@@ -23,9 +24,9 @@ export interface SelectRoleProps {
   label: string;
   role: UserRole;
   onChange: (role: UserRole | undefined) => void;
+  isForFilter: boolean;
 }
 
-const ROLES: Array<{ role: UserRole }> = [{ role: 'COMPANY_AGENT' }, { role: 'COMPANY_ADMIN' }, { role: 'PASSENGER' }];
 export const SelectRole = ({
   errors,
   messages,
@@ -36,6 +37,7 @@ export const SelectRole = ({
   onChange,
   label,
   filterKey,
+  isForFilter,
 }: SelectRoleProps) => {
   const { t } = useTranslation(['translation', filterKey]);
   const classes = useStyles();
@@ -44,6 +46,13 @@ export const SelectRole = ({
   const messageErr = messages && messages[label];
 
   const labelTranslated = filterKey ? t(`${filterKey}:${label}`) : t(label);
+
+  const ROLES: Array<{ role: UserRole }> = useMemo(() => {
+    if (isForFilter) {
+      return [{ role: 'COMPANY_AGENT' }, { role: 'COMPANY_ADMIN' }, { role: 'PASSENGER' }, { role: 'COMPANY_DRIVER' }];
+    }
+    return [{ role: 'COMPANY_AGENT' }, { role: 'COMPANY_DRIVER' }];
+  }, [isForFilter]);
 
   return (
     <Controller

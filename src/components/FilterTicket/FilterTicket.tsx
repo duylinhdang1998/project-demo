@@ -264,6 +264,7 @@ export default function FilterTicket<T extends FieldValues>({
                         { role: 'COMPANY_AGENT' },
                         { role: 'COMPANY_ADMIN' },
                         { role: 'PASSENGER' },
+                        { role: 'COMPANY_DRIVER' },
                       ]);
                     }}
                     transformToOption={model => ({

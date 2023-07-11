@@ -515,6 +515,7 @@ export default function FormVerticle<T extends FieldValues>({
             onChange={i.onChange}
             label={i.label}
             filterKey={filterKey}
+            isForFilter={false}
           />
         );
       case 'controlSelectOffice':
