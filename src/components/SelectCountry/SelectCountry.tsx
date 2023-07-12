@@ -26,13 +26,13 @@ function SelectCountry({ value, onChange }: SelectCountryProps) {
   const placeholder = (
     <Box className={classes.placeholderWrapper}>
       <img src={LocationIcon} alt="location" className={classes.icon} />
-      <span className={classes.placeholderText}>{t('auth.select_country')}</span>
+      <span className={classes.placeholderText}>{t('auth:select_country')}</span>
     </Box>
   );
 
   return (
     <div>
-      <p className={classes.label}>{t('auth.select_country')}</p>
+      <p className={classes.label}>{t('auth:select_country')}</p>
       <ReactFlagsSelect
         selectButtonClassName={classes.selectBtn}
         selected={value}

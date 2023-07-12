@@ -96,7 +96,7 @@ function SignUp() {
         render={({ field }) => (
           <FormControlLabel
             control={<Checkbox {...field} disableRipple checkedIcon={<CheckBoxIcon sx={{ color: '#C2C6C9' }} />} />}
-            label={<TextWithLink text={t('term')} highlight={t('term_service')} />}
+            label={<TextWithLink sx={{ textAlign: 'left' }} text={t('term')} highlight={t('term_service')} />}
             sx={{
               marginTop: '8px',
             }}

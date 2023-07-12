@@ -24,9 +24,9 @@ export const useStyles = makeStyles((theme: Theme) => {
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'column',
-      height: '100%',
+      minHeight: '100%',
       position: 'relative',
-      padding: '0 16px',
+      padding: '8px 16px',
     },
   };
 });
@@ -53,10 +53,12 @@ export default function AuthLayout() {
           </Box>
         </Grid>
         <Grid item xs={12} md={6} className={classes.itemRight}>
-          <Box position="absolute" top="32px" right="32px">
+          <Box position="absolute" top="16px" right="16px">
             <ChangeLanguage />
           </Box>
-          <Outlet />
+          <Box maxWidth="calc(100% - 64px - 16px)">
+            <Outlet />
+          </Box>
         </Grid>
       </Grid>
     </Box>
