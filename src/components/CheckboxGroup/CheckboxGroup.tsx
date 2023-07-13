@@ -47,7 +47,7 @@ export const CheckboxGroup = ({ options, values, onChange, equalsFunc, horizonta
   }, [values]);
 
   return (
-    <Stack direction={horizontal ? 'row' : 'column'} justifyContent="space-between" spacing={2} flexWrap="wrap">
+    <Stack direction={horizontal ? 'row' : 'column'} gap="8px" flexWrap="wrap">
       {options.map(option => {
         if (!option.value) {
           return null;

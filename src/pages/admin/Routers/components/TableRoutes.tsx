@@ -113,7 +113,6 @@ function TableRoutes() {
         key: 'routePoints.durationTime',
         dataIndex: 'routePoints.durationTime',
         title: () => <Typography variant="headerTable">{t('routers:arrivalTime')}</Typography>,
-        sorter: true,
         render: (_, row) => {
           const mainRoutes = getMainRoutePoints(row.routePoints);
           const lastRoute = mainRoutes[mainRoutes.length - 1];

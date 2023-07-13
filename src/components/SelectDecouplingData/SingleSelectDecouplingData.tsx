@@ -63,7 +63,7 @@ export const SingleSelectDecouplingData = <Model extends AnyObject>({
 
     if (!Array.isArray(children)) {
       return (
-        <Box padding="8px">
+        <Box display="flex" alignItems="center" justifyContent="center" padding="8px">
           <Empty />
         </Box>
       );
