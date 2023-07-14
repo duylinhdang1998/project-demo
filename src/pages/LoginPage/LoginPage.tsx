@@ -110,7 +110,7 @@ function LoginPage() {
         <LoadingButton variant="contained" fullWidth className={classes.btnSubmit} type="submit" loading={statusLogin === 'loading'}>
           {t('login')}
         </LoadingButton>
-        <TextWithLink text={t('notHaveAccount')} highlight={t('register_link')} onClick={handleNavigate} />
+        {/*<TextWithLink text={t('notHaveAccount')} highlight={t('register_link')} onClick={handleNavigate} />*/}
       </Box>
     </form>
   );
