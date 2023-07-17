@@ -25,7 +25,7 @@ export const ForContentField = ({ contentValueOfForm, onChange }: ForContentFiel
       init={{
         height: 500,
         menubar: false,
-        plugins: ['link', 'lists', 'table', 'image', 'media', 'advlist', 'paste', 'undo', 'redo', 'blockquote'],
+        plugins: ['link', 'lists', 'table', 'image', 'media', 'advlist'],
         toolbar: 'blocks bold italic link bullist numlist outdent indent image blockquote table media undo redo',
         images_upload_handler: async blobInfo => {
           const file = blobToFile(blobInfo.blob(), blobInfo.filename());

@@ -1,6 +1,12 @@
 import { Box } from '@mui/material';
 import { Editor } from '@tinymce/tinymce-react';
 import env from 'env';
+import { blobToFile } from 'utils/blobToFile';
+import { uploadImageResource } from 'services/Resource/uploadImageResource';
+import { getUrlOfResource } from 'utils/getUrlOfResource';
+import { toast } from 'react-toastify';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { ServiceException } from 'services/utils/ServiceException';
 
 export interface ForSidebarNFooterFieldProps {
   valueOfForm: string;
@@ -24,15 +30,26 @@ export const ForSidebarNFooterField = ({ valueOfForm, onChange, variant }: ForSi
           onChange(value);
         }}
         init={{
-          height: variant === 'footer' ? 169 : 376,
+          height: variant === 'footer' ? 280 : 340,
           menubar: false,
-          plugins: ['lists', 'emoticons', 'link', 'image', 'media'],
-          toolbar: 'bold italic underline emoticons link bullist align | undo redo',
+          plugins: ['link', 'lists', 'table', 'image', 'media', 'advlist'],
+          toolbar: 'blocks bold italic link bullist numlist outdent indent image blockquote table media undo redo',
           content_style: `
           body {}
         `,
           images_upload_handler: async blobInfo => {
-            return Promise.resolve(URL.createObjectURL(blobInfo.blob()));
+            const file = blobToFile(blobInfo.blob(), blobInfo.filename());
+            console.log('file', file);
+            try {
+              const response = await uploadImageResource({ file });
+              console.log('response', response);
+              return Promise.resolve(getUrlOfResource(response.data));
+            } catch (error) {
+              toast(<ToastCustom description={ServiceException.getMessageError(error)} text={`${file.name} file upload failed.`} type="error" />, {
+                className: 'toast-error',
+              });
+              return Promise.reject(error);
+            }
           },
           setup: editor => {
             editor.ui.registry.addIcon(
