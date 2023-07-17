@@ -39,10 +39,8 @@ export const ForSidebarNFooterField = ({ valueOfForm, onChange, variant }: ForSi
         `,
           images_upload_handler: async blobInfo => {
             const file = blobToFile(blobInfo.blob(), blobInfo.filename());
-            console.log('file', file);
             try {
               const response = await uploadImageResource({ file });
-              console.log('response', response);
               return Promise.resolve(getUrlOfResource(response.data));
             } catch (error) {
               toast(<ToastCustom description={ServiceException.getMessageError(error)} text={`${file.name} file upload failed.`} type="error" />, {
