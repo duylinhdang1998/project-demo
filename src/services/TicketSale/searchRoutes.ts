@@ -14,7 +14,7 @@ export interface SearchRoutes {
   sorter: Sorter<RouteOfTicketSale>;
 }
 
-const RECORDS_PER_PAGE = 4;
+export const RECORDS_PER_PAGE = 4;
 export const searchRoutes = async ({ tripType, page, searcher, sorter }: SearchRoutes) => {
   const response: AxiosResponse<ResponseSuccess<RouteOfTicketSale> | ResponseFailure> = await fetchAPI.request({
     url: tripType === 'MULTI_STOP' ? '/v1.0/company/routes/search/round-trip' : '/v1.0/company/routes/search',

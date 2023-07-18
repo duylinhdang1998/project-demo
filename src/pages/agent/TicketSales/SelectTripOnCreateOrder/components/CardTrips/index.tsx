@@ -10,6 +10,7 @@ import { formatDuration } from 'utils/formatDuration';
 
 interface CardTripsProps {
   loading: boolean;
+  recordsPerPage: number;
   totalRoutes: number;
   routes: RouteOfTicketSale[];
   tripType: RouteOfTicketSale['tripType'];
@@ -18,7 +19,7 @@ interface CardTripsProps {
   currentPage: number;
 }
 
-export const CardTrips = ({ loading, totalRoutes, routes, currentPage, setCurrentPage, onSelect }: CardTripsProps) => {
+export const CardTrips = ({ loading, totalRoutes, routes, currentPage, recordsPerPage, setCurrentPage, onSelect }: CardTripsProps) => {
   const { t } = useTranslation(['ticketSales', 'translation']);
 
   if (loading) {
@@ -61,6 +62,7 @@ export const CardTrips = ({ loading, totalRoutes, routes, currentPage, setCurren
           onChange={setCurrentPage}
           current={currentPage}
           total={totalRoutes}
+          pageSize={recordsPerPage}
           showLessItems
           showQuickJumper={false}
           showSizeChanger={false}

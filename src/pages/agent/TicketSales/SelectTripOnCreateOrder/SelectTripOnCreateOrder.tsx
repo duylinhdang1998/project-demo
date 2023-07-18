@@ -23,6 +23,7 @@ import { getTrips } from './utils/getTrips';
 import { Result } from 'components/SelectDecouplingData/SelectDestination';
 import { toast } from 'react-toastify';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { RECORDS_PER_PAGE } from 'services/TicketSale/searchRoutes';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -202,6 +203,7 @@ export const SelectTripOnCreateOrder = () => {
         <FilterRoutesBySearcher errors={errors} tripType={tripType} control={control} loading={loading} onSubmit={handleSubmit(onSubmit)} />
         <Steps step={departureRoute ? 1 : 0} tripType={tripType} />
         <CardTrips
+          recordsPerPage={RECORDS_PER_PAGE}
           totalRoutes={data?.pagination.totalRows ?? 0}
           currentPage={currentPage}
           loading={loading}
