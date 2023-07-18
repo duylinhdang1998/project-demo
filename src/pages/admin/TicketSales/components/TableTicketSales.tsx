@@ -118,7 +118,6 @@ export const TableTicketSales = () => {
         title: () => <AntTableColumnTitle>{t('ticketSales:ticket_status')}</AntTableColumnTitle>,
         width: 90,
         align: 'center',
-        sorter: () => 0,
         render: (_, row) => {
           return (
             <TicketStatus
@@ -141,7 +140,6 @@ export const TableTicketSales = () => {
         title: () => <AntTableColumnTitle>{t('ticketSales:payment_status')}</AntTableColumnTitle>,
         width: 130,
         align: 'center',
-        sorter: () => 0,
         render: (_, row) => {
           return (
             <Tag
@@ -158,7 +156,6 @@ export const TableTicketSales = () => {
         title: () => <AntTableColumnTitle>{t('ticketSales:order_id')}</AntTableColumnTitle>,
         width: 55,
         align: 'center',
-        sorter: () => 0,
         render: (_, row) => {
           return <AntTableColumnDisplayAsTypograph>{row.orderCode}</AntTableColumnDisplayAsTypograph>;
         },
@@ -169,7 +166,6 @@ export const TableTicketSales = () => {
         title: () => <AntTableColumnTitle>{t('ticketSales:type')}</AntTableColumnTitle>,
         width: 85,
         align: 'center',
-        sorter: () => 0,
         render: (_, row) => {
           return <AntTableColumnDisplayAsTypograph>{TicketTypeLabelMapping[row.ticketType]}</AntTableColumnDisplayAsTypograph>;
         },
