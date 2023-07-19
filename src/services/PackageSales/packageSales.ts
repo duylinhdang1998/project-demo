@@ -49,7 +49,7 @@ export const useGetListPackageSales = (option?: Options<ResponseSuccess<PackageS
         params: {
           limit: RECORDS_PER_PAGE,
           offset: page * RECORDS_PER_PAGE,
-          ...getSortParams(sorter),
+          ...getSortParams(sorter, false),
           ...getSearchParams(searcher),
         },
       });

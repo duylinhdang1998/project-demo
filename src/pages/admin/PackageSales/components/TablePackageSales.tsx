@@ -78,9 +78,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         dataIndex: 'orderCode',
         align: 'center',
         width: 140,
-        title: () => <div>{i18n.t('packageSales:orderId')}</div>,
-        sorter: () => 0,
-        sortOrder: get(sortOrder, 'orderCode', null),
+        title: () => <div>{i18n.t('packageSales:orderId')}</div>
       },
       {
         key: 'destination',
@@ -119,8 +117,6 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
             </Typography>
           </div>
         ),
-        sorter: () => 0,
-        sortOrder: get(sortOrder, 'sender', null),
       },
       {
         key: 'recipent',
@@ -136,24 +132,22 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
               {value?.mobile}
             </Typography>
           </div>
-        ),
-        sorter: () => 0,
-        sortOrder: get(sortOrder, 'recipent', null),
+        )
       },
       {
-        key: 'qty',
-        dataIndex: 'merchandises',
+        key: 'totalQuantity',
+        dataIndex: 'totalQuantity',
         align: 'center',
         title: () => <div>{i18n.t('packageSales:qty')}</div>,
-        render: (value: PackageSale['merchandises']) => (
-          <div>
-            <Typography fontSize="14px" color="#0C1132">
-              {value?.length}
-            </Typography>
-          </div>
-        ),
+        // render: (value) => (
+        //   <div>
+        //     <Typography fontSize="14px" color="#0C1132">
+        //       {value?.totalQuantity}
+        //     </Typography>
+        //   </div>
+        // ),
         sorter: () => 0,
-        sortOrder: get(sortOrder, 'qty', null),
+        sortOrder: get(sortOrder, 'totalQuantity', null),
       },
       {
         key: 'totalWeight',
@@ -168,7 +162,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
           </div>
         ),
         sorter: () => 0,
-        sortOrder: get(sortOrder, 'weight', null),
+        sortOrder: get(sortOrder, 'totalWeight', null),
       },
       {
         key: 'totalPrice',
@@ -194,9 +188,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
           <Box display="flex" alignItems="center" justifyContent="center">
             <Tag text={!!paymentStatus ? paymentStatus : 'NONE'} variant={paymentStatus === EPaymentStatus.APPROVED ? 'success' : 'error'} />
           </Box>
-        ),
-        sorter: () => 0,
-        sortOrder: get(sortOrder, 'paymentStatus', null),
+        )
       },
       {
         key: 'orderStatus',
@@ -210,9 +202,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
               <Tag text={value} variant={value === OrderStatus.SUCCESS ? 'success' : 'error'} />
             </Box>
           );
-        },
-        sorter: () => 0,
-        sortOrder: get(sortOrder, 'orderStatus', null),
+        }
       },
       {
         key: 'action',
