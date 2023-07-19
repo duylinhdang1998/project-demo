@@ -58,6 +58,7 @@
   "SUBSCRIPTION_NOT_ALLOW_UPDATED": "Subscription update not allowed. Please contact support for further assistance.",
   "SUBSCRIPTION_EXPIRED": "Subscription Expired: Please renew to continue accessing our services. Contact support for assistance",
   "SUBSCRIPTION_UPDATE_PAYMENT_ID_ERROR": "Error updating payment ID for subscription. Please check the provided payment ID and try again.",
+  "SUBSCRIPTION_NEED_UPDATE_PLAN": "Your subscription requires an update to continue.",
   "ROUTE_UPDATE_PRICE_ERROR": "Failed to update the price for the route. Please try again later or contact support for assistance.",
   "ROUTE_REMOVE_ERROR": "Failed to remove the route. Please try again later or contact support for assistance.",
   "ROUTE_UPDATE_ERROR": "Failed to update the route information. Please try again later or contact support for assistance.",
