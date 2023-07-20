@@ -77,6 +77,15 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
     return null;
   }, [currentSubscription]);
 
+  const subscriptionName = useMemo(() => {
+    return (
+      subscriptions.find(subscription => subscription.subscriptionType === currentSubscription?.subscriptionType)?.name?.toLowerCase() ??
+      currentSubscription?.subscriptionType.toLowerCase()
+    );
+  }, [subscriptions, currentSubscription]);
+
+  console.log(222, subscriptionName);
+
   const handleClick = () => {
     // toggle();
   };
@@ -99,9 +108,7 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
             {t('account:subscription_expire_warning_message', {
               totalTrialDays,
               totalRemainingTrialDays,
-              subscriptionName:
-                subscriptions.find(subscription => subscription.subscriptionType === currentSubscription?.subscriptionType)?.name?.toLowerCase() ??
-                currentSubscription?.subscriptionType.toLowerCase(),
+              subscriptionName,
             })}{' '}
             <Typography
               onClick={() => navigate('/account/subscription-package')}
@@ -110,11 +117,7 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
               variant="subtitle1"
               fontSize={{ mobile: 12, tablet: 14 }}
             >
-              {t('account:upgrade_subscription_message', {
-                subscriptionName: subscriptions
-                  .find(subscription => subscription.subscriptionType === currentSubscription?.subscriptionType)
-                  ?.name?.toLowerCase(),
-              })}
+              {t('account:upgrade_subscription_message', { subscriptionName })}
             </Typography>
           </Typography>
         </Box>

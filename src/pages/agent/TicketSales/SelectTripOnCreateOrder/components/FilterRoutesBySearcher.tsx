@@ -24,7 +24,15 @@ const getFields = (tripType: SelectTripFormValues['tripType']): Field[] => {
     },
   ];
   if (tripType === 'MULTI_STOP') {
-    fields.push({ id: v4(), required: undefined, label: 'returnTime', type: 'datetime', showTime: true, format: 'HH:mm DD-MM-YYYY' });
+    fields.push({
+      id: v4(),
+      required: undefined,
+      label: 'returnTime',
+      type: 'datetime',
+      showTime: true,
+      format: 'HH:mm DD-MM-YYYY',
+      disabledDate: disabledDate,
+    });
   }
   return fields;
 };
