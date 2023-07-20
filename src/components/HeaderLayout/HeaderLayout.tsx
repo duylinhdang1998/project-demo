@@ -84,7 +84,9 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
     );
   }, [subscriptions, currentSubscription]);
 
-  console.log(222, subscriptionName);
+  const isTrialSubscription = useMemo(() => {
+    return currentSubscription?.subscriptionType === 'TRIAL';
+  }, [currentSubscription]);
 
   const handleClick = () => {
     // toggle();
@@ -101,7 +103,7 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
   }, []);
 
   const renderUpgradeSubscriptionMessage = () => {
-    if (totalRemainingTrialDays && totalRemainingTrialDays <= 7) {
+    if (isTrialSubscription || (totalRemainingTrialDays && totalRemainingTrialDays <= 7)) {
       return (
         <Box className={classes.subcribe}>
           <Typography component="span" fontSize={{ mobile: 12, tablet: 14 }} fontWeight="400">
