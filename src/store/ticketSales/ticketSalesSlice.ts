@@ -134,6 +134,41 @@ export const ticketSalesSlice = createSlice({
     },
     updateOrderStatusSuccess: (state, action: PayloadAction<UpdateOrderStatusSuccess>) => {
       const { data } = action.payload;
+      const currentTicketSalesOfOrder = state.ticketSalesOfOrder;
+      if (currentTicketSalesOfOrder) {
+        return {
+          ...state,
+          queueUpdateOrderStatus: state.queueUpdateOrderStatus.filter(id => id !== data._id),
+          ticketSales: state.ticketSales.map(ticketSale => {
+            if (ticketSale.orderCode === data.orderCode) {
+              return data;
+            }
+            return ticketSale;
+          }),
+          ticketSalesOfOrder:
+            currentTicketSalesOfOrder.type === 'ONE_TRIP'
+              ? {
+                  type: 'ONE_TRIP',
+                  data:
+                    currentTicketSalesOfOrder.data.orderCode === data.orderCode
+                      ? { ...currentTicketSalesOfOrder.data, ...data }
+                      : currentTicketSalesOfOrder.data,
+                }
+              : {
+                  type: 'ROUND_TRIP',
+                  data: {
+                    departureTrip:
+                      currentTicketSalesOfOrder.data.departureTrip.orderCode === data.orderCode
+                        ? { ...currentTicketSalesOfOrder.data.departureTrip, ...data }
+                        : currentTicketSalesOfOrder.data.departureTrip,
+                    returnTrip:
+                      currentTicketSalesOfOrder.data.returnTrip.orderCode === data.orderCode
+                        ? { ...currentTicketSalesOfOrder.data.returnTrip, ...data }
+                        : currentTicketSalesOfOrder.data.returnTrip,
+                  },
+                },
+        };
+      }
       return {
         ...state,
         queueUpdateOrderStatus: state.queueUpdateOrderStatus.filter(id => id !== data._id),

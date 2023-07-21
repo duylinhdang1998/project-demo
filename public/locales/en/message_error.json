@@ -100,5 +100,6 @@
   "RBAC_OLD_PW_INVALID": "Old password is not correct",
   "PAYMENT_PAYPAL_CONNECT_ERROR": "2512",
   "PAYMENT_GW_NOT_CONNECTED": "2513",
-  "UNKNOWN": "Something went wrong"
+  "UNKNOWN": "Something went wrong",
+  "camera_accessing": "Can't access the camera"
 }

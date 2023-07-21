@@ -8,6 +8,7 @@ import QRCode from 'react-qr-code';
 import { isMobile } from 'utils/isMobile';
 import { useStyles } from './styles';
 import ClearIcon from '@mui/icons-material/Clear';
+import { openCamera } from 'utils/openCamera';
 interface QrcodeProps {
   code: string;
   onSearch?: (id: string) => void;
@@ -67,12 +68,13 @@ export default function Qrcode({ code, onSearch }: QrcodeProps) {
         onChange={e => setSearchValue(e.target.value)}
       />
       <Box
+        sx={{ cursor: 'pointer' }}
         my="27px"
         flexDirection="column"
-        display="flex"
+        display={isMobile() ? 'flex' : 'none'}
         justifyContent="center"
         alignItems="center"
-        sx={{ display: isMobile() ? 'initial' : 'none' }}
+        onClick={openCamera}
       >
         <Box className={classes.scanme}>
           <div className={classes.square} />

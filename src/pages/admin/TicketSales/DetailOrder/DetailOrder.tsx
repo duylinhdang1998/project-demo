@@ -16,7 +16,7 @@ import LayoutDetail from 'layout/LayoutDetail';
 import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { TicketDirection } from 'services/models/TicketSale';
@@ -30,6 +30,8 @@ import { Infomation } from './components/OrderDetail/Infomation';
 import { PassengersDetail } from './components/PassengersDetail';
 import { PaymentDetail } from './components/PaymentDetail';
 import { VehicleDetail } from './components/VehicleDetail';
+import { getQrCodeLinkOfOrder } from '../utils/getQrCodeLinkOfOrder';
+import { selectAuth } from 'store/auth/selectors';
 
 export default function DetailTicketPage() {
   const { t } = useTranslation(['ticketSales', 'message_error']);
@@ -39,6 +41,8 @@ export default function DetailTicketPage() {
 
   const { statusGetTicketSalesOfOrder, statusSendEmail, ticketSalesOfOrder } = useAppSelector(selectTicketSales);
   const dispatch = useDispatch();
+
+  const { userInfo } = useSelector(selectAuth);
 
   const [openModalPrint, setOpenModalPrint] = useState(false);
   const [ticketDirection, setTicketDirection] = useState<TicketDirection>('DEPARTURE');
@@ -56,8 +60,6 @@ export default function DetailTicketPage() {
     }
     return undefined;
   }, [ticketSalesOfOrder, ticketDirection]);
-
-  console.log(222, record);
 
   const handleSendEmail = () => {
     if (record) {
@@ -163,7 +165,7 @@ export default function DetailTicketPage() {
         onClose={() => setOpenModalPrint(false)}
         title={t('ticketSales:ticket_order').toUpperCase()}
         totalPrice={record.totalPrice}
-        qrCode={record.orderCode}
+        qrCode={getQrCodeLinkOfOrder(userInfo?.role, record.rawData)}
       >
         <Infomation
           left={t('ticketSales:order_id')}
