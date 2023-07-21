@@ -19,6 +19,7 @@ import { getDomainName } from 'utils/getDomainName';
 import { getUrlOfResource } from 'utils/getUrlOfResource';
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import { isEmpty } from 'lodash-es';
+import Layout from 'layout/Layout';
 
 interface HeaderLayoutProps {
   onToggleDrawer?: () => void;
@@ -53,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps) {
+function HeaderLayout({ activeSideBarHeader, subTitleHeader, onToggleDrawer }: HeaderLayoutProps) {
   const { t } = useTranslation(['dashboard', 'translation', 'account']);
   const classes = useStyles();
 
@@ -89,7 +90,8 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader }: HeaderLayoutProps
   }, [currentSubscription]);
 
   const handleClick = () => {
-    // toggle();
+    onToggleDrawer?.();
+    Layout.getStaticActions().toggleMenu();
   };
 
   useEffect(() => {

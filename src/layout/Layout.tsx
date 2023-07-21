@@ -6,7 +6,7 @@ import CustomLink from 'components/CustomLink/CustomLink';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Navigate, Outlet } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
 import { profileActions } from 'store/profile/profileSlice';
@@ -29,7 +29,9 @@ const useStyles = makeStyles(() => ({
     padding: '8px 0',
   },
 }));
-
+const StaticActionsHandler = {
+  toggleMenu: () => {},
+};
 export default function Layout() {
   const classes = useStyles();
   const theme = useTheme();
@@ -37,6 +39,8 @@ export default function Layout() {
   const { userInfo, isLoggedIn } = useAppSelector(selectAuth);
   const { statusGetProfile } = useAppSelector(selectProfile);
   const dispatch = useAppDispatch();
+
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const container = window !== undefined ? () => window.document.body : undefined;
   const drawerContent = userInfo?.role === 'admin' ? sidebars : sidebarsAgent;
@@ -64,6 +68,14 @@ export default function Layout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
+  /** Static events */
+
+  useEffect(() => {
+    StaticActionsHandler.toggleMenu = () => setOpenDrawer(state => !state);
+  }, []);
+
+  /** <--------------------> */
+
   if (!isLoggedIn) {
     return <Navigate to="/" />;
   }
@@ -88,8 +100,10 @@ export default function Layout() {
         <Drawer
           container={container}
           variant="temporary"
-          open={false}
-          onClose={() => {}}
+          open={openDrawer}
+          onClose={() => {
+            setOpenDrawer(false);
+          }}
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
           }}
@@ -134,3 +148,5 @@ export default function Layout() {
     </Box>
   );
 }
+
+Layout.getStaticActions = () => StaticActionsHandler;

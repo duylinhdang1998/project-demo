@@ -15,7 +15,7 @@ interface QrcodeProps {
 }
 
 export default function Qrcode({ code, onSearch }: QrcodeProps) {
-  const { t } = useTranslation(['dashboard']);
+  const { t } = useTranslation(['dashboard', 'message_error']);
   const classes = useStyles();
   const theme = useTheme();
 

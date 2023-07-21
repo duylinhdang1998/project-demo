@@ -12,6 +12,7 @@ import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Qrcode from 'components/Qrcode/Qrcode';
 
 const useStyles = makeStyles(() => ({
   iconBus: {
@@ -113,6 +114,7 @@ export default function Dashboard() {
   };
   return (
     <Box>
+      <Qrcode code="123" />
       <HeaderLayout activeSideBarHeader={t(`dashboard`)} />
       <Box p="24px">
         {loading ? (
