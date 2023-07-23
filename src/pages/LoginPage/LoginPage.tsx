@@ -5,7 +5,6 @@ import logoTbus from 'assets/images/logo-blue.png';
 import MessageIcon from 'assets/images/message.svg';
 import PasswordIcon from 'assets/images/password.svg';
 import InputAuth from 'components/InputAuth/InputAuth';
-import TextWithLink from 'components/TextWithLink/TextWithLink';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';

@@ -10,8 +10,8 @@ import { statisTics } from './constants';
 import { useGetDashboard } from 'services/Dashboard/dashboard';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Qrcode from 'components/Qrcode/Qrcode';
 
 const useStyles = makeStyles(() => ({
   iconBus: {
@@ -30,10 +30,6 @@ export default function Dashboard() {
   const classes = useStyles();
   const { data, loading } = useGetDashboard();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log({ data });
-  }, [data]);
 
   const hanleSeeAllTrip = () => {
     navigate('/admin/routers');
@@ -114,6 +110,7 @@ export default function Dashboard() {
   return (
     <Box>
       <HeaderLayout activeSideBarHeader={t(`dashboard`)} />
+      <Qrcode code="123" />
       <Box p="24px">
         {loading ? (
           <LoadingScreen />

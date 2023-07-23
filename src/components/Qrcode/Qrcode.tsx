@@ -8,7 +8,7 @@ import QRCode from 'react-qr-code';
 import { isMobile } from 'utils/isMobile';
 import { useStyles } from './styles';
 import ClearIcon from '@mui/icons-material/Clear';
-import { openCamera } from 'utils/openCamera';
+import QRCodeScanner from 'components/QrcodeScanner/ABC';
 interface QrcodeProps {
   code: string;
   onSearch?: (id: string) => void;
@@ -19,7 +19,13 @@ export default function Qrcode({ code, onSearch }: QrcodeProps) {
   const classes = useStyles();
   const theme = useTheme();
 
+  const [isShowCamera, setIsShowCamera] = useState(false);
+
   const [searchValue, setSearchValue] = useState('');
+
+  const handleOpenCamera = () => {
+    setIsShowCamera(true);
+  };
 
   const _renderEdge = (edgePosition: string) => {
     return <Box className={cx(classes[edgePosition], classes.edge)} />;
@@ -67,27 +73,31 @@ export default function Qrcode({ code, onSearch }: QrcodeProps) {
         className={classes.inputSearch}
         onChange={e => setSearchValue(e.target.value)}
       />
-      <Box
-        sx={{ cursor: 'pointer' }}
-        my="27px"
-        flexDirection="column"
-        display={isMobile() ? 'flex' : 'none'}
-        justifyContent="center"
-        alignItems="center"
-        onClick={openCamera}
-      >
-        <Box className={classes.scanme}>
-          <div className={classes.square} />
-          {t('dashboard:scan_me')}
+      {isShowCamera ? (
+        <QRCodeScanner />
+      ) : (
+        <Box
+          sx={{ cursor: 'pointer' }}
+          my="27px"
+          flexDirection="column"
+          display={isMobile() ? 'flex' : 'none'}
+          justifyContent="center"
+          alignItems="center"
+          onClick={handleOpenCamera}
+        >
+          <Box className={classes.scanme}>
+            <div className={classes.square} />
+            {t('dashboard:scan_me')}
+          </Box>
+          <Box position="relative" padding="20px">
+            {_renderEdge('topLeft')}
+            {_renderEdge('topRight')}
+            {_renderEdge('bottomLeft')}
+            {_renderEdge('bottomRight')}
+            <QRCode value={code} width="90%" />
+          </Box>
         </Box>
-        <Box position="relative" padding="20px">
-          {_renderEdge('topLeft')}
-          {_renderEdge('topRight')}
-          {_renderEdge('bottomLeft')}
-          {_renderEdge('bottomRight')}
-          <QRCode value={code} width="90%" />
-        </Box>
-      </Box>
+      )}
     </Box>
   );
 }
