@@ -5,16 +5,18 @@ import Button from 'components/Button/Button';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import QRCode from 'react-qr-code';
-import { isMobile } from 'utils/isMobile';
 import { useStyles } from './styles';
 import ClearIcon from '@mui/icons-material/Clear';
-import QRCodeScanner from 'components/QrcodeScanner/ABC';
+import QRCodeScanner from 'components/QrcodeScanner/QrcodeScanner';
+import QrScanner from 'qr-scanner';
+
 interface QrcodeProps {
   code: string;
   onSearch?: (id: string) => void;
+  onScanQR?: (result: QrScanner.ScanResult) => void;
 }
 
-export default function Qrcode({ code, onSearch }: QrcodeProps) {
+export default function Qrcode({ code, onSearch, onScanQR }: QrcodeProps) {
   const { t } = useTranslation(['dashboard', 'message_error']);
   const classes = useStyles();
   const theme = useTheme();
@@ -74,13 +76,13 @@ export default function Qrcode({ code, onSearch }: QrcodeProps) {
         onChange={e => setSearchValue(e.target.value)}
       />
       {isShowCamera ? (
-        <QRCodeScanner />
+        <QRCodeScanner onScanQR={onScanQR} />
       ) : (
         <Box
           sx={{ cursor: 'pointer' }}
           my="27px"
           flexDirection="column"
-          display={isMobile() ? 'flex' : 'none'}
+          display="flex"
           justifyContent="center"
           alignItems="center"
           onClick={handleOpenCamera}

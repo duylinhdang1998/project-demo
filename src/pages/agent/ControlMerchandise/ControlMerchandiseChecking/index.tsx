@@ -13,12 +13,17 @@ import { useNavigate } from 'react-router-dom';
 import { useGetPackageSale } from 'services/PackageSales/packageSales';
 import Empty from 'assets/images/empty-result.svg';
 import { get } from 'lodash-es';
+import { getOrderCodeFromScanQr } from 'utils/getOrderCodeFromScanQr';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { selectAuth } from 'store/auth/selectors';
 
 export default function ControlMerchandiseChecking() {
   const { t } = useTranslation(['dashboard', 'translation']);
   const navigate = useNavigate();
 
   const { loading, data, run } = useGetPackageSale();
+
+  const { userInfo } = useAppSelector(selectAuth);
 
   const dataDetails = useMemo(() => {
     return {
@@ -96,7 +101,13 @@ export default function ControlMerchandiseChecking() {
       <CardWhite title={t('order_checking')}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
-            <Qrcode code="123" onSearch={value => run(value)} />
+            <Qrcode
+              code="123"
+              onScanQR={result => {
+                run(getOrderCodeFromScanQr(userInfo?.role, result.data));
+              }}
+              onSearch={value => run(value)}
+            />
           </Grid>
           <Grid item xs={12} md={8}>
             <Box bgcolor="#FAFDFF" borderRadius="4px" padding="24px">
