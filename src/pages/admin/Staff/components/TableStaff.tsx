@@ -55,7 +55,19 @@ function TableStaff() {
         key: 'lastName',
         dataIndex: 'lastName',
         title: () => t('lastName'),
-        render: (_, row) => <Typography variant="body2">{row.lastName}</Typography>,
+        render: (_, row) => (
+          <Typography
+            variant="body2"
+            sx={{
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
+            {row.lastName}
+          </Typography>
+        ),
         align: 'center',
         sorter: () => 0,
         width: 150,
@@ -64,7 +76,21 @@ function TableStaff() {
         key: 'firstName',
         dataIndex: 'firstName',
         title: () => t('firstName'),
-        render: (_, row) => <Typography variant="body2">{row.firstName}</Typography>,
+        render: (_, row) => (
+          <Typography
+            variant="body2"
+            sx={{
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+            }}
+          >
+            {row.firstName}
+          </Typography>
+        ),
         align: 'center',
         sorter: () => 0,
         width: 150,
@@ -81,7 +107,19 @@ function TableStaff() {
         key: 'office',
         dataIndex: 'office',
         title: () => t('office_title'),
-        render: (_, row) => <Typography variant="body2">{row.office?.title}</Typography>,
+        render: (_, row) => (
+          <Typography
+            variant="body2"
+            sx={{
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
+            {row.office?.title}
+          </Typography>
+        ),
         align: 'center',
         width: 300,
       },

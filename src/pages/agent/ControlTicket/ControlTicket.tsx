@@ -26,6 +26,8 @@ import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { Infomation } from './Infomation';
 import { useStyles } from './styles';
+import { getOrderCodeFromScanQr } from 'utils/getOrderCodeFromScanQr';
+import { selectAuth } from 'store/auth/selectors';
 
 export default function ControlTicket() {
   const { t } = useTranslation(['dashboard', 'ticketSales']);
@@ -33,6 +35,7 @@ export default function ControlTicket() {
 
   const [showPassengersDetail, setShowPassengersDetail] = useState(false);
 
+  const { userInfo } = useAppSelector(selectAuth);
   const { statusGetTicketSalesOfOrder, queueUpdateOrderStatus, ticketSalesOfOrder } = useAppSelector(selectTicketSales);
   const dispatch = useAppDispatch();
 
@@ -213,7 +216,17 @@ export default function ControlTicket() {
       <CardWhite title={t('order_checking')}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
-            <Qrcode code="123" onSearch={value => dispatch(ticketSalesActions.getTicketSaleWithOrderCodeRequest({ orderCode: value }))} />
+            <Qrcode
+              code="123"
+              onScanQR={result => {
+                dispatch(
+                  ticketSalesActions.getTicketSaleWithOrderCodeRequest({
+                    orderCode: getOrderCodeFromScanQr(userInfo?.role, result.data),
+                  }),
+                );
+              }}
+              onSearch={value => dispatch(ticketSalesActions.getTicketSaleWithOrderCodeRequest({ orderCode: value }))}
+            />
           </Grid>
           <Grid item xs={12} md={8}>
             <Box bgcolor="#FAFDFF" borderRadius="4px" padding="24px">

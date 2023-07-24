@@ -1,17 +1,16 @@
 import { Grid, Stack, Typography, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import { useTranslation } from 'react-i18next';
 import { VehiclesBusIcon } from 'assets';
 import CardDasboard from 'components/CardDashboard/CardDasboard';
+import { FadeIn } from 'components/FadeIn/FadeIn';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { useGetDashboard } from 'services/Dashboard/dashboard';
 import TableDashboard from './components/TableDashboard';
 import { statisTics } from './constants';
-import { useGetDashboard } from 'services/Dashboard/dashboard';
-import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
-import { FadeIn } from 'components/FadeIn/FadeIn';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   iconBus: {
@@ -30,10 +29,6 @@ export default function Dashboard() {
   const classes = useStyles();
   const { data, loading } = useGetDashboard();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log({ data });
-  }, [data]);
 
   const hanleSeeAllTrip = () => {
     navigate('/admin/routers');

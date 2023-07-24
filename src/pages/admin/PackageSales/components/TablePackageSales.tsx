@@ -78,7 +78,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         dataIndex: 'orderCode',
         align: 'center',
         width: 140,
-        title: () => <div>{i18n.t('packageSales:orderId')}</div>
+        title: () => <div>{i18n.t('packageSales:orderId')}</div>,
       },
       {
         key: 'destination',
@@ -132,7 +132,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
               {value?.mobile}
             </Typography>
           </div>
-        )
+        ),
       },
       {
         key: 'totalQuantity',
@@ -188,7 +188,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
           <Box display="flex" alignItems="center" justifyContent="center">
             <Tag text={!!paymentStatus ? paymentStatus : 'NONE'} variant={paymentStatus === EPaymentStatus.APPROVED ? 'success' : 'error'} />
           </Box>
-        )
+        ),
       },
       {
         key: 'orderStatus',
@@ -202,7 +202,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
               <Tag text={value} variant={value === OrderStatus.SUCCESS ? 'success' : 'error'} />
             </Box>
           );
-        }
+        },
       },
       {
         key: 'action',

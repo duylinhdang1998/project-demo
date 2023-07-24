@@ -23,6 +23,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     padding: '12px 4px 12px 14px',
     color: theme.palette.grey[100],
     height: '40px',
+    marginBottom: '27px',
   },
   scanme: {
     textAlign: 'center',
