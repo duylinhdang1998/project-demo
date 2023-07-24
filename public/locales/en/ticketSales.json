@@ -88,5 +88,6 @@
   "merchandises": "Package",
   "ticket_status": "Ticket status",
   "return_trip_invalid_description": "Please select a valid round trip by choosing the departure and return trips.",
-  "return_trip_invalid_title": "Invalid Selection"
+  "return_trip_invalid_title": "Invalid Selection",
+  "find_ticket_error": "Find ticket error"
 }

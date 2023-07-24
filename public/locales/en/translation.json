@@ -99,5 +99,6 @@
   "hour_and_minutes": "{{ hours }} hour and {{ minutes }} minutes",
   "hours_and_0minute": "{{ hours }} hours",
   "hours_and_minute": "{{ hours }} hours and {{ minutes }} minute",
-  "hours_and_minutes": "{{ hours }} hours and {{ minutes }} minutes"
+  "hours_and_minutes": "{{ hours }} hours and {{ minutes }} minutes",
+  "invalid_qrcode": "QR code is invalid"
 }

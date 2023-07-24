@@ -16,6 +16,8 @@ import { get } from 'lodash-es';
 import { getOrderCodeFromScanQr } from 'utils/getOrderCodeFromScanQr';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { selectAuth } from 'store/auth/selectors';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { toast } from 'react-toastify';
 
 export default function ControlMerchandiseChecking() {
   const { t } = useTranslation(['dashboard', 'translation']);
@@ -104,9 +106,14 @@ export default function ControlMerchandiseChecking() {
             <Qrcode
               code="123"
               onScanQR={result => {
-                run(getOrderCodeFromScanQr(userInfo?.role, result.data));
+                run({
+                  orderCode: getOrderCodeFromScanQr(userInfo?.role, result.data),
+                  onError() {
+                    toast(<ToastCustom type="error" text={t('translation:invalid_qrcode')} />, { className: 'toast-error' });
+                  },
+                });
               }}
-              onSearch={value => run(value)}
+              onSearch={value => run({ orderCode: value })}
             />
           </Grid>
           <Grid item xs={12} md={8}>

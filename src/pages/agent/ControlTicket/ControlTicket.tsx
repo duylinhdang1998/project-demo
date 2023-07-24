@@ -222,6 +222,19 @@ export default function ControlTicket() {
                 dispatch(
                   ticketSalesActions.getTicketSaleWithOrderCodeRequest({
                     orderCode: getOrderCodeFromScanQr(userInfo?.role, result.data),
+                    onTicketNonExist() {
+                      toast(<ToastCustom type="error" text={t('translation:invalid_qrcode')} />, { className: 'toast-error' });
+                    },
+                    onFailure(message) {
+                      toast(
+                        <ToastCustom
+                          type="error"
+                          text={t('ticketSales:find_ticket_error', { type: t('account:content_manager').toLowerCase() })}
+                          description={message}
+                        />,
+                        { className: 'toast-error' },
+                      );
+                    },
                   }),
                 );
               }}

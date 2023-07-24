@@ -74,18 +74,29 @@ export const useGetListPackageSales = (option?: Options<ResponseSuccess<PackageS
 };
 
 export const useGetPackageSale = () => {
-  const getPackageSale = async (orderCode: PackageSale['orderCode']): Promise<PackageSale | undefined> => {
+  const getPackageSale = async ({
+    onError,
+    orderCode,
+  }: {
+    orderCode: PackageSale['orderCode'];
+    onError?: (message: string) => void;
+  }): Promise<PackageSale | undefined> => {
     try {
-      const response: AxiosResponse<ResponseDetailSuccess<PackageSale>> = await fetchAPI.request({
+      const response: AxiosResponse<ResponseDetailSuccess<PackageSale> | ResponseFailure> = await fetchAPI.request({
         url: `/v1.0/company/package-sale/${orderCode}/detail`,
       });
-      return response.data.data;
-    } catch {
+      if (response.data.code === 0) {
+        return (response.data as ResponseDetailSuccess<PackageSale>).data;
+      }
+      const response_ = response as AxiosResponse<ResponseFailure>;
+      throw new ServiceException(response_.data.message, response_.data);
+    } catch (error) {
+      onError?.(ServiceException.getMessageError(error));
       return undefined;
     }
   };
 
-  return useRequest<PackageSale | undefined, [PackageSale['orderCode']]>(getPackageSale, {
+  return useRequest<PackageSale | undefined, [{ orderCode: PackageSale['orderCode']; onError?: (message: string) => void }]>(getPackageSale, {
     manual: true,
   });
 };
