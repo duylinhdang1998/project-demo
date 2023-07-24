@@ -40,7 +40,7 @@ export default function OrderDetailConfirm() {
     if (!params.orderCode) {
       throw 'Some thing went wrong';
     } else {
-      getPackageSaleDetail(params.orderCode);
+      getPackageSaleDetail({ orderCode: params.orderCode });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.orderCode]);

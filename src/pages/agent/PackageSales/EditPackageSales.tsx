@@ -102,7 +102,7 @@ export default function EditPackageSales() {
 
   useEffect(() => {
     if (!!params.orderCode) {
-      getPackageSaleDetail(params.orderCode);
+      getPackageSaleDetail({ orderCode: params.orderCode });
       return;
     }
     throw new Error('Route not found');
