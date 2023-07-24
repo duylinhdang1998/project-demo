@@ -1,31 +1,27 @@
 import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
+import Empty from 'assets/images/empty-result.svg';
 import Button from 'components/Button/Button';
 import CardWhite from 'components/CardWhite/CardWhite';
 import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { MerchandiseStatus } from 'components/MerchandiseStatus/MerchandiseStatus';
 import Qrcode from 'components/Qrcode/Qrcode';
 import Tag from 'components/Tag/Tag';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
 import LayoutDetail from 'layout/LayoutDetail';
+import { get } from 'lodash-es';
 import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useGetPackageSale } from 'services/PackageSales/packageSales';
-import Empty from 'assets/images/empty-result.svg';
-import { get } from 'lodash-es';
-import { getOrderCodeFromScanQr } from 'utils/getOrderCodeFromScanQr';
-import { useAppSelector } from 'hooks/useAppSelector';
-import { selectAuth } from 'store/auth/selectors';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { toast } from 'react-toastify';
+import { useGetPackageSale } from 'services/PackageSales/packageSales';
+import { getOrderCodeFromScanQr } from 'utils/getOrderCodeFromScanQr';
 
 export default function ControlMerchandiseChecking() {
   const { t } = useTranslation(['dashboard', 'translation']);
   const navigate = useNavigate();
 
   const { loading, data, run } = useGetPackageSale();
-
-  const { userInfo } = useAppSelector(selectAuth);
 
   const dataDetails = useMemo(() => {
     return {
@@ -107,7 +103,7 @@ export default function ControlMerchandiseChecking() {
               code="123"
               onScanQR={result => {
                 run({
-                  orderCode: getOrderCodeFromScanQr(userInfo?.role, result.data),
+                  orderCode: getOrderCodeFromScanQr(result.data),
                   onError() {
                     toast(<ToastCustom type="error" text={t('translation:invalid_qrcode')} />, { className: 'toast-error' });
                   },

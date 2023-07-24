@@ -1,20 +1,18 @@
 import { Divider, Stack, Typography, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import { MapPinIcon } from 'assets';
-import QRCode from 'react-qr-code';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { TicketStatus } from 'components/TicketStatus/TicketStatus';
 import dayjs from 'dayjs';
 import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
+import { getQrCodeData } from 'pages/admin/TicketSales/utils/getQrCodeData';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import QRCode from 'react-qr-code';
+import { UserRoleMappingToLabel } from 'services/models/UserRole';
 import { ColumnTicket } from '../../../components/ColumnTicket';
 import { Infomation } from './Infomation';
-import { UserRoleMappingToLabel } from 'services/models/UserRole';
-import { useSelector } from 'react-redux';
-import { getQrCodeLinkOfOrder } from 'pages/admin/TicketSales/utils/getQrCodeLinkOfOrder';
-import { selectAuth } from 'store/auth/selectors';
 
 export interface OrderDetailsProps {
   record: ColumnTicket;
@@ -23,8 +21,6 @@ export interface OrderDetailsProps {
 function OrderDetails({ record }: OrderDetailsProps) {
   const theme = useTheme();
   const { t } = useTranslation(['ticketSales']);
-
-  const { userInfo } = useSelector(selectAuth);
 
   return (
     <Box padding="24px" bgcolor="#fff" borderRadius="4px">
@@ -36,7 +32,7 @@ function OrderDetails({ record }: OrderDetailsProps) {
       </Stack>
       <Divider sx={{ borderColor: '#D7DADC' }} />
       <Box mt="24px" sx={{ maxWidth: 120, maxHeight: 120, marginLeft: 'auto', marginRight: 'auto' }}>
-        <QRCode size={120} value={getQrCodeLinkOfOrder(userInfo?.role, record.rawData)} />
+        <QRCode size={120} value={getQrCodeData(record.rawData)} />
       </Box>
       <Box py="24px">
         <Infomation

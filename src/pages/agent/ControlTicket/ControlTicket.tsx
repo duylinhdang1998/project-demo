@@ -24,10 +24,9 @@ import { UserRoleMappingToLabel } from 'services/models/UserRole';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
+import { getOrderCodeFromScanQr } from 'utils/getOrderCodeFromScanQr';
 import { Infomation } from './Infomation';
 import { useStyles } from './styles';
-import { getOrderCodeFromScanQr } from 'utils/getOrderCodeFromScanQr';
-import { selectAuth } from 'store/auth/selectors';
 
 export default function ControlTicket() {
   const { t } = useTranslation(['dashboard', 'ticketSales']);
@@ -35,7 +34,6 @@ export default function ControlTicket() {
 
   const [showPassengersDetail, setShowPassengersDetail] = useState(false);
 
-  const { userInfo } = useAppSelector(selectAuth);
   const { statusGetTicketSalesOfOrder, queueUpdateOrderStatus, ticketSalesOfOrder } = useAppSelector(selectTicketSales);
   const dispatch = useAppDispatch();
 
@@ -221,7 +219,7 @@ export default function ControlTicket() {
               onScanQR={result => {
                 dispatch(
                   ticketSalesActions.getTicketSaleWithOrderCodeRequest({
-                    orderCode: getOrderCodeFromScanQr(userInfo?.role, result.data),
+                    orderCode: getOrderCodeFromScanQr(result.data),
                     onTicketNonExist() {
                       toast(<ToastCustom type="error" text={t('translation:invalid_qrcode')} />, { className: 'toast-error' });
                     },

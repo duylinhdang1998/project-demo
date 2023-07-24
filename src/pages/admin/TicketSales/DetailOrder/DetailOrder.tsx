@@ -16,7 +16,7 @@ import LayoutDetail from 'layout/LayoutDetail';
 import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { TicketDirection } from 'services/models/TicketSale';
@@ -24,14 +24,13 @@ import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { ModalPrintTicket } from '../../../../components/ModalPrintTicket/ModalPrintTicket';
 import { ColumnTicket } from '../components/ColumnTicket';
+import { getQrCodeData } from '../utils/getQrCodeData';
 import { ticketSaleModelToColumnTicket } from '../utils/ticketSaleModelToColumnTicket';
 import OrderDetails from './components/OrderDetail';
 import { Infomation } from './components/OrderDetail/Infomation';
 import { PassengersDetail } from './components/PassengersDetail';
 import { PaymentDetail } from './components/PaymentDetail';
 import { VehicleDetail } from './components/VehicleDetail';
-import { getQrCodeLinkOfOrder } from '../utils/getQrCodeLinkOfOrder';
-import { selectAuth } from 'store/auth/selectors';
 
 export default function DetailTicketPage() {
   const { t } = useTranslation(['ticketSales', 'message_error']);
@@ -41,8 +40,6 @@ export default function DetailTicketPage() {
 
   const { statusGetTicketSalesOfOrder, statusSendEmail, ticketSalesOfOrder } = useAppSelector(selectTicketSales);
   const dispatch = useDispatch();
-
-  const { userInfo } = useSelector(selectAuth);
 
   const [openModalPrint, setOpenModalPrint] = useState(false);
   const [ticketDirection, setTicketDirection] = useState<TicketDirection>('DEPARTURE');
@@ -165,7 +162,7 @@ export default function DetailTicketPage() {
         onClose={() => setOpenModalPrint(false)}
         title={t('ticketSales:ticket_order').toUpperCase()}
         totalPrice={record.totalPrice}
-        qrCode={getQrCodeLinkOfOrder(userInfo?.role, record.rawData)}
+        qrCode={getQrCodeData(record.rawData)}
       >
         <Infomation
           left={t('ticketSales:order_id')}
