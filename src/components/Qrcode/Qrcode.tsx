@@ -14,9 +14,10 @@ interface QrcodeProps {
   code: string;
   onSearch?: (id: string) => void;
   onScanQR?: (result: QrScanner.ScanResult) => void;
+  autoDisconnectOnScan?: boolean;
 }
 
-export default function Qrcode({ code, onSearch, onScanQR }: QrcodeProps) {
+export default function Qrcode({ code, autoDisconnectOnScan = true, onSearch, onScanQR }: QrcodeProps) {
   const { t } = useTranslation(['dashboard', 'message_error']);
   const classes = useStyles();
   const theme = useTheme();
@@ -76,7 +77,14 @@ export default function Qrcode({ code, onSearch, onScanQR }: QrcodeProps) {
         onChange={e => setSearchValue(e.target.value)}
       />
       {isShowCamera ? (
-        <QRCodeScanner onScanQR={onScanQR} />
+        <QRCodeScanner
+          onScanQR={result => {
+            onScanQR?.(result);
+            if (autoDisconnectOnScan) {
+              setIsShowCamera(false);
+            }
+          }}
+        />
       ) : (
         <Box
           sx={{ cursor: 'pointer' }}
