@@ -64,7 +64,9 @@ export const SelectOffice = ({
                   const response = await getOffices({
                     page: 0,
                     searcher: {},
-                    sorter: {},
+                    sorter: {
+                      title: 'asc',
+                    },
                     isGetAll: true,
                   });
                   return response.data.hits;

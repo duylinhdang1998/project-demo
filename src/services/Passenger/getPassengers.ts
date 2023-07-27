@@ -23,7 +23,7 @@ export const getPassengers = async ({ page, searcher, sorter, isGetAll }: GetPas
     params: {
       limit: isGetAll ? getMaxLimit() : RECORDS_PER_PAGE,
       offset: isGetAll ? getMinOffset() : page * RECORDS_PER_PAGE,
-      ...(isGetAll ? {} : getSortParams(sorter)),
+      ...getSortParams(sorter, !isGetAll),
       ...(isGetAll ? {} : getSearchParams(searcher)),
     },
   });

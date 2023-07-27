@@ -19,7 +19,7 @@ export const getListDestinations = async ({ page, sorter, searcher, isGetAll }: 
     params: {
       limit: isGetAll ? getMaxLimit() : RECORDS_PER_PAGE,
       offset: isGetAll ? getMinOffset() : page * RECORDS_PER_PAGE,
-      ...(isGetAll ? {} : getSortParams(sorter)),
+      ...getSortParams(sorter, !isGetAll),
       ...(isGetAll ? {} : getSearchParams(searcher)),
     },
   });

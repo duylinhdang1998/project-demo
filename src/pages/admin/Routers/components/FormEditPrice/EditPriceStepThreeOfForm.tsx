@@ -105,7 +105,9 @@ export const EditPriceStepThreeOfForm = ({ control, errors, priceOfRoutePoints, 
                           const response = await getListDestinations({
                             page: 0,
                             searcher: {},
-                            sorter: {},
+                            sorter: {
+                              title: 'asc',
+                            },
                             isGetAll: true,
                           });
                           return response.data.hits.map(item => ({

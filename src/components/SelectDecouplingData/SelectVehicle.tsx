@@ -60,7 +60,14 @@ export const SelectVehicle = ({
               isClearable={!isRequired}
               service={async () => {
                 try {
-                  const response = await getVehicles({ page: 0, searcher: {}, sorter: {}, isGetAll: true });
+                  const response = await getVehicles({
+                    page: 0,
+                    searcher: {},
+                    sorter: {
+                      brandModel: 'asc',
+                    },
+                    isGetAll: true,
+                  });
                   return response.data.hits;
                 } catch {
                   return [];

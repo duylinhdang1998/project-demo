@@ -49,7 +49,7 @@ export const SelectRole = ({
 
   const ROLES: Array<{ role: UserRole }> = useMemo(() => {
     if (isForFilter) {
-      return [{ role: 'COMPANY_AGENT' }, { role: 'COMPANY_ADMIN' }, { role: 'PASSENGER' }, { role: 'COMPANY_DRIVER' }];
+      return [{ role: 'COMPANY_ADMIN' }, { role: 'COMPANY_AGENT' }, { role: 'COMPANY_DRIVER' }, { role: 'PASSENGER' }];
     }
     return [{ role: 'COMPANY_AGENT' }, { role: 'COMPANY_DRIVER' }];
   }, [isForFilter]);

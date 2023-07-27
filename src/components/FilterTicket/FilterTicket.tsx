@@ -185,7 +185,14 @@ export default function FilterTicket<T extends FieldValues>({
                   value={field.value}
                   service={async () => {
                     try {
-                      const response = await getListDestinations({ page: 0, searcher: {}, sorter: {}, isGetAll: true });
+                      const response = await getListDestinations({
+                        page: 0,
+                        searcher: {},
+                        sorter: {
+                          title: 'asc',
+                        },
+                        isGetAll: true,
+                      });
                       return response.data.hits;
                     } catch {
                       return [];
@@ -223,7 +230,9 @@ export default function FilterTicket<T extends FieldValues>({
                         const response = await getOffices({
                           page: 0,
                           searcher: {},
-                          sorter: {},
+                          sorter: {
+                            title: 'asc',
+                          },
                           isGetAll: true,
                         });
                         return response.data.hits;
@@ -261,10 +270,10 @@ export default function FilterTicket<T extends FieldValues>({
                     value={field.value}
                     service={() => {
                       return Promise.resolve<Array<{ role: UserRole }>>([
-                        { role: 'COMPANY_AGENT' },
                         { role: 'COMPANY_ADMIN' },
-                        { role: 'PASSENGER' },
+                        { role: 'COMPANY_AGENT' },
                         { role: 'COMPANY_DRIVER' },
+                        { role: 'PASSENGER' },
                       ]);
                     }}
                     transformToOption={model => ({
@@ -306,7 +315,9 @@ export default function FilterTicket<T extends FieldValues>({
                         const response = await getListDestinations({
                           page: 0,
                           searcher: {},
-                          sorter: {},
+                          sorter: {
+                            title: 'asc',
+                          },
                           isGetAll: true,
                         });
                         return response.data.hits.map(item => ({
@@ -361,7 +372,9 @@ export default function FilterTicket<T extends FieldValues>({
                         const response = await getListDestinations({
                           page: 0,
                           searcher: {},
-                          sorter: {},
+                          sorter: {
+                            title: 'asc',
+                          },
                           isGetAll: true,
                         });
                         return response.data.hits.map(item => ({
@@ -409,7 +422,9 @@ export default function FilterTicket<T extends FieldValues>({
                         const response = await getVehicles({
                           page: 0,
                           searcher: {},
-                          sorter: {},
+                          sorter: {
+                            brandModel: 'asc',
+                          },
                           isGetAll: true,
                         });
                         return response.data.hits;
@@ -480,7 +495,14 @@ export default function FilterTicket<T extends FieldValues>({
                     isSearchable
                     service={async () => {
                       try {
-                        const response = await getPackageSettings({ isGetAll: true, page: 0, searcher: {}, sorter: {} });
+                        const response = await getPackageSettings({
+                          isGetAll: true,
+                          page: 0,
+                          searcher: {},
+                          sorter: {
+                            title: 'asc',
+                          },
+                        });
                         return response.data.hits.map(item => ({ value: item._id, label: item.title }));
                       } catch {
                         return [];
