@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import { searchRoutes, searchRoutesPackage } from 'services/TicketSale/searchRoutes';
 import { SelectTripFormValues } from '../SelectTripOnCreateOrder';
+import { RouteOfTicketSale } from 'services/models/TicketSale';
+import { getFullTrip } from 'services/TicketSale/getFullTrip';
 
 export const getTrips = async (
   page: number,
@@ -33,7 +35,24 @@ export const getTrips = async (
       },
       sorter: {},
     });
-    return response.data;
+    const data = await Promise.all(
+      response.data.hits.map<Promise<RouteOfTicketSale>>(async item => {
+        if (!item.isChanged) {
+          // Gọi api để lấy giá
+          const getPriceResponse_ = await getFullTrip(item.routeCode);
+          return {
+            ...item,
+            ECOPrices: getPriceResponse_.data.ECOPrices,
+            VIPPrices: getPriceResponse_.data.VIPPrices,
+          };
+        }
+        return item;
+      }),
+    );
+    return {
+      hits: data,
+      pagination: response.data.pagination,
+    };
   } catch (error) {
     return {
       hits: [],
