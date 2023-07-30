@@ -37,7 +37,7 @@ interface Props {
   sortOrder?: 'ascend' | 'descend';
 }
 
-function TableServices({ dataSource, onRefresh, loading, onFilter, pagination, sortOrder }: Props) {
+function TableServices({ dataSource, onRefresh, loading, onFilter, pagination }: Props) {
   const { t } = useTranslation('serviceSetting');
   const classes = useStyles();
   const navigate = useNavigate();
@@ -133,8 +133,6 @@ function TableServices({ dataSource, onRefresh, loading, onFilter, pagination, s
           {value}
         </Typography>
       ),
-      sortOrder: !!sortOrder ? sortOrder : undefined,
-      sorter: () => 0,
     },
     {
       key: 'icon',

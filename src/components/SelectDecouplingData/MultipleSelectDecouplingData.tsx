@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useRequest } from 'ahooks';
+import { Empty } from 'antd';
 import { Option } from 'models/Field';
 import { equals } from 'ramda';
 import { useEffect, useMemo, useRef } from 'react';
@@ -61,7 +62,11 @@ export const MultipleSelectDecouplingData = <Model extends AnyObject>({
     const initialOffset = options.indexOf(value) * HEIGHT;
 
     if (!Array.isArray(children)) {
-      return null;
+      return (
+        <Box display="flex" alignItems="center" justifyContent="center" padding="8px">
+          <Empty />
+        </Box>
+      );
     }
 
     return (
