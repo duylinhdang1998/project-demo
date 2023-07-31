@@ -82,8 +82,8 @@ export default function Routers() {
             value: values.departureTime ? dayjsToString(values.departureTime, 'HH:mm') : undefined,
             operator: 'eq',
           },
-          'vehicle.brand': {
-            value: values.vehicleName?.brand,
+          'vehicle.brandModel': {
+            value: values.vehicleName?.brandModel,
             operator: 'eq',
           },
         },
