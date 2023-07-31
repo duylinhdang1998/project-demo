@@ -72,7 +72,7 @@ export const MultipleSelectDecouplingData = <Model extends AnyObject>({
     return (
       <FixedSizeList
         width="100%"
-        height={maxHeight}
+        height={children.length < 8 ? HEIGHT * children.length + 2 : maxHeight}
         itemCount={children.length}
         itemSize={HEIGHT}
         initialScrollOffset={initialOffset}

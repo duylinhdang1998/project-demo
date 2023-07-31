@@ -80,7 +80,7 @@ export default function Vehicles() {
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
             <Grid container columns={8} rowSpacing={2}>
-              <Grid item xs={8} md={7}>
+              <Grid item xs={8} md={8}>
                 <FilterTicket control={control} fields={fieldsSearch} filterKey="vehicles" numberColumns={matches ? 4 : 10} />
               </Grid>
               <Grid
