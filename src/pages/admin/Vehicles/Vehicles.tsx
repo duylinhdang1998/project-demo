@@ -85,23 +85,23 @@ export default function Vehicles() {
               </Grid>
             </Grid>
           </Grid>
-          {!isAgent && (
-            <Grid item xs={12} md={4} sx={{ justifyContent: 'flex-end', display: 'flex' }}>
-              <Stack direction="row" spacing="16px" alignItems="center" alignSelf="flex-end">
-                <Button
-                  variant="contained"
-                  sx={{ width: matches ? '170px' : '100%' }}
-                  backgroundButton={theme.palette.primary.main}
-                  onClick={handleSubmit(onSubmit)}
-                >
-                  {t('translation:search')}
-                </Button>
+          <Grid item xs={12} md={4} sx={{ justifyContent: 'flex-end', display: 'flex' }}>
+            <Stack direction="row" spacing="16px" alignItems="center" alignSelf="flex-end">
+              <Button
+                variant="contained"
+                sx={{ width: matches ? '170px' : '100%' }}
+                backgroundButton={theme.palette.primary.main}
+                onClick={handleSubmit(onSubmit)}
+              >
+                {t('translation:search')}
+              </Button>
+              {!isAgent && (
                 <Button backgroundButton="#33CC7F" startIcon={<AddIcon />} className={classes.btnAdd} onClick={handleAdd}>
                   {t('translation:add_new', { type: t('vehicles:vehicle').toLowerCase() })}
                 </Button>
-              </Stack>
-            </Grid>
-          )}
+              )}
+            </Stack>
+          </Grid>
         </Grid>
         <TableVehicles />
       </Box>
