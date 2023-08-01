@@ -149,22 +149,26 @@ export default function PaymentMethod() {
                   />
                   {data?.data?.map(item => (
                     <Box key={item._id} mb="10px">
-                      <Typography variant="body2" fontWeight={600}>
-                        {t('click_button_description_paypal', { method: item.paymentGateWay?.toLowerCase() })}
-                      </Typography>
-                      <Typography variant="body2">{t('subtext_2', { method: item.paymentGateWay?.toLowerCase() })}</Typography>
+                      {includes(methodValueWatch, item.paymentGateWay) && (
+                        <>
+                          <Typography variant="body2" fontWeight={600}>
+                            {t('click_button_description_paypal', { method: item.paymentGateWay?.toLowerCase() })}
+                          </Typography>
+                          <Typography variant="body2">{t('subtext_2', { method: item.paymentGateWay?.toLowerCase() })}</Typography>
 
-                      <PaypalButton
-                        sx={{
-                          backgroundColor: item.paymentGateWay === 'PAYPAL' ? '#263B80' : '#635BFF',
-                        }}
-                        variant="contained"
-                        loading={loading2}
-                        onClick={handleLogin(item.paymentGateWay ?? '')}
-                        startIcon={item.registered ? <CheckCircleOutlined /> : null}
-                      >
-                        {item.paymentGateWay === 'PAYPAL' ? t('login_paypal') : t('login_stripe')}
-                      </PaypalButton>
+                          <PaypalButton
+                            sx={{
+                              backgroundColor: item.paymentGateWay === 'PAYPAL' ? '#263B80' : '#635BFF',
+                            }}
+                            variant="contained"
+                            loading={loading2}
+                            onClick={handleLogin(item.paymentGateWay ?? '')}
+                            startIcon={item.registered ? <CheckCircleOutlined /> : null}
+                          >
+                            {item.paymentGateWay === 'PAYPAL' ? t('login_paypal') : t('login_stripe')}
+                          </PaypalButton>
+                        </>
+                      )}
                     </Box>
                   ))}
                 </Box>

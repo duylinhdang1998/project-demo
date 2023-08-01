@@ -2,7 +2,7 @@ import React, { memo, useMemo } from 'react';
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { ColumnsType } from 'antd/es/table';
-import { MapPinIcon } from 'assets';
+import { MapPinIcon, CalendarIcon } from 'assets';
 import ActionTable from 'components/ActionTable/ActionTable';
 import { AntTableColumnTitle } from 'components/AntTableColumnTitle/AntTableColumnTitle';
 import EditIcon from 'components/SvgIcon/EditIcon';
@@ -27,6 +27,7 @@ import { getNotifcation } from 'utils/getNotification';
 import { toast } from 'react-toastify';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { ServiceException } from 'services/utils/ServiceException';
+import dayjs from 'dayjs';
 
 interface Props {
   sortOrder: SortOrder;
@@ -97,7 +98,12 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
                 }}
                 color="#1AA6EE"
               />
-              <TextWithIcon icon={MapPinIcon} text={item.arrivalPoint} typography={{ fontSize: '14px' }} color="#1AA6EE" />
+              <TextWithIcon
+                icon={CalendarIcon}
+                text={dayjs(item.departureTime).format('DD/MM/YYYY - HH:mm')}
+                typography={{ fontSize: '14px' }}
+                color="#1AA6EE"
+              />
             </div>
           );
         },

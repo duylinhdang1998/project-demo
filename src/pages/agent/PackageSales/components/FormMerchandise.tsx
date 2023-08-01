@@ -174,7 +174,7 @@ export default function FormMerchandise({ control, errors, routeDetail }: Props)
             </Typography>
           )}
           <Typography fontSize={12} component="p" my="16px" color="#858C93">
-            Admin description: Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.
+            {t('translation:admin_description')}
           </Typography>
           <Divider sx={{ borderStyle: 'dashed' }} />
         </Box>

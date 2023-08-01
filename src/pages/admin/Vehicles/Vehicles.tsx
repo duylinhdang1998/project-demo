@@ -1,7 +1,7 @@
 import AddIcon from '@mui/icons-material/Add';
 import { Grid, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Box } from '@mui/system';
+import { Box, Stack } from '@mui/system';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -80,18 +80,14 @@ export default function Vehicles() {
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
             <Grid container columns={8} rowSpacing={2}>
-              <Grid item xs={8} md={8}>
+              <Grid item xs={8} md={4}>
                 <FilterTicket control={control} fields={fieldsSearch} filterKey="vehicles" numberColumns={matches ? 4 : 10} />
               </Grid>
-              <Grid
-                item
-                xs={8}
-                md={1}
-                sx={{
-                  alignSelf: 'flex-end',
-                  marginLeft: matches ? '-120px' : '0px',
-                }}
-              >
+            </Grid>
+          </Grid>
+          {!isAgent && (
+            <Grid item xs={12} md={4} sx={{ justifyContent: 'flex-end', display: 'flex' }}>
+              <Stack direction="row" spacing="16px" alignItems="center" alignSelf="flex-end">
                 <Button
                   variant="contained"
                   sx={{ width: matches ? '170px' : '100%' }}
@@ -100,20 +96,10 @@ export default function Vehicles() {
                 >
                   {t('translation:search')}
                 </Button>
-              </Grid>
-            </Grid>
-          </Grid>
-          {!isAgent && (
-            <Grid item xs={12} md={4} sx={{ justifyContent: 'flex-end', display: 'flex' }}>
-              <Button
-                backgroundButton="#33CC7F"
-                startIcon={<AddIcon />}
-                sx={{ alignSelf: 'flex-end' }}
-                className={classes.btnAdd}
-                onClick={handleAdd}
-              >
-                {t('translation:add_new', { type: t('vehicles:vehicle').toLowerCase() })}
-              </Button>
+                <Button backgroundButton="#33CC7F" startIcon={<AddIcon />} className={classes.btnAdd} onClick={handleAdd}>
+                  {t('translation:add_new', { type: t('vehicles:vehicle').toLowerCase() })}
+                </Button>
+              </Stack>
             </Grid>
           )}
         </Grid>

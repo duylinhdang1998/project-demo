@@ -80,7 +80,7 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader, onToggleDrawer }: H
 
   const subscriptionName = useMemo(() => {
     return (
-      subscriptions.find(subscription => subscription.subscriptionType === currentSubscription?.subscriptionType)?.name?.toLowerCase() ??
+      subscriptions?.find(subscription => subscription.subscriptionType === currentSubscription?.subscriptionType)?.name?.toLowerCase() ??
       currentSubscription?.subscriptionType.toLowerCase()
     );
   }, [subscriptions, currentSubscription]);

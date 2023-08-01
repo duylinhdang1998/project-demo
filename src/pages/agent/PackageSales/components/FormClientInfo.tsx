@@ -104,6 +104,7 @@ export default function FormClientInfo({ control, errors, routeDetail }: Props) 
                   value: f.required ?? false,
                   message: t('translation:error_required', { name: t(`packageSales:${f.label}`).toLowerCase() }),
                 },
+                validate: value => !!value.trim() || t('translation:error_required', { name: t(`packageSales:${f.label}`).toLowerCase() }),
               }}
             />
           </Grid>
@@ -158,6 +159,7 @@ export default function FormClientInfo({ control, errors, routeDetail }: Props) 
             value: true,
             message: t('translation:error_required', { name: t(`packageSales:email`).toLowerCase() }),
           },
+          validate: value => !!value.trim() || t('translation:error_required', { name: t(`packageSales:email`).toLowerCase() }),
         }}
       />
       <Divider sx={{ margin: '16px 0' }} />

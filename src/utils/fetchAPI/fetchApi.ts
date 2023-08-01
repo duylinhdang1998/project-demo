@@ -108,6 +108,12 @@ export default class ConfigureAxios {
     }
   };
 
+  private handleLogout = async <ResponseDataT, AxiosDataReturnT>(config: Config<ResponseDataT, AxiosDataReturnT>, response: AxiosResponse) => {
+    config.failure(response.data);
+    this.logout(config);
+    return await Promise.reject(response);
+  };
+
   public refreshToken = <ResponseDataT = any, AxiosDataReturnT = any>(config: Config<ResponseDataT, AxiosDataReturnT>) => {
     const interceptor = this.axiosInstance.interceptors.response.use(undefined, (error: AxiosError) => {
       if (!config.setRefreshCondition(error)) {
@@ -116,5 +122,20 @@ export default class ConfigureAxios {
       this.axiosInstance.interceptors.response.eject(interceptor);
       return this.handleRefreshTokenAsync(config, error);
     });
+  };
+
+  public logout = <ResponseDataT = any, AxiosDataReturnT = any>(config: Config<ResponseDataT, AxiosDataReturnT>) => {
+    const interceptor = this.axiosInstance.interceptors.response.use(
+      (response: any) => {
+        if (response.data.code === 1003) {
+          this.axiosInstance.interceptors.response.eject(interceptor);
+          return this.handleLogout(config, response.data);
+        }
+        return response;
+      },
+      err => {
+        console.log('err', err);
+      },
+    );
   };
 }

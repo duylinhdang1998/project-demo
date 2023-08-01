@@ -91,6 +91,7 @@ export default function FormVerticle<T extends FieldValues>({
                 value: i.required ?? false,
                 message: messageErr,
               },
+              validate: value => !!value.trim() || messageErr,
               pattern: {
                 value: /^.*\S+.*$/,
                 message: messageErr,
@@ -458,6 +459,7 @@ export default function FormVerticle<T extends FieldValues>({
                 value: i.required ?? false,
                 message: messageErr,
               },
+              validate: value => !!value.trim() || messageErr,
             }}
           />
         );

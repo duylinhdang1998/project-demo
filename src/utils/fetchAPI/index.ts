@@ -3,6 +3,7 @@ import env from 'env';
 import { RootState } from 'store/configureStore';
 import ConfigureAxios from './fetchApi';
 import { store } from 'store/configureStore';
+import { authActions } from 'store/auth/authSlice';
 
 const axiosConfig = new ConfigureAxios({
   configure: {
@@ -26,6 +27,12 @@ const fetchAPI = axiosConfig.create();
 axiosConfig.accessToken({
   setCondition(config) {
     return config?.url?.search(/^http/g) === -1;
+  },
+});
+// @ts-ignore
+axiosConfig.logout({
+  failure() {
+    store.dispatch(authActions.logout(''));
   },
 });
 

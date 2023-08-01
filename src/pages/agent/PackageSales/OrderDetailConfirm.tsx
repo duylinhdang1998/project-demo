@@ -6,7 +6,7 @@ import OrderDetailView from 'components/OrderDetailView/OrderDetailView';
 import PrintIcon from 'components/SvgIcon/PrintIcon';
 import SendIcon from 'components/SvgIcon/SendIcon';
 import LayoutDetail from 'layout/LayoutDetail';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { PackageSale } from 'models/PackageSales';
 import { useGetPackageSale, useSendEmailPackageSale } from 'services/PackageSales/packageSales';
@@ -26,6 +26,7 @@ export default function OrderDetailConfirm() {
   const params = useParams();
   const [openModalPrint, setOpenModalPrint] = useState(false);
   const { run: getPackageSaleDetail, data: dataDetails } = useGetPackageSale();
+  const navigate = useNavigate();
 
   const { run, loading } = useSendEmailPackageSale({
     onSuccess: dataSendEmail => {
@@ -49,7 +50,7 @@ export default function OrderDetailConfirm() {
     run({ orderCode: dataDetails?.orderCode ?? '' });
   };
   return (
-    <LayoutDetail title={t('create_package_orders')} subTitle={t('package_sales')}>
+    <LayoutDetail title={t('create_package_orders')} subTitle={t('package_sales')} onBack={() => navigate('/admin/package-sales')}>
       <Box width="100%" display="flex" justifyContent="center">
         <Box padding="24px" borderRadius={4} bgcolor="white" width={{ xs: '100%', md: '90%' }}>
           <Grid container spacing={2}>
