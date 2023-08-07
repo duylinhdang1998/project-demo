@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { selectAuth } from 'store/auth/selectors';
 import { PackageSale } from 'models/PackageSales';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import dayjs from 'dayjs';
 
 interface StateLocation {
   merchandise: {
@@ -76,10 +77,10 @@ export default function ClientInfo() {
       getNotifcation({
         code: dataCode.code,
         success: t('add_package_sale_success'),
-        error: t('add_package_sale_error'),
+        error: t('add_package_sale_failed'),
         onSuccess: () => {
           reset();
-          navigate(`${authentication.userInfo?.role === 'admin' ? '/admin' : 'agent'}/package-sales/${dataCode.data.orderCode}`, {
+          navigate(`${authentication.userInfo?.role === 'admin' ? '/admin' : '/agent'}/package-sales/${dataCode.data.orderCode}`, {
             state: {
               packageSale: dataCode.data,
             },
@@ -169,7 +170,14 @@ export default function ClientInfo() {
               {t('ticketSales:your_reservation')}
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
-            <ReserveInfo onBook={handleSubmit(onSubmit)} routeDetail={dataDetail?.data} control={control} errors={errors} loading={loading} />
+            <ReserveInfo
+              onBook={handleSubmit(onSubmit)}
+              routeDetail={dataDetail?.data}
+              departureTime={dayjs(selectedRoute.bookDate).format('DD/MM/YYYY HH:mm')}
+              control={control}
+              errors={errors}
+              loading={loading}
+            />
           </Box>
         </Grid>
       </Grid>

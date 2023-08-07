@@ -78,7 +78,7 @@ const AgentRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'package-sales/order-detail-confirm',
+    path: 'package-sales/:orderCode',
     element: (
       <RequiredAuth role="agent">
         <Page.Agent.OrderDetailConfirm />

@@ -94,98 +94,99 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
       vehicle: formValues.vehicle,
     };
     console.log({ formValues, data });
-    if (isEditAction && route) {
-      dispatch(
-        routesActions.updateTripRequest({
-          data: {
-            ...data,
-            stopPoints: [
-              {
-                routePointId: formValues.routePointId as string,
-                durationTime: timeStringToMinutes(formValues.arrivalDuration.format('HH:mm')),
-                stopPoint: formValues.arrivalPoint.title as string,
-                pointCode: formValues.arrivalPoint._id as string,
-                ECOPrices: [
-                  { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
-                  { passengerType: 'CHILD', price: Number(formValues.ecoChildren) },
-                  { passengerType: 'STUDENT', price: Number(formValues.ecoStudent) },
-                ],
-                VIPPrices: [
-                  { passengerType: 'ADULT', price: Number(formValues.vipAdult) },
-                  { passengerType: 'CHILD', price: Number(formValues.vipChildren) },
-                  { passengerType: 'STUDENT', price: Number(formValues.vipStudent) },
-                ],
-              },
-            ],
-          },
-          routeCode: route.routeCode,
-          onSuccess() {
-            toast(
-              <ToastCustom
-                type="success"
-                text={t('translation:edit_type_success', {
-                  type: t('routers:trip').toLowerCase(),
-                })}
-              />,
-              { className: 'toast-success' },
-            );
-            nextStep();
-          },
-          onFailure: message => {
-            toast(
-              <ToastCustom
-                type="error"
-                text={t('translation:edit_type_error', {
-                  type: t('routers:trip').toLowerCase(),
-                })}
-                description={message}
-              />,
-              { className: 'toast-error' },
-            );
-          },
-          isHasDeleteStopPointAction: false,
-          isHasNewStopPointAction: false,
-        }),
-      );
-    } else {
-      dispatch(
-        routesActions.createOneStopTripRequest({
-          data: {
-            ...data,
-            stopPoints: [
-              {
-                durationTime: timeStringToMinutes(formValues.arrivalDuration.format('HH:mm')),
-                stopPoint: formValues.arrivalPoint.title as string,
-                pointCode: formValues.arrivalPoint._id as string,
-                ECOPrices: [
-                  { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
-                  { passengerType: 'CHILD', price: Number(formValues.ecoChildren) },
-                  { passengerType: 'STUDENT', price: Number(formValues.ecoStudent) },
-                ],
-                VIPPrices: [
-                  { passengerType: 'ADULT', price: Number(formValues.vipAdult) },
-                  { passengerType: 'CHILD', price: Number(formValues.vipChildren) },
-                  { passengerType: 'STUDENT', price: Number(formValues.vipStudent) },
-                ],
-              },
-            ],
-          } as CreateOneStopTrip,
-          onSuccess() {
-            nextStep();
-          },
-          onFailure: message => {
-            toast(
-              <ToastCustom
-                type="error"
-                text={t('translation:add_type_error', { type: t('routers:new_trip').toLowerCase() })}
-                description={message}
-              />,
-              { className: 'toast-error' },
-            );
-          },
-        }),
-      );
-    }
+    return;
+    // if (isEditAction && route) {
+    //   dispatch(
+    //     routesActions.updateTripRequest({
+    //       data: {
+    //         ...data,
+    //         stopPoints: [
+    //           {
+    //             routePointId: formValues.routePointId as string,
+    //             durationTime: timeStringToMinutes(formValues.arrivalDuration.format('HH:mm')),
+    //             stopPoint: formValues.arrivalPoint.title as string,
+    //             pointCode: formValues.arrivalPoint._id as string,
+    //             ECOPrices: [
+    //               { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
+    //               { passengerType: 'CHILD', price: Number(formValues.ecoChildren) },
+    //               { passengerType: 'STUDENT', price: Number(formValues.ecoStudent) },
+    //             ],
+    //             VIPPrices: [
+    //               { passengerType: 'ADULT', price: Number(formValues.vipAdult) },
+    //               { passengerType: 'CHILD', price: Number(formValues.vipChildren) },
+    //               { passengerType: 'STUDENT', price: Number(formValues.vipStudent) },
+    //             ],
+    //           },
+    //         ],
+    //       },
+    //       routeCode: route.routeCode,
+    //       onSuccess() {
+    //         toast(
+    //           <ToastCustom
+    //             type="success"
+    //             text={t('translation:edit_type_success', {
+    //               type: t('routers:trip').toLowerCase(),
+    //             })}
+    //           />,
+    //           { className: 'toast-success' },
+    //         );
+    //         nextStep();
+    //       },
+    //       onFailure: message => {
+    //         toast(
+    //           <ToastCustom
+    //             type="error"
+    //             text={t('translation:edit_type_error', {
+    //               type: t('routers:trip').toLowerCase(),
+    //             })}
+    //             description={message}
+    //           />,
+    //           { className: 'toast-error' },
+    //         );
+    //       },
+    //       isHasDeleteStopPointAction: false,
+    //       isHasNewStopPointAction: false,
+    //     }),
+    //   );
+    // } else {
+    //   dispatch(
+    //     routesActions.createOneStopTripRequest({
+    //       data: {
+    //         ...data,
+    //         stopPoints: [
+    //           {
+    //             durationTime: timeStringToMinutes(formValues.arrivalDuration.format('HH:mm')),
+    //             stopPoint: formValues.arrivalPoint.title as string,
+    //             pointCode: formValues.arrivalPoint._id as string,
+    //             ECOPrices: [
+    //               { passengerType: 'ADULT', price: Number(formValues.ecoAdult) },
+    //               { passengerType: 'CHILD', price: Number(formValues.ecoChildren) },
+    //               { passengerType: 'STUDENT', price: Number(formValues.ecoStudent) },
+    //             ],
+    //             VIPPrices: [
+    //               { passengerType: 'ADULT', price: Number(formValues.vipAdult) },
+    //               { passengerType: 'CHILD', price: Number(formValues.vipChildren) },
+    //               { passengerType: 'STUDENT', price: Number(formValues.vipStudent) },
+    //             ],
+    //           },
+    //         ],
+    //       } as CreateOneStopTrip,
+    //       onSuccess() {
+    //         nextStep();
+    //       },
+    //       onFailure: message => {
+    //         toast(
+    //           <ToastCustom
+    //             type="error"
+    //             text={t('translation:add_type_error', { type: t('routers:new_trip').toLowerCase() })}
+    //             description={message}
+    //           />,
+    //           { className: 'toast-error' },
+    //         );
+    //       },
+    //     }),
+    //   );
+    // }
   };
 
   const handleSubmitStep1ForMultipleStopTrip = (formValues: StepOneValuesForMultipleStopTrip) => {

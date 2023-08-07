@@ -15,7 +15,7 @@ import { SelectRole } from 'components/SelectDecouplingData/SelectRole';
 import { SelectVehicle } from 'components/SelectDecouplingData/SelectVehicle';
 import { UploadImageResource } from 'components/UploadImageResource/UploadImageResource';
 import { UploadPDFResource } from 'components/UploadImageResource/UploadPDFResource';
-import { Dayjs, isDayjs } from 'dayjs';
+import dayjs, { Dayjs, isDayjs } from 'dayjs';
 import { Field, SelectField } from 'models/Field';
 import { equals } from 'ramda';
 import { Controller, FieldErrors, FieldValues, Path, UseControllerProps } from 'react-hook-form';
@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
 import { disabledDate } from 'utils/disableDate';
 import { useStyles } from './styles';
+import { timeStringToMinutes } from 'utils/timeStringNMinutes';
 
 export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
   fields?: Field[];
@@ -351,7 +352,7 @@ export default function FormVerticle<T extends FieldValues>({
       case 'datetime':
         return (
           <Controller
-            control={control}
+            control={control as any}
             name={i.label as Path<T>}
             render={({ field }) => {
               const value = field.value;
@@ -375,7 +376,7 @@ export default function FormVerticle<T extends FieldValues>({
                   />
                   {!!error && (
                     <Typography component="p" className={classes.error} fontSize={12}>
-                      {messageErr}
+                      {error.type === 'greaterThan0' ? error.message : messageErr}
                     </Typography>
                   )}
                 </Box>
@@ -386,6 +387,13 @@ export default function FormVerticle<T extends FieldValues>({
                 value: i.required ?? false,
                 message: t('error_required', { name: i.label }),
               },
+              ...(i.id === 'arrivalDuration'
+                ? {
+                    validate: {
+                      greaterThan0: value => timeStringToMinutes(dayjs(value).format('HH:mm')) > 0 || t('duration_time_invalid'),
+                    },
+                  }
+                : {}),
             }}
           />
         );
@@ -560,6 +568,7 @@ export default function FormVerticle<T extends FieldValues>({
             onChange={i.onChange}
             label={i.label}
             filterKey={filterKey}
+            id={i.id ?? ''}
           />
         );
       default:
