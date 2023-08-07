@@ -74,7 +74,7 @@ export default function Routers() {
             value: values.departurePoints?.value._id,
             operator: 'eq',
           },
-          'routePoints.stopPointCode': {
+          stopPointCode: {
             value: values.arrivalPoints?.value._id,
             operator: 'eq',
           },
