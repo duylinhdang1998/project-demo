@@ -1,7 +1,7 @@
 import { Box, InputLabel, Typography } from '@mui/material';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
-import { Control, Controller, FieldErrors, Path } from 'react-hook-form';
+import { Control, Controller, FieldErrors, Path, useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { getListDestinations } from 'services/Destinations/getListDestinations';
 import { Destination } from 'services/models/Destination';
@@ -23,6 +23,7 @@ export interface SelectDestinationProps {
   label: string;
   destination: Result;
   onChange: (destination?: Result) => void;
+  id: string;
 }
 
 export const SelectDestination = ({
@@ -35,9 +36,14 @@ export const SelectDestination = ({
   onChange,
   label,
   filterKey,
+  id,
 }: SelectDestinationProps) => {
   const { t } = useTranslation(['translation', filterKey]);
   const classes = useStyles();
+  const departurePoint = useWatch({
+    control,
+    name: 'departurePoint',
+  });
 
   const error = errors && errors[label];
   const messageErr = messages && messages[label];
@@ -53,6 +59,13 @@ export const SelectDestination = ({
           value: isRequired,
           message: t('error_required', { name: labelTranslated }),
         },
+        ...(id === 'arrivalPoint'
+          ? {
+              validate: {
+                notEqual: value => value._id !== departurePoint._id || t('routers:invalid_destination'),
+              },
+            }
+          : {}),
       }}
       render={() => {
         return (
@@ -99,7 +112,7 @@ export const SelectDestination = ({
             />
             {!!error && (
               <Typography component="p" className={classes.error} fontSize={12}>
-                {messageErr}
+                {error.type === 'notEqual' ? error.message : messageErr}
               </Typography>
             )}
           </Box>

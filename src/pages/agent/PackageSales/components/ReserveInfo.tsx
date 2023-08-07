@@ -1,18 +1,15 @@
 import { Box, Checkbox, FormControlLabel, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
 import { MapPinIcon, VehiclesBusIcon } from 'assets';
 import ClockSvg from 'assets/images/clock.svg';
 import Button from 'components/Button/Button';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
-import { get } from 'lodash-es';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import { getUrlImage, getUrlOfResource } from 'utils/getUrlOfResource';
 import { Title } from 'pages/agent/TicketSales/OrderDetailOnCreateOrder/components/Reservation/components/TripInfomation';
 import { Control, Controller, FieldErrors, useWatch } from 'react-hook-form';
-import dayjs from 'dayjs';
 import { FieldValues } from '../ClientInfo';
 import { isEmpty } from 'ramda';
 import { useUpdateEffect } from 'ahooks';
@@ -24,11 +21,11 @@ interface Props {
   control: Control<FieldValues>;
   errors: FieldErrors<FieldValues>;
   isEdit?: boolean;
+  departureTime?: string;
 }
 
-const ReserveInfo = ({ onBook, loading, routeDetail, control, errors, isEdit }: Props) => {
+const ReserveInfo = ({ onBook, loading, routeDetail, control, errors, isEdit, departureTime }: Props) => {
   const { t } = useTranslation(['ticketSales', 'translation']);
-  const location = useLocation();
   const [open, setOpen] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const merchandisesValue = useWatch({
@@ -136,7 +133,7 @@ const ReserveInfo = ({ onBook, loading, routeDetail, control, errors, isEdit }: 
       <Typography variant="body2" component="p" marginBottom="16px" fontWeight={700}>
         {t('date')}
       </Typography>
-      <TextWithIcon icon={ClockSvg} color="#45485E" text={dayjs(get(location, 'state.departureTime', undefined)).format('DD/MM/YYYY HH:mm')} />
+      <TextWithIcon icon={ClockSvg} color="#45485E" text={departureTime} />
       <Typography variant="body2" component="p" margin="16px 0" fontWeight={700}>
         {t('trip')}
       </Typography>

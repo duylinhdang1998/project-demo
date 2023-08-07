@@ -19,6 +19,8 @@ import dayjs from 'dayjs';
 import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
 import Tag from 'components/Tag/Tag';
 import { get } from 'lodash-es';
+import { useSelector } from 'react-redux';
+import { selectAuth } from 'store/auth/selectors';
 
 export default function OrderDetailConfirm() {
   const { t } = useTranslation(['packageSales', 'translation', 'ticketSales']);
@@ -27,6 +29,8 @@ export default function OrderDetailConfirm() {
   const [openModalPrint, setOpenModalPrint] = useState(false);
   const { run: getPackageSaleDetail, data: dataDetails } = useGetPackageSale();
   const navigate = useNavigate();
+
+  const authentication = useSelector(selectAuth);
 
   const { run, loading } = useSendEmailPackageSale({
     onSuccess: dataSendEmail => {
@@ -50,7 +54,11 @@ export default function OrderDetailConfirm() {
     run({ orderCode: dataDetails?.orderCode ?? '' });
   };
   return (
-    <LayoutDetail title={t('create_package_orders')} subTitle={t('package_sales')} onBack={() => navigate('/admin/package-sales')}>
+    <LayoutDetail
+      title={t('create_package_orders')}
+      subTitle={t('package_sales')}
+      onBack={() => navigate(`/${authentication.userInfo?.role}/package-sales`)}
+    >
       <Box width="100%" display="flex" justifyContent="center">
         <Box padding="24px" borderRadius={4} bgcolor="white" width={{ xs: '100%', md: '90%' }}>
           <Grid container spacing={2}>
