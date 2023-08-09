@@ -20,12 +20,14 @@ export default function LayoutDetail({ children, title, subTitle, variant = 'wit
       <Box>
         <HeaderLayout subTitleHeader={subTitle} activeSideBarHeader={title} />
         <Box padding="24px">
-          <Stack direction="row" justifyContent="space-between">
+          <Stack direction="row" justifyContent="space-between" gap="8px" alignItems="center">
             <BackButton onBack={onBack} />
             {addNewItemButtonProps && <AddNewItemButton {...addNewItemButtonProps} />}
           </Stack>
           <Stack direction={{ mobile: 'column', laptop: 'row' }} spacing={{ xs: '30px', lg: '60px' }}>
-            <Box flex="1">{children}</Box>
+            <Box flex="1" width="100%">
+              {children}
+            </Box>
           </Stack>
         </Box>
       </Box>

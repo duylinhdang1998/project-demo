@@ -1,6 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
-import { ReactNode } from 'react';
 import Button from 'components/Button/Button';
+import { ReactNode } from 'react';
 import { useStyles } from './styles';
 
 export interface AddNewItemButtonProps {

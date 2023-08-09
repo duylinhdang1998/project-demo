@@ -4,6 +4,5 @@ export const useStyles = makeStyles(() => ({
   btnAdd: {
     height: '40px !important',
     padding: '10px 30px !important',
-    marginTop: '16px !important',
   },
 }));
