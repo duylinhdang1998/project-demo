@@ -5,7 +5,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { validateDomain } from 'services/System/validateDomain';
 
 export const DomainValidatorLayout = () => {
-  const { loading, error, data } = useRequest(validateDomain);
+  const { loading, data } = useRequest(validateDomain);
 
   const location = useLocation();
 
@@ -15,10 +15,6 @@ export const DomainValidatorLayout = () => {
         <LoadingScreen />
       </Box>
     );
-  }
-
-  if (!loading && !!error && location.pathname !== '/domain-not-found') {
-    return <Navigate to="/domain-not-found" />;
   }
 
   if (!loading && !!data && location.pathname === '/domain-not-found') {
