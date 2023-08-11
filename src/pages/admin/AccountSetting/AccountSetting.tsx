@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import { omit } from 'lodash-es';
 import { selectProfile } from 'store/profile/selectors';
 import { profileActions } from 'store/profile/profileSlice';
+import { selectAuth } from 'store/auth/selectors';
 
 type Values = Pick<
   Profile,
@@ -42,6 +43,9 @@ export default function AccountSetting() {
   const { t } = useTranslation(['account', 'translation']);
 
   const { profile, statusGetProfile, statusUpdateProfile } = useAppSelector(selectProfile);
+  const { userInfo } = useAppSelector(selectAuth);
+  console.log({ userInfo });
+
   const dispatch = useAppDispatch();
 
   const messages = useMemo(() => {

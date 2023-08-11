@@ -167,6 +167,11 @@ export default function PaymentMethod() {
                           >
                             {item.paymentGateWay === 'PAYPAL' ? t('login_paypal') : t('login_stripe')}
                           </PaypalButton>
+                          {!item.registered && (
+                            <Typography color="#B58205" mt="4px" fontSize={12}>
+                              {t('not_registered_payment')}
+                            </Typography>
+                          )}
                         </>
                       )}
                     </Box>

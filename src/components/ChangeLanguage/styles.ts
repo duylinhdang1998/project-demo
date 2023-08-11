@@ -23,11 +23,13 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   menuList: {
     boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.15)',
-    padding: '0px 24px !important',
+    padding: '0px !important',
     borderRadius: '8px',
+    display: 'flex',
+    flexDirection: 'column',
   },
   menuItem: {
-    padding: '16px 0 !important',
+    padding: '16px 24px !important',
   },
   hidden: {
     [theme.breakpoints.up('tablet')]: {

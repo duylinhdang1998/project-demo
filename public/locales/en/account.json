@@ -9,6 +9,7 @@
   "logout": "Log out",
   "my_company": "My company",
   "name": "Company name",
+  "agent_name": "Agent name",
   "address": "Address",
   "postalAddress": "Address",
   "zipCode": "Zip code",
@@ -82,5 +83,6 @@
   "subtext_2": "You'll be prompted for your {{method}} account email and password through a secure {{method}} login form.",
   "login_stripe": "Connect with Stripe",
   "change_pasword_action": "change password action",
-  "offline_agent": "Agent (Offline)"
+  "offline_agent": "Agent (Offline)",
+  "not_registered_payment": "The payment gateway has not been connected successfully, please connect to complete the payment method."
 }

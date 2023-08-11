@@ -75,6 +75,7 @@ function ChangeLanguage() {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
+          fullWidth
         >
           <img src={getFlag()} alt="flag" className={classes.imgFlag} />
           <span className={cx(classes.lngText, classes.hiddenText)}>{getLangText()}</span>
