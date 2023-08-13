@@ -58,7 +58,7 @@ function TableVehicles() {
   const columns: ColumnsType<Vehicle> = useMemo(() => {
     return [
       {
-        key: 'brand', // Cột này sort theo key "brand"
+        key: 'brand',
         dataIndex: 'brand',
         title: () => t('vehicles:vehicle'),
         align: 'center',

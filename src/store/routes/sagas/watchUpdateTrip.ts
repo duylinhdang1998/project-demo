@@ -6,7 +6,6 @@ import { routesActions } from '../routesSlice';
 import { updateGeneralInfomationTripWhenHasRoutePointDeleted } from 'services/Route/Company/updateGeneralInfomationTripWhenHasRoutePointDeleted';
 
 function* handleUpdateTrip({ payload }: ReturnType<typeof routesActions.updateTripRequest>) {
-  // FIXME: BE chưa cung cấp đủ api -> Chưa làm trường hợp xóa route point và edit route point
   const { data, isHasDeleteStopPointAction, isHasNewStopPointAction, routeCode, onFailure, onSuccess } = payload;
   try {
     if (isHasDeleteStopPointAction || isHasNewStopPointAction) {
