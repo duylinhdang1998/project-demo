@@ -2,5 +2,7 @@
   "title": "Title",
   "description": "Descriptions",
   "package_settings": "Package settings",
-  "package_settings_lowercase": "package settings"
+  "package_settings_lowercase": "package settings",
+  "cancel_form": "Are you sure, you want to leave this page without completing your action?",
+  "create_package_settings": "Create new package settings"
 }

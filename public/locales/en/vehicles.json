@@ -24,5 +24,7 @@
   "add_event_for": "Add event for vehicle",
   "event": "Event",
   "order": "STT",
-  "delete_vehicle_message": "Vehicles will automatically be removed from previously assigned Routes"
+  "delete_vehicle_message": "Vehicles will automatically be removed from previously assigned Routes",
+  "cancel_form": "Cancel vehicle",
+  "create_vehicle": "Add new vehicle"
 }

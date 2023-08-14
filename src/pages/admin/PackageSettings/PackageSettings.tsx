@@ -49,7 +49,7 @@ export default function PackageSettings() {
             );
           }}
           onAdd={handleAdd}
-          addTextButton={t('translation:create_new', { type: t('packageSettings:package_settings').toLowerCase() })}
+          addTextButton={t('packageSettings:create_package_settings')}
         />
         <TablePackageSettings />
       </Box>

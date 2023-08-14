@@ -14,6 +14,7 @@
   "delete": "Delete",
   "copy": "Copy",
   "error_required": "Please enter your {{name}}",
+  "error_required2": "Please enter your {{name}}",
   "error_email": "Email is not valid",
   "error_password": "Confirm password do not match password",
   "action": "Action",

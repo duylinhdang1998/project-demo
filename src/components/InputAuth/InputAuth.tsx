@@ -63,7 +63,7 @@ function InputAuth<T extends FieldValues>({
           ? {
               pattern: {
                 value: /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                message: t('error_email'),
+                message: t('translation:error_email'),
               },
             }
           : {}),

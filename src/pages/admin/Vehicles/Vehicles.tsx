@@ -97,7 +97,7 @@ export default function Vehicles() {
               </Button>
               {!isAgent && (
                 <Button backgroundButton="#33CC7F" startIcon={<AddIcon />} className={classes.btnAdd} onClick={handleAdd}>
-                  {t('translation:add_new', { type: t('vehicles:vehicle').toLowerCase() })}
+                  {t('vehicles:create_vehicle')}
                 </Button>
               )}
             </Stack>

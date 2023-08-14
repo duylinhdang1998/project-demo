@@ -24,6 +24,7 @@ import Select, { Props as SelectProps } from 'react-select';
 import { disabledDate } from 'utils/disableDate';
 import { useStyles } from './styles';
 import { timeStringToMinutes } from 'utils/timeStringNMinutes';
+import { isEmail } from 'regexes/isEmail';
 
 export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
   fields?: Field[];
@@ -100,8 +101,8 @@ export default function FormVerticle<T extends FieldValues>({
               ...(i.type === 'email'
                 ? {
                     pattern: {
-                      value: /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                      message: t('error_email'),
+                      value: isEmail,
+                      message: t('translation:error_email'),
                     },
                   }
                 : {}),

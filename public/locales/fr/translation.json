@@ -13,6 +13,7 @@
   "delete": "Supprimer",
   "copy": "Copier",
   "error_required": "Veuillez saisir votre {{name}}",
+  "error_required2": "Veuillez {{name}}",
   "error_email": "L'email n'est pas valide",
   "error_password": "La confirmation du mot de passe ne correspond pas au mot de passe",
   "action": "Action",

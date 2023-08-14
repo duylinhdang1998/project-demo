@@ -187,7 +187,7 @@ export default function AddPackageSettings() {
         </Box>
         <DialogConfirm
           openDialog={openDialog}
-          title={t('translation:cancel_type', { type: t('packageSettings:package_settings').toLowerCase() })}
+          title={t('packageSettings:cancel_form')}
           subTitle={t('translation:leave_page')}
           onClose={handleClose}
         />

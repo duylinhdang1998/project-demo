@@ -1,6 +1,8 @@
 {
-"title": "Titre",
-"description": "Description",
-"package_settings": "Paramètres des colis",
-"package_settings_lowercase": "paramètres des colis"
+  "title": "Titre",
+  "description": "Description",
+  "package_settings": "Paramètres des colis",
+  "package_settings_lowercase": "paramètres des colis",
+  "cancel_form": "Créer un(e) nouveau/nouvelle paramètres des colis",
+  "create_package_settings": "Créer un type de colis"
 }

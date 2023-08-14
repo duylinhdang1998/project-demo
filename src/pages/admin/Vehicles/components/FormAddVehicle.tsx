@@ -54,6 +54,8 @@ function FormAddVehicle() {
   const services = watch('services');
   const merchandises = watch('merchandises');
 
+  console.log(333, errors);
+
   const { t } = useTranslation(['vehicles', 'translation']);
 
   const navigate = useNavigate();
@@ -69,6 +71,12 @@ function FormAddVehicle() {
 
   const messages = useMemo(() => {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
+      if (key === 'attach') {
+        return {
+          ...res,
+          [key]: t('translation:error_required2', { name: t(`vehicles:${key}`).toLowerCase() }),
+        };
+      }
       return {
         ...res,
         [key]: t('translation:error_required', { name: t(`vehicles:${key}`).toLowerCase() }),
@@ -243,12 +251,7 @@ function FormAddVehicle() {
           {t('translation:save')}
         </Button>
       </Stack>
-      <DialogConfirm
-        openDialog={open}
-        title={t('translation:cancel_type', { type: t('vehicles:vehicle').toLowerCase() })}
-        subTitle={t('translation:leave_page')}
-        onClose={handleClose}
-      />
+      <DialogConfirm openDialog={open} title={t('vehicles:cancel_form')} subTitle={t('translation:leave_page')} onClose={handleClose} />
     </Box>
   );
 }

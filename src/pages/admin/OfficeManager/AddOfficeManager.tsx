@@ -41,12 +41,18 @@ export default function AddOfficeManager() {
 
   const messages = useMemo(() => {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {
+      if (key === 'email') {
+        return {
+          ...res,
+          [key]: errors.email?.message ?? t('translation:error_required', { name: t(`account:${key}`).toLowerCase() }),
+        };
+      }
       return {
         ...res,
         [key]: t('translation:error_required', { name: t(`account:${key}`).toLowerCase() }),
       };
     }, {});
-  }, [t]);
+  }, [errors.email, t]);
 
   const isEditAction = useMemo(() => {
     return !!officeId;
