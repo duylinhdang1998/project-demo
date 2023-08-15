@@ -17,6 +17,7 @@ export interface ForSidebarNFooterFieldProps {
 export const ForSidebarNFooterField = ({ valueOfForm, onChange, variant }: ForSidebarNFooterFieldProps) => {
   return (
     <Box
+      my="20px"
       sx={{
         '.tox-toolbar__primary': {
           justifyContent: 'space-between',

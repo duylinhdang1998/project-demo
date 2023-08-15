@@ -98,6 +98,9 @@ function ContentManager() {
             <Typography fontWeight={700} color="#0C1132">
               {t('account:content')}
             </Typography>
+            <Typography fontSize={13} color="#475461">
+              {t('account:content_description')}
+            </Typography>
             <Box my="20px">
               <ForContentField
                 contentValueOfForm={contentValueOfForm}
@@ -109,8 +112,11 @@ function ContentManager() {
             </Box>
             <Divider sx={{ borderStyle: 'dashed' }} />
             <Box my="20px">
-              <Typography fontWeight={700} color="#0C1132" my="10px">
+              <Typography fontWeight={700} color="#0C1132">
                 {t('translation:sideBar')}
+              </Typography>
+              <Typography fontSize={13} color="#475461">
+                {t('translation:sidebar_description')}
               </Typography>
               <ForSidebarNFooterField
                 valueOfForm={sidebarValueOfForm ?? ''}
@@ -123,8 +129,11 @@ function ContentManager() {
             </Box>
             <Divider sx={{ borderStyle: 'dashed' }} />
             <Box my="20px">
-              <Typography fontWeight={700} color="#0C1132" my="10px">
+              <Typography fontWeight={700} color="#0C1132">
                 {t('translation:footer')}
+              </Typography>
+              <Typography fontSize={13} color="#475461">
+                {t('translation:footer_description')}
               </Typography>
               <ForSidebarNFooterField
                 valueOfForm={footerTextValueOfForm}
