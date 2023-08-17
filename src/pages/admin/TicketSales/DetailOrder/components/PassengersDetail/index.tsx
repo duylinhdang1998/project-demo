@@ -49,7 +49,7 @@ export const PassengersDetail = ({ record }: PassengersDetailProps) => {
                   {passenger.firstName}
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
-                  {passenger.typeTicket}
+                  {t(`translation:${passenger.typeTicket}`)}
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
                   {passenger.price}
