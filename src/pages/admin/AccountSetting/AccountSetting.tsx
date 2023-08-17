@@ -168,7 +168,7 @@ export default function AccountSetting() {
                   errors={errors}
                   messages={messages}
                   control={control}
-                  fields={[{ id: 'transportLicense', label: 'transportLicense', type: 'text', required: true }]}
+                  fields={[{ id: 'transportLicense', label: 'transportLicense', type: 'text', required: false }]}
                   filterKey="account"
                 />
               </Grid>

@@ -128,6 +128,27 @@ export default function TableDestinations({ dataSource = [], isLoading, paginati
       align: 'left',
     },
     {
+      key: 'zipCode',
+      dataIndex: 'zipCode',
+      title: () => t('zipCode'),
+      render: (value: string) => <Typography variant="body2">{value}</Typography>,
+      align: 'left',
+    },
+    {
+      key: 'city',
+      dataIndex: 'city',
+      title: () => t('city'),
+      render: (value: string) => <Typography variant="body2">{value}</Typography>,
+      align: 'left',
+    },
+    {
+      key: 'country',
+      dataIndex: 'country',
+      title: () => t('country'),
+      render: (value: string) => <Typography variant="body2">{value}</Typography>,
+      align: 'left',
+    },
+    {
       key: 'action',
       title: () => t('translation:action'),
       render: (_, row) => <ActionTable actions={actions} row={row} />,

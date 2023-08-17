@@ -57,11 +57,11 @@ function DialogConfirm({ openDialog, okButtonText, cancelButtonText, title, subT
   };
 
   const handleYes = () => {
+    handleClose();
     if (typeof onOk === 'function') {
       onOk?.();
     } else {
       navigate(-1);
-      handleClose();
     }
   };
 

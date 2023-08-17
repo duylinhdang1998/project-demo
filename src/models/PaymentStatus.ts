@@ -6,10 +6,10 @@ export enum EPaymentStatus {
 }
 
 export const PaymentStatusLabelMapping: Record<EPaymentStatus, string> = {
-  APPROVED: 'Paid',
-  CREATED: 'Not Paid',
-  PENDING: 'Not Paid',
-  VOIDED: 'Not Paid',
+  APPROVED: 'paid',
+  CREATED: 'not_paid',
+  PENDING: 'not_paid',
+  VOIDED: 'not_paid',
 };
 
 export const PaymentStatusColorMapping: Record<EPaymentStatus, string> = {

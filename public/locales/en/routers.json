@@ -57,5 +57,13 @@
   "routes": "Routes",
   "reactive_title": "Are you sure to want to reactive",
   "duration_time_invalid": "Duration time is invalid",
-  "invalid_destination": "Invalid destination"
+  "invalid_destination": "Invalid destination",
+  "all_days": "All days",
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "sunday": "Sunday"
 }

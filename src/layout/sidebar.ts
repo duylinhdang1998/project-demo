@@ -1,6 +1,7 @@
 import {
   DashboardIcon,
   DestinationIcon,
+  DocumentationIcon,
   PackageSaleIcon,
   PackageSettingIcon,
   PassengerIcon,
@@ -25,6 +26,7 @@ export const sidebars: RouteSideBar[] = [
   { path: '/admin/passengers', icon: PassengerIcon, name: 'passengers', isAgent: true, isRouteStrict: false },
   { path: '/admin/destinations', icon: DestinationIcon, name: 'destinations', isRouteStrict: false },
   { path: '/admin/reportings', icon: ReportingIcon, name: 'reporting', isRouteStrict: false },
+  { path: 'https://www.travelnet.fr/tbus/documentation', icon: DocumentationIcon, name: 'documentation', isRouteStrict: false },
 ];
 
 export const sidebarsAgent: RouteSideBar[] = [
@@ -34,4 +36,5 @@ export const sidebarsAgent: RouteSideBar[] = [
   { path: '/agent/routers', icon: RouterIcon, name: 'routers', isAgent: true, isRouteStrict: false },
   { path: '/agent/vehicles', icon: VehicleIcon, name: 'vehicles', isAgent: true, isRouteStrict: false },
   { path: '/agent/passengers', icon: PassengerIcon, name: 'passengers', isAgent: true, isRouteStrict: false },
+  { path: 'https://www.travelnet.fr/tbus/documentation', icon: DocumentationIcon, name: 'documentation', isRouteStrict: false },
 ];

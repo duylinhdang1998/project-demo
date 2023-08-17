@@ -1,6 +1,7 @@
 import { Grid } from '@mui/material';
 import { Checkbox } from 'antd';
 import { Control, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 export interface SelectDaysOfWeekProps {
   control: Control<any>;
@@ -11,17 +12,18 @@ export interface SelectDaysOfWeekProps {
 export const ALL_DAYS_OPTION_VALUE = 'all_days';
 
 export const options = [
-  { label: 'All days', value: ALL_DAYS_OPTION_VALUE },
-  { label: 'Monday', value: 'Monday' },
-  { label: 'Tuesday', value: 'Tuesday' },
-  { label: 'Wednesday', value: 'Wednesday' },
-  { label: 'Thursday', value: 'Thursday' },
-  { label: 'Friday', value: 'Friday' },
-  { label: 'Saturday', value: 'Saturday' },
-  { label: 'Sunday', value: 'Sunday' },
+  { label: 'all_days', value: ALL_DAYS_OPTION_VALUE },
+  { label: 'monday', value: 'Monday' },
+  { label: 'tuesday', value: 'Tuesday' },
+  { label: 'wednesday', value: 'Wednesday' },
+  { label: 'thursday', value: 'Thursday' },
+  { label: 'friday', value: 'Friday' },
+  { label: 'saturday', value: 'Saturday' },
+  { label: 'sunday', value: 'Sunday' },
 ];
 
 export const SelectDaysOfWeek = ({ control, name, values, onChange }: SelectDaysOfWeekProps) => {
+  const { t } = useTranslation('routers');
   return (
     <Controller
       control={control}
@@ -61,7 +63,7 @@ export const SelectDaysOfWeek = ({ control, name, values, onChange }: SelectDays
           <Grid container spacing={2}>
             {options.map(i => (
               <Grid item xs={4} md={3} key={i.value}>
-                <Checkbox value={i.value}>{i.label}</Checkbox>
+                <Checkbox value={i.value}>{t(`${i.label}`)}</Checkbox>
               </Grid>
             ))}
           </Grid>

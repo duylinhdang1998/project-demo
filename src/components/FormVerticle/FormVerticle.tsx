@@ -368,6 +368,7 @@ export default function FormVerticle<T extends FieldValues>({
                     disabled={i.disabled}
                     picker={i.picker}
                     showTime={i.showTime}
+                    placeholder={t(`${i.label}`)}
                     value={valueInDayjs ? (field.value as any) : undefined}
                     onChange={field.onChange}
                     className={cx(classes.datePicker, !!error ? classes.inputError : '')}

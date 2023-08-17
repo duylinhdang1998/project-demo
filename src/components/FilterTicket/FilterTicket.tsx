@@ -10,7 +10,7 @@ import { get, isEqual } from 'lodash-es';
 import { Field } from 'models/Field';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import Select, { Props as SelectProps } from 'react-select';
+import Select, { Props as SelectProps, components } from 'react-select';
 import { getListDestinations } from 'services/Destinations/getListDestinations';
 import { getOffices } from 'services/OfficesManager/Company/getOffices';
 import { getPackageSettings } from 'services/PackageSetting/Company/getPackageSettings';
@@ -18,6 +18,10 @@ import { getVehicles } from 'services/Vehicle/Company/getVehicles';
 import { UserRole } from 'services/models/UserRole';
 import { customStyles } from './customStyles';
 import { disabledDate } from 'utils/disableDate';
+import 'dayjs/locale/fr';
+import 'dayjs/locale/en';
+import frLocale from 'antd/es/date-picker/locale/fr_FR';
+import enLocale from 'antd/es/date-picker/locale/en_US';
 
 export interface FilterTicketProps<T extends FieldValues> {
   fields?: Array<Field & { numberColumn?: number; disabledDate?: typeof disabledDate }>;
@@ -84,7 +88,7 @@ export default function FilterTicket<T extends FieldValues>({
   alignItems = 'flex-end',
 }: FilterTicketProps<T>) {
   const classes = useStyles();
-  const { t } = useTranslation([filterKey, 'translation']);
+  const { t, i18n } = useTranslation([filterKey, 'translation']);
 
   const renderErrors = (label: string) => {
     if (!errors?.[label]) {
@@ -135,6 +139,14 @@ export default function FilterTicket<T extends FieldValues>({
                   {...field}
                   options={i.options}
                   styles={customStyles}
+                  components={{
+                    Option: (props: any) => {
+                      return <components.Option {...props}>{t(`${props.label}`)}</components.Option>;
+                    },
+                    SingleValue: props => {
+                      return <components.SingleValue {...props}>{t(`${props.children}`)}</components.SingleValue>;
+                    },
+                  }}
                   placeholder={t(`${i.label}`)}
                   isClearable={i.isClearable}
                 />
@@ -161,7 +173,9 @@ export default function FilterTicket<T extends FieldValues>({
                 <DatePicker
                   showTime={i.showTime}
                   format={i.format}
+                  locale={i18n.language === 'fr' ? frLocale : enLocale}
                   picker={i.picker}
+                  placeholder={t(`${i.label}`)}
                   // @ts-ignore
                   disabledDate={i.disabledDate}
                   value={field.value as any}
@@ -459,6 +473,7 @@ export default function FilterTicket<T extends FieldValues>({
                   <DatePicker.RangePicker
                     allowClear
                     inputReadOnly
+                    locale={i18n.language === 'fr' ? frLocale : enLocale}
                     showTime={i.showTime}
                     format={i.format}
                     picker={i.picker}
