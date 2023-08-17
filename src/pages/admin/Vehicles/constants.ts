@@ -59,13 +59,13 @@ export const fieldsAddEvent: Field[] = [
     label: 'fuelFees',
     type: 'number',
     prefix: '$',
-    required: true,
+    required: false,
   },
   {
     id: uuidv4(),
     label: 'extraFees',
     type: 'number',
     prefix: '$',
-    required: true,
+    required: false,
   },
 ];
