@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { Passenger, TicketDetailFormValues } from '../../@types/FormValues';
 import { GeneralInfomationOfOrder } from '../../@types/GeneralInfomationOfOrder';
 import { getTotalPriceForTicketOfPassenger } from '../utils/getTotalPriceForTicketOfPassenger';
-import { AgreeTerms } from './components/AgreeTerms';
 import { TotalPrice } from './components/TotalPrice';
 import { TripInfomation, TripInfomationProps } from './components/TripInfomation';
 
@@ -20,7 +19,7 @@ export interface ReservationProps {
   isEditAction: boolean;
 }
 
-export const Reservation = ({ onSubmit, loading, control, errors, generalInfomationOfTicket, passengers, isEditAction }: ReservationProps) => {
+export const Reservation = ({ onSubmit, loading, generalInfomationOfTicket, passengers, isEditAction }: ReservationProps) => {
   const { t } = useTranslation(['ticketSales', 'translation']);
 
   const departureTrip: TripInfomationProps['data'] = useMemo(() => {
@@ -65,7 +64,7 @@ export const Reservation = ({ onSubmit, loading, control, errors, generalInfomat
       </Typography>
       <TripInfomation variant={returnTrip ? 'DEPARTURE_TRIP' : 'ONE_TRIP'} data={departureTrip} />
       {returnTrip && <TripInfomation variant={'RETURN_TRIP'} data={returnTrip} />}
-      {!isEditAction && <AgreeTerms label="accept_term" control={control} errors={errors} />}
+      {/* {!isEditAction && <AgreeTerms label="accept_term" control={control} errors={errors} />} */}
       <TotalPrice
         value={passengers.reduce<number>((result, passenger) => {
           return result + getTotalPriceForTicketOfPassenger({ passenger, generalInfomationOfTicket });
