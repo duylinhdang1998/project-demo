@@ -31,6 +31,10 @@ import { RoutePointValues, StepOneValuesForMultipleStopTrip } from '../..';
 import { useStyles } from './styles';
 import { Result } from 'components/SelectDecouplingData/SelectDestination';
 
+import { useGlobalContext } from 'context/GlobalContext';
+import frFR from 'antd/es/date-picker/locale/fr_FR';
+import enUS from 'antd/es/date-picker/locale/en_US';
+
 export interface StopPointsProps {
   control: Control<StepOneValuesForMultipleStopTrip>;
   errors: FieldErrors<StepOneValuesForMultipleStopTrip>;
@@ -56,6 +60,7 @@ const emptyRoutePoint: Omit<RoutePointValues, 'stop_point'> & { stop_point: Rout
 };
 
 export const StopPoints = ({ append, control, errors, remove, getValues, setValue, trigger, routePoints }: StopPointsProps) => {
+  const { language } = useGlobalContext();
   const { t } = useTranslation();
   const classes = useStyles();
   const formVerticleClasses = useFormVerticalStyles();
@@ -226,6 +231,8 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
                           </InputLabel>
                           <DatePicker
                             {...field}
+                            // @ts-ignore
+                            locale={language === 'en' ? enUS : frFR}
                             value={field.value as any}
                             onChange={field.onChange}
                             id={`duration-${f.id}`}

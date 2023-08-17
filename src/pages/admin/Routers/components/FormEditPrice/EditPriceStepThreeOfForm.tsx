@@ -15,6 +15,9 @@ import { disabledDate } from 'utils/disableDate';
 import { useStyles } from './useStyles';
 import { Result } from 'components/SelectDecouplingData/SelectDestination';
 
+import { useGlobalContext } from 'context/GlobalContext';
+import frFR from 'antd/es/date-picker/locale/fr_FR';
+import enUS from 'antd/es/date-picker/locale/en_US';
 interface Item {
   ecoAdult: number;
   vipAdult: number;
@@ -40,6 +43,7 @@ interface EditPriceStepThreeOfFromProps {
 }
 
 export const EditPriceStepThreeOfForm = ({ control, errors, priceOfRoutePoints, setValue, trigger }: EditPriceStepThreeOfFromProps) => {
+  const { language } = useGlobalContext();
   const { t } = useTranslation(['routers', 'translation']);
   const classes = useStyles();
   const formVerticleClasses = useFormVerticalStyles();
@@ -158,6 +162,8 @@ export const EditPriceStepThreeOfForm = ({ control, errors, priceOfRoutePoints, 
                     </InputLabel>
                     <DatePicker
                       {...field}
+                      // @ts-ignore
+                      locale={language === 'en' ? enUS : frFR}
                       value={field.value as any}
                       onChange={field.onChange}
                       id={`durationTime-${item.routePointId}`}

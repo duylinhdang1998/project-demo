@@ -25,6 +25,9 @@ import { disabledDate } from 'utils/disableDate';
 import { useStyles } from './styles';
 import { timeStringToMinutes } from 'utils/timeStringNMinutes';
 import { isEmail } from 'regexes/isEmail';
+import { useGlobalContext } from 'context/GlobalContext';
+import frFR from 'antd/es/date-picker/locale/fr_FR';
+import enUS from 'antd/es/date-picker/locale/en_US';
 
 export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
   fields?: Field[];
@@ -50,6 +53,7 @@ export default function FormVerticle<T extends FieldValues>({
   errors,
   messages,
 }: FormVerticleProps<T>) {
+  const { language } = useGlobalContext();
   const classes = useStyles();
   const { t } = useTranslation(filterKey);
   const renderField = (i: Field) => {
@@ -365,6 +369,8 @@ export default function FormVerticle<T extends FieldValues>({
                     {t(`${i.label}`)} {i.required && <span className={classes.error}>*</span>}
                   </InputLabel>
                   <DatePicker
+                    // @ts-ignore
+                    locale={language === 'en' ? enUS : frFR}
                     disabled={i.disabled}
                     picker={i.picker}
                     showTime={i.showTime}
