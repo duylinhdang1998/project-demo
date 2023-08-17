@@ -19,6 +19,7 @@ import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 import { fieldsAdd } from '../constants';
 import { Merchandises } from './Merchandises';
 import { ServiceSettings } from './ServiceSettings';
+import { UserRole } from '../../../../utils/constant';
 
 const fieldKeys: Array<keyof CreateVehicle> = ['ECOseats', 'VIPseats', 'attach', 'brand', 'merchandises', 'model', 'registrationId', 'services'];
 
@@ -67,7 +68,7 @@ function FormAddVehicle() {
   const { statusCreateVehicle, statusGetVehicle, queueUpdateVehicle, vehicle } = useAppSelector(selectVehicles);
   const dispatch = useAppDispatch();
 
-  const isAgent = userInfo?.role === 'agent';
+  const isAgent = userInfo?.role === UserRole.AGENT;
 
   const messages = useMemo(() => {
     return fieldKeys.reduce<Record<string, string>>((res, key) => {

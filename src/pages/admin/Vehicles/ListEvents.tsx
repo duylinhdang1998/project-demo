@@ -12,6 +12,7 @@ import { selectVehicleEvents, selectVehicles } from 'store/vehicles/selectors';
 import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 import TableEvents from './components/TableEvents';
+import { UserRole } from '../../../utils/constant';
 
 export default function ListEvents() {
   const { t } = useTranslation(['vehicles', 'translation', 'message_error']);
@@ -24,7 +25,7 @@ export default function ListEvents() {
   const { vehicle, statusGetVehicle } = useAppSelector(selectVehicles);
   const dispatch = useAppDispatch();
 
-  const isAgent = userInfo?.role === 'agent';
+  const isAgent = userInfo?.role === UserRole.AGENT;
 
   useEffect(() => {
     if (vehicleId) {

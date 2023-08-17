@@ -12,6 +12,7 @@ import { selectAuth } from 'store/auth/selectors';
 import { profileActions } from 'store/profile/profileSlice';
 import { selectProfile } from 'store/profile/selectors';
 import { sidebars, sidebarsAgent } from './sidebar';
+import { UserRole } from 'utils/constant';
 
 const drawerWidth = 240;
 
@@ -43,12 +44,12 @@ export default function Layout() {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const container = window !== undefined ? () => window.document.body : undefined;
-  const drawerContent = userInfo?.role === 'admin' ? sidebars : sidebarsAgent;
+  const drawerContent = userInfo?.role === UserRole.ADMIN ? sidebars : sidebarsAgent;
 
   const drawer = (
     <Box>
       <Toolbar>
-        <Link to={userInfo?.role === 'admin' ? '/admin' : '/agent'}>
+        <Link to={userInfo?.role === UserRole.ADMIN ? '/admin' : '/agent'}>
           <img src={logoTbus} className={classes.img} alt="" />
         </Link>
       </Toolbar>

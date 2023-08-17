@@ -30,6 +30,7 @@ import { ticketSaleModelToColumnTicket } from '../utils/ticketSaleModelToColumnT
 import { ColumnTicket } from './ColumnTicket';
 import { DialogConfirmChangeStatusToCancel } from './DialogConfirmChangeStatusToCancel';
 import { TicketStatus } from 'components/TicketStatus/TicketStatus';
+import { UserRole } from 'utils/constant';
 
 export const TableTicketSales = () => {
   const { t } = useTranslation(['ticketSales', 'translation']);
@@ -42,7 +43,7 @@ export const TableTicketSales = () => {
   const { userInfo } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
 
-  const isAgent = userInfo?.role === 'agent';
+  const isAgent = userInfo?.role === UserRole.AGENT;
 
   const handleOpenDialogConfirmCancel = (row: ColumnTicket) => {
     setOpenConfirmCancel(row);

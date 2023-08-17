@@ -2,13 +2,14 @@ import { put, retry, SagaReturnType, select, takeLatest } from 'redux-saga/effec
 import { getProfile } from 'services/Company/getProfile';
 import { RootState } from 'store/configureStore';
 import { profileActions } from '../profileSlice';
+import { UserRole } from 'utils/constant';
 
 function* handleGetProfile(_: ReturnType<typeof profileActions.getProfileRequest>) {
   try {
     const roleUser = yield select((state: RootState) => state.auth.userInfo?.role);
     // yield retry(3, 1000, getProfile, payload);
     const response: SagaReturnType<typeof getProfile> = yield retry(3, 1000, getProfile, {
-      url: roleUser === 'admin' ? '/v1.0/company/profile' : '/v1.0/company/staffs/profile',
+      url: roleUser === UserRole.ADMIN ? '/v1.0/company/profile' : '/v1.0/company/staffs/profile',
     });
     yield put(profileActions.getProfileSuccess({ profile: response.data }));
   } catch {

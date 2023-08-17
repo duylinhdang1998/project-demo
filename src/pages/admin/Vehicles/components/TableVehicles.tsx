@@ -27,6 +27,7 @@ import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 import { isToday } from 'utils/isToday';
+import { UserRole } from 'utils/constant';
 
 const useStyles = makeStyles(() => ({
   iconAlert: {
@@ -46,7 +47,7 @@ function TableVehicles() {
   const { statusGetVehicles, queueDeleteVehicle, vehicles, currentPage, currentSearcher, totalRows } = useAppSelector(selectVehicles);
   const dispatch = useAppDispatch();
 
-  const isAgent = useMemo(() => userInfo?.role === 'agent', [userInfo]);
+  const isAgent = useMemo(() => userInfo?.role === UserRole.AGENT, [userInfo]);
 
   const handleOpenDialogDelete = (record: Vehicle) => {
     setOpenDeleteVehicle(record);

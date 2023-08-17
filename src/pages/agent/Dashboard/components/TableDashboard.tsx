@@ -14,6 +14,7 @@ import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable
 function TableDashboard() {
   const { t } = useTranslation(['dashboard']);
   const { data, loading, run } = useGetRouteProgramDashboard();
+  console.log('data>>>', data);
   const [currentPage, setCurrentPage] = useState(0);
 
   useMount(() => {
@@ -53,14 +54,14 @@ function TableDashboard() {
       dataIndex: 'departure_time',
       title: () => <Typography variant="headerTable">{t('departure_time')}</Typography>,
       sorter: true,
-      render: () => <Typography variant="body2">Chưa có field</Typography>,
+      render: () => <Typography variant="body2">null</Typography>,
     },
     {
       key: 'arrival_time',
       dataIndex: 'arrival_time',
       title: () => <Typography variant="headerTable">{t('arrival_time')}</Typography>,
       sorter: true,
-      render: () => <Typography variant="body2">Chưa có field</Typography>,
+      render: () => <Typography variant="body2">null</Typography>,
     },
     {
       key: 'vehicle',

@@ -21,6 +21,7 @@ import { passengersActions } from 'store/passengers/passengersSlice';
 import { selectPassengers } from 'store/passengers/selectors';
 import TableOrdersOfPassenger from './components/TableOrdersOfPassenger';
 import { fieldDetails } from './constants';
+import { UserRole } from 'utils/constant';
 
 type Values = Pick<Passenger, 'country' | 'email' | 'firstName' | 'lastName' | 'phone'>;
 
@@ -44,7 +45,7 @@ export default function PassengerDetail() {
   const { passenger, statusGetPassenger, queueUpdatePassenger } = useAppSelector(selectPassengers);
   const dispatch = useAppDispatch();
 
-  const isAgent = userInfo?.role === 'agent';
+  const isAgent = userInfo?.role === UserRole.AGENT;
   const route = isAgent ? '/agent/passengers/' : '/admin/passengers/';
   const isEditAction = useMemo(() => {
     return !!location.state?.isEdit;

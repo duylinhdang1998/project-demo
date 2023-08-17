@@ -41,9 +41,9 @@ function LoginPage() {
     mode: 'all',
   });
 
-  const handleNavigate = () => {
-    navigate('/sign-up');
-  };
+  // const handleNavigate = () => {
+  //   navigate('/sign-up');
+  // };
 
   const onSubmit = (values: Values) => {
     dispatch(

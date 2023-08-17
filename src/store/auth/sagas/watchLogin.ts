@@ -2,6 +2,7 @@ import { call, put, SagaReturnType, takeLatest } from 'redux-saga/effects';
 import { login } from 'services/Auth/Company/login';
 import { ServiceException } from 'services/utils/ServiceException';
 import { authActions } from '../authSlice';
+import { UserRole } from 'utils/constant';
 function* handleLogin({ payload }: ReturnType<typeof authActions.loginRequest>) {
   const { password, email, onFailure, onSuccess } = payload;
   try {
@@ -11,7 +12,7 @@ function* handleLogin({ payload }: ReturnType<typeof authActions.loginRequest>) 
     });
     yield put(
       authActions.loginSuccess({
-        role: data.rbacCompany.role === 'COMPANY_ADMIN' ? 'admin' : 'agent',
+        role: data.rbacCompany.role === 'COMPANY_ADMIN' ? UserRole.ADMIN : UserRole.AGENT,
         token: `${data.payload.type} ${data.payload.rbacToken}`,
       }),
     );

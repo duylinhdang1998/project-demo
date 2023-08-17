@@ -5,6 +5,7 @@ import ChangeLanguage from 'components/ChangeLanguage/ChangeLanguage';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
+import { UserRole } from 'utils/constant';
 
 export const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -37,7 +38,7 @@ export default function AuthLayout() {
   const location = useLocation();
 
   if (isLoggedIn && userInfo) {
-    return <Navigate to={userInfo.role === 'admin' ? '/admin' : '/agent'} />;
+    return <Navigate to={userInfo.role === UserRole.ADMIN ? '/admin' : '/agent'} />;
   }
 
   if (location.pathname === '/') {

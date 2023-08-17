@@ -20,6 +20,7 @@ import { selectAuth } from 'store/auth/selectors';
 import { PackageSale } from 'models/PackageSales';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import dayjs from 'dayjs';
+import {UserRole} from "../../../utils/constant";
 
 interface StateLocation {
   merchandise: {
@@ -80,7 +81,7 @@ export default function ClientInfo() {
         error: t('add_package_sale_failed'),
         onSuccess: () => {
           reset();
-          navigate(`${authentication.userInfo?.role === 'admin' ? '/admin' : '/agent'}/package-sales/${dataCode.data.orderCode}`, {
+          navigate(`${authentication.userInfo?.role === UserRole.ADMIN ? '/admin' : '/agent'}/package-sales/${dataCode.data.orderCode}`, {
             state: {
               packageSale: dataCode.data,
             },

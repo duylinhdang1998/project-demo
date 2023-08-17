@@ -21,6 +21,7 @@ import { selectPassengers } from 'store/passengers/selectors';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 import { v4 } from 'uuid';
+import { UserRole } from 'utils/constant';
 
 interface TablePassengerProps {
   onSelect?: (selected: Passenger[]) => void;
@@ -40,7 +41,7 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
 
   const navigate = useNavigate();
 
-  const isAgent = userInfo?.role === 'agent';
+  const isAgent = userInfo?.role === UserRole.AGENT;
   const route = isAgent ? '/agent/passengers/' : '/admin/passengers/';
 
   const handleOpenDialogConfirmBlock = (record: Passenger) => {

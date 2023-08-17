@@ -15,6 +15,7 @@ import { selectAuth } from 'store/auth/selectors';
 import { vehiclesActions } from 'store/vehicles/vehiclesSlice';
 import TableVehicles from './components/TableVehicles';
 import { fieldsSearch } from './constants';
+import { UserRole } from 'utils/constant';
 
 const useStyles = makeStyles(() => ({
   btnAdd: {
@@ -37,7 +38,7 @@ export default function Vehicles() {
   const { userInfo } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
 
-  const isAgent = userInfo?.role === 'agent';
+  const isAgent = userInfo?.role === UserRole.AGENT;
 
   const { control, handleSubmit } = useForm<Values>({
     defaultValues: {

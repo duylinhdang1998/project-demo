@@ -10,6 +10,9 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { authActions } from 'store/auth/authSlice';
 import { accountSettings } from './accountSettings';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { selectAuth } from '../../store/auth/selectors';
+import { UserRole } from 'utils/constant';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -79,6 +82,7 @@ interface AccountDropdownProps {
 function AccountDropdown({ avatar, name, email }: AccountDropdownProps) {
   const classes = useStyles();
   const { t } = useTranslation('account');
+  const { userInfo } = useAppSelector(selectAuth);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -99,22 +103,27 @@ function AccountDropdown({ avatar, name, email }: AccountDropdownProps) {
           <span className={classes.email}>{email}</span>
         </Box>
       </Stack>
-      {accountSettings.map(i => (
-        <Menu.Item
-          key={i.name}
-          onClick={handleItem(i)}
-          className={cx(classes.item, {
-            [classes.logoutItem]: i.name === 'logout',
-          })}
-        >
-          <Stack direction="row">
-            <img src={i.icon} className={classes.icon} alt="" />
-            <Typography fontSize="14px" fontWeight="400" color={i.name === 'logout' ? '#FF2727' : '-moz-initial'}>
-              {t(`${i.name}`)}
-            </Typography>
-          </Stack>
-        </Menu.Item>
-      ))}
+      {accountSettings.map(i => {
+        if (i?.role && !i?.role?.includes(userInfo?.role as UserRole)) {
+          return null;
+        }
+        return (
+          <Menu.Item
+            key={i.name}
+            onClick={handleItem(i)}
+            className={cx(classes.item, {
+              [classes.logoutItem]: i.name === 'logout',
+            })}
+          >
+            <Stack direction="row">
+              <img src={i.icon} className={classes.icon} alt="" />
+              <Typography fontSize="14px" fontWeight="400" color={i.name === 'logout' ? '#FF2727' : '-moz-initial'}>
+                {t(`${i.name}`)}
+              </Typography>
+            </Stack>
+          </Menu.Item>
+        );
+      })}
     </Menu>
   );
 

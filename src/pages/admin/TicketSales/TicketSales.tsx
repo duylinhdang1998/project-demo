@@ -21,6 +21,7 @@ import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { TableTicketSales } from './components/TableTicketSales';
 import { fieldsSearch } from './constants';
 import { Result } from 'components/SelectDecouplingData/SelectDestination';
+import { UserRole } from 'utils/constant';
 
 const useStyles = makeStyles((theme: Theme) => ({
   buttonSearch: {
@@ -51,7 +52,7 @@ export default function TicketSales() {
 
   const navigate = useNavigate();
 
-  const isAgent = userInfo?.role === 'agent';
+  const isAgent = userInfo?.role === UserRole.AGENT;
 
   const onSubmit = (values: FormSearchValues) => {
     dispatch(

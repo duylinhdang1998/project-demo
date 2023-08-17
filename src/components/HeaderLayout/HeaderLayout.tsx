@@ -20,6 +20,9 @@ import { getUrlOfResource } from 'utils/getUrlOfResource';
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import { isEmpty } from 'lodash-es';
 import Layout from 'layout/Layout';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { selectAuth } from '../../store/auth/selectors';
+import { UserRole } from '../../utils/constant';
 
 interface HeaderLayoutProps {
   onToggleDrawer?: () => void;
@@ -60,6 +63,8 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader, onToggleDrawer }: H
 
   const { profile } = useSelector(selectProfile);
   const { currentSubscription, subscriptions } = useSelector(selectSubscriptions);
+  const { userInfo } = useAppSelector(selectAuth);
+  console.log('userInfo>>>', userInfo);
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
@@ -105,6 +110,9 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader, onToggleDrawer }: H
   }, []);
 
   const renderUpgradeSubscriptionMessage = () => {
+    if (UserRole.ADMIN !== userInfo?.role) {
+      return null;
+    }
     if (isTrialSubscription || (totalRemainingTrialDays && totalRemainingTrialDays <= 7)) {
       return (
         <Box className={classes.subcribe}>

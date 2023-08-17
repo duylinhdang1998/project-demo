@@ -22,6 +22,7 @@ import TableRoutes from './components/TableRoutes';
 import { fieldsSearch } from './constants';
 import { Result } from 'components/SelectDecouplingData/SelectDestination';
 import { Field } from 'models/Field';
+import { UserRole } from 'utils/constant';
 
 interface Values {
   vehicleName?: Vehicle;
@@ -104,7 +105,7 @@ export default function Routers() {
   }, []);
 
   const fields: Field[] = useMemo(() => {
-    return userInfo?.role === 'admin'
+    return userInfo?.role === UserRole.ADMIN
       ? fieldsSearch
       : [...fieldsSearch, { id: uuidv4(), required: undefined, label: 'registrationId', type: 'text' }];
   }, [userInfo?.role]);
@@ -114,13 +115,13 @@ export default function Routers() {
       <HeaderLayout activeSideBarHeader={t('routers')} />
       <Box p="24px">
         <Grid container spacing={2}>
-          <Grid item xs={12} md={userInfo?.role === 'admin' ? 8 : 10}>
-            <FilterTicket control={control} fields={fields} filterKey="routers" numberColumns={userInfo?.role === 'admin' ? 2.5 : 2} />
+          <Grid item xs={12} md={userInfo?.role === UserRole.ADMIN ? 8 : 10}>
+            <FilterTicket control={control} fields={fields} filterKey="routers" numberColumns={userInfo?.role === UserRole.ADMIN ? 2.5 : 2} />
           </Grid>
           <Grid
             item
             xs={12}
-            md={userInfo?.role === 'admin' ? 4 : 2}
+            md={userInfo?.role === UserRole.ADMIN ? 4 : 2}
             sx={{
               alignSelf: 'flex-end',
             }}
@@ -129,7 +130,7 @@ export default function Routers() {
               <MyButton backgroundButton="#1aa6ee" variant="contained" fullWidth onClick={handleSubmit(onSubmit)}>
                 {t('translation:search')}
               </MyButton>
-              {userInfo?.role === 'admin' && (
+              {userInfo?.role === UserRole.ADMIN && (
                 <DropdownCustom menuChildren={menuChildren} trigger={['click']} placement="bottomLeft" menuClassName={classes.menuList}>
                   <MyButton sx={{ minWidth: '121px' }} variant="contained" fullWidth backgroundButton="#33CC7F" startIcon={<AddIcon />}>
                     <Box

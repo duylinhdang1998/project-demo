@@ -24,6 +24,7 @@ import { Result } from 'components/SelectDecouplingData/SelectDestination';
 import { toast } from 'react-toastify';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { RECORDS_PER_PAGE } from 'services/TicketSale/searchRoutes';
+import { UserRole } from 'utils/constant';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -71,7 +72,7 @@ export const SelectTripOnCreateOrder = () => {
   const navigate = useNavigate();
 
   const { userInfo } = useSelector(selectAuth);
-  const isAgent = userInfo?.role === 'agent';
+  const isAgent = userInfo?.role === UserRole.AGENT;
 
   const onSubmit = (values: SelectTripFormValues) => {
     setCurrentSearcher(values);

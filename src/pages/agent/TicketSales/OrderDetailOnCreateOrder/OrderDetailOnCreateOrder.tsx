@@ -30,6 +30,7 @@ import { Passengers } from './components/Passengers';
 import { getEmptyPassenger } from './components/Passengers/utils';
 import { seatsTypeOptions, typeTicketOptions } from './components/Passengers/const';
 import { Reservation } from './components/Reservation';
+import { UserRole } from 'utils/constant';
 
 const fieldKeys = ['email', 'method'];
 
@@ -67,7 +68,7 @@ export const OrderDetailOnCreateOrder = () => {
   const passengers = watch('passengers');
   const isPaid = watch('isPaid');
 
-  const isAgent = userInfo?.role === 'agent';
+  const isAgent = userInfo?.role === UserRole.AGENT;
 
   const isEditAction = useMemo(() => {
     return !!orderCode;

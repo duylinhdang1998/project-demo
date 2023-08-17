@@ -30,6 +30,7 @@ import { v4 as uuid } from 'uuid';
 import { DialogMultiStopTripDetail } from './DialogMultiStopTripDetail/DialogMultiStopTripDetail';
 import ToolTipAddress from './ToolTipAddress';
 import { getMainRoutePoints } from '../utils/getRoutePointsWithRouteType';
+import {UserRole} from "../../../../utils/constant";
 
 function TableRoutes() {
   const { t } = useTranslation(['routers', 'translation']);
@@ -301,7 +302,7 @@ function TableRoutes() {
     <Box my="24px">
       <AntTable
         loading={statusGetRoutes === 'loading'}
-        columns={userInfo?.role === 'admin' ? columns : columns.slice(0, -1)}
+        columns={userInfo?.role === UserRole.ADMIN ? columns : columns.slice(0, -1)}
         rowKey={r => r._id}
         dataSource={routes}
         onChange={(pagination, _, sorter, extra) => {

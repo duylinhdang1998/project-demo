@@ -26,6 +26,7 @@ import { getUrlOfResource } from 'utils/getUrlOfResource';
 import { useStyles } from '../styles';
 import { selectAuth } from 'store/auth/selectors';
 import { getNameOfResource } from 'utils/getNameOfResource';
+import { UserRole } from 'utils/constant';
 
 function TableEvents() {
   const classes = useStyles();
@@ -48,7 +49,7 @@ function TableEvents() {
     setOpenDeleteVehicleEvent(null);
   };
 
-  const isAgent = userInfo?.role === 'agent';
+  const isAgent = userInfo?.role === UserRole.AGENT;
 
   const columns: ColumnsType<VehicleEvent> = useMemo(() => {
     return [

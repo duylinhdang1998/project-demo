@@ -20,6 +20,7 @@ import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { toDayjs } from 'utils/toDayjs';
 import { fieldsAddEvent } from '../constants';
+import { UserRole } from 'utils/constant';
 
 const fieldKeys: Array<keyof Omit<CreateVehicleEvent, 'vehicle'>> = [
   'reminderDate',
@@ -82,7 +83,7 @@ function FormAddEvent() {
     return !!vehicleEventId;
   }, [vehicleEventId]);
 
-  const isAgent = userInfo?.role === 'agent';
+  const isAgent = userInfo?.role === UserRole.AGENT;
 
   const handleCancel = () => setOpen(true);
   const handleClose = () => setOpen(false);

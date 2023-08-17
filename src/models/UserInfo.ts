@@ -1,3 +1,5 @@
+import { UserRole } from 'utils/constant';
+
 export interface UserInfo {
-  role?: 'admin' | 'agent' | 'client';
+  role?: UserRole.ADMIN | UserRole.AGENT | UserRole.CLIENT;
 }
