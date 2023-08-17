@@ -23,6 +23,7 @@ import 'dayjs/locale/en';
 import frLocale from 'antd/es/date-picker/locale/fr_FR';
 import enLocale from 'antd/es/date-picker/locale/en_US';
 import { useMemo } from 'react';
+import { isFrLanguage } from 'utils/isFrLanguage';
 
 export interface FilterTicketProps<T extends FieldValues> {
   fields?: Array<Field & { numberColumn?: number; disabledDate?: typeof disabledDate }>;
@@ -89,7 +90,7 @@ export default function FilterTicket<T extends FieldValues>({
   alignItems = 'flex-end',
 }: FilterTicketProps<T>) {
   const classes = useStyles();
-  const { t, i18n } = useTranslation([filterKey, 'translation']);
+  const { t } = useTranslation([filterKey, 'translation']);
   const labelOfRole = useMemo(() => getLabelOfRole(t), [t]);
 
   const renderErrors = (label: string) => {
@@ -175,7 +176,7 @@ export default function FilterTicket<T extends FieldValues>({
                 <DatePicker
                   showTime={i.showTime}
                   format={i.format}
-                  locale={i18n.language === 'fr' ? frLocale : enLocale}
+                  locale={isFrLanguage() ? frLocale : enLocale}
                   picker={i.picker}
                   placeholder={t(`${i.label}`)}
                   // @ts-ignore
@@ -474,7 +475,7 @@ export default function FilterTicket<T extends FieldValues>({
                   <DatePicker.RangePicker
                     allowClear
                     inputReadOnly
-                    locale={i18n.language === 'fr' ? frLocale : enLocale}
+                    locale={isFrLanguage() ? frLocale : enLocale}
                     showTime={i.showTime}
                     format={i.format}
                     picker={i.picker}

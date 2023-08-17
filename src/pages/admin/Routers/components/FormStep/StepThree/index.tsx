@@ -37,8 +37,11 @@ import { getDayoffsEvent } from './utils/getDayoffsEvent';
 import { getDayoffsOutsidePresenceDay } from './utils/getDayoffsOutsidePresenceDay';
 import { getEditedDaysEvent } from './utils/getEditedDaysEvent';
 import { getMainRoutePoints } from 'pages/admin/Routers/utils/getRoutePointsWithRouteType';
+import frCA from 'date-fns/locale/fr-CA';
+import { isFrLanguage } from 'utils/isFrLanguage';
 
 const locales = {
+  'fr-CA': frCA,
   'en-US': enUS,
 };
 
@@ -350,6 +353,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     <Box my="24px">
       {renderAlertSuccess()}
       <Calendar
+        culture={isFrLanguage() ? 'fr-CA' : 'en-US'}
         selectable
         defaultDate={route.startPeriod ? new Date(route.startPeriod) : undefined}
         localizer={localizer}

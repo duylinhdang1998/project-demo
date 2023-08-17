@@ -5,6 +5,7 @@ import { EmptyScreen } from 'components/EmptyScreen/EmptyScreen';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { format, getDay, parse, startOfWeek } from 'date-fns';
 import enUS from 'date-fns/locale/en-US';
+import frCA from 'date-fns/locale/fr-CA';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { useState } from 'react';
@@ -23,8 +24,10 @@ import { CalendarToolbar } from './components/CalendarToolbar';
 import './styles.scss';
 import { getDayoffsEvent } from './utils/getDayoffsEvent';
 import { getDayoffsOutsidePresenceDay } from './utils/getDayoffsOutsidePresenceDay';
+import { isFrLanguage } from 'utils/isFrLanguage';
 
 const locales = {
+  'fr-CA': frCA,
   'en-US': enUS,
 };
 
@@ -111,6 +114,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
     <Box my="24px">
       <AlertSuccess isConsultSchedule={location.state?.isConsultSchedule} />
       <Calendar
+        culture={isFrLanguage() ? 'fr-CA' : 'en-US'}
         selectable
         defaultDate={staff.periodFrom ? new Date(staff.periodFrom) : undefined}
         localizer={localizer}

@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import Button from 'components/Button/Button';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import { useStyles as useFormVerticalStyles } from 'components/FormVerticle/styles';
+import { Result } from 'components/SelectDecouplingData/SelectDestination';
 import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import dayjs from 'dayjs';
@@ -29,11 +30,10 @@ import { disabledDate } from 'utils/disableDate';
 import { timeStringToMinutes } from 'utils/timeStringNMinutes';
 import { RoutePointValues, StepOneValuesForMultipleStopTrip } from '../..';
 import { useStyles } from './styles';
-import { Result } from 'components/SelectDecouplingData/SelectDestination';
 
-import { useGlobalContext } from 'context/GlobalContext';
-import frFR from 'antd/es/date-picker/locale/fr_FR';
 import enUS from 'antd/es/date-picker/locale/en_US';
+import frFR from 'antd/es/date-picker/locale/fr_FR';
+import { isFrLanguage } from 'utils/isFrLanguage';
 
 export interface StopPointsProps {
   control: Control<StepOneValuesForMultipleStopTrip>;
@@ -60,7 +60,6 @@ const emptyRoutePoint: Omit<RoutePointValues, 'stop_point'> & { stop_point: Rout
 };
 
 export const StopPoints = ({ append, control, errors, remove, getValues, setValue, trigger, routePoints }: StopPointsProps) => {
-  const { language } = useGlobalContext();
   const { t } = useTranslation();
   const classes = useStyles();
   const formVerticleClasses = useFormVerticalStyles();
@@ -232,7 +231,7 @@ export const StopPoints = ({ append, control, errors, remove, getValues, setValu
                           <DatePicker
                             {...field}
                             // @ts-ignore
-                            locale={language === 'en' ? enUS : frFR}
+                            locale={isFrLanguage() ? frFR : enUS}
                             value={field.value as any}
                             onChange={field.onChange}
                             id={`duration-${f.id}`}

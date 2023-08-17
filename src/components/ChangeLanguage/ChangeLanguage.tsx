@@ -8,6 +8,7 @@ import flagEn from 'assets/images/flag-en.png';
 import flagFr from 'assets/images/flag-fr.png';
 import { useGlobalContext } from 'context/GlobalContext';
 import { useStyles } from './styles';
+import dayjs from 'dayjs';
 
 function ChangeLanguage() {
   const { i18n } = useTranslation();
@@ -20,6 +21,7 @@ function ChangeLanguage() {
 
   useEffect(() => {
     setLangSelected(language);
+    dayjs.locale(language);
   }, [language]);
 
   const handleClose = () => {

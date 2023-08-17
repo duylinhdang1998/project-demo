@@ -1,6 +1,8 @@
 import { Checkbox, FormControlLabel, Grid, InputBase, InputBaseProps, InputLabel, Stack, TextareaAutosize, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { DatePicker, InputNumber } from 'antd';
+import enUS from 'antd/es/date-picker/locale/en_US';
+import frFR from 'antd/es/date-picker/locale/fr_FR';
 import 'antd/lib/date-picker/style/css';
 import 'antd/lib/input-number/style/css';
 import cx from 'classnames';
@@ -21,13 +23,11 @@ import { equals } from 'ramda';
 import { Controller, FieldErrors, FieldValues, Path, UseControllerProps } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select, { Props as SelectProps } from 'react-select';
-import { disabledDate } from 'utils/disableDate';
-import { useStyles } from './styles';
-import { timeStringToMinutes } from 'utils/timeStringNMinutes';
 import { isEmail } from 'regexes/isEmail';
-import { useGlobalContext } from 'context/GlobalContext';
-import frFR from 'antd/es/date-picker/locale/fr_FR';
-import enUS from 'antd/es/date-picker/locale/en_US';
+import { disabledDate } from 'utils/disableDate';
+import { isFrLanguage } from 'utils/isFrLanguage';
+import { timeStringToMinutes } from 'utils/timeStringNMinutes';
+import { useStyles } from './styles';
 
 export interface FormVerticleProps<T extends FieldValues> extends Partial<UseControllerProps<T>> {
   fields?: Field[];
@@ -53,7 +53,6 @@ export default function FormVerticle<T extends FieldValues>({
   errors,
   messages,
 }: FormVerticleProps<T>) {
-  const { language } = useGlobalContext();
   const classes = useStyles();
   const { t } = useTranslation(filterKey);
   const renderField = (i: Field) => {
@@ -370,7 +369,7 @@ export default function FormVerticle<T extends FieldValues>({
                   </InputLabel>
                   <DatePicker
                     // @ts-ignore
-                    locale={language === 'en' ? enUS : frFR}
+                    locale={isFrLanguage() ? frFR : enUS}
                     disabled={i.disabled}
                     picker={i.picker}
                     showTime={i.showTime}

@@ -3,6 +3,7 @@ import { DatePicker, InputNumber } from 'antd';
 import classNames from 'classnames';
 import { customStyles } from 'components/FilterTicket/customStyles';
 import { useStyles as useFormVerticalStyles } from 'components/FormVerticle/styles';
+import { Result } from 'components/SelectDecouplingData/SelectDestination';
 import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import { Dayjs } from 'dayjs';
 import { get, isEqual } from 'lodash-es';
@@ -13,11 +14,10 @@ import { getListDestinations } from 'services/Destinations/getListDestinations';
 import { RoutePoint } from 'services/models/Route';
 import { disabledDate } from 'utils/disableDate';
 import { useStyles } from './useStyles';
-import { Result } from 'components/SelectDecouplingData/SelectDestination';
 
-import { useGlobalContext } from 'context/GlobalContext';
-import frFR from 'antd/es/date-picker/locale/fr_FR';
 import enUS from 'antd/es/date-picker/locale/en_US';
+import frFR from 'antd/es/date-picker/locale/fr_FR';
+import { isFrLanguage } from 'utils/isFrLanguage';
 interface Item {
   ecoAdult: number;
   vipAdult: number;
@@ -43,7 +43,6 @@ interface EditPriceStepThreeOfFromProps {
 }
 
 export const EditPriceStepThreeOfForm = ({ control, errors, priceOfRoutePoints, setValue, trigger }: EditPriceStepThreeOfFromProps) => {
-  const { language } = useGlobalContext();
   const { t } = useTranslation(['routers', 'translation']);
   const classes = useStyles();
   const formVerticleClasses = useFormVerticalStyles();
@@ -163,7 +162,7 @@ export const EditPriceStepThreeOfForm = ({ control, errors, priceOfRoutePoints, 
                     <DatePicker
                       {...field}
                       // @ts-ignore
-                      locale={language === 'en' ? enUS : frFR}
+                      locale={isFrLanguage() ? frFR : enUS}
                       value={field.value as any}
                       onChange={field.onChange}
                       id={`durationTime-${item.routePointId}`}
