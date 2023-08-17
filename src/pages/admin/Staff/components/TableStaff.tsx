@@ -4,7 +4,7 @@ import { ColumnsType } from 'antd/es/table';
 import ActionTable from 'components/ActionTable/ActionTable';
 import AntTable from 'components/AntTable/AntTable';
 import Button from 'components/Button/Button';
-import { labelOfRole } from 'components/SelectDecouplingData/SelectRole';
+import { getLabelOfRole } from 'components/SelectDecouplingData/SelectRole';
 import CalendarIcon from 'components/SvgIcon/CalendarIcon';
 import DeleteIcon from 'components/SvgIcon/DeleteIcon';
 import EditIcon from 'components/SvgIcon/EditIcon';
@@ -25,6 +25,7 @@ import { v4 as uuid } from 'uuid';
 
 function TableStaff() {
   const { t } = useTranslation(['staff', 'translation']);
+  const labelOfRole = useMemo(() => getLabelOfRole(t), [t]);
 
   const [openDeleteStaff, setOpenDeleteStaff] = useState<Staff | null>(null);
 
@@ -106,7 +107,7 @@ function TableStaff() {
       {
         key: 'office',
         dataIndex: 'office',
-        title: () => t('office_title'),
+        title: () => t('staff:office_title'),
         render: (_, row) => (
           <Typography
             variant="body2"
@@ -166,6 +167,7 @@ function TableStaff() {
         width: 100,
       },
     ];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, t]);
 
   const renderDialogDelete = () => {

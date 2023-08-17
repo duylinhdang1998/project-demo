@@ -15,5 +15,6 @@
   "fromDate": "From date",
   "toDate": "To date",
   "alert_title": "Your programing is saved",
-  "alert_description": "You can delete your employee's days off from the calendar."
+  "alert_description": "You can delete your employee's days off from the calendar.",
+  "add_new_staff": "Add new staff"
 }

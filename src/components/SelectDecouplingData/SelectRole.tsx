@@ -6,12 +6,15 @@ import { useTranslation } from 'react-i18next';
 import { UserRole } from 'services/models/UserRole';
 import { useStyles } from './styles';
 import { useMemo } from 'react';
+import { TFunction } from 'i18next';
 
-export const labelOfRole: Record<UserRole, string> = {
-  COMPANY_ADMIN: 'Admin',
-  COMPANY_AGENT: 'Agent',
-  PASSENGER: 'Client',
-  COMPANY_DRIVER: 'Driver',
+export const getLabelOfRole = (t: TFunction): Record<UserRole, string> => {
+  return {
+    COMPANY_ADMIN: t('translation:COMPANY_ADMIN'),
+    COMPANY_AGENT: t('translation:COMPANY_AGENT'),
+    PASSENGER: t('translation:PASSENGER'),
+    COMPANY_DRIVER: t('translation:COMPANY_DRIVER'),
+  };
 };
 
 export interface SelectRoleProps {
@@ -40,6 +43,9 @@ export const SelectRole = ({
   isForFilter,
 }: SelectRoleProps) => {
   const { t } = useTranslation(['translation', filterKey]);
+
+  const labelOfRole = useMemo(() => getLabelOfRole(t), [t]);
+
   const classes = useStyles();
 
   const error = errors && errors[label];
@@ -49,7 +55,7 @@ export const SelectRole = ({
 
   const ROLES: Array<{ role: UserRole }> = useMemo(() => {
     if (isForFilter) {
-      return [{ role: 'COMPANY_ADMIN' }, { role: 'COMPANY_AGENT' }, { role: 'COMPANY_DRIVER' }, { role: 'PASSENGER' }];
+      return [{ role: 'COMPANY_ADMIN' }, { role: 'COMPANY_AGENT' }, { role: 'COMPANY_DRIVER' }];
     }
     return [{ role: 'COMPANY_AGENT' }, { role: 'COMPANY_DRIVER' }];
   }, [isForFilter]);

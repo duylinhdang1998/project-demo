@@ -107,5 +107,10 @@
   "admin_description": "Admin description: Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.",
   "documentation": "Documentation",
   "add_new_destination": "Add new destination",
-  "step_index": "Step {{index}}"
+  "step_index": "Step {{index}}",
+
+  "COMPANY_ADMIN": "Admin",
+  "COMPANY_AGENT": "Agent",
+  "PASSENGER": "Client",
+  "COMPANY_DRIVER": "Driver"
 }

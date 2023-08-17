@@ -110,7 +110,7 @@ export default function Staff() {
           </Grid>
           <Grid item xs={12} md={4} sx={{ justifyContent: 'flex-end', display: 'flex' }}>
             <Button backgroundButton="#33CC7F" startIcon={<AddIcon />} sx={{ alignSelf: 'flex-end' }} className={classes.btnAdd} onClick={handleAdd}>
-              {t('translation:add_new', { type: t('staff').toLowerCase() })}
+              {t('staff:add_new_staff')}
             </Button>
           </Grid>
         </Grid>

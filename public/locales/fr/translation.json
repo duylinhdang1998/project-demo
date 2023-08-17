@@ -100,5 +100,10 @@
   "hours_and_0minute": "{{ hours }} heures",
   "hours_and_minute": "{{ hours }} heures et {{ minutes }} minute",
   "hours_and_minutes": "{{ hours }} heures et {{ minutes }} minutes",
-  "invalid_qrcode": "Code QR non valide"
+  "invalid_qrcode": "Code QR non valide",
+
+  "COMPANY_ADMIN": "Admin",
+  "COMPANY_AGENT": "Agent",
+  "PASSENGER": "Client",
+  "COMPANY_DRIVER": "Chauffeur"
 }

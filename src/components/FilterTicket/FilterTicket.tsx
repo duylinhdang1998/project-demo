@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import { DatePicker } from 'antd';
 import 'antd/lib/date-picker/style/css';
 import { Result } from 'components/SelectDecouplingData/SelectDestination';
-import { labelOfRole } from 'components/SelectDecouplingData/SelectRole';
+import { getLabelOfRole } from 'components/SelectDecouplingData/SelectRole';
 import { SingleSelectDecouplingData } from 'components/SelectDecouplingData/SingleSelectDecouplingData';
 import { get, isEqual } from 'lodash-es';
 import { Field } from 'models/Field';
@@ -22,6 +22,7 @@ import 'dayjs/locale/fr';
 import 'dayjs/locale/en';
 import frLocale from 'antd/es/date-picker/locale/fr_FR';
 import enLocale from 'antd/es/date-picker/locale/en_US';
+import { useMemo } from 'react';
 
 export interface FilterTicketProps<T extends FieldValues> {
   fields?: Array<Field & { numberColumn?: number; disabledDate?: typeof disabledDate }>;
@@ -89,6 +90,7 @@ export default function FilterTicket<T extends FieldValues>({
 }: FilterTicketProps<T>) {
   const classes = useStyles();
   const { t, i18n } = useTranslation([filterKey, 'translation']);
+  const labelOfRole = useMemo(() => getLabelOfRole(t), [t]);
 
   const renderErrors = (label: string) => {
     if (!errors?.[label]) {
@@ -287,7 +289,6 @@ export default function FilterTicket<T extends FieldValues>({
                         { role: 'COMPANY_ADMIN' },
                         { role: 'COMPANY_AGENT' },
                         { role: 'COMPANY_DRIVER' },
-                        { role: 'PASSENGER' },
                       ]);
                     }}
                     transformToOption={model => ({
