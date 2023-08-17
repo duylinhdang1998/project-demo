@@ -54,10 +54,6 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
     onCancel?.(getValues());
   };
 
-  useEffect(() => {
-    console.log({ errors });
-  }, [errors]);
-
   const handleSave = (values: StepOneValuesForOneStopTrip) => {
     onNextStep?.(values);
   };

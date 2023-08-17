@@ -133,14 +133,6 @@ function TableVehicles() {
                 },
               },
               {
-                id: uuid(),
-                label: 'show_event_lists',
-                icon: <BookmarkIcon />,
-                onClick: () => {
-                  navigate(isAgent ? `/agent/vehicles/${row._id}/list-events` : `/admin/vehicles/${row._id}/list-events`);
-                },
-              },
-              {
                 ...(!isAgent
                   ? {
                       id: uuid(),
@@ -158,6 +150,29 @@ function TableVehicles() {
           />
         ),
         align: 'center',
+      },
+      {
+        key: 'events',
+        title: () => t('event_lists'),
+        render: (_, row) => (
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={1}
+            sx={{
+              cursor: 'pointer',
+            }}
+            padding="8px"
+            onClick={() => {
+              navigate(isAgent ? `/agent/vehicles/${row._id}/list-events` : `/admin/vehicles/${row._id}/list-events`);
+            }}
+          >
+            <Box display="flex" alignItems="center">
+              <BookmarkIcon />
+            </Box>
+            <Typography fontSize="14px">{t(`event_lists`)}</Typography>
+          </Stack>
+        ),
       },
     ];
   }, [classes.iconAlert, isAgent, navigate, t]);

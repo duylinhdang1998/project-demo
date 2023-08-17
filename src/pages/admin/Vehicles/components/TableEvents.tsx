@@ -78,7 +78,7 @@ function TableEvents() {
         dataIndex: 'fuelFees',
         title: () => `${t('vehicles:fuelFees')} (${getAppCurrencySymbol()})`,
         render: (_, row) => <Typography variant="body2">{row.fuelFees}</Typography>,
-        width: 111,
+        width: 121,
         align: 'center',
       },
       {
@@ -86,7 +86,7 @@ function TableEvents() {
         dataIndex: 'extraFees',
         title: () => `${t('vehicles:extraFees')} (${getAppCurrencySymbol()})`,
         render: (_, row) => <Typography variant="body2">{row.extraFees}</Typography>,
-        width: 120,
+        width: 200,
         align: 'center',
       },
       {
@@ -94,7 +94,7 @@ function TableEvents() {
         dataIndex: 'description',
         title: () => `${t('vehicles:description')}`,
         render: (_, row) => <Typography variant="body2">{row.description}</Typography>,
-        width: 340,
+        width: 200,
       },
       {
         key: 'reminderDate',

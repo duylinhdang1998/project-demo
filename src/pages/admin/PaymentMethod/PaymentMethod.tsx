@@ -17,7 +17,7 @@ import Button from 'components/Button/Button';
 import { CheckboxGroup } from 'components/CheckboxGroup/CheckboxGroup';
 import { isEqual } from 'lodash-es';
 import { CheckCircleOutlined } from '@mui/icons-material';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const PaypalButton = styled(Button)({
   backgroundColor: '#263B80',
@@ -31,6 +31,7 @@ const PaypalButton = styled(Button)({
 export default function PaymentMethod() {
   const { t } = useTranslation(['account', 'translation']);
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const code = searchParams.get('code');
 
@@ -112,6 +113,7 @@ export default function PaymentMethod() {
       refreshUrl: window.location.href,
       returnUrl: window.location.href,
     });
+
     window.open(get(response, 'url', ''), '_blank');
   };
 
@@ -188,6 +190,7 @@ export default function PaymentMethod() {
         title={t('translation:cancel_type', { type: t('payment_methods') })}
         subTitle={t('translation:leave_page')}
         onClose={handleClose}
+        onOk={() => navigate('/')}
       />
     </Box>
   );

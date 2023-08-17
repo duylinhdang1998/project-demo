@@ -24,8 +24,10 @@ import ServiceIcon from './images/sidebar/Services.svg';
 import StaffIcon from './images/sidebar/Staff.svg';
 import TicketIcon from './images/sidebar/Ticket.svg';
 import VehicleIcon from './images/sidebar/Vehicels.svg';
+import DocumentationIcon from './images/sidebar/document-text.svg';
 
 export {
+  DocumentationIcon,
   StopCircleSvg,
   CalendarIcon,
   MapPinIcon,

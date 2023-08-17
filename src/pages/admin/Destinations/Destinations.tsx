@@ -9,7 +9,7 @@ import { useGetListDestinations } from 'services/Destinations/destinations';
 import TableDestinations from './components/TableDestinations';
 
 export default function Destinations() {
-  const { t } = useTranslation('destinations');
+  const { t } = useTranslation(['destinations', 'translation']);
   const navigate = useNavigate();
   const { data: listDestinations, loading, run, refresh } = useGetListDestinations();
   const [searchValue, setSearchValue] = useState('');
@@ -33,7 +33,7 @@ export default function Destinations() {
       <Box padding="24px">
         <BoxSearch
           onAdd={handleAdd}
-          addTextButton={t('translation:add_new', { type: t('destinations').toLowerCase() })}
+          addTextButton={t('translation:add_new_destination')}
           onSearch={value => {
             run({
               page: 0,

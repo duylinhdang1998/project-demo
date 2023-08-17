@@ -25,7 +25,7 @@ import StepThree from './FormStep/StepThree';
 import StepTwo, { StepTwoValues } from './FormStep/StepTwo';
 import { getMainRoutePoints } from '../utils/getRoutePointsWithRouteType';
 
-const steps = ['Step 1', 'Step 2', 'Step 3'];
+const steps = ['step_1', 'step_2', 'step_3'];
 
 const useStyles = makeStyles(() => ({
   textStep: {
@@ -522,7 +522,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
                     textAlign="center"
                     color={activeStep === index ? '#1AA6EE' : 'rgba(174, 177, 197, 1)'}
                   >
-                    {label}
+                    {t(`step_index`, { index: index + 1 })}
                   </Typography>
                 }
               ></StepLabel>
