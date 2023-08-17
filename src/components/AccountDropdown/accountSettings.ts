@@ -1,5 +1,5 @@
 import { ChangePassIcon, LogoutIcon, NoteIcon, OfficeIcon, OrderIcon, StaffIcon, SubcriptionIcon, WalletIcon } from 'assets';
-import { UserRole } from '../../utils/constant';
+import { UserRole } from 'utils/constant';
 
 export const accountSettings = [
   { path: '/account-settings', name: 'settings', icon: StaffIcon },

@@ -32,6 +32,7 @@ export interface ITrackingRoute {
     _id?: string;
     departurePoint: string;
     stopPoint: string;
+    durationTime: number;
   };
   vehicle: ITrackingVehicle;
 }

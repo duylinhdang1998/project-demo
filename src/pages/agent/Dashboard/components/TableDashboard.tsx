@@ -10,11 +10,11 @@ import { ITrackingRoute, useGetRouteProgramDashboard } from 'services/Dashboard/
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { useMount } from 'ahooks';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
+import dayjs from 'dayjs';
 
 function TableDashboard() {
   const { t } = useTranslation(['dashboard']);
   const { data, loading, run } = useGetRouteProgramDashboard();
-  console.log('data>>>', data);
   const [currentPage, setCurrentPage] = useState(0);
 
   useMount(() => {
@@ -54,14 +54,16 @@ function TableDashboard() {
       dataIndex: 'departure_time',
       title: () => <Typography variant="headerTable">{t('departure_time')}</Typography>,
       sorter: true,
-      render: () => <Typography variant="body2">null</Typography>,
+      render: (_, record) => <Typography variant="body2">{dayjs(record.dateRoute).format('HH:mm')}</Typography>,
     },
     {
       key: 'arrival_time',
       dataIndex: 'arrival_time',
       title: () => <Typography variant="headerTable">{t('arrival_time')}</Typography>,
       sorter: true,
-      render: () => <Typography variant="body2">null</Typography>,
+      render: (_, record) => (
+        <Typography variant="body2">{dayjs(record.dateRoute).add(record.route?.durationTime, 'minute').format('HH:mm')}</Typography>
+      ),
     },
     {
       key: 'vehicle',
