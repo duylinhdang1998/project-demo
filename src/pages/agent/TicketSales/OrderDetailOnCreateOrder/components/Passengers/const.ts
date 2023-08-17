@@ -1,10 +1,13 @@
+import { TFunction } from 'i18next';
 import { Passenger } from '../../@types/FormValues';
 
-export const typeTicketOptions: Array<Passenger['typeTicket']> = [
-  { key: 'adult', value: 'ADULT', label: 'Adult (26-59)' },
-  { key: 'student', value: 'STUDENT', label: 'Student (16-25)' },
-  { key: 'children', value: 'CHILD', label: 'Children (1-15)' },
-];
+export const getTypeTicketOptions = (t: TFunction): Array<Passenger['typeTicket']> => {
+  return [
+    { key: 'adult', value: 'ADULT', label: t('translation:ADULT') },
+    { key: 'student', value: 'STUDENT', label: t('translation:STUDENT') },
+    { key: 'children', value: 'CHILD', label: t('translation:CHILD') },
+  ];
+};
 
 export const seatsTypeOptions: Array<Passenger['seatsType']> = [
   { key: 'eco', value: 'ECO', label: 'ECO' },

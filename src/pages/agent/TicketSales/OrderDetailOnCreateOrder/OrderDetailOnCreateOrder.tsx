@@ -28,7 +28,7 @@ import {
 } from './@types/GeneralInfomationOfOrder';
 import { Passengers } from './components/Passengers';
 import { getEmptyPassenger } from './components/Passengers/utils';
-import { seatsTypeOptions, typeTicketOptions } from './components/Passengers/const';
+import { seatsTypeOptions, getTypeTicketOptions } from './components/Passengers/const';
 import { Reservation } from './components/Reservation';
 import { UserRole } from 'utils/constant';
 
@@ -36,7 +36,7 @@ const fieldKeys = ['email', 'method'];
 
 export const OrderDetailOnCreateOrder = () => {
   const { t } = useTranslation(['ticketSales', 'translation']);
-
+  const typeTicketOptions = useMemo(() => getTypeTicketOptions(t), [t]);
   const { statusCreateTicketSale, statusGetTicketSalesOfOrder, statusUpdatePaymentStatusOfOrder, ticketSalesOfOrder } =
     useAppSelector(selectTicketSales);
   const { userInfo } = useAppSelector(selectAuth);
@@ -57,7 +57,7 @@ export const OrderDetailOnCreateOrder = () => {
   } = useForm<TicketDetailFormValues>({
     defaultValues: {
       accept_term: true,
-      passengers: [getEmptyPassenger()],
+      passengers: [getEmptyPassenger(t)],
       isPaid: true,
     },
   });

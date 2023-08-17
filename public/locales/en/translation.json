@@ -112,5 +112,8 @@
   "COMPANY_ADMIN": "Admin",
   "COMPANY_AGENT": "Agent",
   "PASSENGER": "Client",
-  "COMPANY_DRIVER": "Driver"
+  "COMPANY_DRIVER": "Driver",
+  "ADULT": "Adult",
+  "STUDENT": "Student",
+  "CHILD": "Child"
 }

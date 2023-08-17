@@ -7,7 +7,7 @@ import { customStyles } from 'components/FilterTicket/customStyles';
 import { useStyles } from 'components/FormVerticle/styles';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { get } from 'lodash-es';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Control, Controller, FieldErrors, UseFieldArrayAppend, UseFieldArrayRemove } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
@@ -15,8 +15,9 @@ import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { TicketDetailFormValues } from '../../@types/FormValues';
 import { GeneralInfomationOfOrder } from '../../@types/GeneralInfomationOfOrder';
 import { getTotalPriceForTicketOfPassenger } from '../utils/getTotalPriceForTicketOfPassenger';
-import { seatsTypeOptions, typeTicketOptions } from './const';
+import { seatsTypeOptions, getTypeTicketOptions } from './const';
 import { getEmptyPassenger } from './utils';
+import i18n from 'locales/i18n';
 
 export interface PassengersProps {
   control: Control<TicketDetailFormValues>;
@@ -31,6 +32,7 @@ export interface PassengersProps {
 export const Passengers = ({ control, errors, passengers, generalInfomationOfTicket, append, remove, isEditAction }: PassengersProps) => {
   const classes = useStyles();
   const { t } = useTranslation(['ticketSales', 'translation']);
+  const typeTicketOptions = useMemo(() => getTypeTicketOptions(t), [t]);
 
   const [openDeletePassenger, setOpenDeletePassenger] = useState<number | null>(null);
 
@@ -105,7 +107,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
           marginTop: '10px !important',
         }}
         startIcon={<AddIcon sx={{ color: '#1AA6EE' }} />}
-        onClick={() => append(getEmptyPassenger())}
+        onClick={() => append(getEmptyPassenger(t))}
       >
         {t('ticketSales:add_new_passenger')}
       </Button>
@@ -217,6 +219,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                             options={typeTicketOptions}
                             styles={customStyles}
                             placeholder={labelTranslated}
+                            key={i18n.language}
                           />
                           {!!error && (
                             <Typography component="p" className={classes.error} fontSize={12}>
