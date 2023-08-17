@@ -7,6 +7,9 @@ import { UserRole } from 'services/models/UserRole';
 import { useStyles } from './styles';
 import { useMemo } from 'react';
 import { TFunction } from 'i18next';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { selectAuth } from 'store/auth/selectors';
+import { UserRole as EUserRole } from 'utils/constant';
 
 export const getLabelOfRole = (t: TFunction): Record<UserRole, string> => {
   return {
@@ -53,12 +56,15 @@ export const SelectRole = ({
 
   const labelTranslated = filterKey ? t(`${filterKey}:${label}`) : t(label);
 
+  const { userInfo } = useAppSelector(selectAuth);
+  const isAgent = userInfo?.role === EUserRole.AGENT;
+
   const ROLES: Array<{ role: UserRole }> = useMemo(() => {
     if (isForFilter) {
       return [{ role: 'COMPANY_ADMIN' }, { role: 'COMPANY_AGENT' }, { role: 'COMPANY_DRIVER' }];
     }
-    return [{ role: 'COMPANY_AGENT' }, { role: 'COMPANY_DRIVER' }];
-  }, [isForFilter]);
+    return isAgent ? [{ role: 'COMPANY_AGENT' }, { role: 'COMPANY_DRIVER' }] : [{ role: 'COMPANY_AGENT' }];
+  }, [isAgent, isForFilter]);
 
   return (
     <Controller
