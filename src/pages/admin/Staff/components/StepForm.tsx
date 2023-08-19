@@ -245,7 +245,7 @@ export default function StepForm({ isEditAction, startStep }: StepFormProps) {
                 sx={{ flexDirection: 'column', color: '#fff' }}
                 optional={
                   <Typography variant="caption" color={activeStep === index ? '#1AA6EE' : 'inherit'}>
-                    {label}
+                    {t(`translation:step_index`, { index: index + 1 })}
                   </Typography>
                 }
               ></StepLabel>

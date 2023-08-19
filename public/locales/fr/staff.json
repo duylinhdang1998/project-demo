@@ -12,8 +12,8 @@
   "delete_day_off": "Supprimer les jours de congé de l'employé",
   "days_of_the_week": "Jours de présence de l'employé",
   "active_period": "Période active",
-  "fromDate": "De",
-  "toDate": "À",
+  "fromDate": "Date de début",
+  "toDate": "Date de fin",
   "alert_title": "Votre programmation est enregistrée",
   "alert_description": "Vous pouvez supprimer les jours de congé de votre employé à partir du calendrier.",
   "add_new_staff": "Ajouter"

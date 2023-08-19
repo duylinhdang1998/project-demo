@@ -76,7 +76,7 @@
   "edit_type_success": "{{type}} modifié(e) avec succès !",
   "edit_type_error": "Erreur lors de la modification de {{type}}",
   "loading": "Chargement",
-  "off": "Désactivé",
+  "off": "Off",
   "left": "gauche",
   "days": "jours",
   "send": "Envoyer",
