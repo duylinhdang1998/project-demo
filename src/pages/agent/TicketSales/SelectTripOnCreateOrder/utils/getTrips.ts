@@ -20,14 +20,16 @@ export const getTrips = async (
           value: isReturnTrip
             ? undefined
             : values.departureTime
-            ? dayjs.utc(values.departureTime).set('second', 0).unix() * 1000
-            : dayjs().set('second', 0).unix() * 1000,
+            ? dayjs.utc(values.departureTime).startOf('day').set('second', 0).unix() * 1000
+            : dayjs().startOf('day').set('second', 0).unix() * 1000,
           operator: 'gte',
         },
         ...(values.tripType === 'MULTI_STOP' && isReturnTrip
           ? {
               returnTime: {
-                value: values.returnTime ? dayjs.utc(values.returnTime).set('second', 0).unix() * 1000 : dayjs().set('second', 0).unix() * 1000,
+                value: values.returnTime
+                  ? dayjs.utc(values.returnTime).startOf('day').set('second', 0).unix() * 1000
+                  : dayjs().startOf('day').set('second', 0).unix() * 1000,
                 operator: 'gte',
               },
             }
