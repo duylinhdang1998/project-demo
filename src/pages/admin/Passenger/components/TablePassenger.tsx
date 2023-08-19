@@ -13,7 +13,7 @@ import { memo, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Passenger } from 'services/models/Passenger';
+import { Passenger, getPassengerStatusMappingToLabel } from 'services/models/Passenger';
 import { RECORDS_PER_PAGE } from 'services/Passenger/getPassengers';
 import { selectAuth } from 'store/auth/selectors';
 import { passengersActions } from 'store/passengers/passengersSlice';
@@ -22,6 +22,7 @@ import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
 import { v4 } from 'uuid';
 import { UserRole } from 'utils/constant';
+import Tag from 'components/Tag/Tag';
 
 interface TablePassengerProps {
   onSelect?: (selected: Passenger[]) => void;
@@ -32,6 +33,7 @@ const passengerIsBlocking = (passenger: Passenger) => passenger.status === 'BLOC
 
 function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
   const { t } = useTranslation(['passenger', 'translation']);
+  const PassengerStatusMappingToLabel = getPassengerStatusMappingToLabel(t);
 
   const [openDialogConfirmBlock, setOpenDialogConfirmBlock] = useState<Passenger | null>(null);
 
@@ -101,6 +103,12 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
         render: (_, row) => <Typography variant="body2">{row.orderCounts}</Typography>,
         align: 'center',
         sorter: () => 0,
+      },
+      {
+        title: () => t('passenger:status'),
+        width: 120,
+        render: (_, row) => <Tag variant={row.status === 'BLOCK' ? 'error' : 'success'} text={PassengerStatusMappingToLabel[row.status]} />,
+        align: 'center',
       },
       {
         key: 'action',

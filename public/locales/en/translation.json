@@ -115,5 +115,7 @@
   "COMPANY_DRIVER": "Driver",
   "ADULT": "Adult",
   "STUDENT": "Student",
-  "CHILD": "Child"
+  "CHILD": "Child",
+  "ACTIVE": "Active",
+  "BLOCK": "Block"
 }

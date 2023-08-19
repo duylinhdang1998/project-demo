@@ -1,3 +1,4 @@
+import { TFunction } from 'i18next';
 import { TicketSale } from './TicketSale';
 
 export interface Passenger {
@@ -16,3 +17,10 @@ export interface Passenger {
   orderCounts: number;
   orders: TicketSale[];
 }
+
+export const getPassengerStatusMappingToLabel = (t: TFunction): Record<Passenger['status'], string> => {
+  return {
+    ACTIVE: t('translation:ACTIVE'),
+    BLOCK: t('translation:BLOCK'),
+  };
+};

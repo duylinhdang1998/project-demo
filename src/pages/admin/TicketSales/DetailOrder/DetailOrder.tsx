@@ -110,52 +110,57 @@ export default function DetailTicketPage() {
               <VehicleDetail record={record} />
               <PassengersDetail record={record} />
             </Stack>
+            <Stack flexWrap="wrap" direction="row" alignItems="center" justifyContent="flex-end" gap={2} my="24px">
+              {record.ticketType === 'ROUND_TRIP' && (
+                <Button
+                  onClick={handleViewRelateOrder}
+                  variant="outlined"
+                  sx={{
+                    flex: '1 1 120px',
+                    padding: '12px 16px',
+                    backgroundColor: '#fff',
+                    '&:hover': {
+                      backgroundColor: '#fff',
+                      color: '#1AA6EE',
+                    },
+                  }}
+                  startIcon={<ArrowOutward />}
+                >
+                  {t('ticketSales:view_relate_order')}
+                </Button>
+              )}
+              <Button
+                onClick={handleSendEmail}
+                loading={statusSendEmail === 'loading'}
+                variant="outlined"
+                sx={{
+                  flex: '1 1 120px',
+                  padding: '12px 16px',
+                  backgroundColor: '#fff',
+                  '&:hover': {
+                    backgroundColor: '#fff',
+                    color: '#1AA6EE',
+                  },
+                }}
+                startIcon={<SendIcon fillColor="#1AA6EE" />}
+              >
+                {t('ticketSales:email_ticket')}
+              </Button>
+              <Button
+                onClick={() => setOpenModalPrint(true)}
+                variant="contained"
+                backgroundButton="#1AA6EE"
+                sx={{
+                  flex: '1 1 120px',
+                  padding: '12px 16px',
+                }}
+                startIcon={<PrintIcon />}
+              >
+                {t('ticketSales:print_ticket')}
+              </Button>
+            </Stack>
           </Grid>
         </Grid>
-        <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={2} my="24px">
-          {record.ticketType === 'ROUND_TRIP' && (
-            <Button
-              onClick={handleViewRelateOrder}
-              variant="outlined"
-              sx={{
-                padding: '12px 16px',
-                backgroundColor: '#fff',
-                '&:hover': {
-                  backgroundColor: '#fff',
-                  color: '#1AA6EE',
-                },
-              }}
-              startIcon={<ArrowOutward />}
-            >
-              {t('ticketSales:view_relate_order')}
-            </Button>
-          )}
-          <Button
-            onClick={handleSendEmail}
-            loading={statusSendEmail === 'loading'}
-            variant="outlined"
-            sx={{
-              padding: '12px 16px',
-              backgroundColor: '#fff',
-              '&:hover': {
-                backgroundColor: '#fff',
-                color: '#1AA6EE',
-              },
-            }}
-            startIcon={<SendIcon fillColor="#1AA6EE" />}
-          >
-            {t('ticketSales:email_ticket')}
-          </Button>
-          <Button
-            onClick={() => setOpenModalPrint(true)}
-            variant="contained"
-            backgroundButton="#1AA6EE"
-            sx={{ padding: '12px 16px' }}
-            startIcon={<PrintIcon />}
-          >
-            {t('ticketSales:print_ticket')}
-          </Button>
-        </Stack>
       </Box>
       <ModalPrintTicket
         open={openModalPrint}

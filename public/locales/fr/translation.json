@@ -108,5 +108,7 @@
   "COMPANY_DRIVER": "Chauffeur",
   "ADULT": "Adulte",
   "STUDENT": "Étudiant",
-  "CHILD": "Enfant"
+  "CHILD": "Enfant",
+  "ACTIVE": "Actif",
+  "BLOCK": "Bloquer"
 }
