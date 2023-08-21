@@ -192,7 +192,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         title: () => <div>{i18n.t('packageSales:payment_status')}</div>,
         render: (paymentStatus: PackageSale['paymentStatus']) => (
           <Box display="flex" alignItems="center" justifyContent="center">
-            <Tag text={!!paymentStatus ? paymentStatus : 'NONE'} variant={paymentStatus === EPaymentStatus.APPROVED ? 'success' : 'error'} />
+            <Tag text={t(`translation:${paymentStatus}`)} variant={paymentStatus === EPaymentStatus.APPROVED ? 'success' : 'error'} />
           </Box>
         ),
       },
@@ -205,7 +205,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         render: (value: OrderStatus) => {
           return (
             <Box display="flex" alignItems="center" justifyContent="center">
-              <Tag text={value} variant={value === OrderStatus.SUCCESS ? 'success' : 'error'} />
+              <Tag text={t(`translation:${value}`)} variant={value === OrderStatus.SUCCESS ? 'success' : 'error'} />
             </Box>
           );
         },

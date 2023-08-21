@@ -110,5 +110,13 @@
   "STUDENT": "Étudiant",
   "CHILD": "Enfant",
   "ACTIVE": "Actif",
-  "BLOCK": "Bloquer"
+  "BLOCK": "Bloquer",
+
+  "PENDING": "EN ATTENTE",
+  "CREATED": "CRÉÉ",
+  "APPROVED": "RÉUSSI",
+  "VOIDED": "ANNULÉ",
+
+  "SUCCESS": "VALIDÉE",
+  "CANCELED": "ANNULÉ"
 }

@@ -117,5 +117,13 @@
   "STUDENT": "Student",
   "CHILD": "Child",
   "ACTIVE": "Active",
-  "BLOCK": "Block"
+  "BLOCK": "Block",
+
+  "PENDING": "PENDING",
+  "CREATED": "CREATED",
+  "APPROVED": "APPROVED",
+  "VOIDED": "VOIDED",
+
+  "SUCCESS": "SUCCESS",
+  "CANCELED": "CANCELED"
 }
