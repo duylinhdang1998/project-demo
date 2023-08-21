@@ -63,7 +63,7 @@ export default function FormVerticle<T extends FieldValues>({
       case 'email':
         return (
           <Controller
-            name={i.label as Path<T>}
+            name={(i.name || i.label) as Path<T>}
             control={control}
             render={({ field }) => {
               return (
@@ -77,7 +77,7 @@ export default function FormVerticle<T extends FieldValues>({
                     {...inputProps}
                     {...field}
                     placeholder={i.placeholder ?? t(`${i.label}`)}
-                    className={classes.input}
+                    className={cx(classes.input, i.className)}
                     error={!!error}
                     disabled={i.disabled}
                     readOnly={i.readOnly}
@@ -115,7 +115,7 @@ export default function FormVerticle<T extends FieldValues>({
       case 'number': {
         return (
           <Controller
-            name={i.label as Path<T>}
+            name={(i.name || i.label) as Path<T>}
             control={control}
             render={({ field }) => (
               <Box>
@@ -160,7 +160,7 @@ export default function FormVerticle<T extends FieldValues>({
               {i.options?.map(c => (
                 <Controller
                   key={c.key}
-                  name={i.label as Path<T>}
+                  name={(i.name || i.label) as Path<T>}
                   control={control}
                   render={({ field }) => (
                     <FormControlLabel
@@ -191,7 +191,7 @@ export default function FormVerticle<T extends FieldValues>({
       case 'image':
         return (
           <Controller
-            name={i.label as Path<T>}
+            name={(i.name || i.label) as Path<T>}
             control={control}
             render={({ field }) => {
               return (
@@ -214,7 +214,7 @@ export default function FormVerticle<T extends FieldValues>({
       case 'image_resource':
         return (
           <Controller
-            name={i.label as Path<T>}
+            name={(i.name || i.label) as Path<T>}
             control={control}
             render={() => {
               return (
@@ -249,7 +249,7 @@ export default function FormVerticle<T extends FieldValues>({
       case 'pdf_resource':
         return (
           <Controller
-            name={i.label as Path<T>}
+            name={(i.name || i.label) as Path<T>}
             control={control}
             render={() => {
               return (
@@ -284,7 +284,7 @@ export default function FormVerticle<T extends FieldValues>({
       case 'checkbox2':
         return (
           <Controller
-            name={i.label as Path<T>}
+            name={(i.name || i.label) as Path<T>}
             control={control}
             render={() => {
               return (
@@ -313,7 +313,7 @@ export default function FormVerticle<T extends FieldValues>({
         return (
           <Controller
             control={control}
-            name={i.label as Path<T>}
+            name={(i.name || i.label) as Path<T>}
             render={() => {
               return (
                 <Box>
@@ -357,7 +357,7 @@ export default function FormVerticle<T extends FieldValues>({
         return (
           <Controller
             control={control as any}
-            name={i.label as Path<T>}
+            name={(i.name || i.label) as Path<T>}
             render={({ field }) => {
               const value = field.value;
               const valueInDayjs = isDayjs(value) && (value as Dayjs).isValid();
@@ -408,7 +408,7 @@ export default function FormVerticle<T extends FieldValues>({
         return (
           <Controller
             control={control}
-            name={i.label as Path<T>}
+            name={(i.name || i.label) as Path<T>}
             render={({ field }) => (
               <Box>
                 <InputLabel className={classes.label}>
@@ -442,7 +442,7 @@ export default function FormVerticle<T extends FieldValues>({
       case 'textarea':
         return (
           <Controller
-            name={i.label as Path<T>}
+            name={(i.name || i.label) as Path<T>}
             control={control}
             render={({ field }) => {
               return (

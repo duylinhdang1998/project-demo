@@ -84,5 +84,7 @@
   "login_stripe": "Se connecter avec Stripe",
   "change_pasword_action": "action de changement de mot de passe",
   "offline_agent": "Agent (Hors ligne)",
-  "not_registered_payment": "La passerelle de paiement n'a pas été connectée avec succès, veuillez vous connecter pour compléter le mode de paiement."
+  "not_registered_payment": "La passerelle de paiement n'a pas été connectée avec succès, veuillez vous connecter pour compléter le mode de paiement.",
+  "banner_content": "Contenu de la bannière",
+  "banner_content_description": "Le contenu de la bannière de votre site Web"
 }
