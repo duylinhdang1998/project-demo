@@ -81,7 +81,7 @@ export default function ControlMerchandiseChecking() {
         <Box>
           {Object.keys(dataDetails).map(i => (
             <Grid container spacing={2} key={i} my="2px">
-              <Grid item xs={3}>
+              <Grid item xs={6} sm={3}>
                 <Typography variant="body2">{t(`${i}`)}:</Typography>
               </Grid>
               <Grid item xs={6}>
@@ -118,9 +118,11 @@ export default function ControlMerchandiseChecking() {
             </Box>
           </Grid>
         </Grid>
-        <Button backgroundButton="#1AA6EE" sx={{ float: 'right', padding: '10px 30px !important' }} onClick={handleNext}>
-          {t('translation:show_detail')}
-        </Button>
+        {data && (
+          <Button backgroundButton="#1AA6EE" sx={{ float: 'right', padding: '10px 30px !important' }} onClick={handleNext}>
+            {t('translation:show_detail')}
+          </Button>
+        )}
       </CardWhite>
     </LayoutDetail>
   );

@@ -99,12 +99,12 @@ export default function Qrcode({ code, autoDisconnectOnScan = true, onSearch, on
             <div className={classes.square} />
             {t('dashboard:scan_me')}
           </Box>
-          <Box position="relative" padding="20px">
+          <Box position="relative" padding="16px">
             {_renderEdge('topLeft')}
             {_renderEdge('topRight')}
             {_renderEdge('bottomLeft')}
             {_renderEdge('bottomRight')}
-            <QRCode value={code} width="90%" />
+            <QRCode value={code} width="90%" size={160} />
           </Box>
         </Box>
       )}
