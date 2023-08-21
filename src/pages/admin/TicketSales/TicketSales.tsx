@@ -119,7 +119,18 @@ export default function TicketSales() {
             <FilterTicket
               gap="14px"
               control={control}
-              fields={fieldsSearch}
+              fields={fieldsSearch?.map(item => {
+                if ('options' in item && item.label === 'payment_status') {
+                  return {
+                    ...item,
+                    options: (item.options as any)?.map((option: Option) => ({
+                      ...option,
+                      label: t(`translation:${option.label}`),
+                    })),
+                  };
+                }
+                return item;
+              })}
               filterKey="ticketSales"
               numberColumns={2.5}
               flexWrap={{ xs: 'wrap', md: 'nowrap' }}

@@ -188,7 +188,7 @@ export default function OrderDetailConfirm() {
             <Tag
               color={PaymentStatusColorMapping[get(dataDetails, 'paymentStatus', 'PENDING')]}
               backgroundColor={PaymentStatusBackgroundColorMapping[get(dataDetails, 'paymentStatus', 'PENDING')]}
-              text={PaymentStatusLabelMapping[get(dataDetails, 'paymentStatus', 'PENDING')]}
+              text={t(`translation:${PaymentStatusLabelMapping[get(dataDetails, 'paymentStatus', 'PENDING')]}`)}
             />
           }
         />

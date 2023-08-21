@@ -187,7 +187,7 @@ export default function ControlTicket() {
               <Tag
                 color={PaymentStatusColorMapping[ticketSale?.paymentStatus]}
                 backgroundColor={PaymentStatusBackgroundColorMapping[ticketSale?.paymentStatus]}
-                text={PaymentStatusLabelMapping[ticketSale?.paymentStatus]}
+                text={t(`translation:${PaymentStatusLabelMapping[ticketSale?.paymentStatus]}`)}
               />
             }
           />

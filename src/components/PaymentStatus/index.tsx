@@ -30,7 +30,7 @@ export const PaymentStatus = ({ isActive, onChange }: PaymentStatusProps) => {
             marginRight: '4px',
           }}
         >
-          {isActive ? t(`ticketSales:${PaymentStatusLabelMapping['APPROVED']}`) : t(`ticketSales:${PaymentStatusLabelMapping['CREATED']}`)}
+          {isActive ? t(`translation:${PaymentStatusLabelMapping['APPROVED']}`) : t(`translation:${PaymentStatusLabelMapping['CREATED']}`)}
         </Typography>
         <Switch checked={isActive} onChange={checked => onChange?.(checked)} />
       </Stack>

@@ -1,4 +1,5 @@
 import { Grid, Typography } from '@mui/material';
+import { Stack } from '@mui/system';
 import { ReactNode } from 'react';
 
 export interface InformationProps {
@@ -8,14 +9,14 @@ export interface InformationProps {
 
 export const Infomation = ({ left, right }: InformationProps) => {
   return (
-    <Grid container>
-      <Grid item xs={5.5}>
+    <Grid container spacing="8px">
+      <Grid item xs={5.5} display="flex" alignItems="center">
         <Typography py="8px" fontSize="14px">
           {left}:
         </Typography>
       </Grid>
-      <Grid item xs={6.5}>
-        {right}
+      <Grid item xs={6.5} display="flex" alignItems="center">
+        <Stack>{right}</Stack>
       </Grid>
     </Grid>
   );

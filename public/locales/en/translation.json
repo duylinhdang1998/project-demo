@@ -125,5 +125,8 @@
   "VOIDED": "VOIDED",
 
   "SUCCESS": "SUCCESS",
-  "CANCELED": "CANCELED"
+  "CANCELED": "CANCELED",
+
+  "paid": "Paid",
+  "not_paid": "Not paid"
 }

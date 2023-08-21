@@ -118,5 +118,8 @@
   "VOIDED": "ANNULÉ",
 
   "SUCCESS": "VALIDÉE",
-  "CANCELED": "ANNULÉ"
+  "CANCELED": "ANNULÉ",
+
+  "paid": "Payé",
+  "not_paid": "À payer"
 }

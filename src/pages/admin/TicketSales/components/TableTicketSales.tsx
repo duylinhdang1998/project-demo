@@ -146,7 +146,7 @@ export const TableTicketSales = () => {
             <Tag
               color={PaymentStatusColorMapping[row.paymentStatus]}
               backgroundColor={PaymentStatusBackgroundColorMapping[row.paymentStatus]}
-              text={PaymentStatusLabelMapping[row.paymentStatus]}
+              text={t(`translation:${PaymentStatusLabelMapping[row.paymentStatus]}`)}
             />
           );
         },

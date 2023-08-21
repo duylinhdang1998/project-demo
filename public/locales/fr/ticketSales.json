@@ -58,8 +58,6 @@
   "ticket_sales": "Ventes de billets",
   "passenger": "Passager",
   "payment_methods": "Moyens de paiement",
-  "paid": "Payé",
-  "not_paid": "À payer",
   "email": "Email",
   "add_new_passenger": "Ajouter un nouveau passager",
   "total_trips_found": "{{total}} trajets trouvés",

@@ -58,8 +58,6 @@
   "ticket_sales": "Ticket sales",
   "passenger": "Passenger",
   "payment_methods": "Payment methods",
-  "paid": "Paid",
-  "not_paid": "Not paid",
   "email": "Email",
   "add_new_passenger": "Add new passenger",
   "total_trips_found": "{{total}} trips found",

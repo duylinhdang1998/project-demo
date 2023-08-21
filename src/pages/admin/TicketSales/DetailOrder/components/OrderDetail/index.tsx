@@ -92,7 +92,7 @@ function OrderDetails({ record }: OrderDetailsProps) {
             <Tag
               color={PaymentStatusColorMapping[record.paymentStatus]}
               backgroundColor={PaymentStatusBackgroundColorMapping[record.paymentStatus]}
-              text={PaymentStatusLabelMapping[record.paymentStatus]}
+              text={t(`translation:${PaymentStatusLabelMapping[record.paymentStatus]}`)}
             />
           }
         />

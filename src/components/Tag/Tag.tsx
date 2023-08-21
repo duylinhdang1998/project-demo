@@ -1,7 +1,6 @@
 import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
-import { memo } from 'react';
 
 interface TagProps {
   color?: string;
@@ -38,4 +37,4 @@ function Tag({ color, backgroundColor, text, variant }: TagProps) {
     </Box>
   );
 }
-export default memo(Tag);
+export default Tag;

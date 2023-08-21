@@ -46,7 +46,7 @@ function OrderDetailView({ data }: OrderDetailViewProps) {
       case 'payment_status':
         return (
           <Tag
-            text={PaymentStatusLabelMapping[mappingData[key]]}
+            text={t(`translation:${PaymentStatusLabelMapping[mappingData[key]]}`)}
             backgroundColor={PaymentStatusBackgroundColorMapping[mappingData[key]]}
             color={PaymentStatusColorMapping[mappingData[key]]}
           />
