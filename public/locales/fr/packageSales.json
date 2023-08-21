@@ -1,7 +1,7 @@
 {
   "package_sales": "Ventes de colis",
   "destination": "Destination",
-  "from": "De",
+  "from": "Expéditeur",
   "recipient": "Destinataire",
   "payment_status": "État du paiement",
   "orderId": "ID de commande",
@@ -54,5 +54,6 @@
   "add_package_sale_success": "Ajout de la vente de colis réussi",
   "add_package_sale_failed": "Échec de l'ajout de la vente de colis",
   "update_package_sale_success": "Mise à jour de la vente de colis réussie",
-  "update_package_sale_error": "Échec de la mise à jour de la vente de colis"
+  "update_package_sale_error": "Échec de la mise à jour de la vente de colis",
+  "order_status": "Statut"
 }
