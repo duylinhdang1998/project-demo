@@ -7,6 +7,7 @@ import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { ArrowOutward } from 'components/SvgIcon/ArrowOutward';
 import PrintIcon from 'components/SvgIcon/PrintIcon';
 import SendIcon from 'components/SvgIcon/SendIcon';
+import ListIcon from '@mui/icons-material/List';
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
@@ -31,6 +32,8 @@ import { Infomation } from './components/OrderDetail/Infomation';
 import { PassengersDetail } from './components/PassengersDetail';
 import { PaymentDetail } from './components/PaymentDetail';
 import { VehicleDetail } from './components/VehicleDetail';
+import { router } from '../../../../App';
+import { selectAuth } from '../../../../store/auth/selectors';
 
 export default function DetailTicketPage() {
   const { t } = useTranslation(['ticketSales', 'message_error']);
@@ -43,6 +46,7 @@ export default function DetailTicketPage() {
 
   const [openModalPrint, setOpenModalPrint] = useState(false);
   const [ticketDirection, setTicketDirection] = useState<TicketDirection>('DEPARTURE');
+  const { userMainRoute } = useAppSelector(selectAuth);
 
   const record: ColumnTicket | undefined = useMemo(() => {
     if (ticketSalesOfOrder) {
@@ -76,6 +80,10 @@ export default function DetailTicketPage() {
         }),
       );
     }
+  };
+
+  const backToList = () => {
+    router.navigate(`/${userMainRoute} /ticket-sales`);
   };
 
   const handleViewRelateOrder = () => {
@@ -129,6 +137,9 @@ export default function DetailTicketPage() {
                   {t('ticketSales:view_relate_order')}
                 </Button>
               )}
+              <Button onClick={backToList} variant="contained" backgroundButton="#01314A" sx={{ padding: '12px 16px' }} startIcon={<ListIcon />}>
+                {t('ticketSales:order_list')}
+              </Button>
               <Button
                 onClick={handleSendEmail}
                 loading={statusSendEmail === 'loading'}
