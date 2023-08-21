@@ -59,11 +59,11 @@ export default function TicketSales() {
       ticketSalesActions.getTicketSalesRequest({
         page: 0,
         searcher: {
-          departurePoint: {
+          departurePointCode: {
             value: values.departurePoint?.value._id,
             operator: 'eq',
           },
-          arrivalPoint: {
+          arrivalPointCode: {
             value: values.arrivalPoint?.value._id,
             operator: 'eq',
           },
