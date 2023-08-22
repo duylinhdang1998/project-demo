@@ -71,7 +71,6 @@ export default function ClientInfo() {
     },
   });
   const methodWatch = watch('method');
-  console.log('methodWatch>>>', methodWatch);
 
   const { run: createPackageSale, loading } = useCreatePackageSale({
     onSuccess: dataCode => {

@@ -68,9 +68,7 @@ export const OrderDetailOnCreateOrder = () => {
     name: 'passengers',
   });
   const passengers = watch('passengers');
-  // const isPaid = watch('isPaid');
   const methodWatch = watch('method');
-  console.log('methodWatch>>', methodWatch);
 
   const isAgent = userInfo?.role === UserRole.AGENT;
 
@@ -122,7 +120,6 @@ export const OrderDetailOnCreateOrder = () => {
   }, [t]);
 
   const onSubmit = (values: TicketDetailFormValues) => {
-    console.log('values>>>>', values, generalInfomationOfTicket);
 
     if (generalInfomationOfTicket) {
       if (isEditAction && orderCode) {

@@ -63,7 +63,6 @@ export default function EditPackageSales() {
   });
 
   const { run: getPackageSaleDetail, data: dataDetails } = useGetPackageSale();
-  console.log('dataDetails>>>', dataDetails);
 
   const { run: updatePackage, loading } = useUpdatePackageSale({
     onSuccess: dataCode => {

@@ -25,8 +25,6 @@ export function ControlMerchandiseDetail() {
     return location.state as PackageSale;
   }, [location.state]);
 
-  console.log({ dataDetail });
-
   useEffect(() => {
     if (!dataDetail) {
       throw 'Some thing went wrong';

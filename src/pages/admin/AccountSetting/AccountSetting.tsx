@@ -43,8 +43,6 @@ export default function AccountSetting() {
   const { t } = useTranslation(['account', 'translation']);
 
   const { profile, statusGetProfile, statusUpdateProfile } = useAppSelector(selectProfile);
-  const { userInfo } = useAppSelector(selectAuth);
-  console.log({ userInfo });
 
   const dispatch = useAppDispatch();
 
