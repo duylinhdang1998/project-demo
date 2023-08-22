@@ -112,6 +112,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         key: 'sender',
         dataIndex: 'sender',
         align: 'left',
+        width: 140,
         title: () => <div>{i18n.t('packageSales:from')}</div>,
         render: (value: PackageSale['sender']) => (
           <div>
@@ -128,6 +129,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         key: 'recipent',
         dataIndex: 'recipent',
         align: 'left',
+        width: 140,
         title: () => <div>{i18n.t('packageSales:recipient')}</div>,
         render: (value: PackageSale['recipent']) => (
           <div>
@@ -144,6 +146,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         key: 'totalQuantity',
         dataIndex: 'totalQuantity',
         align: 'center',
+        width: 120,
         title: () => <div>{i18n.t('packageSales:qty')}</div>,
         // render: (value) => (
         //   <div>
@@ -159,6 +162,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         key: 'totalWeight',
         dataIndex: 'merchandises',
         align: 'center',
+        width: 120,
         title: () => <div>{i18n.t('packageSales:weight')}</div>,
         render: (value: PackageSale['merchandises']) => (
           <div>
@@ -174,6 +178,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         key: 'totalPrice',
         dataIndex: 'merchandises',
         align: 'center',
+        width: 120,
         title: () => <div>{i18n.t('packageSales:price')}</div>,
         render: (value: PackageSale['merchandises']) => (
           <div>
@@ -189,6 +194,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         key: 'paymentStatus',
         dataIndex: 'paymentStatus',
         align: 'center',
+        width: 140,
         title: () => <div>{i18n.t('packageSales:payment_status')}</div>,
         render: (paymentStatus: PackageSale['paymentStatus']) => (
           <Box display="flex" alignItems="center" justifyContent="center">
@@ -200,7 +206,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         key: 'orderStatus',
         dataIndex: 'orderStatus',
         title: () => <AntTableColumnTitle>{t('packageSales:order_status')}</AntTableColumnTitle>,
-        width: 90,
+        width: 140,
         align: 'center',
         render: (value: OrderStatus) => {
           return (

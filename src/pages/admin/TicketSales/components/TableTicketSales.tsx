@@ -58,7 +58,7 @@ export const TableTicketSales = () => {
       {
         key: 'passengers.lastName',
         dataIndex: 'passengers.lastName',
-        width: 85,
+        width: 140,
         title: () => <AntTableColumnTitle>{t('ticketSales:lastName')}</AntTableColumnTitle>,
         render: (_, row) => {
           return <AntTableColumnDisplayAsTypograph>{row.lastName}</AntTableColumnDisplayAsTypograph>;
@@ -67,7 +67,7 @@ export const TableTicketSales = () => {
       {
         key: 'passengers.firstName',
         dataIndex: 'passengers.firstName',
-        width: 85,
+        width: 140,
         title: () => <AntTableColumnTitle>{t('ticketSales:firstName')}</AntTableColumnTitle>,
         render: (_, row) => {
           return <AntTableColumnDisplayAsTypograph>{row.firstName}</AntTableColumnDisplayAsTypograph>;
@@ -91,7 +91,7 @@ export const TableTicketSales = () => {
         key: 'departureTime',
         dataIndex: 'departureTime',
         title: () => <AntTableColumnTitle>{t('ticketSales:departureTime')}</AntTableColumnTitle>,
-        width: 125,
+        width: 145,
         sorter: () => 0,
         render: (_, row) => {
           return (
@@ -106,7 +106,7 @@ export const TableTicketSales = () => {
         key: 'totalPax',
         dataIndex: 'totalPax',
         title: () => <AntTableColumnTitle>{t('ticketSales:paxCount')}</AntTableColumnTitle>,
-        width: 120,
+        width: 150,
         align: 'center',
         sorter: () => 0,
         render: (_, row) => {
@@ -117,7 +117,7 @@ export const TableTicketSales = () => {
         key: 'ticketStatus',
         dataIndex: 'ticketStatus',
         title: () => <AntTableColumnTitle>{t('ticketSales:ticket_status')}</AntTableColumnTitle>,
-        width: 90,
+        width: 140,
         align: 'center',
         render: (_, row) => {
           return (
@@ -139,7 +139,7 @@ export const TableTicketSales = () => {
         key: 'paymentStatus',
         dataIndex: 'paymentStatus',
         title: () => <AntTableColumnTitle>{t('ticketSales:payment_status')}</AntTableColumnTitle>,
-        width: 120,
+        width: 140,
         align: 'center',
         render: (_, row) => {
           return (
@@ -155,7 +155,7 @@ export const TableTicketSales = () => {
         key: 'orderCode',
         dataIndex: 'orderCode',
         title: () => <AntTableColumnTitle>{t('ticketSales:order_id')}</AntTableColumnTitle>,
-        width: 85,
+        width: 140,
         align: 'center',
         render: (_, row) => {
           return <AntTableColumnDisplayAsTypograph>{row.orderCode}</AntTableColumnDisplayAsTypograph>;
@@ -165,7 +165,7 @@ export const TableTicketSales = () => {
         key: 'ticketType',
         dataIndex: 'ticketType',
         title: () => <AntTableColumnTitle>{t('ticketSales:type')}</AntTableColumnTitle>,
-        width: 80,
+        width: 140,
         align: 'center',
         render: (_, row) => {
           return <AntTableColumnDisplayAsTypograph>{TicketTypeLabelMapping[row.ticketType]}</AntTableColumnDisplayAsTypograph>;
@@ -208,7 +208,7 @@ export const TableTicketSales = () => {
           return <ActionTable actions={actions} row={row} />;
         },
         align: 'center',
-        width: 60,
+        width: 120,
       },
     ];
   }, [isAgent, navigate, t]);
