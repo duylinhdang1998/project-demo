@@ -83,7 +83,7 @@ export default function DetailTicketPage() {
   };
 
   const backToList = () => {
-    router.navigate(`/${userMainRoute} /ticket-sales`);
+    router.navigate(`${userMainRoute} /ticket-sales`);
   };
 
   const handleViewRelateOrder = () => {

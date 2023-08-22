@@ -20,7 +20,6 @@ import { selectAuth } from 'store/auth/selectors';
 import { PackageSale } from 'models/PackageSales';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import dayjs from 'dayjs';
-import {UserRole} from "../../../utils/constant";
 
 interface StateLocation {
   merchandise: {
@@ -72,6 +71,7 @@ export default function ClientInfo() {
     },
   });
   const methodWatch = watch('method');
+  console.log('methodWatch>>>', methodWatch);
 
   const { run: createPackageSale, loading } = useCreatePackageSale({
     onSuccess: dataCode => {
@@ -81,7 +81,7 @@ export default function ClientInfo() {
         error: t('add_package_sale_failed'),
         onSuccess: () => {
           reset();
-          navigate(`${authentication.userInfo?.role === UserRole.ADMIN ? '/admin' : '/agent'}/package-sales/${dataCode.data.orderCode}`, {
+          navigate(`${authentication.userMainRoute}/package-sales/${dataCode.data.orderCode}`, {
             state: {
               packageSale: dataCode.data,
             },
@@ -102,6 +102,12 @@ export default function ClientInfo() {
     }
     throw new Error('Route not found');
   }, [selectedRoute, defaultPackageSale]);
+
+  useEffect(() => {
+    if (location && !get(location, 'state.selectedRoute', undefined)) {
+      navigate(`${authentication.userMainRoute}/package-sales/create-package-orders`);
+    }
+  }, [location]);
 
   const onSubmit = (values: FieldValues) => {
     const payload: PackageSalePayload = {
@@ -174,7 +180,7 @@ export default function ClientInfo() {
             <ReserveInfo
               onBook={handleSubmit(onSubmit)}
               routeDetail={dataDetail?.data}
-              departureTime={dayjs(selectedRoute.bookDate).format('DD/MM/YYYY HH:mm')}
+              departureTime={+dayjs(selectedRoute?.bookDate)}
               control={control}
               errors={errors}
               loading={loading}

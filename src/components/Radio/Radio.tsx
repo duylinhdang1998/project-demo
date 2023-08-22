@@ -15,10 +15,6 @@ function Radio({ options, onChange, radioName, value }: RadioProps) {
     onChange?.(valueRadio);
   };
 
-  useEffect(() => {
-    console.log({ value });
-  }, [value]);
-
   return (
     <RadioGroup value={value} aria-labelledby="demo-row-radio-buttons-group-label" name={radioName} onChange={handleChange}>
       {options.map(o => (

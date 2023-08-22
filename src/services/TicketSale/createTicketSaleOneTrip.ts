@@ -3,6 +3,7 @@ import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response
 import { TicketSale } from 'services/models/TicketSale';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
+import { EnumPaymentGateway } from '../models/PaymentGateway';
 
 export interface CreateTicketSaleOneTrip {
   routePoint: Required<TicketSale>['routePoint']['_id'];
@@ -11,6 +12,7 @@ export interface CreateTicketSaleOneTrip {
   arrivalPoint: TicketSale['arrivalPoint'];
   passengers: TicketSale['passengers'];
   email: TicketSale['email'];
+  paymentType?: EnumPaymentGateway;
 }
 
 export const createTicketSaleOneTrip = async (data: CreateTicketSaleOneTrip) => {

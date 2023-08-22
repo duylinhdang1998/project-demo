@@ -3,6 +3,7 @@ import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response
 import { TicketSale } from 'services/models/TicketSale';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
+import { EnumPaymentGateway } from '../models/PaymentGateway';
 
 interface Trip {
   routePoint: Required<TicketSale>['routePoint']['_id'];
@@ -11,6 +12,7 @@ interface Trip {
   arrivalPoint: TicketSale['arrivalPoint'];
   passengers: TicketSale['passengers'];
   email: TicketSale['email'];
+  paymentType?: EnumPaymentGateway;
 }
 
 export interface CreateTicketSaleRoundTrip {

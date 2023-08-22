@@ -13,6 +13,7 @@ import { Control, Controller, FieldErrors, useWatch } from 'react-hook-form';
 import { FieldValues } from '../ClientInfo';
 import { isEmpty } from 'ramda';
 import { useUpdateEffect } from 'ahooks';
+import dayjs from 'dayjs';
 
 interface Props {
   onBook?: () => void;
@@ -21,7 +22,7 @@ interface Props {
   control: Control<FieldValues>;
   errors: FieldErrors<FieldValues>;
   isEdit?: boolean;
-  departureTime?: string;
+  departureTime?: string | number;
 }
 
 const ReserveInfo = ({ onBook, loading, routeDetail, control, errors, isEdit, departureTime }: Props) => {
@@ -133,7 +134,7 @@ const ReserveInfo = ({ onBook, loading, routeDetail, control, errors, isEdit, de
       <Typography variant="body2" component="p" marginBottom="16px" fontWeight={700}>
         {t('date')}
       </Typography>
-      <TextWithIcon icon={ClockSvg} color="#45485E" text={departureTime} />
+      <TextWithIcon icon={ClockSvg} color="#45485E" text={dayjs(departureTime, 'x').format('DD/MM/YYYY HH:mm')} />
       <Typography variant="body2" component="p" margin="16px 0" fontWeight={700}>
         {t('trip')}
       </Typography>

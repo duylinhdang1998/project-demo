@@ -55,8 +55,6 @@ function FormAddVehicle() {
   const services = watch('services');
   const merchandises = watch('merchandises');
 
-  console.log(333, errors);
-
   const { t } = useTranslation(['vehicles', 'translation']);
 
   const navigate = useNavigate();

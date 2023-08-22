@@ -90,7 +90,11 @@ export default function CreatePackageOrders() {
   };
   const onSubmit = (values: SelectTripFormValues) => {
     setCurrentPage(1);
-    run(0, values);
+    const dataFilter = {
+      ...values,
+      departureTime: dayjs(values.departureTime).isSame(dayjs(), 'day') ? values.departureTime : +dayjs(values.departureTime).startOf('day'),
+    };
+    run(0, dataFilter);
   };
 
   return (

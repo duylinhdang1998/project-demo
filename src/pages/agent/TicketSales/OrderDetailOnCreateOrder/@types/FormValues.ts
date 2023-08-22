@@ -1,6 +1,7 @@
 import { Option } from 'models/Field';
 import { Key } from 'react';
 import { PassengerInTicketSale } from 'services/models/TicketSale';
+import { EnumPaymentGateway } from 'services/models/PaymentGateway';
 
 export interface Passenger {
   uniqKey: Key;
@@ -15,4 +16,5 @@ export interface TicketDetailFormValues {
   passengers: Passenger[];
   accept_term: boolean;
   isPaid: boolean;
+  method: EnumPaymentGateway;
 }

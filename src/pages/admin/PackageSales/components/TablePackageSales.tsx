@@ -129,7 +129,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         key: 'recipent',
         dataIndex: 'recipent',
         align: 'left',
-        width: 140,
+        width: 150,
         title: () => <div>{i18n.t('packageSales:recipient')}</div>,
         render: (value: PackageSale['recipent']) => (
           <div>

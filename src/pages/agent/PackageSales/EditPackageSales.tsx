@@ -63,6 +63,7 @@ export default function EditPackageSales() {
   });
 
   const { run: getPackageSaleDetail, data: dataDetails } = useGetPackageSale();
+  console.log('dataDetails>>>', dataDetails);
 
   const { run: updatePackage, loading } = useUpdatePackageSale({
     onSuccess: dataCode => {
@@ -168,6 +169,7 @@ export default function EditPackageSales() {
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
             <ReserveInfo
+              departureTime={dataDetails?.departureTime?.toString()}
               onBook={handleSubmit(onSubmit)}
               routeDetail={routeDetail?.data}
               control={control}

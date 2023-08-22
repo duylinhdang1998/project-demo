@@ -19,7 +19,7 @@ import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
 import { dayjsToNumber } from 'utils/dayjsToNumber';
 import { v4 } from 'uuid';
-import { PaymentStatus } from '../../../../components/PaymentStatus';
+// import { PaymentStatus } from '../../../../components/PaymentStatus';
 import { TicketDetailFormValues } from './@types/FormValues';
 import {
   GeneralInfomationOfOrder,
@@ -31,6 +31,7 @@ import { getEmptyPassenger } from './components/Passengers/utils';
 import { seatsTypeOptions, getTypeTicketOptions } from './components/Passengers/const';
 import { Reservation } from './components/Reservation';
 import { UserRole } from 'utils/constant';
+import { PaymentMethod } from '../../../../components/PaymentMethod';
 
 const fieldKeys = ['email', 'method'];
 
@@ -58,7 +59,8 @@ export const OrderDetailOnCreateOrder = () => {
     defaultValues: {
       accept_term: true,
       passengers: [getEmptyPassenger(t)],
-      isPaid: true,
+      method: 'PAYPAL',
+      // isPaid: true,
     },
   });
   const { append, remove } = useFieldArray({
@@ -66,7 +68,9 @@ export const OrderDetailOnCreateOrder = () => {
     name: 'passengers',
   });
   const passengers = watch('passengers');
-  const isPaid = watch('isPaid');
+  // const isPaid = watch('isPaid');
+  const methodWatch = watch('method');
+  console.log('methodWatch>>', methodWatch);
 
   const isAgent = userInfo?.role === UserRole.AGENT;
 
@@ -118,6 +122,8 @@ export const OrderDetailOnCreateOrder = () => {
   }, [t]);
 
   const onSubmit = (values: TicketDetailFormValues) => {
+    console.log('values>>>>', values, generalInfomationOfTicket);
+
     if (generalInfomationOfTicket) {
       if (isEditAction && orderCode) {
         if (ticketSalesOfOrder?.type === 'ONE_TRIP') {
@@ -219,6 +225,7 @@ export const OrderDetailOnCreateOrder = () => {
                 arrivalPoint: generalInfomationOfTicket.data.routePoint.stopPoint,
                 departurePoint: generalInfomationOfTicket.data.routePoint.departurePoint,
                 routePoint: generalInfomationOfTicket.data.routePoint._id,
+                paymentType: values.method,
               },
               onSuccess(ticketSaleOrderCode) {
                 toast(
@@ -264,6 +271,7 @@ export const OrderDetailOnCreateOrder = () => {
                   arrivalPoint: generalInfomationOfTicket.data.departureTrip.routePoint.stopPoint,
                   departurePoint: generalInfomationOfTicket.data.departureTrip.routePoint.departurePoint,
                   routePoint: generalInfomationOfTicket.data.departureTrip.routePoint._id,
+                  paymentType: values.method,
                 },
                 returnTrip: {
                   passengers: values.passengers.map(passenger => ({
@@ -277,6 +285,7 @@ export const OrderDetailOnCreateOrder = () => {
                   arrivalPoint: generalInfomationOfTicket.data.returnTrip.routePoint.stopPoint,
                   departurePoint: generalInfomationOfTicket.data.returnTrip.routePoint.departurePoint,
                   routePoint: generalInfomationOfTicket.data.returnTrip.routePoint._id,
+                  paymentType: values.method,
                 },
               },
               onSuccess(ticketSaleOrderCode) {
@@ -330,7 +339,7 @@ export const OrderDetailOnCreateOrder = () => {
           typeTicket: typeTicketOptions.find(option => option.value === passenger.typeTicket),
           uniqKey: v4(),
         })),
-        isPaid: representTicketSale.paymentStatus === 'APPROVED',
+        // isPaid: representTicketSale.paymentStatus === 'APPROVED',
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -387,15 +396,14 @@ export const OrderDetailOnCreateOrder = () => {
                   ]}
                 />
                 <Divider sx={{ margin: '16px 0' }} />
-                <PaymentStatus
-                  isActive={isPaid}
-                  onChange={checked => {
-                    if (isEditAction) {
-                      setValue('isPaid', checked);
-                    } else {
-                      setValue('isPaid', true);
-                    }
-                    trigger('isPaid');
+                <PaymentMethod
+                  control={control}
+                  errors={errors}
+                  label="method"
+                  method={methodWatch}
+                  onChange={value => {
+                    setValue('method', value);
+                    trigger('method');
                   }}
                 />
               </Grid>

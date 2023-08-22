@@ -21,6 +21,9 @@ import Tag from 'components/Tag/Tag';
 import { get } from 'lodash-es';
 import { useSelector } from 'react-redux';
 import { selectAuth } from 'store/auth/selectors';
+import ListIcon from '@mui/icons-material/List';
+import { router } from '../../../App';
+import { useAppSelector } from '../../../hooks/useAppSelector';
 
 export default function OrderDetailConfirm() {
   const { t } = useTranslation(['packageSales', 'translation', 'ticketSales']);
@@ -29,6 +32,7 @@ export default function OrderDetailConfirm() {
   const [openModalPrint, setOpenModalPrint] = useState(false);
   const { run: getPackageSaleDetail, data: dataDetails } = useGetPackageSale();
   const navigate = useNavigate();
+  const { userMainRoute } = useAppSelector(selectAuth);
 
   const authentication = useSelector(selectAuth);
 
@@ -53,6 +57,11 @@ export default function OrderDetailConfirm() {
   const handleSendEmail = () => {
     run({ orderCode: dataDetails?.orderCode ?? '' });
   };
+
+  const backToList = () => {
+    router.navigate(`${userMainRoute}/package-sales`);
+  };
+
   return (
     <LayoutDetail
       title={t('create_package_orders')}
@@ -72,6 +81,9 @@ export default function OrderDetailConfirm() {
             </Grid>
           </Grid>
           <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={2} my="24px">
+            <Button onClick={backToList} variant="contained" backgroundButton="#01314A" sx={{ padding: '12px 16px' }} startIcon={<ListIcon />}>
+              {t('ticketSales:order_list')}
+            </Button>
             <Button
               variant="outlined"
               sx={{

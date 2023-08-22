@@ -39,8 +39,6 @@ function ContentManager() {
   } = useForm<Values>();
   const contentValueOfForm = watch('content');
   const sidebarValueOfForm = watch('sidebar');
-  const titleValueOfForm = watch('title');
-  console.log('titleValueOfForm>>>', titleValueOfForm, errors);
   const backGroundValueOfForm = watch('backGround');
   const footerTextValueOfForm = watch('footerText');
   const classes = useStyles();
@@ -54,7 +52,6 @@ function ContentManager() {
   const handleCancel = () => setOpen(true);
 
   const onSubmit = (values: Values) => {
-    console.log('values>>', values);
     dispatch(
       contentManagerActions.updateContentRequest({
         data: {
@@ -102,9 +99,7 @@ function ContentManager() {
 
   useEffect(() => {
     if (content) {
-      console.log('content>>>', content);
       fieldKeys.forEach(key => {
-        console.log('key>>', key, content[key]);
         setValue(key, content[key] ?? '');
       });
     }

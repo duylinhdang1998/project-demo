@@ -89,7 +89,9 @@ export const SelectTripOnCreateOrder = () => {
           departurePoint: values.departurePoint,
           arrivalPoint: values.arrivalPoint,
           tripType: values.tripType,
-          departureTime: values.departureTime,
+          departureTime: dayjs(values.departureTime).isSame(dayjs(), 'day')
+            ? values.departureTime
+            : +dayjs(values.departureTime).startOf('day'),
         },
         false,
       );

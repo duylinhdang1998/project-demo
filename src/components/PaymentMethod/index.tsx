@@ -21,6 +21,7 @@ const PAYMENT_METHODS: Array<EnumPaymentGateway> = ['PAYPAL', 'STRIPE'];
 export const PaymentMethod = <T extends AnyObject, K extends keyof T>({ errors, messages, label, method, onChange }: PaymentMethodProps<T, K>) => {
   const classes = useStyles();
   const { t } = useTranslation(['ticketSales']);
+  console.log('method>>>', method);
 
   const PAYMENT_LABELS: Record<EnumPaymentGateway, string> = {
     PAYPAL: t('account:Paypal'),

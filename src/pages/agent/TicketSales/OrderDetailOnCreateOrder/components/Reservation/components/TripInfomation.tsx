@@ -30,8 +30,6 @@ export const Title: FC = ({ children }) => (
 export const TripInfomation = ({ data, variant }: TripInfomationProps) => {
   const { t } = useTranslation(['ticketSales']);
 
-  console.log(111, data);
-
   const renderDate = () => {
     const TitleMapping: Record<TripInfomationProps['variant'], string> = {
       DEPARTURE_TRIP: t('ticketSales:depatureDate'),
@@ -41,7 +39,7 @@ export const TripInfomation = ({ data, variant }: TripInfomationProps) => {
     return (
       <Box marginBottom="24px">
         <Title>{TitleMapping[variant]}</Title>
-        <TextWithIcon icon={ClockSvg} color="#45485E" text={dayjs(data.dateFormatted).format('DD-MM-YYYY HH:mm')} />
+        <TextWithIcon icon={ClockSvg} color="#45485E" text={dayjs(data.dateFormatted, 'YYYY-MM-DD HH:mm').format('DD-MM-YYYY HH:mm')} />
       </Box>
     );
   };

@@ -16,7 +16,7 @@ const initialState: AuthState = {
   token: '',
   isLoggedIn: false,
   userInfo: {},
-  userMainRoute: 'admin',
+  userMainRoute: '/admin',
 };
 
 const authSlice = createSlice({
@@ -36,7 +36,7 @@ const authSlice = createSlice({
         isLoggedIn: true,
         token,
         userInfo: { role },
-        userMainRoute: role === 'admin' ? 'admin' : 'agent',
+        userMainRoute: role === 'admin' ? '/admin' : '/agent',
         statusLogin: 'success',
       };
     },
