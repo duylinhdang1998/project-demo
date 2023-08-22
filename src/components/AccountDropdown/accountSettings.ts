@@ -8,6 +8,7 @@ export const accountSettings = [
   { path: '/payment-methods', name: 'payment_methods', icon: WalletIcon, role: [UserRole.ADMIN] },
   { path: '/orders-setting', name: 'orders_setting', icon: OrderIcon, role: [UserRole.ADMIN] },
   { path: '/subscription', name: 'subscription', icon: SubcriptionIcon, role: [UserRole.ADMIN] },
+  { path: '/currency-setting', name: 'currency_setting', icon: SubcriptionIcon, role: [UserRole.ADMIN] },
   { path: '/change-password', name: 'change_pass', icon: ChangePassIcon },
   { path: 'logout', name: 'logout', icon: LogoutIcon },
 ];

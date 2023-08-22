@@ -18,7 +18,6 @@ import { VehicleEvent } from 'services/models/Vehicle';
 import { RECORDS_PER_PAGE } from 'services/Vehicle/Company/getVehicleEvents';
 import { selectVehicleEvents } from 'store/vehicles/selectors';
 import { vehicleEventsActions } from 'store/vehicles/vehicleEventsSlice';
-import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { getAppLengthSymbol } from 'utils/getAppLengthSymbol';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
@@ -27,6 +26,8 @@ import { useStyles } from '../styles';
 import { selectAuth } from 'store/auth/selectors';
 import { getNameOfResource } from 'utils/getNameOfResource';
 import { UserRole } from 'utils/constant';
+import { useSelector } from 'react-redux';
+import { selectProfile } from 'store/profile/selectors';
 
 function TableEvents() {
   const classes = useStyles();
@@ -37,6 +38,7 @@ function TableEvents() {
   const { statusGetVehicleEvents, vehicleEvents, currentPage, totalRows, queueDeleteVehicleEvent, currentSearcher } =
     useAppSelector(selectVehicleEvents);
   const dispatch = useAppDispatch();
+  const { profile } = useSelector(selectProfile);
 
   const navigate = useNavigate();
   const { vehicleId } = useParams();
@@ -76,7 +78,7 @@ function TableEvents() {
       {
         key: 'fuelFees',
         dataIndex: 'fuelFees',
-        title: () => `${t('vehicles:fuelFees')} (${getAppCurrencySymbol()})`,
+        title: () => `${t('vehicles:fuelFees')} (${profile?.currency})`,
         render: (_, row) => <Typography variant="body2">{row.fuelFees}</Typography>,
         width: 121,
         align: 'center',
@@ -84,7 +86,7 @@ function TableEvents() {
       {
         key: 'extraFees',
         dataIndex: 'extraFees',
-        title: () => `${t('vehicles:extraFees')} (${getAppCurrencySymbol()})`,
+        title: () => `${t('vehicles:extraFees')} (${profile?.currency})`,
         render: (_, row) => <Typography variant="body2">{row.extraFees}</Typography>,
         width: 200,
         align: 'center',
@@ -147,6 +149,7 @@ function TableEvents() {
         width: 150,
       },
     ];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [classes.downloadButton, isAgent, navigate, t, vehicleId]);
 
   const renderDialogDelete = () => {

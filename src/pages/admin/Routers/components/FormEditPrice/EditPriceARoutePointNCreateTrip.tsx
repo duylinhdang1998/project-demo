@@ -7,6 +7,8 @@ import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RoutePoint } from 'services/models/Route';
 import { useStyles } from './useStyles';
+import { useSelector } from 'react-redux';
+import { selectProfile } from 'store/profile/selectors';
 
 export interface EditPriceARoutePointFormValues {
   ecoAdult: number;
@@ -35,6 +37,7 @@ interface EditPriceARoutePointProps {
 export default function EditPriceARoutePointNCreateTrip({ control, errors, isMulti, index }: EditPriceCreateTripProps | EditPriceARoutePointProps) {
   const { t } = useTranslation(['routers', 'translation']);
   const classes = useStyles();
+  const { profile } = useSelector(selectProfile);
   const getNameInput = (defaultName: string) => {
     if (isMulti) {
       return `routePoints.${index}.${defaultName}`;
@@ -91,8 +94,8 @@ export default function EditPriceARoutePointNCreateTrip({ control, errors, isMul
                             <InputNumber
                               {...field}
                               min={0}
-                              formatter={value => (value ? `${value}$` : '')}
-                              parser={value => (value ? value.replace('$', '') : 0)}
+                              formatter={value => (value ? `${value}${profile?.currency}` : '')}
+                              parser={value => (value ? value.replace(`${profile?.currency}`, '') : 0)}
                               placeholder={t('routers:input_price')}
                               className={cx(classes.input)}
                               status={!!error ? 'error' : undefined}

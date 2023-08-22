@@ -60,6 +60,10 @@ const profileSlice = createSlice({
         statusUpdateProfile: 'failure',
       };
     },
+    setCurrencySetting: (state, action) => {
+      // @ts-ignore
+      state.profile = { ...state.profile, currency: action.payload };
+    },
   },
 });
 

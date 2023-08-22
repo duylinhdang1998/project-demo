@@ -85,5 +85,6 @@
   "login_stripe": "Connect with Stripe",
   "change_pasword_action": "change password action",
   "offline_agent": "Agent (Offline)",
-  "not_registered_payment": "The payment gateway has not been connected successfully, please connect to complete the payment method."
+  "not_registered_payment": "The payment gateway has not been connected successfully, please connect to complete the payment method.",
+  "currency_setting":"Currency setting"
 }

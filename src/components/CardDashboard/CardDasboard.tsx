@@ -2,7 +2,9 @@ import { Card, Theme, Typography, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { memo } from 'react';
+import { useSelector } from 'react-redux';
 import { ITrackingEvent } from 'services/Dashboard/dashboard';
+import { selectProfile } from 'store/profile/selectors';
 
 export interface CardDasboardProps {
   icon?: string;
@@ -34,9 +36,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-function CardDasboard({ icon, text, trackings, value, unit }: CardDasboardProps) {
+function CardDasboard({ icon, text, trackings, value }: CardDasboardProps) {
   const classes = useStyles();
   const theme = useTheme();
+  const profile = useSelector(selectProfile);
   return (
     <Box height="100%">
       <Card variant="outlined" className={classes.container}>
@@ -55,7 +58,7 @@ function CardDasboard({ icon, text, trackings, value, unit }: CardDasboardProps)
           fontWeight={700}
           color={theme.palette.grey[100]}
         >
-          {new Intl.NumberFormat('en-US').format(trackings?.[value as any])} {unit}
+          {trackings?.[value as any]} {profile.profile?.currency}
         </Typography>
       </Card>
     </Box>

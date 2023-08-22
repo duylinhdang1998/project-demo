@@ -98,6 +98,7 @@ function TableVehicles() {
         title: () => t('vehicles:ECOseats'),
         render: (_, record) => <Typography variant="body2">{record.ECOseats}</Typography>,
         align: 'center',
+        width: 100,
       },
       {
         key: 'VIPseats',
@@ -105,10 +106,12 @@ function TableVehicles() {
         title: () => t('vehicles:VIPseats'),
         render: (_, record) => <Typography variant="body2">{record.VIPseats}</Typography>,
         align: 'center',
+        width: 100,
       },
       {
         key: 'action',
         title: () => t('translation:action'),
+        width: 120,
         render: (_, row) => (
           <ActionTable
             actions={[
@@ -154,6 +157,7 @@ function TableVehicles() {
       {
         key: 'events',
         title: () => t('event_lists'),
+        width: 150,
         render: (_, row) => (
           <Stack
             direction="row"

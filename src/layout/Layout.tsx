@@ -13,6 +13,7 @@ import { profileActions } from 'store/profile/profileSlice';
 import { selectProfile } from 'store/profile/selectors';
 import { sidebars, sidebarsAgent } from './sidebar';
 import { UserRole } from 'utils/constant';
+import { useGetSystemConfig } from 'services/System/config';
 
 const drawerWidth = 240;
 
@@ -42,6 +43,7 @@ export default function Layout() {
   const dispatch = useAppDispatch();
 
   const [openDrawer, setOpenDrawer] = useState(false);
+  useGetSystemConfig();
 
   const container = window !== undefined ? () => window.document.body : undefined;
   const drawerContent = userInfo?.role === UserRole.ADMIN ? sidebars : sidebarsAgent;

@@ -94,4 +94,12 @@ export const AccountRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  {
+    path: 'currency-setting',
+    element: (
+      <RequiredAuth>
+        <Page.CurrencySetting />
+      </RequiredAuth>
+    ),
+  },
 ];

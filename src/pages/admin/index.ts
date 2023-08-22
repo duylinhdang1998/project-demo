@@ -30,8 +30,10 @@ import AddNewEvent from './Vehicles/AddNewEvent';
 import AddNewVehicles from './Vehicles/AddNewVehicles';
 import ListEvents from './Vehicles/ListEvents';
 import Vehicles from './Vehicles/Vehicles';
+import CurrencySetting from './CurrencySetting/CurrencySetting';
 
 export {
+  CurrencySetting,
   CreateMultiStopTrip,
   CreateOneStopTrip,
   Dashboard,

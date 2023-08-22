@@ -17,4 +17,5 @@ export interface Profile {
   transportLicense: string;
   updatedAt: string;
   zipCode: string;
+  currency: string;
 }

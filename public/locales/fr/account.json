@@ -84,5 +84,6 @@
   "login_stripe": "Se connecter avec Stripe",
   "change_pasword_action": "action de changement de mot de passe",
   "offline_agent": "Agent (Hors ligne)",
-  "not_registered_payment": "La passerelle de paiement n'a pas été connectée avec succès, veuillez vous connecter pour compléter le mode de paiement."
+  "not_registered_payment": "La passerelle de paiement n'a pas été connectée avec succès, veuillez vous connecter pour compléter le mode de paiement.",
+  "currency_setting":"Paramètre de devise"
 }
