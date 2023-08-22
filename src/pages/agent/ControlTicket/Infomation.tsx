@@ -9,10 +9,10 @@ export interface InformationProps {
 export const Infomation = ({ left, right }: InformationProps) => {
   return (
     <Grid container spacing={2} my="2px">
-      <Grid item xs={3}>
+      <Grid item xs={6} sm={3}>
         <Typography variant="body2">{left}:</Typography>
       </Grid>
-      <Grid item xs={9}>
+      <Grid item xs={6} sm={9}>
         {right}
       </Grid>
     </Grid>

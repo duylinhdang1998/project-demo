@@ -9,7 +9,7 @@ import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -18,17 +18,32 @@ import { contentManagerActions } from 'store/contentManager/contentManagerSlice'
 import { selectContentManager } from 'store/contentManager/selectors';
 import { ForContentField } from './components/ForContentField';
 import { ForSidebarNFooterField } from './components/ForSidebarNFooterField';
+import { useStyles } from './styles';
+import FormVerticle from '../../../components/FormVerticle/FormVerticle';
+import cx from 'classnames';
 
-type Values = Pick<Content, 'footerText' | 'content' | 'sidebar'>;
-const fieldKeys: Array<keyof Values> = ['content', 'footerText', 'sidebar'];
+type Values = Pick<Content, 'footerText' | 'content' | 'sidebar' | 'title' | 'backGround'>;
+const fieldKeys: Array<keyof Values> = ['title', 'content', 'footerText', 'sidebar', 'backGround'];
 
 function ContentManager() {
   const { t } = useTranslation(['account', 'translation', 'message_error']);
 
-  const { handleSubmit, setValue, trigger, watch } = useForm<Values>();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    trigger,
+    watch,
+    resetField,
+  } = useForm<Values>();
   const contentValueOfForm = watch('content');
   const sidebarValueOfForm = watch('sidebar');
+  const titleValueOfForm = watch('title');
+  console.log('titleValueOfForm>>>', titleValueOfForm, errors);
+  const backGroundValueOfForm = watch('backGround');
   const footerTextValueOfForm = watch('footerText');
+  const classes = useStyles();
 
   const [open, setOpen] = useState(false);
 
@@ -39,9 +54,13 @@ function ContentManager() {
   const handleCancel = () => setOpen(true);
 
   const onSubmit = (values: Values) => {
+    console.log('values>>', values);
     dispatch(
       contentManagerActions.updateContentRequest({
-        data: values,
+        data: {
+          ...values,
+          backGround: values.backGround?._id?.toString(),
+        },
         onSuccess: () => {
           toast(
             <ToastCustom
@@ -67,6 +86,15 @@ function ContentManager() {
     );
   };
 
+  const messages = useMemo(() => {
+    return fieldKeys.reduce<Record<string, string>>((res, key) => {
+      return {
+        ...res,
+        [key]: t('translation:error_required', { name: t(`staff:${key}`).toLowerCase() }),
+      };
+    }, {});
+  }, [t]);
+
   useEffect(() => {
     dispatch(contentManagerActions.getContentRequest({}));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,7 +102,9 @@ function ContentManager() {
 
   useEffect(() => {
     if (content) {
+      console.log('content>>>', content);
       fieldKeys.forEach(key => {
+        console.log('key>>', key, content[key]);
         setValue(key, content[key] ?? '');
       });
     }
@@ -95,12 +125,75 @@ function ContentManager() {
         <HeaderLayout activeSideBarHeader={t('account:content_manager')} />
         <Box p="24px">
           <CardWhite title={t('account:content_manager')}>
+            <Box my="20px">
+              <Typography fontWeight={700} color="#0C1132">
+                {t('account:banner_content')}
+              </Typography>
+              <Typography fontSize={13} color="#475461">
+                {t('account:banner_content_description')}
+              </Typography>
+
+              <FormVerticle
+                errors={errors}
+                messages={messages}
+                control={control}
+                fields={[
+                  {
+                    id: 'title',
+                    label: '',
+                    name: 'title',
+                    type: 'text',
+                    required: false,
+                    placeholder: t(`account:banner_content`),
+                    className: cx('tox-tinymce', classes.bannerInput),
+                  },
+                ]}
+              />
+            </Box>
+
+            <Box my="20px">
+              <Typography fontWeight={700} color="#0C1132">
+                {t('account:banner_content')}
+              </Typography>
+              <Typography fontSize={13} color="#475461">
+                {t('account:banner_content_description')}
+              </Typography>
+              <FormVerticle
+                errors={errors}
+                messages={messages}
+                fields={[
+                  {
+                    id: 'backGround',
+                    type: 'image_resource',
+                    label: 'backGround',
+                    required: true,
+                    multiple: false,
+                    withFileInfomation: false,
+                    resources: backGroundValueOfForm ? [backGroundValueOfForm] : [],
+                    onChange: resources => {
+                      const lastResource = resources[resources.length - 1];
+                      if (lastResource) {
+                        resetField('backGround', {
+                          defaultValue: lastResource,
+                        });
+                      } else {
+                        setValue('backGround', undefined as any);
+                      }
+                      trigger('backGround');
+                    },
+                  },
+                ]}
+                control={control}
+              />
+            </Box>
+
             <Typography fontWeight={700} color="#0C1132">
               {t('account:content')}
             </Typography>
             <Typography fontSize={13} color="#475461">
               {t('account:content_description')}
             </Typography>
+
             <Box my="20px">
               <ForContentField
                 contentValueOfForm={contentValueOfForm}

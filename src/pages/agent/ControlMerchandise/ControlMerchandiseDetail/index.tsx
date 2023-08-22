@@ -112,12 +112,12 @@ export function ControlMerchandiseDetail() {
     <LayoutDetail title={t('dashboard.control_merchandise_deliver')}>
       <Box width={{ xs: '100%', md: '90%' }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={8}>
             <Box bgcolor="#fff" borderRadius="4px" padding="24px">
               <OrderDetailView data={dataDetail} />
             </Box>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={4}>
             <Stack direction="column" spacing="24px">
               <ControlDelivertStatus deliveryStatus={dataDetail.deliveryStatus} onChange={handleOpenDialogConfirm} />
               <Box bgcolor="#fff" borderRadius="4px" padding="24px">

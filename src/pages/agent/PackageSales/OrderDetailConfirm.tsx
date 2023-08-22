@@ -105,7 +105,7 @@ export default function OrderDetailConfirm() {
         onClose={() => setOpenModalPrint(false)}
         title={t('packageSales:package_order').toUpperCase()}
         totalPrice={dataDetails?.totalPrice ?? 0}
-        qrCode={dataDetails?.orderCode ?? ''}
+        qrCode={JSON.stringify({ orderCode: dataDetails?.orderCode })}
       >
         <Infomation
           left={t('ticketSales:order_id')}

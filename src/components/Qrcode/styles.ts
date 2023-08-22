@@ -27,10 +27,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   scanme: {
     textAlign: 'center',
-    fontSize: '30px',
+    fontSize: '24px',
     color: '#fff',
     textTransform: 'uppercase',
-    padding: '10px 80px',
+    padding: '10px 60px',
     backgroundColor: '#000',
     borderRadius: '10px',
     fontWeight: 'bold',

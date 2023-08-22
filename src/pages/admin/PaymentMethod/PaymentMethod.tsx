@@ -136,7 +136,7 @@ export default function PaymentMethod() {
                   <Controller
                     control={control}
                     name={`methods`}
-                    defaultValue={methodValueWatch ?? []}
+                    // defaultValue={methodValueWatch ?? []}
                     render={({ field }) => {
                       return (
                         <CheckboxGroup

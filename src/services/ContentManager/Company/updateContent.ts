@@ -6,7 +6,7 @@ import { isResponseError } from 'services/utils/isResponseError';
 import fetchAPI from 'utils/fetchAPI';
 
 export interface UpdateContent {
-  data: Pick<Content, 'content' | 'footerText' | 'sidebar'>;
+  data: Pick<Content, 'content' | 'footerText' | 'sidebar' | 'title'> & { backGround: string };
 }
 
 export const updateContent = async ({ data }: UpdateContent) => {

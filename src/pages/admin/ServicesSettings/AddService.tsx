@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export interface Values {
   title: string;
   icon: string;
+  background: string;
 }
 
 export default function AddService() {

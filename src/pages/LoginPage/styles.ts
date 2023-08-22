@@ -24,6 +24,13 @@ export const useStyles = makeStyles((theme: Theme) => ({
     margin: '24px 0',
     float: 'right',
   },
+  flexButton: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  rememberMe: {
+    fontWeight: 'bold',
+  },
   btnSubmit: {
     margin: '32px 0 !important',
     height: '48px',

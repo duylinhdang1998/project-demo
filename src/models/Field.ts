@@ -25,9 +25,11 @@ interface BaseField {
   messageErr?: string;
   id?: string;
   label: string;
+  name?: string;
   disabled?: boolean;
   readOnly?: boolean;
   description?: string;
+  className?: string;
 }
 
 export interface SimpleField extends BaseField {
