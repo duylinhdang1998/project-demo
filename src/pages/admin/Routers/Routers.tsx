@@ -81,11 +81,11 @@ export default function Routers() {
           },
           departureTime: {
             value: values.departureTime ? dayjsToString(values.departureTime, 'HH:mm') : undefined,
-            operator: 'eq',
+            operator: 'gte',
           },
           'vehicle.brandModel': {
             value: values.vehicleName?.brandModel,
-            operator: 'eq',
+            operator: 'contains',
           },
         },
         sorter: {},
