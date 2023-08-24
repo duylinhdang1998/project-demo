@@ -8,16 +8,19 @@ function* handleUpdatePaymentStatusOfOrder({ payload }: ReturnType<typeof ticket
   try {
     if (data.type === 'ONE_TRIP') {
       yield call(updatePaymentStatusOfOrder, {
+        ...data.data,
         paymentStatus: data.data.paymentStatus,
         ticketCode: data.data.ticketCode,
       });
     } else {
       yield all([
         call(updatePaymentStatusOfOrder, {
+          ...data.data.departureTicket,
           paymentStatus: data.data.departureTicket.paymentStatus,
           ticketCode: data.data.departureTicket.ticketCode,
         }),
         call(updatePaymentStatusOfOrder, {
+          ...data.data.returnTicket,
           paymentStatus: data.data.returnTicket.paymentStatus,
           ticketCode: data.data.returnTicket.ticketCode,
         }),

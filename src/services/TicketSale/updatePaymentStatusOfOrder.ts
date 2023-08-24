@@ -3,10 +3,13 @@ import { ResponseDetailSuccess, ResponseFailure } from 'services/models/Response
 import { TicketSale } from 'services/models/TicketSale';
 import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
+import { EnumPaymentGateway } from '../models/PaymentGateway';
 
 export interface UpdatePaymentStatusOfOrder {
   ticketCode: TicketSale['ticketCode'];
   paymentStatus: TicketSale['paymentStatus'];
+  passengers: TicketSale['passengers'];
+  paymentType?: EnumPaymentGateway;
 }
 export const updatePaymentStatusOfOrder = async (data: UpdatePaymentStatusOfOrder) => {
   const response: AxiosResponse<ResponseDetailSuccess<TicketSale> | ResponseFailure> = await fetchAPI.request({

@@ -129,8 +129,15 @@ export const OrderDetailOnCreateOrder = () => {
               data: {
                 type: 'ONE_TRIP',
                 data: {
-                  paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
+                  paymentStatus: values.method ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
                   ticketCode: ticketSalesOfOrder.data.ticketCode,
+                  paymentType: values.method,
+                  passengers: values.passengers.map(passenger => ({
+                    firstName: passenger.firstName,
+                    lastName: passenger.lastName,
+                    typeTicket: passenger.typeTicket.value as PassengerInTicketSale['typeTicket'],
+                    seatsType: passenger.seatsType.value as PassengerInTicketSale['seatsType'],
+                  })),
                 },
               },
               onSuccess(ticketSaleOrderCode) {
@@ -168,12 +175,26 @@ export const OrderDetailOnCreateOrder = () => {
                 type: 'ROUND_TRIP',
                 data: {
                   departureTicket: {
-                    paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
+                    paymentStatus: values.method ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
                     ticketCode: ticketSalesOfOrder.data.departureTrip.ticketCode,
+                    paymentType: values.method,
+                    passengers: values.passengers.map(passenger => ({
+                      firstName: passenger.firstName,
+                      lastName: passenger.lastName,
+                      typeTicket: passenger.typeTicket.value as PassengerInTicketSale['typeTicket'],
+                      seatsType: passenger.seatsType.value as PassengerInTicketSale['seatsType'],
+                    })),
                   },
                   returnTicket: {
-                    paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
+                    paymentStatus: values.method ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
                     ticketCode: ticketSalesOfOrder.data.returnTrip.ticketCode,
+                    paymentType: values.method,
+                    passengers: values.passengers.map(passenger => ({
+                      firstName: passenger.firstName,
+                      lastName: passenger.lastName,
+                      typeTicket: passenger.typeTicket.value as PassengerInTicketSale['typeTicket'],
+                      seatsType: passenger.seatsType.value as PassengerInTicketSale['seatsType'],
+                    })),
                   },
                 },
               },
@@ -335,6 +356,7 @@ export const OrderDetailOnCreateOrder = () => {
           typeTicket: typeTicketOptions.find(option => option.value === passenger.typeTicket),
           uniqKey: v4(),
         })),
+        method: representTicketSale.paymentType,
         // isPaid: representTicketSale.paymentStatus === 'APPROVED',
       });
     }

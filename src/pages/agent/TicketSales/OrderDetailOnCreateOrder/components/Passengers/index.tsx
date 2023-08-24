@@ -155,7 +155,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                             {labelTranslated}
                             <span style={{ marginLeft: '2px', color: '#FF2727' }}>*</span>
                           </InputLabel>
-                          <InputBase {...field} disabled={isEditAction} placeholder={labelTranslated} className={classes.input} error={!!error} />
+                          <InputBase {...field} placeholder={labelTranslated} className={classes.input} error={!!error} />
                           {!!error && (
                             <Typography component="p" className={classes.error} fontSize={12}>
                               {messageErr}
@@ -183,7 +183,6 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                           </InputLabel>
                           <InputBase
                             {...field}
-                            disabled={isEditAction}
                             fullWidth
                             placeholder={labelTranslated}
                             className={classes.input}
@@ -216,7 +215,6 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                           </InputLabel>
                           <Select
                             {...field}
-                            isDisabled={isEditAction}
                             options={typeTicketOptions}
                             styles={customStyles}
                             placeholder={labelTranslated}
@@ -249,7 +247,6 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                           </InputLabel>
                           <Select
                             {...field}
-                            isDisabled={isEditAction}
                             options={seatsTypeOptions}
                             styles={customStyles}
                             placeholder={labelTranslated}
@@ -279,7 +276,6 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                           <InputNumber
                             className={classes.inputNumber}
                             value={getTotalPriceForTicketOfPassenger({ generalInfomationOfTicket, passenger })}
-                            disabled
                             readOnly
                           />
                         </Box>
