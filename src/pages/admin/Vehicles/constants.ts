@@ -61,7 +61,7 @@ export const fieldsAddEvent: Field[] = [
     id: uuidv4(),
     label: 'fuelFees',
     type: 'number',
-    prefix: currency.currency,
+    prefix: currency.symbol,
     required: false,
   },
   {

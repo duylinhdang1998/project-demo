@@ -111,7 +111,7 @@ function TableEvents() {
         dataIndex: 'attach_files',
         title: () => `${t('vehicles:attach_files')}`,
         render: (_, row) => (
-          <a className={classes.downloadButton} href={getUrlOfResource(row.attach)} download>
+          <a target="_blank" className={classes.downloadButton} href={getUrlOfResource(row.attach)} download>
             {getNameOfResource(row.attach)}
           </a>
         ),
