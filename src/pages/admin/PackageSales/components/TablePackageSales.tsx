@@ -28,6 +28,7 @@ import { toast } from 'react-toastify';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { ServiceException } from 'services/utils/ServiceException';
 import dayjs from 'dayjs';
+import { useCurrency } from 'hooks/useCurrency';
 
 interface Props {
   sortOrder: SortOrder;
@@ -44,6 +45,7 @@ interface Props {
 function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilter, onRefresh }: Props) {
   const { t } = useTranslation(['packageSales', 'translation']);
   const navigate = useNavigate();
+  const { currencyFormat } = useCurrency();
 
   const [openConfirmCancel, setOpenConfirmCancel] = React.useState<PackageSale | null>(null);
 
@@ -148,13 +150,6 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         align: 'center',
         width: 120,
         title: () => <div>{i18n.t('packageSales:qty')}</div>,
-        // render: (value) => (
-        //   <div>
-        //     <Typography fontSize="14px" color="#0C1132">
-        //       {value?.totalQuantity}
-        //     </Typography>
-        //   </div>
-        // ),
         sorter: () => 0,
         sortOrder: get(sortOrder, 'totalQuantity', null),
       },
@@ -180,13 +175,15 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
         align: 'center',
         width: 120,
         title: () => <div>{i18n.t('packageSales:price')}</div>,
-        render: (value: PackageSale['merchandises']) => (
-          <div>
-            <Typography fontSize="14px" color="#0C1132">
-              {getTotal(value, 'price')}$
-            </Typography>
-          </div>
-        ),
+        render: (value: PackageSale['merchandises']) => {
+          return (
+            <div>
+              <Typography fontSize="14px" color="#0C1132">
+                {currencyFormat(getTotal(value, 'price'))}
+              </Typography>
+            </div>
+          );
+        },
         sorter: () => 0,
         sortOrder: get(sortOrder, 'price', null),
       },

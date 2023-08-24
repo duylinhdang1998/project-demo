@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useGetDashboard } from 'services/Dashboard/dashboard';
 import TableDashboard from './components/TableDashboard';
-import { statisTics } from './constants';
+import { statistic } from './constants';
 
 const useStyles = makeStyles(() => ({
   iconBus: {
@@ -37,7 +37,7 @@ export default function Dashboard() {
   const renderStatisticCard = () => {
     return (
       <Grid container direction="row" spacing={{ mobile: '13px', tablet: '24px' }} alignItems="strech">
-        {statisTics.map(i => (
+        {statistic.map(i => (
           <Grid item xs={6} sm={3} key={i.text}>
             <CardDasboard {...i} text={t(`${i.text}`)} trackings={data?.trackingEvents?.trackings} />
           </Grid>

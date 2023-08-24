@@ -11,17 +11,18 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
-import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { PlanDuration } from './@types/PlanDuration';
 import SubscriptionItem from './components/SubscriptionItem';
 import { planDurations } from './constants';
 import { getPlanDurationsFromSubscription } from './utils/getPlanDurationsFromSubscription';
+import { useCurrency } from 'hooks/useCurrency';
 
 export default function SubscriptionPackage() {
   const { t } = useTranslation(['account', 'translation', 'message_error']);
 
   const { statusGetSubscriptions, statusGetCurrentSubscription, subscriptions, currentSubscription } = useAppSelector(selectSubscriptions);
   const dispatch = useAppDispatch();
+  const { symbol } = useCurrency();
 
   const [planDurationState, setPlanDurationState] = useState<PlanDuration>('monthly');
 
@@ -76,7 +77,7 @@ export default function SubscriptionPackage() {
                 planDuration={planDurationState}
                 subscriptionFeatures={subscription.subscriptionFeatures}
                 subscriptionType={subscription.subscriptionType}
-                currency={getAppCurrencySymbol()}
+                currency={symbol}
                 price={price}
                 popular={subscription.populateChoice}
                 disabled={!subscription.active}

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Profile } from 'models/Profile';
 import { UpdateProfileFailure, UpdateProfileRequest, UpdateProfileSuccess } from '../profile/actions/UpdateProfile';
 import { GetProfileFailure, GetProfileRequest, GetProfileSuccess } from './actions/GetProfile';
+import { CURRENCY_LOCAL_KEY } from 'utils/constant';
 
 interface ProfileState {
   statusGetProfile: Status;
@@ -63,6 +64,7 @@ const profileSlice = createSlice({
     setCurrencySetting: (state, action) => {
       // @ts-ignore
       state.profile = { ...state.profile, currency: action.payload };
+      localStorage.setItem(CURRENCY_LOCAL_KEY, JSON.stringify(action.payload));
     },
   },
 });

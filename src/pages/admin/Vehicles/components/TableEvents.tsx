@@ -78,7 +78,7 @@ function TableEvents() {
       {
         key: 'fuelFees',
         dataIndex: 'fuelFees',
-        title: () => `${t('vehicles:fuelFees')} (${profile?.currency})`,
+        title: () => `${t('vehicles:fuelFees')} (${profile?.currency?.symbol})`,
         render: (_, row) => <Typography variant="body2">{row.fuelFees}</Typography>,
         width: 121,
         align: 'center',
@@ -86,7 +86,7 @@ function TableEvents() {
       {
         key: 'extraFees',
         dataIndex: 'extraFees',
-        title: () => `${t('vehicles:extraFees')} (${profile?.currency})`,
+        title: () => `${t('vehicles:extraFees')} (${profile?.currency?.symbol})`,
         render: (_, row) => <Typography variant="body2">{row.extraFees}</Typography>,
         width: 200,
         align: 'center',

@@ -11,13 +11,13 @@ import { useMemo, useState } from 'react';
 import { Control, Controller, FieldErrors, UseFieldArrayAppend, UseFieldArrayRemove } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
-import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { TicketDetailFormValues } from '../../@types/FormValues';
 import { GeneralInfomationOfOrder } from '../../@types/GeneralInfomationOfOrder';
 import { getTotalPriceForTicketOfPassenger } from '../utils/getTotalPriceForTicketOfPassenger';
 import { seatsTypeOptions, getTypeTicketOptions } from './const';
 import { getEmptyPassenger } from './utils';
 import i18n from 'locales/i18n';
+import { useCurrency } from 'hooks/useCurrency';
 
 export interface PassengersProps {
   control: Control<TicketDetailFormValues>;
@@ -32,6 +32,7 @@ export interface PassengersProps {
 export const Passengers = ({ control, errors, passengers, generalInfomationOfTicket, append, remove, isEditAction }: PassengersProps) => {
   const classes = useStyles();
   const { t } = useTranslation(['ticketSales', 'translation']);
+  const { symbol } = useCurrency();
   const typeTicketOptions = useMemo(() => getTypeTicketOptions(t), [t]);
 
   const [openDeletePassenger, setOpenDeletePassenger] = useState<number | null>(null);
@@ -268,7 +269,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                     control={control}
                     name={seatsTypePathInFormValues}
                     render={() => {
-                      const labelTranslated = `${t('ticketSales:price')} (${getAppCurrencySymbol()})`;
+                      const labelTranslated = `${t('ticketSales:price')} (${symbol})`;
                       return (
                         <Box>
                           <InputLabel className={classes.label}>

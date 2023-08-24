@@ -94,8 +94,8 @@ export default function EditPriceARoutePointNCreateTrip({ control, errors, isMul
                             <InputNumber
                               {...field}
                               min={0}
-                              formatter={value => (value ? `${value}${profile?.currency}` : '')}
-                              parser={value => (value ? value.replace(`${profile?.currency}`, '') : 0)}
+                              formatter={value => (value ? `${value}${profile?.currency?.symbol}` : '')}
+                              parser={value => (value ? value.replace(`${profile?.currency?.symbol}`, '') : 0)}
                               placeholder={t('routers:input_price')}
                               className={cx(classes.input)}
                               status={!!error ? 'error' : undefined}

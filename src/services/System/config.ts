@@ -23,7 +23,12 @@ export const useGetSystemConfig = () => {
     ready: !!profile.profile?._id,
     onSuccess: data => {
       if (data.code === 0) {
-        dispatch(profileActions.setCurrencySetting(get(data, 'data.currency', '')));
+        dispatch(
+          profileActions.setCurrencySetting({
+            currency: get(data, 'data.currency', ''),
+            symbol: get(data, 'data.symbol', ''),
+          }),
+        );
       }
     },
   });
@@ -35,6 +40,10 @@ interface Payload {
 
 interface ResponseUpdateCurrency {
   code: number;
+  data: {
+    symbol: string;
+    currency: string;
+  };
 }
 export const useSetCurrencyConfig = (options?: Options<ResponseUpdateCurrency, any>) => {
   const updateCurrency = async ({ currency }: Payload) => {

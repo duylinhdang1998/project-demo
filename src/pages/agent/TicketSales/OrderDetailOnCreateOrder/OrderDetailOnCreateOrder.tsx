@@ -120,7 +120,6 @@ export const OrderDetailOnCreateOrder = () => {
   }, [t]);
 
   const onSubmit = (values: TicketDetailFormValues) => {
-
     if (generalInfomationOfTicket) {
       if (isEditAction && orderCode) {
         if (ticketSalesOfOrder?.type === 'ONE_TRIP') {

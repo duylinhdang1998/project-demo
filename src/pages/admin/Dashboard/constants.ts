@@ -1,17 +1,20 @@
 import { DailyTicketIcon, DailyPackageIcon, DailyPassengerIcon, DailyParcelsIcon } from 'assets';
 import { CardDasboardProps } from 'components/CardDashboard/CardDasboard';
+import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 
-export const statisTics: CardDasboardProps[] = [
+const currency = getAppCurrencySymbol();
+
+export const statistic: CardDasboardProps[] = [
   {
     icon: DailyTicketIcon,
     text: 'daily_ticket',
-    unit: '$',
+    unit: currency.symbol,
     value: 'TICKET_MONEY_DAILY',
   },
   {
     icon: DailyPackageIcon,
     text: 'daily_package',
-    unit: '$',
+    unit: currency.symbol,
     value: 'PACKAGE_MONEY_DAILY',
   },
   {

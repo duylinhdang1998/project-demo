@@ -1,5 +1,10 @@
 import { ImageResource } from 'services/models/Resource';
 
+export interface CurrencyIF {
+  currency: string;
+  symbol: string;
+}
+
 export interface Profile {
   __v: number;
   _id: string;
@@ -17,5 +22,5 @@ export interface Profile {
   transportLicense: string;
   updatedAt: string;
   zipCode: string;
-  currency: string;
+  currency: CurrencyIF;
 }

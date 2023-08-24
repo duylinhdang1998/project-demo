@@ -7,9 +7,9 @@ import { ReactNode, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import QRCode from 'react-qr-code';
 import ReactToPrint from 'react-to-print';
-import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { PrintPDF } from './PrintPDF';
 import { useStyles } from './styles';
+import { useCurrency } from 'hooks/useCurrency';
 
 interface ModalPrintTicketProps {
   open: boolean;
@@ -24,6 +24,7 @@ export const ModalPrintTicket = ({ onClose, open, title, children, totalPrice, q
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles();
+  const { currencyFormat } = useCurrency();
 
   const printPDFRef = useRef<PrintPDF | null>(null);
 
@@ -54,8 +55,7 @@ export const ModalPrintTicket = ({ onClose, open, title, children, totalPrice, q
                   {t('ticketSales:total')}
                 </Typography>
                 <Typography fontSize={24} color="#FF2727" fontWeight="700">
-                  {totalPrice}
-                  {getAppCurrencySymbol()}
+                  {currencyFormat(totalPrice)}
                 </Typography>
               </Stack>
               <Divider sx={{ borderStyle: 'dashed', marginBottom: '16px' }} />

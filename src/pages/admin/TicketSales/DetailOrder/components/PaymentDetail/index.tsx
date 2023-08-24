@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import dayjs from 'dayjs';
 import { ColumnTicket } from 'pages/admin/TicketSales/components/ColumnTicket';
 import { useTranslation } from 'react-i18next';
-import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
+import { useCurrency } from 'hooks/useCurrency';
 export interface PaymentDetailProps {
   record: ColumnTicket;
 }
@@ -11,6 +11,7 @@ export interface PaymentDetailProps {
 export const PaymentDetail = ({ record }: PaymentDetailProps) => {
   const theme = useTheme();
   const { t } = useTranslation(['ticketSales']);
+  const { currencyFormat } = useCurrency();
 
   return (
     <Box p="24px" bgcolor="#fff" borderRadius="4px">
@@ -31,8 +32,7 @@ export const PaymentDetail = ({ record }: PaymentDetailProps) => {
           {t('ticketSales:total')}
         </Typography>
         <Typography fontSize={24} color="#FF2727" fontWeight="700">
-          {record.totalPrice}
-          {getAppCurrencySymbol()}
+          {currencyFormat(record.totalPrice)}
         </Typography>
       </Box>
     </Box>

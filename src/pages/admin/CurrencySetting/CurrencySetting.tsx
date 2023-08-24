@@ -68,7 +68,11 @@ export default function CurrencySetting() {
   const { run, loading } = useSetCurrencyConfig({
     onSuccess: data => {
       if (data.code === 0) {
-        dispatch(profileActions.setCurrencySetting(watch('currency')));
+        const currencyData = {
+          currency: watch('currency'),
+          symbol: data.data.symbol,
+        };
+        dispatch(profileActions.setCurrencySetting(currencyData));
       }
     },
   });
@@ -80,9 +84,9 @@ export default function CurrencySetting() {
   useEffect(() => {
     if (!!profile?.currency) {
       reset({
-        currency: profile.currency,
+        currency: profile.currency.currency,
       });
-      const currencySelected = currencyOptions.filter(it => it.value === profile.currency);
+      const currencySelected = currencyOptions.filter(it => it.value === profile.currency.currency);
       setSelected(currencySelected);
     }
   }, [profile]);

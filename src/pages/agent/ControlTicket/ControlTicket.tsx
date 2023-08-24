@@ -23,10 +23,10 @@ import { TicketSale } from 'services/models/TicketSale';
 import { UserRoleMappingToLabel } from 'services/models/UserRole';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
-import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { getOrderCodeFromScanQr } from 'utils/getOrderCodeFromScanQr';
 import { Infomation } from './Infomation';
 import { useStyles } from './styles';
+import { useCurrency } from 'hooks/useCurrency';
 
 export default function ControlTicket() {
   const { t } = useTranslation(['dashboard', 'ticketSales']);
@@ -36,6 +36,7 @@ export default function ControlTicket() {
 
   const { statusGetTicketSalesOfOrder, queueUpdateOrderStatus, ticketSalesOfOrder } = useAppSelector(selectTicketSales);
   const dispatch = useAppDispatch();
+  const { currencyFormat } = useCurrency();
 
   const ticketSale: TicketSale | null = useMemo(() => {
     if (ticketSalesOfOrder?.type === 'ONE_TRIP') {
@@ -112,8 +113,7 @@ export default function ControlTicket() {
                   {typeTicket}
                 </TableCell>
                 <TableCell className={classes.recordValue} align="center">
-                  {price}
-                  {getAppCurrencySymbol()}
+                  {currencyFormat(price)}
                 </TableCell>
               </TableRow>
             ))}
@@ -193,7 +193,7 @@ export default function ControlTicket() {
           />
           <Infomation left={t('ticketSales:created_by')} right={UserRoleMappingToLabel[ticketSale.creatorType]} />
           <Infomation left={t('ticketSales:created_on')} right={dayjs(ticketSale?.createdAt).format('DD/MM/YYYY - HH[H]mm')} />
-          <Infomation left={t('ticketSales:total')} right={`${ticketSale?.totalPrice}${getAppCurrencySymbol()}`} />
+          <Infomation left={t('ticketSales:total')} right={`${currencyFormat(ticketSale?.totalPrice)}`} />
         </Box>
         {ticketSale.ticketStatus === 'PENDING' && (
           <Button

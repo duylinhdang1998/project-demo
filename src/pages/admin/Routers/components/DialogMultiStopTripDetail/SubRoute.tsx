@@ -17,9 +17,9 @@ import { toast } from 'react-toastify';
 import { RoutePoint } from 'services/models/Route';
 import { routesActions } from 'store/routes/routesSlice';
 import { selectRoutes } from 'store/routes/selectors';
-import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import EditPriceARoutePointNCreateTrip, { EditPriceARoutePointFormValues } from '../FormEditPrice/EditPriceARoutePointNCreateTrip';
 import { DialogMultiStopTripDetailProps } from './DialogMultiStopTripDetail';
+import { useCurrency } from 'hooks/useCurrency';
 
 export const useStyles = makeStyles(() => ({
   titleIcon: {
@@ -105,6 +105,7 @@ export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiSto
 
   const { queueUpdateRoutePointPrice } = useAppSelector(selectRoutes);
   const dispatch = useAppDispatch();
+  const { currencyFormat } = useCurrency();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [openRoutePoint, setOpenRoutePoint] = useState<RoutePoint | null>(null);
@@ -248,8 +249,7 @@ export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiSto
                           {t('routers:Adult')}:
                         </Typography>
                         <Typography component="span" className={classes.ticketTypeValue}>
-                          {getAppCurrencySymbol()}
-                          {routePoint.ECOPrices?.ADULT}
+                          {currencyFormat(routePoint.ECOPrices?.ADULT)}
                         </Typography>
                       </Box>
                     </Grid>
@@ -259,8 +259,7 @@ export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiSto
                           {t('routers:Student')}:
                         </Typography>
                         <Typography component="span" className={classes.ticketTypeValue}>
-                          {getAppCurrencySymbol()}
-                          {routePoint.ECOPrices?.STUDENT}
+                          {currencyFormat(routePoint.ECOPrices?.STUDENT)}
                         </Typography>
                       </Box>
                     </Grid>
@@ -270,8 +269,7 @@ export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiSto
                           {t('routers:Children')}:
                         </Typography>
                         <Typography component="span" className={classes.ticketTypeValue}>
-                          {getAppCurrencySymbol()}
-                          {routePoint.ECOPrices?.CHILD}
+                          {currencyFormat(routePoint.ECOPrices?.CHILD)}
                         </Typography>
                       </Box>
                     </Grid>
@@ -288,8 +286,7 @@ export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiSto
                           {t('routers:Adult')}:
                         </Typography>
                         <Typography component="span" className={classes.ticketTypeValue}>
-                          {getAppCurrencySymbol()}
-                          {routePoint.VIPPrices?.ADULT}
+                          {currencyFormat(routePoint.VIPPrices?.ADULT)}
                         </Typography>
                       </Box>
                     </Grid>
@@ -299,8 +296,7 @@ export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiSto
                           {t('routers:Student')}:
                         </Typography>
                         <Typography component="span" className={classes.ticketTypeValue}>
-                          {getAppCurrencySymbol()}
-                          {routePoint.VIPPrices?.STUDENT}
+                          {currencyFormat(routePoint.VIPPrices?.STUDENT)}
                         </Typography>
                       </Box>
                     </Grid>
@@ -310,8 +306,7 @@ export const SubRoute = ({ route, onUpdateRoutePointPrice }: Pick<DialogMultiSto
                           {t('routers:Children')}:
                         </Typography>
                         <Typography component="span" className={classes.ticketTypeValue}>
-                          {getAppCurrencySymbol()}
-                          {routePoint.VIPPrices?.CHILD}
+                          {currencyFormat(routePoint.VIPPrices?.CHILD)}
                         </Typography>
                       </Box>
                     </Grid>

@@ -4,3 +4,5 @@ export enum UserRole {
   'CLIENT' = 'client',
   'SUPERADMIN' = 'superadmin',
 }
+
+export const CURRENCY_LOCAL_KEY = 'sys-currency';

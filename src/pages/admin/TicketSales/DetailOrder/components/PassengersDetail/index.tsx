@@ -2,8 +2,8 @@ import { Divider, Table, TableBody, TableCell, TableContainer, TableRow, Typogra
 import { Box } from '@mui/system';
 import { ColumnTicket } from 'pages/admin/TicketSales/components/ColumnTicket';
 import { useTranslation } from 'react-i18next';
-import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { useStyles } from './styles';
+import { useCurrency } from 'hooks/useCurrency';
 
 const columnsPassengers = [
   { field: 'lastName', width: 80 },
@@ -20,6 +20,7 @@ export const PassengersDetail = ({ record }: PassengersDetailProps) => {
   const theme = useTheme();
   const { t } = useTranslation(['ticketSales']);
   const classes = useStyles();
+  const { currencyFormat } = useCurrency();
 
   return (
     <Box p="24px" bgcolor="#fff" borderRadius="4px">
@@ -52,8 +53,7 @@ export const PassengersDetail = ({ record }: PassengersDetailProps) => {
                   {t(`translation:${passenger.typeTicket}`)}
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
-                  {passenger.price}
-                  {getAppCurrencySymbol()}
+                  {currencyFormat(passenger.price)}
                 </TableCell>
               </TableRow>
             ))}

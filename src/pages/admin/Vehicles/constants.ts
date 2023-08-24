@@ -1,5 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Field } from 'models/Field';
+import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
+
+const currency = getAppCurrencySymbol();
 
 export const fieldsSearch: Field[] = [
   { id: uuidv4(), required: undefined, label: 'vehicle', type: 'text' },
@@ -58,14 +61,14 @@ export const fieldsAddEvent: Field[] = [
     id: uuidv4(),
     label: 'fuelFees',
     type: 'number',
-    prefix: '$',
+    prefix: currency.currency,
     required: false,
   },
   {
     id: uuidv4(),
     label: 'extraFees',
     type: 'number',
-    prefix: '$',
+    prefix: currency.symbol,
     required: false,
   },
 ];
