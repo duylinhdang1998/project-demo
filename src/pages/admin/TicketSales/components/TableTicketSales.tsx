@@ -214,11 +214,12 @@ export const TableTicketSales = () => {
   }, [isAgent, navigate, t]);
 
   const dataSource: ColumnTicket[] = useMemo(() => {
-    let result: ColumnTicket[] = [];
+    const result: ColumnTicket[] = [];
     ticketSales.forEach(ticketSale => {
-      ticketSale.passengers.forEach(passenger => {
-        result = result.concat(ticketSaleModelToColumnTicket(ticketSale, passenger));
-      });
+      const passenger = ticketSale.passengers[0];
+      if (passenger) {
+        result.push(ticketSaleModelToColumnTicket(ticketSale, passenger));
+      }
     });
     return result;
   }, [ticketSales]);
