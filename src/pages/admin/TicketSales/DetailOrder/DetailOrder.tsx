@@ -44,6 +44,7 @@ export default function DetailTicketPage() {
   const { statusGetTicketSalesOfOrder, statusSendEmail, ticketSalesOfOrder } = useAppSelector(selectTicketSales);
   const dispatch = useDispatch();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [openModalPrint, setOpenModalPrint] = useState(false);
   const [ticketDirection, setTicketDirection] = useState<TicketDirection>('DEPARTURE');
   const { userMainRoute } = useAppSelector(selectAuth);
@@ -87,7 +88,11 @@ export default function DetailTicketPage() {
   };
 
   const handleViewRelateOrder = () => {
-    setTicketDirection(ticketDirection === 'DEPARTURE' ? 'RETURN' : 'DEPARTURE');
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      setTicketDirection(ticketDirection === 'DEPARTURE' ? 'RETURN' : 'DEPARTURE');
+    }, 1000);
   };
 
   useEffect(() => {
@@ -101,7 +106,7 @@ export default function DetailTicketPage() {
     return <EmptyScreen description={t('message_error:TICKET_SALE_NOT_FOUND')} />;
   }
 
-  if (!record) {
+  if (!record || isLoading) {
     return <LoadingScreen />;
   }
 
