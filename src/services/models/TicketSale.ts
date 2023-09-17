@@ -4,6 +4,7 @@ import { EnumPaymentGateway } from './PaymentGateway';
 import { Route, RoutePoint, RoutePointPriceType } from './Route';
 import { UserRole } from './UserRole';
 import { Vehicle } from './Vehicle';
+import { TFunction } from 'i18next';
 
 export type TicketStatus = 'USED' | 'PENDING' | 'CANCELLED';
 export type TicketDirection = 'DEPARTURE' | 'RETURN';
@@ -89,7 +90,7 @@ export interface RouteOfTicketSale {
   bookDate?: string;
 }
 
-export const TicketTypeLabelMapping: Record<TicketType, string> = {
-  ROUND_TRIP: 'Round-trip',
-  ONE_TRIP: 'One-way',
-};
+export const getTicketTypeLabelMapping = (t: TFunction): Record<TicketType, string> => ({
+  ROUND_TRIP: t('ticketSales:round_trip'),
+  ONE_TRIP: t('ticketSales:oneway'),
+});

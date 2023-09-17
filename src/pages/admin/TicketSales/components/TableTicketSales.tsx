@@ -19,7 +19,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { TicketTypeLabelMapping } from 'services/models/TicketSale';
+import { getTicketTypeLabelMapping } from 'services/models/TicketSale';
 import { selectAuth } from 'store/auth/selectors';
 import { selectTicketSales } from 'store/ticketSales/selectors';
 import { ticketSalesActions } from 'store/ticketSales/ticketSalesSlice';
@@ -34,6 +34,7 @@ import { UserRole } from 'utils/constant';
 
 export const TableTicketSales = () => {
   const { t } = useTranslation(['ticketSales', 'translation']);
+  const TicketTypeLabelMapping = useMemo(() => getTicketTypeLabelMapping(t), [t]);
 
   const [openConfirmCancel, setOpenConfirmCancel] = useState<ColumnTicket | null>(null);
 
@@ -211,7 +212,7 @@ export const TableTicketSales = () => {
         width: 120,
       },
     ];
-  }, [isAgent, navigate, t]);
+  }, [TicketTypeLabelMapping, isAgent, navigate, t]);
 
   const dataSource: ColumnTicket[] = useMemo(() => {
     const result: ColumnTicket[] = [];
