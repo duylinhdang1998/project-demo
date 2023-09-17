@@ -2,7 +2,6 @@ import { Box, Stack, Typography } from '@mui/material';
 import { MapPinIcon, VehiclesBusIcon } from 'assets';
 import ClockSvg from 'assets/images/clock.svg';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
-import dayjs from 'dayjs';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
@@ -36,10 +35,11 @@ export const TripInfomation = ({ data, variant }: TripInfomationProps) => {
       ONE_TRIP: t('ticketSales:date'),
       RETURN_TRIP: t('ticketSales:returnDate'),
     };
+    console.log(data);
     return (
       <Box marginBottom="24px">
         <Title>{TitleMapping[variant]}</Title>
-        <TextWithIcon icon={ClockSvg} color="#45485E" text={dayjs(data.dateFormatted, 'YYYY-MM-DD HH:mm').format('DD-MM-YYYY HH:mm')} />
+        <TextWithIcon icon={ClockSvg} color="#45485E" text={data.dateFormatted} />
       </Box>
     );
   };

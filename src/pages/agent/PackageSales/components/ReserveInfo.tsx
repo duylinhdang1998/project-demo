@@ -14,6 +14,7 @@ import { FieldValues } from '../ClientInfo';
 import { isEmpty } from 'ramda';
 import { useUpdateEffect } from 'ahooks';
 import dayjs from 'dayjs';
+import { useCurrency } from 'hooks/useCurrency';
 
 interface Props {
   onBook?: () => void;
@@ -26,6 +27,7 @@ interface Props {
 }
 
 const ReserveInfo = ({ onBook, loading, routeDetail, control, errors, isEdit, departureTime }: Props) => {
+  const { currencyFormat } = useCurrency();
   const { t } = useTranslation(['ticketSales', 'translation']);
   const [open, setOpen] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -162,7 +164,7 @@ const ReserveInfo = ({ onBook, loading, routeDetail, control, errors, isEdit, de
 
       <Stack direction="row" alignItems="center" spacing={10} marginTop="20px">
         <Typography variant="body2">{t('total_price')}</Typography>
-        <Typography variant="price">${totalPrice}</Typography>
+        <Typography variant="price">{currencyFormat(totalPrice)}</Typography>
       </Stack>
       <Typography variant="headerTable">{t('all_taxes_and_fees')}</Typography>
       <Button backgroundButton="#1AA6EE" fullWidth sx={{ marginTop: '24px' }} onClick={handleBook} loading={loading}>

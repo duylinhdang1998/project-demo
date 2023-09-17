@@ -14,8 +14,8 @@ import { toDayjs } from 'utils/toDayjs';
 import { v4 as uuidv4 } from 'uuid';
 
 const fields: Field[] = [
-  { id: uuidv4(), label: 'fromDate', type: 'datetime', required: true },
-  { id: uuidv4(), label: 'toDate', type: 'datetime', required: true },
+  { id: uuidv4(), label: 'fromDate', type: 'datetime', format: 'DD-MM-YYYY', required: true },
+  { id: uuidv4(), label: 'toDate', type: 'datetime', format: 'DD-MM-YYYY', required: true },
 ];
 
 export interface StepTwoValues {
