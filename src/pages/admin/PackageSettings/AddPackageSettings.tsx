@@ -161,7 +161,7 @@ export default function AddPackageSettings() {
           activeSideBarHeader={
             isEditAction
               ? t('translation:edit_type', { type: t('packageSettings:package_settings').toLowerCase() })
-              : t('translation:create_new', { type: t('packageSettings:package_settings').toLowerCase() })
+              : t('packageSettings:create_package_setting')
           }
         />
         <Box padding="24px">
@@ -170,7 +170,7 @@ export default function AddPackageSettings() {
             <Box width="100%" display="flex" justifyContent="center">
               <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
                 <Typography color="#0c1132" fontWeight={700}>
-                  {t('translation:create_new', { type: t('packageSettings:package_settings').toLowerCase() })}
+                  {t('packageSettings:create_package_setting')}
                 </Typography>
                 <Divider sx={{ margin: '16px 0' }} />
                 <form onSubmitCapture={handleSubmit(onSubmit)}>

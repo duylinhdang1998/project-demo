@@ -42,6 +42,7 @@ function ContentManager() {
   const backGroundValueOfForm = watch('backGround');
   const footerTextValueOfForm = watch('footerText');
   const classes = useStyles();
+  console.log('backGroundValueOfForm>>>>', backGroundValueOfForm);
 
   const [open, setOpen] = useState(false);
 

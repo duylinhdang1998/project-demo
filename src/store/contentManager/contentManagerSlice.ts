@@ -28,6 +28,7 @@ const contentManagerSlice = createSlice({
     },
     getContentSuccess: (state, action: PayloadAction<GetContentSuccess>) => {
       const { data } = action.payload;
+      console.log('getContentSuccess>>>', data);
       return {
         ...state,
         statusGetContent: 'success',
@@ -41,6 +42,7 @@ const contentManagerSlice = createSlice({
       };
     },
     updateContentRequest: (state, _action: PayloadAction<UpdateContentRequest>) => {
+      console.log('updateContentRequest>>>', state, _action);
       return {
         ...state,
         statusUpdateContent: 'loading',

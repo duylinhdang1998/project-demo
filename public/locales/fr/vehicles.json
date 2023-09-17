@@ -26,5 +26,5 @@
   "order": "N°",
   "delete_vehicle_message": "Les véhicules seront automatiquement supprimés des itinéraires précédemment assignés",
   "cancel_form": "Annuler",
-  "create_vehicle": "Ajouter un nouveau véhicule"
+  "create_vehicle": "Créer un véhicule"
 }

@@ -1,6 +1,7 @@
 {
   "title": "Title",
   "description": "Descriptions",
+  "create_package_setting": "Create a package type",
   "package_settings": "Package settings",
   "package_settings_lowercase": "package settings",
   "cancel_form": "Are you sure, you want to leave this page without completing your action?",
