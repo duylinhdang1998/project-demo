@@ -55,7 +55,7 @@
   "alert__description_1": "Vous pouvez supprimer les jours où le trajet n'est pas actif.",
   "alert__description_2": "Vous pouvez modifier les prix pour un jour en sélectionnant ce jour",
   "routes": "Itinéraires",
-  "reactive_title": "Êtes-vous sûr de vouloir réactiver",
+  "reactive_title": "Confirmation de suppression",
   "duration_time_invalid": "Le temps de durée est invalide",
   "invalid_destination": "Destination invalide",
   "all_days": "Tous les jours",
