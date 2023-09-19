@@ -31,7 +31,7 @@ import { getEmptyPassenger } from './components/Passengers/utils';
 import { seatsTypeOptions, getTypeTicketOptions } from './components/Passengers/const';
 import { Reservation } from './components/Reservation';
 import { UserRole } from 'utils/constant';
-import { PaymentMethod } from '../../../../components/PaymentMethod';
+import { PaymentStatus } from 'components/PaymentStatus';
 
 const fieldKeys = ['email', 'method'];
 
@@ -60,7 +60,7 @@ export const OrderDetailOnCreateOrder = () => {
       accept_term: true,
       passengers: [getEmptyPassenger(t)],
       method: 'PAYPAL',
-      // isPaid: true,
+      isPaid: true,
     },
   });
   const { append, remove } = useFieldArray({
@@ -68,7 +68,7 @@ export const OrderDetailOnCreateOrder = () => {
     name: 'passengers',
   });
   const passengers = watch('passengers');
-  const methodWatch = watch('method');
+  const isPaid = watch('isPaid');
 
   const isAgent = userInfo?.role === UserRole.AGENT;
 
@@ -414,14 +414,15 @@ export const OrderDetailOnCreateOrder = () => {
                   ]}
                 />
                 <Divider sx={{ margin: '16px 0' }} />
-                <PaymentMethod
-                  control={control}
-                  errors={errors}
-                  label="method"
-                  method={methodWatch}
-                  onChange={value => {
-                    setValue('method', value);
-                    trigger('method');
+                <PaymentStatus
+                  isActive={isPaid}
+                  onChange={checked => {
+                    if (isEditAction) {
+                      setValue('isPaid', checked);
+                    } else {
+                      setValue('isPaid', true);
+                    }
+                    trigger('isPaid');
                   }}
                 />
               </Grid>
