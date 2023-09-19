@@ -67,7 +67,6 @@ interface Props {
 export default function FormClientInfo({ control, errors, routeDetail }: Props) {
   const { t } = useTranslation(['packageSales', 'translation', 'account']);
   const classes = useStyles();
-
   const renderField = (fields: Field[]) => {
     return (
       <Grid container spacing="10px" columns={12}>

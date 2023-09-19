@@ -10,6 +10,7 @@ import { customStyles } from 'components/FilterTicket/customStyles';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { isEmpty } from 'lodash-es';
 import { RouteOfTicketSale } from 'services/models/TicketSale';
+import { useCurrency } from 'hooks/useCurrency';
 
 const useStyles = makeStyles((theme: Theme) => ({
   label: {
@@ -78,6 +79,7 @@ interface Props {
 export default function FormMerchandise({ control, errors, routeDetail }: Props) {
   const { t } = useTranslation(['packageSales', 'translation']);
   const classes = useStyles();
+  const { symbol } = useCurrency();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -160,7 +162,7 @@ export default function FormMerchandise({ control, errors, routeDetail }: Props)
                       {t(`price`)}
                     </InputLabel>
                     <Box className={classes.inputNumberWrap}>
-                      <span className={classes.prefix}>$</span>
+                      <span className={classes.prefix}>{symbol}</span>
                       <input {...field} id={`merchandise.${index}.price`} min={0} defaultValue="1" type="number" className={classes.inputNumber} />
                     </Box>
                   </Box>

@@ -69,7 +69,7 @@ export default function Dashboard() {
     );
   };
 
-  const renderVihicles = () => {
+  const renderVehicles = () => {
     return (
       <Grid item xs={12} md={4}>
         <Box borderRadius={'4px'} p="24px" bgcolor="#fff" height="100%">
@@ -117,7 +117,7 @@ export default function Dashboard() {
             {renderStatisticCard()}
             <Grid container spacing={'24px'} my="24px" alignItems="stretch">
               {renderRouteProgram()}
-              {renderVihicles()}
+              {renderVehicles()}
             </Grid>
           </FadeIn>
         )}
