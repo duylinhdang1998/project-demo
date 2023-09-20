@@ -1,5 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
-import { Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Grid, Theme, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box, Stack } from '@mui/system';
 import { useEffect } from 'react';
@@ -17,10 +17,13 @@ import TableVehicles from './components/TableVehicles';
 import { fieldsSearch } from './constants';
 import { UserRole } from 'utils/constant';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   btnAdd: {
     height: '40px !important',
     padding: '10px 30px !important',
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
   },
 }));
 
@@ -87,7 +90,7 @@ export default function Vehicles() {
             </Grid>
           </Grid>
           <Grid item xs={12} md={4} sx={{ justifyContent: 'flex-end', display: 'flex' }}>
-            <Stack direction="row" spacing="16px" alignItems="center" alignSelf="flex-end">
+            <Stack direction="row" spacing="16px" alignItems="center" alignSelf="flex-end" width={!matches ? '100%' : 'auto'}>
               <Button
                 variant="contained"
                 sx={{ width: matches ? '170px' : '100%' }}
@@ -97,7 +100,17 @@ export default function Vehicles() {
                 {t('translation:search')}
               </Button>
               {!isAgent && (
-                <Button backgroundButton="#33CC7F" startIcon={<AddIcon />} className={classes.btnAdd} onClick={handleAdd}>
+                <Button
+                  backgroundButton="#33CC7F"
+                  startIcon={<AddIcon style={{ marginRight: '3px' }} />}
+                  className={classes.btnAdd}
+                  onClick={handleAdd}
+                  sx={{
+                    '.MuiButton-startIcon': {
+                      marginRight: 0,
+                    },
+                  }}
+                >
                   {t('vehicles:create_vehicle')}
                 </Button>
               )}

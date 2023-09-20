@@ -13,5 +13,6 @@
   "type": "Type",
   "classes": "Classes",
   "total_tickets": "Total tickets",
-  "total_prices": "Total prices"
+  "total_prices": "Total prices",
+  "from": "From"
 }

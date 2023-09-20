@@ -302,10 +302,18 @@ export const AdminRoutes: RouteObject[] = [
     ),
   },
   {
-    path: 'reportings',
+    path: 'reportings-ticket-sales',
     element: (
       <RequiredAuth role="admin">
         <Page.Reporting />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'reportings-package-sales',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.ReportingPackageSales />
       </RequiredAuth>
     ),
   },

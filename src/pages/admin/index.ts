@@ -32,6 +32,7 @@ import ListEvents from './Vehicles/ListEvents';
 import Vehicles from './Vehicles/Vehicles';
 import CurrencySetting from './CurrencySetting/CurrencySetting';
 import Reporting from './Reporting';
+import ReportingPackageSales from './ReportPackageSales/ReportPackageSales';
 
 export {
   CurrencySetting,
@@ -68,4 +69,5 @@ export {
   ContentManager,
   Routers,
   Reporting,
+  ReportingPackageSales,
 };

@@ -30,7 +30,7 @@ import { v4 as uuid } from 'uuid';
 import { DialogMultiStopTripDetail } from './DialogMultiStopTripDetail/DialogMultiStopTripDetail';
 import ToolTipAddress from './ToolTipAddress';
 import { getMainRoutePoints } from '../utils/getRoutePointsWithRouteType';
-import {UserRole} from "../../../../utils/constant";
+import { UserRole } from '../../../../utils/constant';
 
 function TableRoutes() {
   const { t } = useTranslation(['routers', 'translation']);
@@ -66,7 +66,7 @@ function TableRoutes() {
         title: () => <Typography variant="headerTable">{t('routers:id')}</Typography>,
         sorter: true,
         render: (_, row) => <Typography variant="body2">{row.routeCode}</Typography>,
-        width: 100,
+        width: 120,
         align: 'center',
       },
       {
@@ -74,6 +74,7 @@ function TableRoutes() {
         dataIndex: 'route',
         title: () => <Typography variant="headerTable">{t('routers:route')}</Typography>,
         sorter: true,
+        width: 300,
         render: (_, row) => {
           const isMultipleStops = row.tripType === 'MULTI_STOP';
           const mainRoutes = getMainRoutePoints(row.routePoints);
@@ -109,6 +110,7 @@ function TableRoutes() {
         title: () => <Typography variant="headerTable">{t('routers:departureTime')}</Typography>,
         sorter: true,
         render: (_, row) => <Typography variant="body2">{row.departureTime}</Typography>,
+        width: 150,
       },
       {
         key: 'routePoints.durationTime',
@@ -119,6 +121,7 @@ function TableRoutes() {
           const lastRoute = mainRoutes[mainRoutes.length - 1];
           return <Typography variant="body2">{addMinutesToTimeString(row.departureTime, lastRoute.durationTime)}</Typography>;
         },
+        width: 150,
       },
       {
         key: 'vehicle.brandModel',
@@ -132,7 +135,7 @@ function TableRoutes() {
           </Box>
         ),
         align: 'center',
-        width: 120,
+        width: 180,
       },
       {
         key: 'VIPseats',
@@ -211,7 +214,7 @@ function TableRoutes() {
             />
           );
         },
-        width: 80,
+        width: 120,
       },
     ];
   }, [navigate, t]);

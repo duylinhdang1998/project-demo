@@ -72,6 +72,7 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
         ),
         align: 'center',
         sorter: () => 0,
+        width: 220,
       },
       {
         key: 'firstName',
@@ -80,6 +81,7 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
         render: (_, row) => <Typography variant="body2">{row.firstName}</Typography>,
         align: 'center',
         sorter: () => 0,
+        width: 220,
       },
       {
         key: 'phone',
@@ -87,6 +89,7 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
         title: () => t('passenger:phone'),
         render: (_, row) => <Typography variant="body2">{row.phone}</Typography>,
         align: 'center',
+        width: 150,
       },
       {
         key: 'email',
@@ -95,6 +98,7 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
         render: (_, row) => <Typography variant="body2">{row.email}</Typography>,
         align: 'center',
         sorter: () => 0,
+        width: 250,
       },
       {
         key: 'orderCounts',
@@ -103,16 +107,18 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
         render: (_, row) => <Typography variant="body2">{row.orderCounts}</Typography>,
         align: 'center',
         sorter: () => 0,
+        width: 150,
       },
       {
         title: () => t('passenger:status'),
-        width: 120,
+        width: 150,
         render: (_, row) => <Tag variant={row.status === 'BLOCK' ? 'error' : 'success'} text={PassengerStatusMappingToLabel[row.status]} />,
         align: 'center',
       },
       {
         key: 'action',
         title: () => t('translation:action'),
+        width: 150,
         render: (_, row) => {
           return (
             <ActionTable
@@ -140,7 +146,6 @@ function TablePassenger({ onSelect, selectedPassengers }: TablePassengerProps) {
           );
         },
         align: 'center',
-        width: 100,
       },
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps

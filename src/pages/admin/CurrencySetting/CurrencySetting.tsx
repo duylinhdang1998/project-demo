@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Divider, InputLabel, Typography } from '@mui/material';
+import { Box, Divider, InputLabel, Typography, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
@@ -53,6 +53,8 @@ export default function CurrencySetting() {
   const classes = useStyles();
   const { t } = useTranslation(['account', 'translation']);
   const [selected, setSelected] = useState<any>(undefined);
+  const matches = useMediaQuery('(min-width:1200px)');
+
   const {
     formState: { errors },
     setValue,
@@ -96,7 +98,7 @@ export default function CurrencySetting() {
       <Box>
         <HeaderLayout activeSideBarHeader={t('account:currency_setting')} />
         <Box display="flex" justifyContent="center" alignItems="center" mt="24px">
-          <Box bgcolor="white" padding="24px" borderRadius="4px" minWidth="440px">
+          <Box bgcolor="white" padding="24px" borderRadius="4px" minWidth={matches ? '440px' : '360px'}>
             <Typography fontWeight={700} color="#0C1132">
               {t('currency_setting')}
             </Typography>

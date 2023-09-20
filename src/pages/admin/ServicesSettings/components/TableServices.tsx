@@ -133,6 +133,7 @@ function TableServices({ dataSource, onRefresh, loading, onFilter, pagination }:
           {value}
         </Typography>
       ),
+      width: 200,
     },
     {
       key: 'icon',
@@ -140,12 +141,14 @@ function TableServices({ dataSource, onRefresh, loading, onFilter, pagination }:
       title: () => t('service_icon'),
       render: (value: ImageResource) => <img src={getUrlOfResource(value)} className={classes.icon} />,
       align: 'center',
+      width: 200,
     },
     {
       key: 'action',
       title: () => t('service_action'),
       render: (_, item) => <ActionService onDelete={() => handleOpenDialogDelete(item)} onEdit={handleEdit(item)} />,
       align: 'center',
+      width: 150,
     },
   ];
   return (

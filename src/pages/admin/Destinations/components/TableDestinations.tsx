@@ -126,6 +126,7 @@ export default function TableDestinations({ dataSource = [], isLoading, paginati
       title: () => t('address'),
       render: (value: string) => <Typography variant="body2">{value}</Typography>,
       align: 'left',
+      width: 250,
     },
     {
       key: 'zipCode',
@@ -133,6 +134,7 @@ export default function TableDestinations({ dataSource = [], isLoading, paginati
       title: () => t('zipCode'),
       render: (value: string) => <Typography variant="body2">{value}</Typography>,
       align: 'left',
+      width: 120,
     },
     {
       key: 'city',
@@ -140,6 +142,7 @@ export default function TableDestinations({ dataSource = [], isLoading, paginati
       title: () => t('city'),
       render: (value: string) => <Typography variant="body2">{value}</Typography>,
       align: 'left',
+      width: 200,
     },
     {
       key: 'country',
@@ -147,6 +150,7 @@ export default function TableDestinations({ dataSource = [], isLoading, paginati
       title: () => t('country'),
       render: (value: string) => <Typography variant="body2">{value}</Typography>,
       align: 'left',
+      width: 200,
     },
     {
       key: 'action',

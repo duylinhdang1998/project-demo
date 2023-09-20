@@ -1,10 +1,13 @@
-import { ListItem, ListItemIcon, ListItemText, Theme } from '@mui/material';
+import { Collapse, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import cx from 'classnames';
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useMatch, useResolvedPath } from 'react-router-dom';
+import { Link, NavLink, useLocation, useMatch, useResolvedPath } from 'react-router-dom';
 import { RouteSideBar } from 'models/Route';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Layout from 'layout/Layout';
 
 const useStyles = makeStyles((theme: Theme) => ({
   active: {
@@ -47,17 +50,75 @@ interface CustomLinkProps {
 
 function CustomLink({ item }: CustomLinkProps) {
   const classes = useStyles();
+  const [open, setOpen] = useState(true);
+  const location = useLocation();
   const { t } = useTranslation('sidebar');
   const resolved = useResolvedPath(item.path);
   const match = useMatch({ path: resolved.pathname, end: item.isRouteStrict });
 
+  const handleClick = (name?: string) => () => {
+    setOpen(!open);
+    if (name !== 'reporting') {
+      Layout.getStaticActions().toggleMenu();
+    }
+  };
+
+  useEffect(() => {
+    if (item.name === 'reporting') {
+      const pathname = location.pathname.split('/')[2];
+      setOpen(pathname === 'reportings-ticket-sales' || pathname === 'reportings-package-sales');
+    }
+  }, [item.name, location.pathname]);
+
+  const renderSubmenu = () => {
+    if (item.name === 'reporting') {
+      return (
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <NavLink
+              to="/admin/reportings-package-sales"
+              className={({ isActive }) =>
+                cx(classes.link, {
+                  [classes.active]: isActive,
+                })
+              }
+            >
+              <ListItemButton>
+                <ListItemIcon>
+                  <div className={cx(classes.icon)} />
+                </ListItemIcon>
+                <ListItemText primary={t('package_sale')} />
+              </ListItemButton>
+            </NavLink>
+            <NavLink
+              to="/admin/reportings-ticket-sales"
+              className={({ isActive }) =>
+                cx(classes.link, {
+                  [classes.active]: isActive,
+                })
+              }
+            >
+              <ListItemButton>
+                <ListItemIcon>
+                  <div className={cx(classes.icon)} />
+                </ListItemIcon>
+                <ListItemText primary={t('ticket_sale')} />
+              </ListItemButton>
+            </NavLink>
+          </List>
+        </Collapse>
+      );
+    }
+  };
+
   return (
     <div>
       <Link
-        to={item.path}
+        to={item.name === 'reporting' ? '#' : item.path}
         className={cx(classes.link, {
           [classes.active]: !!match,
         })}
+        onClick={handleClick(item.name)}
       >
         <ListItem button key={item.name} color="#fff">
           <ListItemIcon>
@@ -65,18 +126,20 @@ function CustomLink({ item }: CustomLinkProps) {
               src={item.icon}
               alt={item.name}
               className={cx(classes.icon, {
-                [classes.imageActive]: !!match,
+                [classes.imageActive]: !!match || (item.name === 'reporting' && open),
               })}
             />
           </ListItemIcon>
           <ListItemText
             primary={t(`${item.name}`)}
             className={cx({
-              [classes.activeText]: !!match,
+              [classes.activeText]: !!match || (item.name === 'reporting' && open),
             })}
           />
+          {item.name === 'reporting' && (open ? <ExpandLess color="primary" /> : <ExpandMore />)}
         </ListItem>
         {!!match && <div className={classes.divider} />}
+        {renderSubmenu()}
       </Link>
     </div>
   );

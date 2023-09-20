@@ -74,7 +74,10 @@ export default function Layout() {
   /** Static events */
 
   useEffect(() => {
-    StaticActionsHandler.toggleMenu = () => setOpenDrawer(state => !state);
+    StaticActionsHandler.toggleMenu = () => {
+      console.log('123');
+      setOpenDrawer(state => !state);
+    };
   }, []);
 
   /** <--------------------> */
