@@ -1,0 +1,17 @@
+{
+  "reportings": "Reportings",
+  "arrivalPoints": "Arrival points",
+  "departurePoints": "Departure points",
+  "departureTime": "Departure time",
+  "routeId": "Route ID",
+  "pdf_export": "PDF Export",
+  "lastName": "Lastname",
+  "firstName": "Firstname",
+  "trip": "Trip",
+  "ticket_status": "Ticket status",
+  "status": "Payment status",
+  "type": "Type",
+  "classes": "Classes",
+  "total_tickets": "Total tickets",
+  "total_prices": "Total prices"
+}

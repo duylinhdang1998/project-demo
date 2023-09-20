@@ -31,6 +31,7 @@ import AddNewVehicles from './Vehicles/AddNewVehicles';
 import ListEvents from './Vehicles/ListEvents';
 import Vehicles from './Vehicles/Vehicles';
 import CurrencySetting from './CurrencySetting/CurrencySetting';
+import Reporting from './Reporting';
 
 export {
   CurrencySetting,
@@ -66,4 +67,5 @@ export {
   SubscriptionPayment,
   ContentManager,
   Routers,
+  Reporting,
 };

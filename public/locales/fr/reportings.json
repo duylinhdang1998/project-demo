@@ -1,0 +1,17 @@
+{
+  "reportings": "Rapports",
+  "arrivalPoints": "Points d'arrivée",
+  "departurePoints": "Points de départ",
+  "departureTime": "Dates",
+  "routeId": "ID de l'itinéraire",
+  "pdf_export": "Exportation PDF",
+  "lastName": "Nom de famille",
+  "firstName": "Prénom",
+  "trip": "Trajet",
+  "ticket_status": "Statut du billet",
+  "status": "Statut du palement",
+  "type": "Type",
+  "classes": "Classe",
+  "total_tickets": "Total des billets",
+  "total_prices": "Total des prix"
+}

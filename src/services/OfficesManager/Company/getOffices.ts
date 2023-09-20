@@ -22,7 +22,7 @@ export const getOffices = async ({ page, sorter, searcher, isGetAll }: GetOffice
     params: {
       limit: isGetAll ? getMaxLimit() : RECORDS_PER_PAGE,
       offset: isGetAll ? getMinOffset() : page * RECORDS_PER_PAGE,
-      ...getSortParams(sorter, !isGetAll),
+      ...getSortParams(sorter),
       ...(isGetAll ? {} : getSearchParams(searcher)),
     },
   });
