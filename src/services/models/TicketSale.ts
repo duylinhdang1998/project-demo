@@ -9,12 +9,13 @@ import { TFunction } from 'i18next';
 export type TicketStatus = 'USED' | 'PENDING' | 'CANCELLED';
 export type TicketDirection = 'DEPARTURE' | 'RETURN';
 export type TicketType = 'ROUND_TRIP' | 'ONE_TRIP';
+export type SeatType = 'ECO' | 'VIP';
 
 export interface PassengerInTicketSale {
   firstName: string;
   lastName: string;
   typeTicket: RoutePointPriceType;
-  seatsType: 'ECO' | 'VIP';
+  seatsType: SeatType;
   price?: number;
 }
 

@@ -301,4 +301,12 @@ export const AdminRoutes: RouteObject[] = [
       </RequiredAuth>
     ),
   },
+  {
+    path: 'reportings',
+    element: (
+      <RequiredAuth role="admin">
+        <Page.Reporting />
+      </RequiredAuth>
+    ),
+  },
 ];

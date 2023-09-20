@@ -181,13 +181,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                             {labelTranslated}
                             <span style={{ marginLeft: '2px', color: '#FF2727' }}>*</span>
                           </InputLabel>
-                          <InputBase
-                            {...field}
-                            fullWidth
-                            placeholder={labelTranslated}
-                            className={classes.input}
-                            error={!!error}
-                          />
+                          <InputBase {...field} fullWidth placeholder={labelTranslated} className={classes.input} error={!!error} />
                           {!!error && (
                             <Typography component="p" className={classes.error} fontSize={12}>
                               {messageErr}
@@ -213,13 +207,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                             {labelTranslated}
                             <span className={classes.error}>*</span>
                           </InputLabel>
-                          <Select
-                            {...field}
-                            options={typeTicketOptions}
-                            styles={customStyles}
-                            placeholder={labelTranslated}
-                            key={i18n.language}
-                          />
+                          <Select {...field} options={typeTicketOptions} styles={customStyles} placeholder={labelTranslated} key={i18n.language} />
                           {!!error && (
                             <Typography component="p" className={classes.error} fontSize={12}>
                               {messageErr}
@@ -245,12 +233,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                             {labelTranslated}
                             <span className={classes.error}>*</span>
                           </InputLabel>
-                          <Select
-                            {...field}
-                            options={seatsTypeOptions}
-                            styles={customStyles}
-                            placeholder={labelTranslated}
-                          />
+                          <Select {...field} options={seatsTypeOptions} styles={customStyles} placeholder={labelTranslated} />
                           {!!error && (
                             <Typography component="p" className={classes.error} fontSize={12}>
                               {messageErr}
