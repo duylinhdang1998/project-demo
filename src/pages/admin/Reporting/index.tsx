@@ -1,20 +1,23 @@
 import IosShareIcon from '@mui/icons-material/IosShare';
 import { Box, Grid, Stack } from '@mui/material';
+import { Spin } from 'antd';
 import Button from 'components/Button/Button';
 import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { Result } from 'components/SelectDecouplingData/SelectDestination';
 import dayjs from 'dayjs';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { useCurrency } from 'hooks/useCurrency';
+import { useExportTicketSales } from 'hooks/useExportTicketSales';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { reportsActions } from 'store/report/reportSlice';
+import { selectReports } from 'store/report/selectors';
 import { StatisticBox } from './components/StatisticBox';
 import TableReportings from './components/TableReportings';
 import { fieldsSearch } from './constants';
-import { useExportTicketSales } from 'hooks/useExportTicketSales';
 
 interface Values {
   departurePoints?: { value: Result };
@@ -31,6 +34,7 @@ const Reporting: FC = () => {
   const { currencyFormat } = useCurrency();
 
   const dispatch = useAppDispatch();
+  const { ticketSales, statusGetTicketSales } = useAppSelector(selectReports);
 
   const { t } = useTranslation(['reportings']);
 
@@ -91,8 +95,16 @@ const Reporting: FC = () => {
           </Grid>
         </Grid>
         <Stack display="flex" flexDirection="row" alignItems="center" gap="16px">
-          <StatisticBox title={t('reportings:total_tickets')} color="#33CC7F" total="100" />
-          <StatisticBox title={t('reportings:total_prices')} color="#0A89CA" total={currencyFormat(100)} />
+          <StatisticBox
+            title={t('reportings:total_tickets')}
+            color="#33CC7F"
+            total={<Spin spinning={statusGetTicketSales === 'loading'}>{ticketSales.totalTickets.toString()}</Spin>}
+          />
+          <StatisticBox
+            title={t('reportings:total_prices')}
+            color="#0A89CA"
+            total={<Spin spinning={statusGetTicketSales === 'loading'}>{currencyFormat(ticketSales.totalPrices)}</Spin>}
+          />
         </Stack>
         <TableReportings />
       </Box>

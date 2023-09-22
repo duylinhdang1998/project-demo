@@ -5,7 +5,11 @@ import { ReportTicketSale } from 'services/models/ReportTicketSale';
 
 export interface TicketSalesState {
   statusGetTicketSales: Status;
-  ticketSales: ReportTicketSale[];
+  ticketSales: {
+    items: ReportTicketSale[];
+    totalPrices: number;
+    totalTickets: number;
+  };
   currentPage: number;
   totalPages: number;
   totalRows: number;
@@ -14,7 +18,11 @@ export interface TicketSalesState {
 
 const initialState: TicketSalesState = {
   statusGetTicketSales: 'idle',
-  ticketSales: [],
+  ticketSales: {
+    items: [],
+    totalPrices: 0,
+    totalTickets: 0,
+  },
   currentPage: 0,
   totalPages: 0,
   totalRows: 0,
@@ -30,17 +38,24 @@ export const reportsSlice = createSlice({
       const { page, searcher } = action.payload;
       return {
         ...state,
-        ticketSales: [],
+        ticketSales: {
+          ...state.ticketSales,
+          items: [],
+        },
         statusGetTicketSales: 'loading',
         currentPage: page,
         currentSearcher: searcher,
       };
     },
     getTicketSalesSuccess: (state, action: PayloadAction<GetTicketSalesSuccess>) => {
-      const { data, totalPages, totalRows, page, searcher } = action.payload;
+      const { data, totalPages, totalRows, page, searcher, totalPrices, totalTickets } = action.payload;
       return {
         ...state,
-        ticketSales: data,
+        ticketSales: {
+          items: data,
+          totalPrices,
+          totalTickets,
+        },
         totalPages,
         totalRows,
         statusGetTicketSales: 'success',

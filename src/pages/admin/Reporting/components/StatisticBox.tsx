@@ -1,8 +1,9 @@
 import { Box } from '@mui/material';
+import { ReactNode } from 'react';
 
 interface Props {
-  title: string;
-  total: string;
+  title: ReactNode;
+  total: ReactNode;
   color: '#0A89CA' | '#33CC7F';
 }
 

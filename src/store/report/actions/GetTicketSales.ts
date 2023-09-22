@@ -9,6 +9,8 @@ export interface GetTicketSalesSuccess {
   totalRows: number;
   page: GetTicketSales['page'];
   searcher: GetTicketSales['searcher'];
+  totalPrices: number;
+  totalTickets: number;
 }
 
 export interface GetTicketSalesFailure {}

@@ -164,7 +164,7 @@ function TableReporting() {
       <AntTable
         loading={statusGetTicketSales === 'loading'}
         columns={columns}
-        dataSource={ticketSales}
+        dataSource={ticketSales.items}
         rowKey={() => v4()}
         pagination={{
           total: totalRows,
