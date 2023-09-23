@@ -40,9 +40,10 @@ interface Props {
   };
   onFilter?: TableProps<PackageSale>['onChange'];
   onRefresh?: () => void;
+  showAction?: boolean;
 }
 
-function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilter, onRefresh }: Props) {
+function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilter, onRefresh, showAction = true }: Props) {
   const { t } = useTranslation(['packageSales', 'translation']);
   const navigate = useNavigate();
   const { currencyFormat } = useCurrency();
@@ -213,49 +214,51 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
           );
         },
       },
-      {
-        key: 'action',
-        title: () => <AntTableColumnTitle>{t('translation:action')}</AntTableColumnTitle>,
-        render: (_, row) => (
-          <ActionTable
-            actions={[
-              {
-                id: v4(),
-                label: 'detail',
-                icon: <ViewIcon />,
-                onClick: record => {
-                  const nextUrl = record.orderCode;
-                  navigate(nextUrl);
-                },
-              },
-              {
-                id: v4(),
-                label: 'edit',
-                icon: <EditIcon />,
-                onClick: () => {
-                  navigate(`edit/${row.orderCode}`, {
-                    state: {
-                      defaultPackage: row,
+      showAction
+        ? {
+            key: 'action',
+            title: () => <AntTableColumnTitle>{t('translation:action')}</AntTableColumnTitle>,
+            render: (_, row) => (
+              <ActionTable
+                actions={[
+                  {
+                    id: v4(),
+                    label: 'detail',
+                    icon: <ViewIcon />,
+                    onClick: record => {
+                      const nextUrl = record.orderCode;
+                      navigate(nextUrl);
                     },
-                  });
-                },
-              },
-              {
-                id: v4(),
-                label: 'cancel',
-                icon: <CancelPresentationOutlinedIcon color="error" />,
-                onClick: () => {
-                  setOpenConfirmCancel(row);
-                },
-                color: '#FF2727',
-              },
-            ]}
-            row={row}
-          />
-        ),
-        align: 'center',
-        width: 100,
-      },
+                  },
+                  {
+                    id: v4(),
+                    label: 'edit',
+                    icon: <EditIcon />,
+                    onClick: () => {
+                      navigate(`edit/${row.orderCode}`, {
+                        state: {
+                          defaultPackage: row,
+                        },
+                      });
+                    },
+                  },
+                  {
+                    id: v4(),
+                    label: 'cancel',
+                    icon: <CancelPresentationOutlinedIcon color="error" />,
+                    onClick: () => {
+                      setOpenConfirmCancel(row);
+                    },
+                    color: '#FF2727',
+                  },
+                ]}
+                row={row}
+              />
+            ),
+            align: 'center',
+            width: 100,
+          }
+        : {},
     ];
   }, [navigate, sortOrder, t]);
 

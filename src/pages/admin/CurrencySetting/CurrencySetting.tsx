@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const currencyOptions = [
   { value: CurrencyEnum.EUR, label: CurrencyEnum.EUR },
-  { value: CurrencyEnum.FRF, label: CurrencyEnum.FRF },
   { value: CurrencyEnum.USD, label: CurrencyEnum.USD },
   { value: CurrencyEnum.XAF, label: CurrencyEnum.XAF },
 ];

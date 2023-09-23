@@ -14,5 +14,6 @@
   "classes": "Classes",
   "total_tickets": "Total tickets",
   "total_prices": "Total prices",
-  "from": "From"
+  "from": "From",
+  "package": "Package"
 }

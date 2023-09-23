@@ -5,61 +5,86 @@ import FilterTicket from 'components/FilterTicket/FilterTicket';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
 import { Result } from 'components/SelectDecouplingData/SelectDestination';
 import dayjs from 'dayjs';
-import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useCurrency } from 'hooks/useCurrency';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { reportsActions } from 'store/report/reportSlice';
 import { fieldsSearch } from './constants';
-import { useExportTicketSales } from 'hooks/useExportTicketSales';
 import { StatisticBox } from '../Reporting/components/StatisticBox';
+import { useGetStatisticPackageSales } from 'services/Report/getStatisticPackageSales';
+import { get } from 'lodash-es';
+import { useGetListPackageSales } from 'services/PackageSales/packageSales';
+import { useMount } from 'ahooks';
+import { PackageSale } from 'models/PackageSales';
+import { Searcher } from 'services/@types/SearchParams';
+import { dayjsToNumber } from 'utils/dayjsToNumber';
+import TablePackageSales from '../PackageSales/components/TablePackageSales';
+import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
+import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
+import { useExportPackageSales } from 'services/Report/exportPackageSales';
 
 interface Values {
   departurePoints?: { value: Result };
-  arrivalPoints?: { value: Result };
+  from: string;
+  package?: { value: Result };
   departureTime?: [dayjs.Dayjs, dayjs.Dayjs];
-  routeId?: string;
 }
 
 const ReportingPackageSales: FC = () => {
   const { control, handleSubmit } = useForm<Values>();
 
-  const { exportPdf, isLoading } = useExportTicketSales();
+  const [sortOrder, setSortOrder] = useState<any>({});
+  const [filterValues, setFilterValues] = useState<any>({});
+
+  const { exportPdf, isLoading } = useExportPackageSales();
+
+  const { data: statisticData } = useGetStatisticPackageSales();
+  const { data: dataReports, loading, run: getListPkgSales, refresh } = useGetListPackageSales();
 
   const { currencyFormat } = useCurrency();
 
-  const dispatch = useAppDispatch();
-
   const { t } = useTranslation(['reportings']);
 
+  useMount(() => {
+    getListPkgSales({
+      page: 0,
+      searcher: {},
+      sorter: {},
+    });
+  });
+
   const onSubmit = (values: Values) => {
-    dispatch(
-      reportsActions.getTicketSalesRequest({
-        page: 0,
-        sorter: {},
-        searcher: {
-          'routePoint.departurePoint': {
-            operator: 'eq',
-            value: values.departurePoints,
-          },
-          routeCode: {
-            operator: 'contains',
-            value: values.routeId,
-          },
-          departureTime: [
-            {
-              operator: 'gte',
-              value: values.departureTime?.[0].valueOf(),
-            },
-            {
-              operator: 'lte',
-              value: values.departureTime?.[0].valueOf(),
-            },
-          ],
+    const searcher: Searcher<PackageSale> = {
+      departurePoint: {
+        operator: 'contains',
+        value: values.departurePoints?.value.title?.trim(),
+      },
+      'merchandises.package': {
+        operator: 'contains',
+        value: values.package?.value.title,
+      },
+      sender: {
+        operator: 'contains',
+        value: values.from,
+      },
+      departureTime: [
+        {
+          value: values.departureTime?.[0] && dayjsToNumber(values.departureTime[0]),
+          operator: 'gte',
         },
-      }),
-    );
+        {
+          value: values.departureTime?.[0] && dayjsToNumber(values.departureTime[1]),
+          operator: 'lte',
+        },
+      ],
+    };
+    setFilterValues(searcher);
+    setSortOrder({});
+    getListPkgSales({
+      page: 0,
+      searcher,
+      sorter: {},
+    });
   };
 
   return (
@@ -90,10 +115,34 @@ const ReportingPackageSales: FC = () => {
           </Grid>
         </Grid>
         <Stack display="flex" flexDirection="row" alignItems="center" gap="16px">
-          <StatisticBox title={t('reportings:total_tickets')} color="#33CC7F" total="1244" />
-          <StatisticBox title={t('reportings:total_prices')} color="#0A89CA" total={currencyFormat('20250000')} />
+          <StatisticBox title={t('reportings:total_tickets')} color="#33CC7F" total={get(statisticData, 'data.totalTickets', 0)} />
+          <StatisticBox
+            title={t('reportings:total_prices')}
+            color="#0A89CA"
+            total={!!statisticData ? currencyFormat(get(statisticData, 'data.totalPrice', 0)) : currencyFormat(0)}
+          />
         </Stack>
-        {/* <TableReportings /> */}
+        <Box my="30px">
+          <TablePackageSales
+            onRefresh={refresh}
+            dataSource={dataReports?.data.hits ?? []}
+            pagination={dataReports?.data.pagination ?? { totalPages: 0, totalRows: 0 }}
+            sortOrder={sortOrder}
+            loading={loading}
+            showAction={false}
+            onFilter={(pagination, _, sorter, extra) => {
+              const sorterMap = getSorterParamsFromAntdTable({ sorter });
+              setSortOrder({
+                [`${get(sorter, 'columnKey', '')}`]: get(sorter, 'order', ''),
+              });
+              getListPkgSales({
+                page: getPaginationFromAntdTable({ pagination, extra }),
+                searcher: filterValues,
+                sorter: sorterMap,
+              });
+            }}
+          />
+        </Box>
       </Box>
     </Box>
   );
