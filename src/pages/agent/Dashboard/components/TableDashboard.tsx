@@ -48,10 +48,12 @@ function TableDashboard() {
           </Box>
         );
       },
+      width: 250,
     },
     {
       key: 'departure_time',
       dataIndex: 'departure_time',
+      width: 200,
       title: () => <Typography variant="headerTable">{t('departure_time')}</Typography>,
       sorter: true,
       render: (_, record) => <Typography variant="body2">{dayjs(record.dateRoute).format('HH:mm')}</Typography>,
@@ -64,6 +66,7 @@ function TableDashboard() {
       render: (_, record) => (
         <Typography variant="body2">{dayjs(record.dateRoute).add(record.route?.durationTime, 'minute').format('HH:mm')}</Typography>
       ),
+      width: 200,
     },
     {
       key: 'vehicle',
@@ -77,7 +80,7 @@ function TableDashboard() {
         </Box>
       ),
       align: 'center',
-      width: 120,
+      width: 200,
     },
     {
       key: 'VIPseats',
