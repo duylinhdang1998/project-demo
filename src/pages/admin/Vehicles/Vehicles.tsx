@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   btnAdd: {
     height: '40px !important',
     padding: '10px 30px !important',
+    width: '100%',
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },

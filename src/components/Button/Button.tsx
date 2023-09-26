@@ -35,7 +35,7 @@ function Button({ backgroundButton, backgroundButtonHover, colorButton, colorBut
           color: (colorButtonHover ? colorButtonHover : colorButton) + '!important',
         },
         color: colorButton + '!important',
-        padding: '10px 14px',
+        // padding: '10px 14px',
         ...props.sx,
       }}
       className={cx(classes.container, className)}
