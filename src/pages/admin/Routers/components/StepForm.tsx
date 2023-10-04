@@ -117,6 +117,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
               },
             ],
           },
+          departurePointCode: route.departurePointCode,
           routeCode: route.routeCode,
           onSuccess() {
             toast(
@@ -200,6 +201,7 @@ export default function StepForm({ isMulti, isEditAction, sourceToCopy, startSte
       dispatch(
         routesActions.updateTripRequest({
           routeCode: route.routeCode,
+          departurePointCode: route.departurePointCode,
           data: {
             ...data,
             stopPoints: formValues.routePoints.map(routePoint => ({

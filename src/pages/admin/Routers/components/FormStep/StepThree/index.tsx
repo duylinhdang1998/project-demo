@@ -125,7 +125,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
 
   const handleOpenDialogEdit: CalendarProps['onSelectSlot'] = event => {
     if (route) {
-      const selected = new Date(event.slots[0].setHours(12));
+      const selected = dayjs(event.slots[0]).startOf('day').toDate();
       const isWorkingDay = route.dayActives.includes(DayInWeekMappingToString[selected.getDay()]);
       if (isWorkingDay && isDateClampRouterPeriod(selected.getTime())) {
         setSelectedSlot({
@@ -172,7 +172,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
           targetRoute: route,
           data: {
             routeCode: route.routeCode,
-            dayoff: selectedSlot.date.setHours(12),
+            dayoff: dayjs(selectedSlot.date).startOf('day').toDate().getTime(),
             type: selectedSlot.isCreateDayoffAction ? 'ADD' : 'REMOVE',
           },
           onSuccess() {
@@ -210,7 +210,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
         routesActions.updateParticularDayPriceRequest({
           data: {
             routeCode: route.routeCode,
-            particularDay: selectedSlot.date.setHours(12),
+            particularDay: dayjs(selectedSlot.date).startOf('day').toDate().getTime(),
             routeParticulars: formValues.priceOfRoutePoints.map(item => ({
               routePointId: item.routePointId,
               ECOPrices: [

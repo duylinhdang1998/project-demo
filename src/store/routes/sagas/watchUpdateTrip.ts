@@ -6,17 +6,19 @@ import { routesActions } from '../routesSlice';
 import { updateGeneralInfomationTripWhenHasRoutePointDeleted } from 'services/Route/Company/updateGeneralInfomationTripWhenHasRoutePointDeleted';
 
 function* handleUpdateTrip({ payload }: ReturnType<typeof routesActions.updateTripRequest>) {
-  const { data, isHasDeleteStopPointAction, isHasNewStopPointAction, routeCode, onFailure, onSuccess } = payload;
+  const { data, isHasDeleteStopPointAction, isHasNewStopPointAction, routeCode, departurePointCode, onFailure, onSuccess } = payload;
   try {
     if (isHasDeleteStopPointAction || isHasNewStopPointAction) {
       yield call(updateGeneralInfomationTripWhenHasRoutePointDeleted, {
         data,
         routeCode,
+        departurePointCode,
       });
     } else {
       yield call(updateGeneralInfomationTrip, {
         data,
         routeCode,
+        departurePointCode,
       });
     }
     const detailResponse: SagaReturnType<typeof getRoute> = yield retry(3, 1000, getRoute, {

@@ -18,7 +18,7 @@ import { memo, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Route } from 'services/models/Route';
+import { Route, RoutePoint } from 'services/models/Route';
 import { RECORDS_PER_PAGE } from 'services/Route/Company/getRoutes';
 import { selectAuth } from 'store/auth/selectors';
 import { routesActions } from 'store/routes/routesSlice';
@@ -78,7 +78,7 @@ function TableRoutes() {
         render: (_, row) => {
           const isMultipleStops = row.tripType === 'MULTI_STOP';
           const mainRoutes = getMainRoutePoints(row.routePoints);
-          const lastRoutePoint = mainRoutes[mainRoutes.length - 1];
+          const lastRoutePoint = mainRoutes[mainRoutes.length - 1] as RoutePoint | undefined;
           const startPoint = row.departurePoint;
           const routesInTooltip = mainRoutes.slice(0, -1);
           if (isMultipleStops && !isEmpty(routesInTooltip)) {
@@ -92,14 +92,14 @@ function TableRoutes() {
                   icon={StopCircleSvg}
                   color="#33CC7F"
                 />
-                <TextWithIcon text={lastRoutePoint.stopPoint} icon={MapPinIcon} color="#2D9AFF" />
+                <TextWithIcon text={lastRoutePoint?.stopPoint} icon={MapPinIcon} color="#2D9AFF" />
               </ToolTipAddress>
             );
           }
           return (
             <Box>
               <TextWithIcon text={startPoint} icon={MapPinIcon} color="#2D9AFF" />
-              <TextWithIcon text={lastRoutePoint.stopPoint} icon={MapPinIcon} color="#2D9AFF" />
+              <TextWithIcon text={lastRoutePoint?.stopPoint} icon={MapPinIcon} color="#2D9AFF" />
             </Box>
           );
         },
@@ -118,8 +118,8 @@ function TableRoutes() {
         title: () => <Typography variant="headerTable">{t('routers:arrivalTime')}</Typography>,
         render: (_, row) => {
           const mainRoutes = getMainRoutePoints(row.routePoints);
-          const lastRoute = mainRoutes[mainRoutes.length - 1];
-          return <Typography variant="body2">{addMinutesToTimeString(row.departureTime, lastRoute.durationTime)}</Typography>;
+          const lastRoute = mainRoutes[mainRoutes.length - 1] as RoutePoint | undefined;
+          return <Typography variant="body2">{addMinutesToTimeString(row.departureTime, lastRoute?.durationTime ?? 0)}</Typography>;
         },
         width: 150,
       },

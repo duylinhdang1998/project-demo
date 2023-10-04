@@ -20,6 +20,7 @@ export interface UpdateGeneralInfomationTrip {
     tripType: Route['tripType'];
   };
   routeCode: Route['routeCode'];
+  departurePointCode: Route['departurePointCode'];
 }
 
 export const updateGeneralInfomationTrip = async ({ data, routeCode }: UpdateGeneralInfomationTrip) => {

@@ -21,15 +21,17 @@ export interface UpdateGeneralInfomationTripWhenHasRoutePointDeleted {
     tripType: Route['tripType'];
   };
   routeCode: Route['routeCode'];
+  departurePointCode: Route['departurePointCode'];
 }
 
 export const updateGeneralInfomationTripWhenHasRoutePointDeleted = async ({
   data,
   routeCode,
+  departurePointCode,
 }: UpdateGeneralInfomationTripWhenHasRoutePointDeleted) => {
   const response: AxiosResponse<ResponseDetailSuccess<ResponseData> | ResponseFailure> = await fetchAPI.request({
     method: 'PUT',
-    url: `/v1.0/company/routes/${routeCode}/delete-route/update`,
+    url: `/v1.0/company/routes/${routeCode}/delete-route/update/${departurePointCode}`,
     data: {
       ...data,
       vehicle: data.vehicle?._id,
