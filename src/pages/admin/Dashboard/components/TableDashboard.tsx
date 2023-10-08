@@ -6,6 +6,7 @@ import { MapPinIcon } from 'assets';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import { columnsRoutes } from '../constants';
 import { ITrackingRoute } from 'services/Dashboard/dashboard';
+import dayjs from 'dayjs';
 
 interface Props {
   dataSource?: ITrackingRoute[];
@@ -69,7 +70,7 @@ function TableDashboard({ dataSource }: Props) {
                   />
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
-                  {row.dateTracking}
+                  {dayjs(row.dateRoute).format('HH:mm')}
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
                   {row.seatsAvailable?.ECO}
