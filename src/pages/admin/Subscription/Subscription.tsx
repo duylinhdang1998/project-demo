@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
+import { updateURLSearchParamsOfBrowserWithoutNavigation } from 'utils/updateURLSearchParamsOfBrowserWithoutNavigation';
 import { STATUS } from './constants';
 import { getTotalRemainingDays } from './utils/getTotalRemainingDays';
 import { getTotalTrialDays } from './utils/getTotalTrialDays';
@@ -30,6 +31,10 @@ export default function Subscription() {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
+
+  const isShowUpgradeNotification = useMemo(() => {
+    return statusGetCurrentSubscription === 'success' && getCheckoutNotification();
+  }, [statusGetCurrentSubscription]);
 
   const subscriptionFeatures = useMemo(() => {
     if (currentSubscription && !isEmpty(subscriptions)) {
@@ -67,17 +72,26 @@ export default function Subscription() {
   }, []);
 
   useEffect(() => {
-    if (statusGetCurrentSubscription === 'success' && getCheckoutNotification()) {
+    if (isShowUpgradeNotification) {
       setCheckoutNotification(true);
       if (location.search.includes(STATUS.success)) {
-        toast(<ToastCustom type="success" text={t('account:upgrade_subscription_success')} />, {
-          className: 'toast-success',
-        });
+        toast(
+          <ToastCustom
+            type="success"
+            text={t('account:upgrade_subscription_success')}
+            description={t('account:upgrade_subscription_success_description')}
+          />,
+          {
+            className: 'toast-success',
+          },
+        );
+        updateURLSearchParamsOfBrowserWithoutNavigation(new URLSearchParams());
       }
       if (location.search.includes(STATUS.cancelled)) {
         toast(<ToastCustom type="error" text={t('account:upgrade_subscription_cancelled')} />, {
           className: 'toast-error',
         });
+        updateURLSearchParamsOfBrowserWithoutNavigation(new URLSearchParams());
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -101,6 +115,16 @@ export default function Subscription() {
         <HeaderLayout activeSideBarHeader={t('account:subscription')} />
         <Box p="24px">
           <CardWhite title={t('account:my_subscription')}>
+            {isShowUpgradeNotification && (
+              <Box marginBottom="8px">
+                <Typography fontWeight={700} fontSize={14} color="#FF2727">
+                  {t('account:upgrade_subscription_success')}
+                  <Typography fontSize={13} color="#FF2727">
+                    {t('account:upgrade_subscription_success_description')}
+                  </Typography>
+                </Typography>
+              </Box>
+            )}
             <Typography fontWeight={700} color="#0C1132">
               {t(`account:${currentSubscription?.subscriptionType}`)}
             </Typography>
