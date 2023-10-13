@@ -77,7 +77,7 @@
   "connect_with_payment": "Se connecter avec",
   "create_subscription_order_failure": "Quelque chose s'est mal passé. Veuillez attendre que le navigateur se recharge et réessayer !",
   "upgrade_subscription_success": "Mise à niveau de l'abonnement réussie !",
-  "upgrade_subscription_success_description": "Le processus prendra un certain temps ; veuillez vérifier votre boîte de réception lorsque le processus sera terminé avec succès.",
+  "upgrade_subscription_success_description": "Veuillez patienter un instant pendant que nous traitons votre paiement. Consultez votre boîte de réception pour la confirmation.",
   "upgrade_subscription_cancelled": "Commande d'abonnement annulée !",
   "login_paypal": "Se connecter avec PayPal",
   "click_button_description_paypal": "Cliquez sur le bouton {{method}} pour vous connecter.",

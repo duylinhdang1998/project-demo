@@ -78,7 +78,7 @@
   "connect_with_payment": "Connect with",
   "create_subscription_order_failure": "Something went wrong. Please wait for the browser to reload and try again!",
   "upgrade_subscription_success": "Upgrade subscription successfully!",
-  "upgrade_subscription_success_description": "The process will take some time; please check your email when the process is successful.",
+  "upgrade_subscription_success_description": "Payment processing underway. Check your inbox for confirmation shortly. Thanks for your patience.",
   "upgrade_subscription_cancelled": "Subscription order cancelled!",
   "login_paypal": "Connect with Paypal",
   "click_button_description_paypal": "Click the {{method}} button to log in.",
