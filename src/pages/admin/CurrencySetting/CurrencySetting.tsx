@@ -15,6 +15,8 @@ import { useSetCurrencyConfig } from 'services/System/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { profileActions } from 'store/profile/profileSlice';
 import { selectProfile } from 'store/profile/selectors';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme: Theme) => ({
   label: {
@@ -74,6 +76,12 @@ export default function CurrencySetting() {
           symbol: data.data.symbol,
         };
         dispatch(profileActions.setCurrencySetting(currencyData));
+
+        toast(<ToastCustom type="success" text={t('account:save_currency_success')} />, { className: 'toast-success' });
+      } else {
+        toast(<ToastCustom type="error" text={t('account:save_currency_failed')} />, {
+          className: 'toast-error',
+        });
       }
     },
   });

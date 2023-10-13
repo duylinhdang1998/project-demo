@@ -88,5 +88,8 @@
   "not_registered_payment": "La passerelle de paiement n'a pas été connectée avec succès, veuillez vous connecter pour compléter le mode de paiement.",
   "currency_setting": "Paramètre de devise",
   "banner_content": "Contenu de la bannière",
-  "banner_content_description": "Le contenu de la bannière de votre site Web"
+  "banner_content_description": "Le contenu de la bannière de votre site Web",
+  "save_currency_success": "Devise enregistrée avec succès",
+  "save_currency_failed": "Échec de l'enregistrement de la devise",
+  "backGround": "Image de fond"
 }

@@ -179,6 +179,7 @@ function ContentManager() {
                     },
                   },
                 ]}
+                filterKey="account"
                 control={control}
               />
             </Box>
