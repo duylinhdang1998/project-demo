@@ -27,5 +27,7 @@
   "order": "STT",
   "delete_vehicle_message": "Vehicles will automatically be removed from previously assigned Routes",
   "cancel_form": "Cancel vehicle",
-  "create_vehicle": "Add new vehicle"
+  "create_vehicle": "Add new vehicle",
+  "add_new_event": "Add new event",
+  "add_new_vehicle": "Add new vehicle"
 }

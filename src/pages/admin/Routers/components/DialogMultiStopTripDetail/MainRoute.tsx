@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 import { DialogMultiStopTripDetailProps } from './DialogMultiStopTripDetail';
 import { addMinutesToTimeString } from 'utils/addMinutesToTimeString';
 import { getMainRoutePoints } from '../../utils/getRoutePointsWithRouteType';
+import { RoutePoint } from 'services/models/Route';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -53,7 +54,7 @@ export const MainRoute = ({ route }: Pick<DialogMultiStopTripDetailProps, 'route
   };
 
   const renderLastMark = () => {
-    const lastPoint = mainRoutePoints[mainRoutePoints.length - 1];
+    const lastPoint: RoutePoint | undefined = mainRoutePoints[mainRoutePoints.length - 1];
     return (
       <Timeline.Item
         dot={
@@ -63,10 +64,10 @@ export const MainRoute = ({ route }: Pick<DialogMultiStopTripDetailProps, 'route
         }
       >
         <Typography component="p" color="rgba(69, 72, 94, 1)" fontSize="14px">
-          {lastPoint.stopPoint}
+          {lastPoint?.stopPoint}
         </Typography>
         <Typography component="p" color="rgba(133, 140, 147, 1)" fontSize="10px">
-          {addMinutesToTimeString(route.departureTime, lastPoint.durationTime)}
+          {addMinutesToTimeString(route.departureTime, lastPoint?.durationTime)}
         </Typography>
       </Timeline.Item>
     );
@@ -76,7 +77,7 @@ export const MainRoute = ({ route }: Pick<DialogMultiStopTripDetailProps, 'route
     return mainRoutePoints.slice(0, -1).map(routePoint => {
       return (
         <Timeline.Item key={routePoint._id} color="rgba(51, 204, 127, 1)">
-          {routePoint.stopPoint}
+          {routePoint?.stopPoint}
         </Timeline.Item>
       );
     });

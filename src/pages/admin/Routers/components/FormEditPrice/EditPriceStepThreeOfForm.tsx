@@ -18,6 +18,8 @@ import { useStyles } from './useStyles';
 import enUS from 'antd/es/date-picker/locale/en_US';
 import frFR from 'antd/es/date-picker/locale/fr_FR';
 import { isFrLanguage } from 'utils/isFrLanguage';
+import { useSelector } from 'react-redux';
+import { selectProfile } from 'store/profile/selectors';
 interface Item {
   ecoAdult: number;
   vipAdult: number;
@@ -46,6 +48,8 @@ export const EditPriceStepThreeOfForm = ({ control, errors, priceOfRoutePoints, 
   const { t } = useTranslation(['routers', 'translation']);
   const classes = useStyles();
   const formVerticleClasses = useFormVerticalStyles();
+
+  const { profile } = useSelector(selectProfile);
 
   const ticketTypes = useMemo(() => {
     return [
@@ -217,8 +221,8 @@ export const EditPriceStepThreeOfForm = ({ control, errors, priceOfRoutePoints, 
                                 <InputNumber
                                   {...field}
                                   min={0}
-                                  formatter={value => (value ? `${value}$` : '')}
-                                  parser={value => (value ? value.replace('$', '') : 0)}
+                                  formatter={value => (value ? `${value}${profile?.currency?.symbol}` : '')}
+                                  parser={value => (value ? value.replace(`${profile?.currency?.symbol}`, '') : 0)}
                                   placeholder={t('routers:input_price')}
                                   className={classNames(classes.input)}
                                   status={!!error ? 'error' : undefined}

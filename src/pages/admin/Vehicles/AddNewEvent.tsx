@@ -50,11 +50,7 @@ export default function AddNewEvent() {
   return (
     <FadeIn>
       <LayoutDetail
-        title={
-          isEditAction
-            ? t('translation:edit_type', { type: t('translation:event').toLowerCase() })
-            : t('translation:add_new', { type: t('translation:event').toLowerCase() })
-        }
+        title={isEditAction ? t('translation:edit_type', { type: t('translation:event').toLowerCase() }) : t('vehicles:add_new_event')}
         subTitle={t('vehicles:vehicles')}
       >
         <Box display="flex" justifyContent="center" width="100%">

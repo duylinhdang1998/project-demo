@@ -286,11 +286,12 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
   };
 
   const renderDialogConfirmToggle = () => {
+    const isDeactiveDay = selectedSlot?.isCreateDayoffAction;
     return (
       <Dialog open={openDialogConfirmDelete} onClose={handleCloseDialogConfirmDelete}>
         <Box padding="24px" style={{ maxWidth: 311, textAlign: 'center' }}>
           <Typography marginBottom="24px" fontSize="16px" fontWeight={700}>
-            {t('routers:reactive_title')}
+            {isDeactiveDay ? t('routers:deactive_title') : t('routers:reactive_title')}
           </Typography>
           <Typography marginBottom="30px" fontSize="14px" fontWeight={400}>
             {t('translation:delete_record_message')}
@@ -319,7 +320,7 @@ export default function StepThree({ onCancel, isEdit }: StepThreeProps) {
                 handleToggleActiveDay();
               }}
             >
-              {selectedSlot?.isCreateDayoffAction ? t('translation:delete') : t('translation:reactive')}
+              {isDeactiveDay ? t('translation:delete') : t('translation:reactive')}
             </Button>
           </Stack>
         </Box>

@@ -42,19 +42,13 @@ export default function AddNewVehicles() {
   return (
     <FadeIn>
       <LayoutDetail
-        title={
-          isEditAction
-            ? t('translation:edit_type', { type: t('vehicles:vehicle').toLowerCase() })
-            : t('translation:add_new', { type: t('vehicles:vehicle').toLowerCase() })
-        }
+        title={isEditAction ? t('translation:edit_type', { type: t('vehicles:vehicle').toLowerCase() }) : t('vehicles:add_new_vehicle')}
         subTitle={t('vehicles:vehicles')}
       >
         <Box width="100%" display="flex" justifyContent="center">
           <Box bgcolor="#fff" borderRadius="4px" width={{ xs: '100%', md: '80%' }} padding="24px">
             <Typography color="#0c1132" fontWeight={700}>
-              {isEditAction
-                ? t('translation:edit_type', { type: t('vehicles:vehicle').toLowerCase() })
-                : t('translation:add_new', { type: t('vehicles:vehicle').toLowerCase() })}
+              {isEditAction ? t('translation:edit_type', { type: t('vehicles:vehicle').toLowerCase() }) : t('vehicles:add_new_vehicle')}
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
             <FormAddVehicle />
