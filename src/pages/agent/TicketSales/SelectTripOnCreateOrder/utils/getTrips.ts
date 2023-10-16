@@ -10,33 +10,29 @@ export const getTrips = async (
   isReturnTrip: boolean,
 ): Promise<Awaited<ReturnType<typeof searchRoutes>>['data']> => {
   try {
-    const searcher = {
-      departurePointCode: { value: values.departurePoint?.value._id, operator: 'eq' },
-      stopPointCode: { value: values.arrivalPoint?.value._id, operator: 'eq' },
-      departureTime: {
-        value: isReturnTrip
-          ? undefined
-          : values.departureTime && !dayjs(values.departureTime).isSame(dayjs.utc(), 'day')
-          ? +dayjs.utc(values.departureTime).startOf('day')
-          : +dayjs(),
-        operator: 'gte',
-      },
-      ...(values.tripType === 'MULTI_STOP' && isReturnTrip
-        ? {
-            returnTime: {
-              value: values.returnTime ? +dayjs.utc(values.returnTime).startOf('day') : +dayjs().startOf('day'),
-              operator: 'gte',
-            },
-          }
-        : {}),
-    };
-
-    console.log('searcher>>', searcher);
-
     const response = await searchRoutes({
       tripType: values.tripType,
       page,
-      searcher: searcher as any,
+      searcher: {
+        departurePointCode: { value: values.departurePoint?.value._id, operator: 'eq' },
+        stopPointCode: { value: values.arrivalPoint?.value._id, operator: 'eq' },
+        departureTime: {
+          value: isReturnTrip
+            ? undefined
+            : values.departureTime
+            ? dayjs.utc(values.departureTime).set('second', 0).unix() * 1000
+            : dayjs().set('second', 0).unix() * 1000,
+          operator: 'gte',
+        },
+        ...(values.tripType === 'MULTI_STOP' && isReturnTrip
+          ? {
+              returnTime: {
+                value: values.returnTime ? dayjs.utc(values.returnTime).set('second', 0).unix() * 1000 : dayjs().set('second', 0).unix() * 1000,
+                operator: 'gte',
+              },
+            }
+          : {}),
+      },
       sorter: {},
     });
     const data = await Promise.all(
