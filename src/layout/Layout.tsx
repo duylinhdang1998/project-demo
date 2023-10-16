@@ -39,11 +39,11 @@ export default function Layout() {
   const theme = useTheme();
 
   const { userInfo, isLoggedIn } = useAppSelector(selectAuth);
-  const { statusGetProfile } = useAppSelector(selectProfile);
+  const { statusGetProfile, profile } = useAppSelector(selectProfile);
   const dispatch = useAppDispatch();
 
   const [openDrawer, setOpenDrawer] = useState(false);
-  useGetSystemConfig();
+  const { loading } = useGetSystemConfig();
 
   const container = window !== undefined ? () => window.document.body : undefined;
   const drawerContent = userInfo?.role === UserRole.ADMIN ? sidebars : sidebarsAgent;
@@ -86,7 +86,7 @@ export default function Layout() {
     return <Navigate to="/" />;
   }
 
-  if (statusGetProfile === 'idle' || statusGetProfile === 'loading') {
+  if (loading || !profile?.currency || statusGetProfile === 'idle' || statusGetProfile === 'loading') {
     return (
       <Box height="100vh">
         <LoadingScreen />
