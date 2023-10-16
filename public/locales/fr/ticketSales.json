@@ -21,7 +21,7 @@
   "add_ticket_order": "Ajouter une commande de billets",
   "select_your_trip": "Sélectionnez votre trajet",
   "departureTime": "Dates",
-  "returnTime": "Date et heure de départ",
+  "returnTime": "Date et heure d’arrivée",
   "create_ticket_order": "Créer une commande de billets",
   "update_ticket_order": "Mettre à jour une commande de billets",
   "filter_by": "Filtrer par",
