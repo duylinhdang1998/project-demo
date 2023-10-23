@@ -129,7 +129,7 @@ export const OrderDetailOnCreateOrder = () => {
               data: {
                 type: 'ONE_TRIP',
                 data: {
-                  paymentStatus: values.method ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
+                  paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
                   ticketCode: ticketSalesOfOrder.data.ticketCode,
                   paymentType: values.method,
                   passengers: values.passengers.map(passenger => ({
@@ -175,7 +175,7 @@ export const OrderDetailOnCreateOrder = () => {
                 type: 'ROUND_TRIP',
                 data: {
                   departureTicket: {
-                    paymentStatus: values.method ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
+                    paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
                     ticketCode: ticketSalesOfOrder.data.departureTrip.ticketCode,
                     paymentType: values.method,
                     passengers: values.passengers.map(passenger => ({
@@ -186,7 +186,7 @@ export const OrderDetailOnCreateOrder = () => {
                     })),
                   },
                   returnTicket: {
-                    paymentStatus: values.method ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
+                    paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
                     ticketCode: ticketSalesOfOrder.data.returnTrip.ticketCode,
                     paymentType: values.method,
                     passengers: values.passengers.map(passenger => ({
@@ -243,7 +243,7 @@ export const OrderDetailOnCreateOrder = () => {
                 departurePoint: generalInfomationOfTicket.data.routePoint.departurePoint,
                 routePoint: generalInfomationOfTicket.data.routePoint._id,
                 paymentType: values.method,
-                paymentStatus: values.method ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
+                paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
               },
               onSuccess(ticketSaleOrderCode) {
                 toast(
@@ -290,7 +290,7 @@ export const OrderDetailOnCreateOrder = () => {
                   departurePoint: generalInfomationOfTicket.data.departureTrip.routePoint.departurePoint,
                   routePoint: generalInfomationOfTicket.data.departureTrip.routePoint._id,
                   paymentType: values.method,
-                  paymentStatus: values.method ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
+                  paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
                 },
                 returnTrip: {
                   passengers: values.passengers.map(passenger => ({
@@ -305,7 +305,7 @@ export const OrderDetailOnCreateOrder = () => {
                   departurePoint: generalInfomationOfTicket.data.returnTrip.routePoint.departurePoint,
                   routePoint: generalInfomationOfTicket.data.returnTrip.routePoint._id,
                   paymentType: values.method,
-                  paymentStatus: values.method ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
+                  paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
                 },
               },
               onSuccess(ticketSaleOrderCode) {
