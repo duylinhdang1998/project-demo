@@ -16,7 +16,7 @@ interface MethodUpdatePayload {
   }[];
 }
 
-interface MethodPaymentResponse {
+export interface MethodPaymentResponse {
   code: number;
   data: PaymentGateway[];
 }
