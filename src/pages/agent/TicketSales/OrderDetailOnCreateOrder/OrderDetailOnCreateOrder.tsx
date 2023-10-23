@@ -417,11 +417,11 @@ export const OrderDetailOnCreateOrder = () => {
                 <PaymentStatus
                   isActive={isPaid}
                   onChange={checked => {
-                    if (isEditAction) {
-                      setValue('isPaid', checked);
-                    } else {
-                      setValue('isPaid', true);
-                    }
+                    // if (isEditAction) {
+                    // } else {
+                    //   setValue('isPaid', true);
+                    // }
+                    setValue('isPaid', checked);
                     trigger('isPaid');
                   }}
                 />
