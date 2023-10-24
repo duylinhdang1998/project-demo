@@ -40,12 +40,12 @@ export const CardTrips = ({ loading, totalRoutes, routes, currentPage, recordsPe
     <Box>
       <Grid sx={{ marginBottom: '16px' }} spacing="16px" container>
         {routes.map(routeItem => {
-          const depatureTime = dayjs(routeItem.dateQuery);
+          const depatureTime = dayjs(routeItem.bookDate);
           return (
             <Grid item xs={12} md={6} key={routeItem._id}>
               <CardSelectTrip
-                timeStart={routeItem.route.departureTime}
-                timeEnd={addMinutesToTimeString(routeItem.route.departureTime, routeItem.durationTime)}
+                timeStart={depatureTime.format('HH:mm')}
+                timeEnd={addMinutesToTimeString(depatureTime.format('HH:mm'), routeItem.durationTime)}
                 placeStart={routeItem.departurePoint}
                 placeEnd={routeItem.stopPoint}
                 duration={t('ticketSales:about_duration', { duration: formatDuration(routeItem.durationTime) })}

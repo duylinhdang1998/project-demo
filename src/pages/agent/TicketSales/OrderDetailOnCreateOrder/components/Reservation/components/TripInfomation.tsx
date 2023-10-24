@@ -11,7 +11,7 @@ import { getUrlImage, getUrlOfResource } from 'utils/getUrlOfResource';
 export interface TripInfomationProps {
   variant: 'ONE_TRIP' | 'DEPARTURE_TRIP' | 'RETURN_TRIP';
   data: {
-    dateFormatted: RouteOfTicketSale['dateQuery'];
+    dateFormatted: RouteOfTicketSale['bookDate'];
     trip: {
       departurePoint?: RouteOfTicketSale['departurePoint'];
       stopPoint?: RouteOfTicketSale['stopPoint'];
@@ -35,7 +35,6 @@ export const TripInfomation = ({ data, variant }: TripInfomationProps) => {
       ONE_TRIP: t('ticketSales:date'),
       RETURN_TRIP: t('ticketSales:returnDate'),
     };
-    console.log(data);
     return (
       <Box marginBottom="24px">
         <Title>{TitleMapping[variant]}</Title>

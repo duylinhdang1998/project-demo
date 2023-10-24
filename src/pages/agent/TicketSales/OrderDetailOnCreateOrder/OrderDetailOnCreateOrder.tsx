@@ -238,7 +238,7 @@ export const OrderDetailOnCreateOrder = () => {
                   seatsType: passenger.seatsType.value as PassengerInTicketSale['seatsType'],
                 })),
                 email: values.email,
-                departureTime: dayjsToNumber(dayjs(generalInfomationOfTicket.data.dateFormatted)),
+                departureTime: dayjsToNumber(dayjs(generalInfomationOfTicket.data.dateFormatted, 'DD/MM/YYYY HH:mm')),
                 arrivalPoint: generalInfomationOfTicket.data.routePoint.stopPoint,
                 departurePoint: generalInfomationOfTicket.data.routePoint.departurePoint,
                 routePoint: generalInfomationOfTicket.data.routePoint._id,
@@ -285,7 +285,7 @@ export const OrderDetailOnCreateOrder = () => {
                     seatsType: passenger.seatsType.value as PassengerInTicketSale['seatsType'],
                   })),
                   email: values.email,
-                  departureTime: dayjsToNumber(dayjs(generalInfomationOfTicket.data.departureTrip.dateFormatted)),
+                  departureTime: dayjsToNumber(dayjs(generalInfomationOfTicket.data.departureTrip.dateFormatted, 'DD/MM/YYYY HH:mm')),
                   arrivalPoint: generalInfomationOfTicket.data.departureTrip.routePoint.stopPoint,
                   departurePoint: generalInfomationOfTicket.data.departureTrip.routePoint.departurePoint,
                   routePoint: generalInfomationOfTicket.data.departureTrip.routePoint._id,
@@ -300,7 +300,7 @@ export const OrderDetailOnCreateOrder = () => {
                     seatsType: passenger.seatsType.value as PassengerInTicketSale['seatsType'],
                   })),
                   email: values.email,
-                  departureTime: dayjsToNumber(dayjs(generalInfomationOfTicket.data.returnTrip.dateFormatted)),
+                  departureTime: dayjsToNumber(dayjs(generalInfomationOfTicket.data.returnTrip.dateFormatted, 'DD/MM/YYYY HH:mm')),
                   arrivalPoint: generalInfomationOfTicket.data.returnTrip.routePoint.stopPoint,
                   departurePoint: generalInfomationOfTicket.data.returnTrip.routePoint.departurePoint,
                   routePoint: generalInfomationOfTicket.data.returnTrip.routePoint._id,
@@ -421,6 +421,7 @@ export const OrderDetailOnCreateOrder = () => {
                   isActive={isPaid}
                   onChange={checked => {
                     // if (isEditAction) {
+                    //   setValue('isPaid', checked);
                     // } else {
                     //   setValue('isPaid', true);
                     // }

@@ -117,7 +117,7 @@ export const SelectTripOnCreateOrder = () => {
         state: {
           type: 'ONE_TRIP',
           data: {
-            dateFormatted: route.dateQuery,
+            dateFormatted: dayjs(route.bookDate).format('DD/MM/YYYY HH:mm'),
             vehicle: route.vehicle,
             routePoint: {
               ...route,
@@ -148,7 +148,7 @@ export const SelectTripOnCreateOrder = () => {
               type: 'ROUND_TRIP',
               data: {
                 departureTrip: {
-                  dateFormatted: departureRoute.dateQuery,
+                  dateFormatted: dayjs(departureRoute.bookDate).format('DD/MM/YYYY HH:mm'),
                   vehicle: departureRoute.vehicle,
                   routePoint: {
                     ...departureRoute,
@@ -156,7 +156,7 @@ export const SelectTripOnCreateOrder = () => {
                   },
                 },
                 returnTrip: {
-                  dateFormatted: route.dateQuery,
+                  dateFormatted: dayjs(route.bookDate).format('DD/MM/YYYY HH:mm'),
                   vehicle: route.vehicle,
                   routePoint: {
                     ...route,
