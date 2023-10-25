@@ -12,7 +12,7 @@ import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { FadeIn } from 'components/FadeIn/FadeIn';
 import { includes, isEmpty } from 'lodash-es';
 import { getNotifcation } from 'utils/getNotification';
-import { CheckboxGroup } from 'components/CheckboxGroup/CheckboxGroup';
+import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
 import { isEqual } from 'lodash-es';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
