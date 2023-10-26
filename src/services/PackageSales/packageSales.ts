@@ -2,6 +2,7 @@ import { useRequest } from 'ahooks';
 import { Options } from 'ahooks/lib/useRequest/src/types';
 import { AxiosResponse } from 'axios';
 import { PackageSale } from 'models/PackageSales';
+import { EPaymentStatus } from 'models/PaymentStatus';
 import { ResponseData as SendEmailResponse } from 'services/TicketSale/sendEmail';
 import { EnumPaymentGateway } from 'services/models/PaymentGateway';
 import { ParamsSettings, ResponseDetailSuccess, ResponseFailure, ResponseSuccess } from 'services/models/Response';
@@ -22,6 +23,7 @@ export interface PackageSalePayload {
   merchandises?: Merchandise[];
   paymentMethod?: EnumPaymentGateway;
   orderCode?: string;
+  paymentStatus?: EPaymentStatus;
 }
 
 export interface Merchandise {

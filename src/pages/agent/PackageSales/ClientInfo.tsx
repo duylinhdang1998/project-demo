@@ -11,15 +11,15 @@ import { get } from 'lodash-es';
 import { useEffect, useState } from 'react';
 import { useRequest } from 'ahooks';
 import { getRoutePkgDetail } from 'services/Route/Company/getRoute';
-import { PaymentMethod } from 'components/PaymentMethod';
 import { PackageSalePayload, useCreatePackageSale } from 'services/PackageSales/packageSales';
 import { getNotifcation } from 'utils/getNotification';
-import { EnumPaymentGateway } from 'services/models/PaymentGateway';
 import { useSelector } from 'react-redux';
 import { selectAuth } from 'store/auth/selectors';
 import { PackageSale } from 'models/PackageSales';
 import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
 import dayjs from 'dayjs';
+import { PaymentStatus } from 'components/PaymentStatus';
+import { EPaymentStatus } from 'models/PaymentStatus';
 
 interface StateLocation {
   merchandise: {
@@ -41,7 +41,7 @@ export interface FieldValues {
   recipent_mobile: string;
   merchandise: StateLocation['merchandise'];
   email: string;
-  method: EnumPaymentGateway;
+  isPaid?: boolean;
   accept_term?: boolean;
 }
 
@@ -66,11 +66,11 @@ export default function ClientInfo() {
   } = useForm<FieldValues>({
     defaultValues: {
       merchandise: [{ weight: '', price: '' }],
-      method: 'PAYPAL',
+      isPaid: true,
       accept_term: true,
     },
   });
-  const methodWatch = watch('method');
+  const isPaid = watch('isPaid');
 
   const { run: createPackageSale, loading } = useCreatePackageSale({
     onSuccess: dataCode => {
@@ -132,7 +132,7 @@ export default function ClientInfo() {
       })),
       departureTime: get(location, 'state.departureTime', undefined),
       email: values.email,
-      paymentMethod: values.method,
+      paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
     };
     createPackageSale(payload);
   };
@@ -158,7 +158,14 @@ export default function ClientInfo() {
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
             <FormClientInfo control={control} errors={errors} routeDetail={dataDetail?.data} />
-            <PaymentMethod
+            <PaymentStatus
+              isActive={!!isPaid}
+              onChange={checked => {
+                setValue('isPaid', checked);
+                trigger('isPaid');
+              }}
+            />
+            {/* <PaymentMethod
               control={control}
               errors={errors}
               label="method"
@@ -167,7 +174,7 @@ export default function ClientInfo() {
                 setValue('method', value);
                 trigger('method');
               }}
-            />
+            /> */}
           </Box>
         </Grid>
         <Grid item xs={12} md={4}>

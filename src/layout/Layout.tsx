@@ -1,4 +1,4 @@
-import { Divider, Drawer, List, Toolbar, useTheme } from '@mui/material';
+import { Divider, Drawer, List, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import logoTbus from 'assets/images/logo-tbus.png';
@@ -43,6 +43,8 @@ export default function Layout() {
   const dispatch = useAppDispatch();
 
   const [openDrawer, setOpenDrawer] = useState(false);
+  const matches = useMediaQuery('(max-width:768px)');
+
   const { loading } = useGetSystemConfig();
 
   const container = window !== undefined ? () => window.document.body : undefined;
@@ -74,11 +76,12 @@ export default function Layout() {
   /** Static events */
 
   useEffect(() => {
-    StaticActionsHandler.toggleMenu = () => {
-      console.log('123');
-      setOpenDrawer(state => !state);
-    };
-  }, []);
+    if (!!matches) {
+      StaticActionsHandler.toggleMenu = () => {
+        setOpenDrawer(state => !state);
+      };
+    }
+  }, [matches]);
 
   /** <--------------------> */
 
@@ -146,7 +149,7 @@ export default function Layout() {
           position: 'relative',
           minHeight: '100vh',
           backgroundColor: '#F0F1F3',
-          overflowX: 'hidden',
+          // overflowX: 'hidden',
         }}
       >
         <Outlet />

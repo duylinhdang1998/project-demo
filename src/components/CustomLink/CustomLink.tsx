@@ -1,4 +1,4 @@
-import { Collapse, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Theme } from '@mui/material';
+import { Collapse, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Theme, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import cx from 'classnames';
 import { memo, useEffect, useState } from 'react';
@@ -55,20 +55,23 @@ function CustomLink({ item }: CustomLinkProps) {
   const { t } = useTranslation('sidebar');
   const resolved = useResolvedPath(item.path);
   const match = useMatch({ path: resolved.pathname, end: item.isRouteStrict });
+  const matches = useMediaQuery('(max-width:768px)');
 
   const handleClick = (name?: string) => () => {
-    setOpen(!open);
-    if (name !== 'reporting') {
-      Layout.getStaticActions().toggleMenu();
+    if (matches) {
+      setOpen(!open);
+      if (name !== 'reporting') {
+        Layout.getStaticActions().toggleMenu();
+      }
     }
   };
 
   useEffect(() => {
-    if (item.name === 'reporting') {
+    if (item.name === 'reporting' && !!matches) {
       const pathname = location.pathname.split('/')[2];
       setOpen(pathname === 'reportings-ticket-sales' || pathname === 'reportings-package-sales');
     }
-  }, [item.name, location.pathname]);
+  }, [item.name, location.pathname, matches]);
 
   const renderSubmenu = () => {
     if (item.name === 'reporting') {

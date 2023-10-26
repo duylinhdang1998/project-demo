@@ -2,6 +2,8 @@ html,
 body {
   font-family: 'Google sans sans-serif';
   height: 100%;
+  /* overflow-y: auto !important;
+  overflow-x: hidden; */
 }
 
 .Toastify__close-button {
