@@ -251,7 +251,7 @@ export const Passengers = ({ control, errors, passengers, generalInfomationOfTic
                     render={() => {
                       const labelTranslated = `${t('ticketSales:price')} (${symbol})`;
                       return (
-                        <Box>
+                        <Box style={{ pointerEvents: 'none' }}>
                           <InputLabel className={classes.label}>
                             {labelTranslated}
                             <span className={classes.error}>*</span>
