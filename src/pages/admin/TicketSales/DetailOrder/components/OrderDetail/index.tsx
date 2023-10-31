@@ -104,14 +104,16 @@ function OrderDetails({ record }: OrderDetailsProps) {
             </Typography>
           }
         />
-        <Infomation
-          left={t('ticketSales:cancel_reason')}
-          right={
-            <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
-              {record.cancelReason}
-            </Typography>
-          }
-        />
+        {record.ticketStatus === 'CANCELLED' && (
+          <Infomation
+            left={t('ticketSales:cancel_reason')}
+            right={
+              <Typography py="8px" fontSize={14} color={theme.palette.grey[300]}>
+                {record.cancelReason}
+              </Typography>
+            }
+          />
+        )}
       </Box>
     </Box>
   );
