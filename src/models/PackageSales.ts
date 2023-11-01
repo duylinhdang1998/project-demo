@@ -36,6 +36,7 @@ export interface PackageSale {
   orderStatus: OrderStatus;
   senderFullName: string;
   recipentFullName: string;
+  isPaid?: boolean;
 }
 
 interface Merchandise {

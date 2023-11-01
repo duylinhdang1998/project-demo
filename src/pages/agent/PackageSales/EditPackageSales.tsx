@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { EnumPaymentGateway } from 'services/models/PaymentGateway';
 import { useForm } from 'react-hook-form';
 import { useRequest } from 'ahooks';
 import { getRoutePkgDetail } from 'services/Route/Company/getRoute';
@@ -10,8 +9,9 @@ import { Box, Divider, Grid, Typography } from '@mui/material';
 import LayoutDetail from 'layout/LayoutDetail';
 import FormClientInfo from './components/FormClientInfo';
 import ReserveInfo from './components/ReserveInfo';
-import { PaymentMethod } from 'components/PaymentMethod';
 import { getNotifcation } from 'utils/getNotification';
+import { EPaymentStatus } from 'models/PaymentStatus';
+import { PaymentStatus } from 'components/PaymentStatus';
 
 interface StateLocation {
   merchandise: {
@@ -33,8 +33,8 @@ export interface FieldValues {
   recipent_mobile: string;
   merchandise: StateLocation['merchandise'];
   email: string;
-  method: EnumPaymentGateway;
   accept_term?: boolean;
+  isPaid?: boolean;
 }
 
 export default function EditPackageSales() {
@@ -52,11 +52,11 @@ export default function EditPackageSales() {
   } = useForm<FieldValues>({
     defaultValues: {
       merchandise: [{ weight: '', price: '' }],
-      method: 'PAYPAL',
+      isPaid: true,
       accept_term: true,
     },
   });
-  const methodWatch = watch('method');
+  const isPaid = watch('isPaid');
 
   const { data: routeDetail, run: getRouteDetail } = useRequest(getRoutePkgDetail, {
     manual: true,
@@ -93,7 +93,7 @@ export default function EditPackageSales() {
           weight: item.weight?.toString(),
           price: item.price?.toString(),
         })),
-        method: dataDetails.paymentMethod,
+        isPaid: dataDetails.paymentStatus === EPaymentStatus.APPROVED,
       });
       getRouteDetail(dataDetails.route);
     }
@@ -134,7 +134,7 @@ export default function EditPackageSales() {
         price: parseInt(item.price),
       })),
       email: values.email,
-      paymentMethod: values.method,
+      paymentStatus: values.isPaid ? EPaymentStatus.APPROVED : EPaymentStatus.VOIDED,
     };
     updatePackage(payload);
   };
@@ -148,15 +148,12 @@ export default function EditPackageSales() {
               {t('order_infomation')}
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
-            <FormClientInfo control={control} errors={errors} routeDetail={routeDetail?.data} />
-            <PaymentMethod
-              control={control}
-              errors={errors}
-              label="method"
-              method={methodWatch}
-              onChange={value => {
-                setValue('method', value);
-                trigger('method');
+            <FormClientInfo control={control as any} errors={errors} routeDetail={routeDetail?.data} />
+            <PaymentStatus
+              isActive={!!isPaid}
+              onChange={checked => {
+                setValue('isPaid', checked);
+                trigger('isPaid');
               }}
             />
           </Box>
@@ -171,7 +168,7 @@ export default function EditPackageSales() {
               departureTime={dataDetails?.departureTime?.toString()}
               onBook={handleSubmit(onSubmit)}
               routeDetail={routeDetail?.data}
-              control={control}
+              control={control as any}
               errors={errors}
               loading={loading}
               isEdit={true}
