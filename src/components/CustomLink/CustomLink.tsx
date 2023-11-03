@@ -58,11 +58,10 @@ function CustomLink({ item }: CustomLinkProps) {
   const matches = useMediaQuery('(max-width:768px)');
 
   const handleClick = (name?: string) => () => {
-    if (matches) {
-      setOpen(!open);
-      if (name !== 'reporting') {
-        Layout.getStaticActions().toggleMenu();
-      }
+    setOpen(!open);
+    console.log({ name });
+    if (name !== 'reporting' && !!matches) {
+      Layout.getStaticActions().toggleMenu();
     }
   };
 
@@ -142,8 +141,8 @@ function CustomLink({ item }: CustomLinkProps) {
           {item.name === 'reporting' && (open ? <ExpandLess color="primary" /> : <ExpandMore />)}
         </ListItem>
         {!!match && <div className={classes.divider} />}
-        {renderSubmenu()}
       </Link>
+      {renderSubmenu()}
     </div>
   );
 }

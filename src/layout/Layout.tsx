@@ -77,6 +77,7 @@ export default function Layout() {
 
   useEffect(() => {
     if (!!matches) {
+      alert('nhảy vào đây ko');
       StaticActionsHandler.toggleMenu = () => {
         setOpenDrawer(state => !state);
       };
