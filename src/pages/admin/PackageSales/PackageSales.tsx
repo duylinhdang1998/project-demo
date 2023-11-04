@@ -151,6 +151,7 @@ export default function PackageSales() {
               </Stack>
             </Grid>
           </Grid>
+
           <Box my="30px">
             <TablePackageSales
               onRefresh={refresh}

@@ -77,7 +77,6 @@ export default function Layout() {
 
   useEffect(() => {
     if (!!matches) {
-      alert('nhảy vào đây ko');
       StaticActionsHandler.toggleMenu = () => {
         setOpenDrawer(state => !state);
       };
@@ -151,6 +150,7 @@ export default function Layout() {
           minHeight: '100vh',
           backgroundColor: '#F0F1F3',
           // overflowX: 'hidden',
+          // maxWidth: '100vw',
         }}
       >
         <Outlet />
