@@ -73,10 +73,10 @@ function TableDashboard({ dataSource }: Props) {
                   {dayjs(row.dateRoute).format('HH:mm')}
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
-                  {row.seatsAvailable?.ECO}
+                  {(row.seatsAvailable?.ECO ?? 0) - (row.seatsBooked?.ECO ?? 0)}
                 </TableCell>
                 <TableCell align="center" className={classes.cell}>
-                  {row.seatsAvailable?.VIP}
+                  {(row.seatsAvailable?.VIP ?? 0) - (row.seatsBooked?.VIP ?? 0)}
                 </TableCell>
               </TableRow>
             );
