@@ -16,7 +16,7 @@ function* handleGetTicketSales({ payload }: ReturnType<typeof reportsActions.get
         totalPages: data.pagination.totalPages,
         page,
         searcher,
-        totalPrices: statisticTicketSales.data.totalPrices,
+        totalSales: statisticTicketSales.data.totalSales,
         totalTickets: statisticTicketSales.data.totalTickets,
       }),
     );

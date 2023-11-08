@@ -7,7 +7,7 @@ export interface TicketSalesState {
   statusGetTicketSales: Status;
   ticketSales: {
     items: ReportTicketSale[];
-    totalPrices: number;
+    totalSales: number;
     totalTickets: number;
   };
   currentPage: number;
@@ -20,7 +20,7 @@ const initialState: TicketSalesState = {
   statusGetTicketSales: 'idle',
   ticketSales: {
     items: [],
-    totalPrices: 0,
+    totalSales: 0,
     totalTickets: 0,
   },
   currentPage: 0,
@@ -48,12 +48,12 @@ export const reportsSlice = createSlice({
       };
     },
     getTicketSalesSuccess: (state, action: PayloadAction<GetTicketSalesSuccess>) => {
-      const { data, totalPages, totalRows, page, searcher, totalPrices, totalTickets } = action.payload;
+      const { data, totalPages, totalRows, page, searcher, totalSales, totalTickets } = action.payload;
       return {
         ...state,
         ticketSales: {
           items: data,
-          totalPrices,
+          totalSales,
           totalTickets,
         },
         totalPages,

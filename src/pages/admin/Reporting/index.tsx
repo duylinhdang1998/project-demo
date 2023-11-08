@@ -18,6 +18,7 @@ import { selectReports } from 'store/report/selectors';
 import { StatisticBox } from './components/StatisticBox';
 import TableReportings from './components/TableReportings';
 import { fieldsSearch } from './constants';
+import { dayjsToNumber } from 'utils/dayjsToNumber';
 
 interface Values {
   departurePoints?: { value: Result };
@@ -44,24 +45,28 @@ const Reporting: FC = () => {
         page: 0,
         sorter: {},
         searcher: {
-          'routePoint.departurePoint': {
+          departurePointCode: {
+            value: values.departurePoints?.value._id,
             operator: 'eq',
-            value: values.departurePoints,
           },
+          arrivalPointCode: {
+            value: values.arrivalPoints?.value._id,
+            operator: 'eq',
+          },
+          departureTime: [
+            {
+              value: values.departureTime?.[0] && dayjsToNumber(values.departureTime[0]),
+              operator: 'gte',
+            },
+            {
+              value: values.departureTime?.[0] && dayjsToNumber(values.departureTime[1]),
+              operator: 'lte',
+            },
+          ],
           routeCode: {
             operator: 'contains',
             value: values.routeId,
           },
-          departureTime: [
-            {
-              operator: 'gte',
-              value: values.departureTime?.[0].valueOf(),
-            },
-            {
-              operator: 'lte',
-              value: values.departureTime?.[0].valueOf(),
-            },
-          ],
         },
       }),
     );
@@ -98,12 +103,12 @@ const Reporting: FC = () => {
           <StatisticBox
             title={t('reportings:total_tickets')}
             color="#33CC7F"
-            total={<Spin spinning={statusGetTicketSales === 'loading'}>{ticketSales.totalTickets.toString()}</Spin>}
+            total={<Spin spinning={statusGetTicketSales === 'loading'}>{ticketSales.totalTickets}</Spin>}
           />
           <StatisticBox
             title={t('reportings:total_prices')}
             color="#0A89CA"
-            total={<Spin spinning={statusGetTicketSales === 'loading'}>{currencyFormat(ticketSales.totalPrices)}</Spin>}
+            total={<Spin spinning={statusGetTicketSales === 'loading'}>{currencyFormat(ticketSales.totalSales)}</Spin>}
           />
         </Stack>
         <TableReportings />

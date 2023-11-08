@@ -9,7 +9,7 @@ export interface GetTicketSalesSuccess {
   totalRows: number;
   page: GetTicketSales['page'];
   searcher: GetTicketSales['searcher'];
-  totalPrices: number;
+  totalSales: number;
   totalTickets: number;
 }
 

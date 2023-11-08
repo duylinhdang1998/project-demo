@@ -4,7 +4,7 @@ import { ServiceException } from 'services/utils/ServiceException';
 import fetchAPI from 'utils/fetchAPI';
 
 interface ResponseData {
-  totalPrices: number;
+  totalSales: number;
   totalTickets: number;
 }
 

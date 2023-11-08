@@ -49,6 +49,7 @@ export interface TicketSale {
   updatedAt: string;
   cancelReason?: string;
   __v: 0;
+  arrivalPointCode: string;
 }
 
 export interface RouteOfTicketSale {
