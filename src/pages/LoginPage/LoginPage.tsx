@@ -1,3 +1,4 @@
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { LoadingButton } from '@mui/lab';
 import { Button, Checkbox, FormControlLabel, Grid } from '@mui/material';
 import { Box } from '@mui/system';
@@ -9,6 +10,7 @@ import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { get } from 'lodash-es';
+import { useEffect } from 'react';
 import Highlighter from 'react-highlight-words';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -17,9 +19,6 @@ import { toast } from 'react-toastify';
 import { authActions } from 'store/auth/authSlice';
 import { selectAuth } from 'store/auth/selectors';
 import { useStyles } from './styles';
-import TextWithLink from '../../components/TextWithLink/TextWithLink';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { useEffect } from 'react';
 
 interface Values {
   email: string;
@@ -58,11 +57,12 @@ function LoginPage() {
         remember_me: true,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleNavigate = () => {
-    navigate('/sign-up');
-  };
+  // const handleNavigate = () => {
+  //   navigate('/sign-up');
+  // };
 
   const onSubmit = (values: Values) => {
     const credentials = {
@@ -154,7 +154,6 @@ function LoginPage() {
         <LoadingButton variant="contained" fullWidth className={classes.btnSubmit} type="submit" loading={statusLogin === 'loading'}>
           {t('login')}
         </LoadingButton>
-        <TextWithLink text={t('notHaveAccount')} highlight={t('register_link')} onClick={handleNavigate} />
       </Box>
     </form>
   );

@@ -58,7 +58,7 @@
   "SUBSCRIPTION_NOT_ALLOW_UPDATED": "Mise à jour de l'abonnement non autorisée. Veuillez contacter le support pour obtenir de l'aide.",
   "SUBSCRIPTION_EXPIRED": "Abonnement expiré : Veuillez renouveler pour continuer à accéder à nos services. Contactez le support pour obtenir de l'aide.",
   "SUBSCRIPTION_UPDATE_PAYMENT_ID_ERROR": "Erreur de mise à jour de l'ID de paiement pour l'abonnement. Veuillez vérifier l'ID de paiement fourni et réessayer.",
-  "SUBSCRIPTION_NEED_UPDATE_PLAN": "Souscription nécessitant une mise à jour du plan pour continuer.",
+  "SUBSCRIPTION_NEED_UPDATE_PLAN": "Votre abonnement actuel ne permet pas d’ajouter un nouveau véhicule.",
   "ROUTE_UPDATE_PRICE_ERROR": "Échec de la mise à jour du prix du trajet. Veuillez réessayer ultérieurement ou contactez le support pour obtenir de l'aide.",
   "ROUTE_REMOVE_ERROR": "Échec de la suppression du trajet. Veuillez réessayer ultérieurement ou contactez le support pour obtenir de l'aide.",
   "ROUTE_UPDATE_ERROR": "Échec de la mise à jour des informations du trajet. Veuillez réessayer ultérieurement ou contactez le support pour obtenir de l'aide.",

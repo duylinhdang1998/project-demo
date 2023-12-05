@@ -96,11 +96,13 @@ export default function FormVerticle<T extends FieldValues>({
                 value: i.required ?? false,
                 message: messageErr,
               },
-              validate: value => !!value.trim() || messageErr,
-              pattern: {
-                value: /^.*\S+.*$/,
-                message: messageErr,
-              },
+              validate: !i.required ? undefined : value => !!value.trim() || messageErr,
+              pattern: i.required
+                ? {
+                    value: /^.*\S+.*$/,
+                    message: messageErr,
+                  }
+                : undefined,
               ...(i.type === 'email'
                 ? {
                     pattern: {

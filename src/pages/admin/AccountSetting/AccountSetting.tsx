@@ -1,22 +1,21 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
+import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
+import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
+import { FadeIn } from 'components/FadeIn/FadeIn';
+import FormVerticle from 'components/FormVerticle/FormVerticle';
+import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
+import ToastCustom from 'components/ToastCustom/ToastCustom';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import LayoutDetail from 'layout/LayoutDetail';
+import { omit } from 'lodash-es';
+import { Profile } from 'models/Profile';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import ComboButton from 'components/ComboButtonSaveCancel/ComboButton';
-import DialogConfirm from 'components/DialogConfirm/DialogConfirm';
-import FormVerticle from 'components/FormVerticle/FormVerticle';
-import LayoutDetail from 'layout/LayoutDetail';
-import { Profile } from 'models/Profile';
-import { useAppSelector } from 'hooks/useAppSelector';
-import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
-import { FadeIn } from 'components/FadeIn/FadeIn';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import ToastCustom from 'components/ToastCustom/ToastCustom';
 import { toast } from 'react-toastify';
-import { omit } from 'lodash-es';
-import { selectProfile } from 'store/profile/selectors';
 import { profileActions } from 'store/profile/profileSlice';
-import { selectAuth } from 'store/auth/selectors';
+import { selectProfile } from 'store/profile/selectors';
 
 type Values = Pick<
   Profile,

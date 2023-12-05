@@ -1,4 +1,5 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
+import { useCurrency } from 'hooks/useCurrency';
 import { PackageSale } from 'models/PackageSales';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +10,8 @@ interface MerchandiseDetailViewProps {
 
 function MerchandiseDetailView({ merchandises }: MerchandiseDetailViewProps) {
   const { t } = useTranslation(['packageSales', 'translation']);
+  const { currencyFormat } = useCurrency();
+
   return (
     <div>
       <Typography variant="h5" mb="14px">
@@ -41,7 +44,7 @@ function MerchandiseDetailView({ merchandises }: MerchandiseDetailViewProps) {
               <Typography variant="body2">{t(`price`)}:</Typography>
             </Grid>
             <Grid item xs={8}>
-              <Typography variant="body2">${i.price}</Typography>
+              <Typography variant="body2">${currencyFormat(i.price)}</Typography>
             </Grid>
           </Grid>
           <Divider sx={{ borderStyle: 'dashed', margin: '16px 0', display: index === merchandises.length - 1 ? 'none' : 'block' }} />
