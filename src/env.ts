@@ -12,7 +12,7 @@ export interface ENV {
 const env: ENV = {
   apiEndPoint: import.meta.env.VITE_APP_API_END_POINT || '',
   theme: import.meta.env.VITE_APP_THEME || 'light',
-  appLanguage: import.meta.env.VITE_APP_LANGUAGE || 'en',
+  appLanguage: import.meta.env.VITE_APP_LANGUAGE || 'fr',
   isDevMode: import.meta.env.DEV,
   tinyMCEApiKey: import.meta.env.VITE_APP_TINY_MCE_API_KEY,
   baseCmsDomain: import.meta.env.VITE_APP_BASE_CMS_DOMAIN,
