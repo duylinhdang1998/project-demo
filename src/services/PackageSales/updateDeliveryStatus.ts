@@ -16,13 +16,13 @@ interface CancelPackagePayload {
   orderCode: string;
 }
 export const updateDeliveryStatus = async ({ orderCode, status }: UpdateDeliveryStatus) => {
-  const response: AxiosResponse<ResponseDetailSuccess<PackageSale> | ResponseFailure> = await fetchAPI.request({
+  const response: AxiosResponse<ResponseDetailSuccess<{}> | ResponseFailure> = await fetchAPI.request({
     method: 'POST',
     url: `/v1.0/company/package-sales/${orderCode}/delivery-status`,
     data: { status },
   });
   if (response.data.code === 0) {
-    return response.data as ResponseDetailSuccess<PackageSale>;
+    return response.data as ResponseDetailSuccess<{}>;
   }
   const response_ = response as AxiosResponse<ResponseFailure>;
   throw new ServiceException(response_.data.message, response_.data);

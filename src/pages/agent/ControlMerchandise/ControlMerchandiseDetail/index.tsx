@@ -1,17 +1,18 @@
 import { Box, Grid, Stack } from '@mui/material';
+import { Empty } from 'antd';
 import MerchandiseDetailView from 'components/MerchandiseDetailView/MerchandiseDetailView';
 import OrderDetailView from 'components/OrderDetailView/OrderDetailView';
 import ToastCustom from 'components/ToastCustom/ToastCustom';
 import LayoutDetail from 'layout/LayoutDetail';
 import { DeliveryStatus, PackageSale } from 'models/PackageSales';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { updateDeliveryStatus } from 'services/PackageSales/updateDeliveryStatus';
 import { ServiceException } from 'services/utils/ServiceException';
 import { ControlDelivertStatus } from '../components/ControlDelivertStatus';
-import { DialogConfirmChangeStatusToCancel } from '../components/DialogConfirmChangeStatusToCancel';
+import { DialogConfirmChangeStatusToCancel, FormValues } from '../components/DialogConfirmChangeStatusToCancel';
 import { DialogConfirmChangeStatusToDeliveriedNArrived } from '../components/DialogConfirmChangeStatusToDeliveriedNArrived';
 
 export function ControlMerchandiseDetail() {
@@ -21,8 +22,10 @@ export function ControlMerchandiseDetail() {
 
   const location = useLocation();
 
-  const dataDetail = useMemo(() => {
-    return location.state as PackageSale;
+  const [dataDetail, setDataDetail] = useState<PackageSale | undefined>(location.state);
+
+  useEffect(() => {
+    setDataDetail(location.state as PackageSale);
   }, [location.state]);
 
   useEffect(() => {
@@ -32,7 +35,7 @@ export function ControlMerchandiseDetail() {
   }, [dataDetail]);
 
   const handleOpenDialogConfirm = (val: DeliveryStatus) => {
-    if (val !== dataDetail.deliveryStatus) {
+    if (val !== dataDetail?.deliveryStatus) {
       setOpenDialogConfirm(val);
     }
   };
@@ -41,11 +44,16 @@ export function ControlMerchandiseDetail() {
     setOpenDialogConfirm(undefined);
   };
 
-  const handleUpdateDeliveryStatus = async () => {
-    if (dataDetail.orderCode && openDialogConfirm) {
+  const handleUpdateDeliveryStatus = async (values?: FormValues) => {
+    console.log(values);
+    if (dataDetail?.orderCode && openDialogConfirm) {
       setIsUpdaing(true);
       try {
         await updateDeliveryStatus({ orderCode: dataDetail.orderCode, status: openDialogConfirm });
+        setDataDetail(state => ({
+          ...(state as PackageSale),
+          deliveryStatus: openDialogConfirm,
+        }));
         toast(
           <ToastCustom
             type="success"
@@ -57,6 +65,7 @@ export function ControlMerchandiseDetail() {
             className: 'toast-success',
           },
         );
+        setOpenDialogConfirm(undefined);
       } catch (error) {
         toast(
           <ToastCustom
@@ -105,6 +114,10 @@ export function ControlMerchandiseDetail() {
       return <DialogConfirmChangeStatusToCancel isUpdating={isUpdating} onCancel={handleCloseDialogConfirm} onOk={handleUpdateDeliveryStatus} />;
     }
   };
+
+  if (!dataDetail) {
+    return <Empty />;
+  }
 
   return (
     <LayoutDetail title={t('dashboard.control_merchandise_deliver')}>

@@ -10,7 +10,7 @@ export interface DialogConfirmChangeStatusToCancel {
   isUpdating: boolean;
 }
 
-interface FormValues {
+export interface FormValues {
   confirm_description_to_change_cancel: string;
 }
 
