@@ -101,6 +101,7 @@
   "hours_and_minute": "{{ hours }} heures et {{ minutes }} minute",
   "hours_and_minutes": "{{ hours }} heures et {{ minutes }} minutes",
   "invalid_qrcode": "Code QR non valide",
+  "admin_description": "Admin description: Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.",
 
   "COMPANY_ADMIN": "Admin",
   "COMPANY_AGENT": "Agent",

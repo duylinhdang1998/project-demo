@@ -1,19 +1,27 @@
+.ticket_sales_custom_timeline_container .ant-timeline-item {
+  padding-bottom: 20px;
+}
 div.ticket_sales_custom_timeline_container div.ant-timeline-item-label {
-  width: calc(22% - 12px) !important;
+  width: 60px !important;
   min-width: 45px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  left: 10px;
+  text-align: left !important;
 }
 
 div.ticket_sales_custom_timeline_container div.ant-timeline-item-content {
-  left: 22% !important;
-  width: 100% !important;
+  right: 0% !important;
+  width: fit-content !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: fit-content !important;
 }
 
 div.ticket_sales_custom_timeline_container div.ant-timeline-item-tail,
 div.ticket_sales_custom_timeline_container div.ant-timeline-item-head {
-  left: 22% !important;
+  left: 90px !important;
   border-color: #333;
   color: #333;
 }

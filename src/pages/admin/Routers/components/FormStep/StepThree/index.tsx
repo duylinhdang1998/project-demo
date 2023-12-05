@@ -22,7 +22,7 @@ import { Calendar, CalendarProps, SlotInfo, Views, dateFnsLocalizer } from 'reac
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { DayInWeekMappingToString } from 'services/models/DayInWeek';
 import { routesActions } from 'store/routes/routesSlice';

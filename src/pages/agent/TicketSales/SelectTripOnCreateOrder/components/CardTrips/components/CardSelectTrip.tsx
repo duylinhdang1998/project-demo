@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Timeline } from 'antd';
 import 'antd/lib/timeline/style/css';
@@ -10,7 +10,7 @@ import { RouteOfTicketSale } from 'services/models/TicketSale';
 import { getUrlImage, getUrlOfResource } from 'utils/getUrlOfResource';
 import './styles.css';
 
-const useMainStyles = makeStyles(() => ({
+const useMainStyles = makeStyles((theme: Theme) => ({
   root: {
     boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.1)',
     borderRadius: '4px',
@@ -28,6 +28,16 @@ const useMainStyles = makeStyles(() => ({
   },
   timeline: {
     height: '60px',
+    minWidth: '180px',
+    [theme.breakpoints.between('sm', 'md')]: {
+      width: '150px',
+    },
+    [theme.breakpoints.between('md', 'lg')]: {
+      width: '150px',
+    },
+    '@media (min-width: 1280px)': {
+      width: '200px',
+    },
   },
 }));
 
@@ -48,7 +58,12 @@ function CardSelectTrip({ timeEnd, timeStart, placeEnd, placeStart, vehicle, dur
 
   return (
     <Box className={mainClasses.root} padding="24px 16px" marginBottom="20px">
-      <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" spacing={2} alignItems="flex-start">
+      <Stack
+        direction={{ xs: 'column', sm: 'row', md: 'column', lg: 'row', xl: 'row' }}
+        justifyContent="space-between"
+        spacing={2}
+        alignItems="flex-start"
+      >
         <Box flex="1 1 30%" className="ticket_sales_custom_timeline_container">
           <Timeline mode="left" className={mainClasses.timeline}>
             <Timeline.Item color="#333" label={timeStart}>

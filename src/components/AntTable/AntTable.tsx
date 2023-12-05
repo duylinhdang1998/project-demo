@@ -6,7 +6,7 @@ import './styles.scss';
 export default function AntTable<T extends object = any>({ ...props }: TableProps<T>) {
   return (
     <div className="tbus-table">
-      <Table {...props} scroll={{ x: 1000 }} />
+      <Table scroll={{ x: 1200 }} {...props} />
     </div>
   );
 }

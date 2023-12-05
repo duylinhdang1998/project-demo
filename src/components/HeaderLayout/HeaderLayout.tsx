@@ -95,6 +95,7 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader, onToggleDrawer }: H
 
   const handleClick = () => {
     onToggleDrawer?.();
+    console.log('123');
     Layout.getStaticActions().toggleMenu();
   };
 

@@ -87,7 +87,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
       {
         key: 'destination',
         dataIndex: 'trip',
-        width: 250,
+        width: 300,
         align: 'left',
         title: () => <div>{i18n.t('packageSales:destination')}</div>,
         render: (_, item: PackageSale) => {
@@ -289,6 +289,7 @@ function TablePackageSales({ sortOrder, loading, dataSource, pagination, onFilte
           total: pagination.totalRows,
           current: currentPage + 1,
         }}
+        // scroll={{ x: 1420 }}
         onChange={(pagination, _, sorter, extra) => {
           setCurrentPage(getPaginationFromAntdTable({ pagination, extra }));
           onFilter?.(pagination, _, sorter, extra);
