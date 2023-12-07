@@ -49,7 +49,11 @@ export function ControlMerchandiseDetail() {
     if (dataDetail?.orderCode && openDialogConfirm) {
       setIsUpdaing(true);
       try {
-        await updateDeliveryStatus({ orderCode: dataDetail.orderCode, status: openDialogConfirm });
+        await updateDeliveryStatus({
+          orderCode: dataDetail.orderCode,
+          status: openDialogConfirm,
+          cancelReson: values?.confirm_description_to_change_cancel,
+        });
         setDataDetail(state => ({
           ...(state as PackageSale),
           deliveryStatus: openDialogConfirm,

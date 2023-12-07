@@ -14,7 +14,7 @@
   "multi_stops_trip": "Trajet avec plusieurs arrêts",
   "stop_address": "Adresse de l'arrêt",
   "arrivalDuration": "Heure d’arrivée",
-  "arrivalTime": "Heure d'arrivée",
+  "arrivalTime": "Durée du trajet",
   "config_prices_per_passenger": "Configurer les prix par passager",
   "eco_tickets": "Billets ECO",
   "vip_tickets": "Billets VIP",

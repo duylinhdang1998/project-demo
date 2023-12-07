@@ -39,7 +39,7 @@ export default function ControlMerchandiseChecking() {
       case 'payment_status': {
         return (
           <Tag
-            text={get(PaymentStatusLabelMapping, `${dataDetails[i]}`, '')}
+            text={t(`translation:${get(PaymentStatusLabelMapping, `${dataDetails[i]}`, '')}`)}
             backgroundColor={get(PaymentStatusBackgroundColorMapping, `${dataDetails[i]}`, '')}
             color={get(PaymentStatusColorMapping, `${dataDetails[i]}`, '')}
           />

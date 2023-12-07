@@ -9,17 +9,18 @@ import { Options } from 'ahooks/lib/useRequest/src/types';
 interface UpdateDeliveryStatus {
   status: PackageSale['deliveryStatus'];
   orderCode: string;
+  cancelReson?: string;
 }
 
 interface CancelPackagePayload {
   reason: string;
   orderCode: string;
 }
-export const updateDeliveryStatus = async ({ orderCode, status }: UpdateDeliveryStatus) => {
+export const updateDeliveryStatus = async ({ orderCode, cancelReson, status }: UpdateDeliveryStatus) => {
   const response: AxiosResponse<ResponseDetailSuccess<{}> | ResponseFailure> = await fetchAPI.request({
     method: 'POST',
     url: `/v1.0/company/package-sales/${orderCode}/delivery-status`,
-    data: { status },
+    data: { status, cancelReson },
   });
   if (response.data.code === 0) {
     return response.data as ResponseDetailSuccess<{}>;
