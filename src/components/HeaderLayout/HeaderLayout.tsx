@@ -23,6 +23,7 @@ import Layout from 'layout/Layout';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { selectAuth } from '../../store/auth/selectors';
 import { UserRole } from 'utils/constant';
+import { getCheckoutNotification } from 'pages/admin/Subscription/utils/handleCheckoutNotification';
 
 interface HeaderLayoutProps {
   onToggleDrawer?: () => void;
@@ -62,7 +63,7 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader, onToggleDrawer }: H
   const classes = useStyles();
 
   const { profile } = useSelector(selectProfile);
-  const { currentSubscription, subscriptions } = useSelector(selectSubscriptions);
+  const { statusGetCurrentSubscription, currentSubscription, subscriptions } = useSelector(selectSubscriptions);
   const { userInfo } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
 
@@ -93,6 +94,10 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader, onToggleDrawer }: H
     return currentSubscription?.subscriptionType === 'TRIAL';
   }, [currentSubscription]);
 
+  const isShowUpgradeNotification = useMemo(() => {
+    return statusGetCurrentSubscription === 'success' && getCheckoutNotification();
+  }, [statusGetCurrentSubscription]);
+
   const handleClick = () => {
     onToggleDrawer?.();
     console.log('123');
@@ -110,7 +115,7 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader, onToggleDrawer }: H
   }, []);
 
   const renderUpgradeSubscriptionMessage = () => {
-    if (UserRole.ADMIN !== userInfo?.role) {
+    if (isShowUpgradeNotification || UserRole.ADMIN !== userInfo?.role) {
       return null;
     }
     if (isTrialSubscription || (totalRemainingTrialDays && totalRemainingTrialDays <= 7)) {
