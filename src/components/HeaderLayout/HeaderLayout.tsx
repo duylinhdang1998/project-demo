@@ -1,3 +1,4 @@
+import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, IconButton, Stack, Theme, Toolbar, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -6,8 +7,11 @@ import AccountDropdown from 'components/AccountDropdown/AccountDropdown';
 import ChangeLanguage from 'components/ChangeLanguage/ChangeLanguage';
 import env from 'env';
 import { useAppDispatch } from 'hooks/useAppDispatch';
+import Layout from 'layout/Layout';
+import { isEmpty } from 'lodash-es';
 import { getTotalRemainingDays } from 'pages/admin/Subscription/utils/getTotalRemainingDays';
 import { getTotalTrialDays } from 'pages/admin/Subscription/utils/getTotalTrialDays';
+import { getHiddenTrialNotification, setHiddenTrialNotification } from 'pages/admin/Subscription/utils/handleCheckoutNotification';
 import { memo, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -15,15 +19,11 @@ import { useNavigate } from 'react-router-dom';
 import { selectProfile } from 'store/profile/selectors';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
 import { subscriptionsActions } from 'store/subscriptions/subscriptionsSlice';
+import { UserRole } from 'utils/constant';
 import { getDomainName } from 'utils/getDomainName';
 import { getUrlOfResource } from 'utils/getUrlOfResource';
-import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
-import { isEmpty } from 'lodash-es';
-import Layout from 'layout/Layout';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { selectAuth } from '../../store/auth/selectors';
-import { UserRole } from 'utils/constant';
-import { getCheckoutNotification } from 'pages/admin/Subscription/utils/handleCheckoutNotification';
 
 interface HeaderLayoutProps {
   onToggleDrawer?: () => void;
@@ -94,8 +94,8 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader, onToggleDrawer }: H
     return currentSubscription?.subscriptionType === 'TRIAL';
   }, [currentSubscription]);
 
-  const isShowUpgradeNotification = useMemo(() => {
-    return statusGetCurrentSubscription === 'success' && getCheckoutNotification();
+  const isHiddenTrialNotification = useMemo(() => {
+    return statusGetCurrentSubscription === 'success' && getHiddenTrialNotification();
   }, [statusGetCurrentSubscription]);
 
   const handleClick = () => {
@@ -115,7 +115,8 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader, onToggleDrawer }: H
   }, []);
 
   const renderUpgradeSubscriptionMessage = () => {
-    if (isShowUpgradeNotification || UserRole.ADMIN !== userInfo?.role) {
+    if (isHiddenTrialNotification || UserRole.ADMIN !== userInfo?.role) {
+      setHiddenTrialNotification(false);
       return null;
     }
     if (isTrialSubscription || (totalRemainingTrialDays && totalRemainingTrialDays <= 7)) {

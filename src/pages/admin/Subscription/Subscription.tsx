@@ -22,7 +22,7 @@ import { updateURLSearchParamsOfBrowserWithoutNavigation } from 'utils/updateURL
 import { STATUS } from './constants';
 import { getTotalRemainingDays } from './utils/getTotalRemainingDays';
 import { getTotalTrialDays } from './utils/getTotalTrialDays';
-import { getCheckoutNotification, setCheckoutNotification } from './utils/handleCheckoutNotification';
+import { getCheckoutNotification, setCheckoutNotification, setHiddenTrialNotification } from './utils/handleCheckoutNotification';
 
 export default function Subscription() {
   const { t } = useTranslation(['account', 'translation', 'message_error']);
@@ -74,6 +74,7 @@ export default function Subscription() {
   useEffect(() => {
     if (isShowUpgradeNotification) {
       setCheckoutNotification(true);
+      setHiddenTrialNotification(true);
       if (location.search.includes(STATUS.success)) {
         toast(
           <ToastCustom
