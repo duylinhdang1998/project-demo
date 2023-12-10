@@ -148,7 +148,7 @@ export default function EditPackageSales() {
               {t('order_infomation')}
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
-            <FormClientInfo control={control as any} errors={errors} routeDetail={routeDetail?.data} />
+            <FormClientInfo watch={watch} control={control as any} errors={errors} routeDetail={routeDetail?.data} />
             <PaymentStatus
               isActive={!!isPaid}
               onChange={checked => {

@@ -157,7 +157,7 @@ export default function ClientInfo() {
               {t('order_infomation')}
             </Typography>
             <Divider sx={{ margin: '16px 0' }} />
-            <FormClientInfo control={control} errors={errors} routeDetail={dataDetail?.data} />
+            <FormClientInfo watch={watch} control={control} errors={errors} routeDetail={dataDetail?.data} />
             <PaymentStatus
               isActive={!!isPaid}
               onChange={checked => {

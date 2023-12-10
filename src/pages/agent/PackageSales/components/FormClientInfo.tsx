@@ -1,13 +1,13 @@
 import { Box, Divider, Grid, InputBase, InputLabel, Theme, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { get } from 'lodash-es';
-import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { Field } from 'models/Field';
+import { Control, Controller, FieldErrors, UseFormWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { RouteOfTicketSale } from 'services/models/TicketSale';
+import { FieldValues } from '../ClientInfo';
 import { fields2, fields3 } from '../constant';
 import FormMerchandise from './FormMerchandise';
-import { Field } from 'models/Field';
-import { FieldValues } from '../ClientInfo';
-import { RouteOfTicketSale } from 'services/models/TicketSale';
 
 const useStyles = makeStyles((theme: Theme) => ({
   label: {
@@ -62,9 +62,10 @@ interface Props {
   control: Control<FieldValues>;
   errors?: FieldErrors<FieldValues>;
   routeDetail?: RouteOfTicketSale;
+  watch: UseFormWatch<any>;
 }
 
-export default function FormClientInfo({ control, errors, routeDetail }: Props) {
+export default function FormClientInfo({ control, errors, routeDetail, watch }: Props) {
   const { t } = useTranslation(['packageSales', 'translation', 'account']);
   const classes = useStyles();
   const renderField = (fields: Field[]) => {
@@ -130,7 +131,7 @@ export default function FormClientInfo({ control, errors, routeDetail }: Props) 
         {t('required_in_order')}
       </Typography>
       <Divider sx={{ margin: '16px 0' }} />
-      <FormMerchandise control={control} errors={errors} routeDetail={routeDetail} />
+      <FormMerchandise watch={watch} control={control} errors={errors} routeDetail={routeDetail} />
       <Divider sx={{ margin: '16px 0' }} />
       <Controller
         name="email"
