@@ -4,10 +4,13 @@ import { MerchandiseStatus } from 'components/MerchandiseStatus/MerchandiseStatu
 import Tag from 'components/Tag/Tag';
 import TextWithIcon from 'components/TextWithIcon/TextWithIcon';
 import dayjs from 'dayjs';
+import { useCurrency } from 'hooks/useCurrency';
 import { PackageSale } from 'models/PackageSales';
 import { PaymentStatusBackgroundColorMapping, PaymentStatusColorMapping, PaymentStatusLabelMapping } from 'models/PaymentStatus';
 import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { selectProfile } from 'store/profile/selectors';
 
 export interface OrderDetailViewProps {
   data: PackageSale;
@@ -15,6 +18,8 @@ export interface OrderDetailViewProps {
 
 function OrderDetailView({ data }: OrderDetailViewProps) {
   const { t } = useTranslation(['ticketSales', 'dashboard', 'packageSales']);
+  const { currencyFormat } = useCurrency();
+  const { profile } = useSelector(selectProfile);
 
   const mappingData = useMemo(() => {
     return {
@@ -27,10 +32,11 @@ function OrderDetailView({ data }: OrderDetailViewProps) {
       recipent_mobile: data.recipent.mobile,
       quantity: data.totalQuantity,
       weight: `${data.totalWeight} kg`,
-      price: `$${data.totalPrice}`,
+      price: currencyFormat(data.totalPrice),
       payment_status: data.paymentStatus,
     };
-  }, [data]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, profile]);
 
   const renderInfo = (key: string) => {
     switch (key) {
