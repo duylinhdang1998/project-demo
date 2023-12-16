@@ -5,8 +5,9 @@ import { PaymentGateway } from 'services/models/PaymentGateway';
 import fetchAPI from 'utils/fetchAPI';
 
 interface SettingPayload {
-  refreshUrl: string;
-  returnUrl: string;
+  refreshUrl?: string;
+  returnUrl?: string;
+  redirectUrl?: string;
 }
 
 interface MethodUpdatePayload {

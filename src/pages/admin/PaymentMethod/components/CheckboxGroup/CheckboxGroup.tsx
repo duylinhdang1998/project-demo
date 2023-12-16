@@ -68,7 +68,9 @@ export const CheckboxGroup = ({ options, values, onChange, equalsFunc, horizonta
   const handleLogin = (gate: string) => async () => {
     await handleSubmit(onSubmit)();
     if (gate === 'PAYPAL') {
-      const response = await getUrlGateWay('v1.0/company/payment/paypal/connect');
+      const response = await getUrlGateWay('v1.0/company/payment/paypal/connect', {
+        redirectUrl: window.location.href,
+      });
       if (response) {
         window.open(response, '_self');
       }
