@@ -44,7 +44,7 @@ function MerchandiseDetailView({ merchandises }: MerchandiseDetailViewProps) {
               <Typography variant="body2">{t(`price`)}:</Typography>
             </Grid>
             <Grid item xs={8}>
-              <Typography variant="body2">${currencyFormat(i.price)}</Typography>
+              <Typography variant="body2">{currencyFormat(i.price)}</Typography>
             </Grid>
           </Grid>
           <Divider sx={{ borderStyle: 'dashed', margin: '16px 0', display: index === merchandises.length - 1 ? 'none' : 'block' }} />

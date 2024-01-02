@@ -153,7 +153,7 @@ export default function StepOne({ onNextStep, onCancel, isEdit, values, isLoadin
       <ComboButton isSaving={isLoading} textOk={t('translation:next')} onCancel={handleCancel} onSave={handleSubmit(handleSave)} />
       <DialogConfirm
         openDialog={open}
-        title={t('translation:cancel_type', { type: t(`routers:${isEdit ? 'edit_trip' : 'trip'}`).toLowerCase() })}
+        title={isEdit ? t('translation:cancel_type', { type: t(`routers:edit_trip`).toLowerCase() }) : t('routers:cancel_form')}
         subTitle={t('translation:leave_page')}
         onClose={handleClose}
       />

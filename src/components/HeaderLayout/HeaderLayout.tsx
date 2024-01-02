@@ -119,7 +119,7 @@ function HeaderLayout({ activeSideBarHeader, subTitleHeader, onToggleDrawer }: H
       setHiddenTrialNotification(false);
       return null;
     }
-    if (isTrialSubscription || (totalRemainingTrialDays && totalRemainingTrialDays <= 7)) {
+    if (isTrialSubscription && totalRemainingTrialDays && totalRemainingTrialDays <= 7) {
       return (
         <Box className={classes.subcribe}>
           <Typography component="span" fontSize={{ mobile: 12, tablet: 14 }} fontWeight="400">

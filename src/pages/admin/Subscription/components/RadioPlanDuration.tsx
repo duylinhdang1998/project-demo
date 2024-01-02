@@ -58,7 +58,7 @@ export const RadioPlanDuration = ({ planDurationState, setPlanDurationState }: R
                   </Typography>
                   <Typography fontSize="18px" fontWeight={700} color="#0C1132">
                     {price}
-                    {getAppCurrencySymbol}/{t(`translation:${planDuration}`)}
+                    {getAppCurrencySymbol()}/{t(`translation:${planDuration}`)}
                   </Typography>
                 </Box>
                 <Radio sx={{ padding: '0px' }} value={planDuration} id={planDuration} />

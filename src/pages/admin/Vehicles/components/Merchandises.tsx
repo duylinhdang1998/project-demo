@@ -22,7 +22,7 @@ export const Merchandises = ({ errors, messages, control, merchandises, onChange
           id: 'merchandises',
           label: 'merchandises',
           packageSettings: merchandises,
-          required: true,
+          required: false,
           onChange,
         },
       ]}
