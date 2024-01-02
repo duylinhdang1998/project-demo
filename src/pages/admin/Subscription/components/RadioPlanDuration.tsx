@@ -2,10 +2,10 @@ import { Box, Radio, RadioGroup, RadioGroupProps, Stack, Typography } from '@mui
 import { makeStyles } from '@mui/styles';
 import clxs from 'classnames';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { useCurrency } from 'hooks/useCurrency';
 import { get } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
 import { selectSubscriptions } from 'store/subscriptions/selectors';
-import { getAppCurrencySymbol } from 'utils/getAppCurrencySymbol';
 import { PlanDuration } from '../@types/PlanDuration';
 import { planDurations } from '../constants';
 import { getPlanDurationsFromSubscriptionPlans } from '../utils/getPlanDurationsFromSubscriptionPlans';
@@ -36,6 +36,7 @@ const useStyles = makeStyles(() => ({
 export const RadioPlanDuration = ({ planDurationState, setPlanDurationState }: RadioPlanDurationProps) => {
   const { t } = useTranslation(['account', 'translation']);
   const classes = useStyles();
+  const { currencyFormat } = useCurrency();
 
   const { plans } = useAppSelector(selectSubscriptions);
 
@@ -57,8 +58,7 @@ export const RadioPlanDuration = ({ planDurationState, setPlanDurationState }: R
                     {label}
                   </Typography>
                   <Typography fontSize="18px" fontWeight={700} color="#0C1132">
-                    {price}
-                    {getAppCurrencySymbol()}/{t(`translation:${planDuration}`)}
+                    {currencyFormat(price)}/{t(`translation:${planDuration}`)}
                   </Typography>
                 </Box>
                 <Radio sx={{ padding: '0px' }} value={planDuration} id={planDuration} />
