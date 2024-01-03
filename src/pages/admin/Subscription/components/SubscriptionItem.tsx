@@ -3,7 +3,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Button from 'components/Button/Button';
-import { SubscriptionFeature, SubscriptionType } from 'services/models/Subscription';
+import { SubscriptionFeature, SubscriptionType, UNLIMITED } from 'services/models/Subscription';
 import { PlanDuration } from '../@types/PlanDuration';
 
 interface SubscriptionItemProps {
@@ -53,7 +53,7 @@ export default function SubscriptionItem({
         </Box>
       )}
       <Typography color="#0C1132" fontSize={20} fontWeight={700} textTransform="uppercase">
-        {name}
+        {t(`translation:${name}`)}
       </Typography>
 
       <Box display="flex" justifyContent="center" alignItems="center">
@@ -71,7 +71,11 @@ export default function SubscriptionItem({
         {subscriptionFeatures.map(b => (
           <Stack direction="row" alignItems="center" spacing={3} key={b.name} my="10px">
             <CheckIcon sx={{ color: '#33CC7F', fontSize: '12px' }} />
-            <Typography variant="body2">{b.name}</Typography>
+            <Typography variant="body2">
+              {t(`translation:${b.key === 'VEHICLE' ? (b.value > 1 ? 'VEHICLES' : 'VEHICLE') : b.key}`, {
+                count: b.value === UNLIMITED ? t('translation:unlimited') : b.value,
+              })}
+            </Typography>
           </Stack>
         ))}
       </Box>

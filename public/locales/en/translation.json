@@ -128,5 +128,15 @@
   "CANCELED": "CANCELED",
 
   "paid": "Paid",
-  "not_paid": "Not paid"
+  "not_paid": "Not paid",
+
+  "STANDARD": "STANDARD",
+  "PRO": "PRO",
+  "ENTERPRISE": "ENTERPRISE",
+
+  "VEHICLE": "Create {{count}} vehicle.",
+  "STATISTIC": "Static analyst",
+  "REPORTING": "Reporting & dashboard",
+  "SUPPORTTING": "Online support",
+  "unlimited": "UNLIMITED"
 }

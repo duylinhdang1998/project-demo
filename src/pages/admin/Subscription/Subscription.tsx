@@ -23,6 +23,7 @@ import { STATUS } from './constants';
 import { getTotalRemainingDays } from './utils/getTotalRemainingDays';
 import { getTotalTrialDays } from './utils/getTotalTrialDays';
 import { getCheckoutNotification, setCheckoutNotification, setHiddenTrialNotification } from './utils/handleCheckoutNotification';
+import { UNLIMITED } from 'services/models/Subscription';
 
 export default function Subscription() {
   const { t } = useTranslation(['account', 'translation', 'message_error']);
@@ -134,7 +135,11 @@ export default function Subscription() {
                 {subscriptionFeatures.map(i => (
                   <Stack direction="row" alignItems="center" spacing={3} key={i.type} my="10px">
                     <CheckIcon sx={{ color: '#33CC7F', fontSize: '12px' }} />
-                    <Typography variant="body2">{i.name}</Typography>
+                    <Typography variant="body2">
+                      {t(`translation:${i.key === 'VEHICLE' ? (i.value > 1 ? 'VEHICLES' : 'VEHICLE') : i.key}`, {
+                        count: i.value === UNLIMITED ? t('translation:unlimited') : i.value,
+                      })}
+                    </Typography>
                   </Stack>
                 ))}
               </Grid>

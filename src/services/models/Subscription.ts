@@ -1,11 +1,14 @@
 import { EPaymentStatus } from 'models/PaymentStatus';
 import { PaymentGateway } from './PaymentGateway';
 
+export const UNLIMITED = 10000000000;
 export type SubscriptionType = 'TRIAL' | 'STANDARD' | 'PRO' | 'ENTERPRISE';
-
+export type SubscriptionKey = 'VEHICLE' | 'STATISTIC' | 'REPORTING' | 'SUPPORTTING';
 export interface SubscriptionFeature {
   name: 'Create 1 vehicle.';
   type: SubscriptionType;
+  key: SubscriptionKey;
+  value: number;
 }
 
 export interface SubscriptionPlan {

@@ -122,5 +122,16 @@
   "CANCELED": "ANNULÉ",
 
   "paid": "Payé",
-  "not_paid": "À payer"
+  "not_paid": "À payer",
+
+  "STANDARD": "STANDARD",
+  "PRO": "PRO",
+  "ENTERPRISE": "ENTREPRISE",
+
+  "VEHICLE": "Créer {{count}} véhicule.",
+  "VEHICLES": "Créer {{count}} véhicules.",
+  "STATISTIC": "Analyse statistique",
+  "REPORTING": "Rapports et tableau de bord",
+  "SUPPORTTING": "Support en ligne",
+  "unlimited": "ILLIMITÉ"
 }
