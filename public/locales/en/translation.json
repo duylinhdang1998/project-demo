@@ -138,5 +138,8 @@
   "STATISTIC": "Static analyst",
   "REPORTING": "Reporting & dashboard",
   "SUPPORTTING": "Online support",
-  "unlimited": "UNLIMITED"
+  "unlimited": "UNLIMITED",
+  "companies": "Companies",
+  "register_date": "Register date",
+  "subscription": "Subscription"
 }

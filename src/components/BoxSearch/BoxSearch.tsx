@@ -34,9 +34,10 @@ interface BoxSearchProps {
   placeholder?: string;
   onAdd?: () => void;
   onSearch?: (value: string) => void;
+  isShowAdd?: boolean;
 }
 
-function BoxSearch({ addTextButton, searchValue, placeholder, onAdd, onSearch }: BoxSearchProps) {
+function BoxSearch({ addTextButton, searchValue, placeholder, onAdd, onSearch, isShowAdd = true }: BoxSearchProps) {
   const { t } = useTranslation('translation');
   const classes = useStyles();
   const matches = useMediaQuery('(min-width:1366px)');
@@ -65,9 +66,11 @@ function BoxSearch({ addTextButton, searchValue, placeholder, onAdd, onSearch }:
         fullWidth={!matches}
         className={classes.inputSearch}
       />
-      <Button backgroundButton="#1aa6ee" startIcon={<AddIcon />} className={classes.btnAdd} onClick={onAdd}>
-        {addTextButton}
-      </Button>
+      {isShowAdd && (
+        <Button backgroundButton="#1aa6ee" startIcon={<AddIcon />} className={classes.btnAdd} onClick={onAdd}>
+          {addTextButton}
+        </Button>
+      )}
     </Box>
   );
 }

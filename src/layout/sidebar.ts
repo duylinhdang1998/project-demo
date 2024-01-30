@@ -1,4 +1,5 @@
 import {
+  BuildingIcon,
   DashboardIcon,
   DestinationIcon,
   DocumentationIcon,
@@ -27,6 +28,7 @@ export const sidebars: RouteSideBar[] = [
   { path: '/admin/destinations', icon: DestinationIcon, name: 'destinations', isRouteStrict: false },
   { path: '/admin/reportings', icon: ReportingIcon, name: 'reporting', isRouteStrict: false },
   { path: 'https://www.travelnet.fr/tbus/documentation', icon: DocumentationIcon, name: 'documentation', isRouteStrict: false },
+  { path: '/admin/companies', icon: BuildingIcon, name: 'companies', isRouteStrict: false },
 ];
 
 export const sidebarsAgent: RouteSideBar[] = [

@@ -1,0 +1,10 @@
+{
+  "name": "Name",
+  "city": "City",
+  "domain": "Domain",
+  "email": "Email",
+  "address": "Address",
+  "cms": "CMS",
+  "web": "WEB",
+  "remaining_days": "Remaining days"
+}

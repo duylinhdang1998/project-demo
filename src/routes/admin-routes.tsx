@@ -1,5 +1,6 @@
 import RequiredAuth from 'hocs/RequiredAuth';
 import * as Page from 'pages';
+import Companies from 'pages/admin/Companies/Companies';
 import { RouteObject } from 'react-router-dom';
 
 export const AdminRoutes: RouteObject[] = [
@@ -314,6 +315,14 @@ export const AdminRoutes: RouteObject[] = [
     element: (
       <RequiredAuth role="admin">
         <Page.ReportingPackageSales />
+      </RequiredAuth>
+    ),
+  },
+  {
+    path: 'companies',
+    element: (
+      <RequiredAuth role="admin">
+        <Companies />
       </RequiredAuth>
     ),
   },

@@ -25,8 +25,10 @@ import StaffIcon from './images/sidebar/Staff.svg';
 import TicketIcon from './images/sidebar/Ticket.svg';
 import VehicleIcon from './images/sidebar/Vehicels.svg';
 import DocumentationIcon from './images/sidebar/document-text.svg';
+import BuildingIcon from './images/sidebar/Building.svg';
 
 export {
+  BuildingIcon,
   DocumentationIcon,
   StopCircleSvg,
   CalendarIcon,
