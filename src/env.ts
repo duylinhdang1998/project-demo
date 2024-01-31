@@ -8,6 +8,7 @@ export interface ENV {
   baseWebDomain: string;
   tbusSupportEmail: string;
   domainTest: string;
+  rootAdmin?: string;
 }
 const env: ENV = {
   apiEndPoint: import.meta.env.VITE_APP_API_END_POINT || '',
@@ -19,6 +20,7 @@ const env: ENV = {
   baseWebDomain: import.meta.env.VITE_APP_BASE_WEB_DOMAIN,
   tbusSupportEmail: import.meta.env.VITE_APP_TBUS_SUPPORT_EMAIL,
   domainTest: import.meta.env.VITE_APP_DOMAIN_TESTING,
+  rootAdmin: import.meta.env.VITE_APP_ROOT_ADMIN,
 };
 
 export default env;

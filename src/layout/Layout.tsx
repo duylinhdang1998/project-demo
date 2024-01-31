@@ -7,13 +7,14 @@ import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { useEffect, useState } from 'react';
-import { Link, Navigate, Outlet } from 'react-router-dom';
+import { Link, Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { selectAuth } from 'store/auth/selectors';
 import { profileActions } from 'store/profile/profileSlice';
 import { selectProfile } from 'store/profile/selectors';
 import { sidebars, sidebarsAgent } from './sidebar';
 import { UserRole } from 'utils/constant';
 import { useGetSystemConfig } from 'services/System/config';
+import env from 'env';
 
 const drawerWidth = 240;
 
@@ -46,9 +47,18 @@ export default function Layout() {
   const matches = useMediaQuery('(max-width:768px)');
 
   const { loading } = useGetSystemConfig();
+  const navigate = useNavigate();
 
   const container = window !== undefined ? () => window.document.body : undefined;
   const drawerContent = userInfo?.role === UserRole.ADMIN ? sidebars : sidebarsAgent;
+
+  const rootSidebar = !!env.rootAdmin && env.rootAdmin === 'supertbus' ? drawerContent.filter(item => item.name === 'companies') : drawerContent;
+
+  useEffect(() => {
+    if (!!env.rootAdmin && env.rootAdmin === 'supertbus') {
+      navigate('/admin/companies', { replace: true });
+    }
+  }, [env.rootAdmin]);
 
   const drawer = (
     <Box>
@@ -59,7 +69,7 @@ export default function Layout() {
       </Toolbar>
       <Divider light variant="middle" sx={{ borderColor: '#053A55' }} />
       <List>
-        {drawerContent.map(item => (
+        {rootSidebar.map(item => (
           <CustomLink item={item} key={item.name} />
         ))}
       </List>
