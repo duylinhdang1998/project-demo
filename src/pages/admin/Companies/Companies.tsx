@@ -1,24 +1,22 @@
+import { InputLabel, Stack } from '@mui/material';
 import { Box } from '@mui/system';
+import { useMount, useUpdateEffect } from 'ahooks';
 import { DatePicker } from 'antd';
+import enLocale from 'antd/es/date-picker/locale/en_US';
+import frLocale from 'antd/es/date-picker/locale/fr_FR';
 import BoxSearch from 'components/BoxSearch/BoxSearch';
+import { customStyles } from 'components/FilterTicket/customStyles';
 import HeaderLayout from 'components/HeaderLayout/HeaderLayout';
-import React, { useEffect } from 'react';
+import { SubscriptionEnum } from 'models/Subscription';
+import moment from 'moment';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { isFrLanguage } from 'utils/isFrLanguage';
-import frLocale from 'antd/es/date-picker/locale/fr_FR';
-import enLocale from 'antd/es/date-picker/locale/en_US';
-import './styles.scss';
-import { InputLabel, Stack } from '@mui/material';
-import { useGetListCompanies } from 'services/Companies/companies';
-import { useMount, useUpdateEffect } from 'ahooks';
 import Select, { components } from 'react-select';
+import { useGetListCompanies } from 'services/Companies/companies';
+import { isFrLanguage } from 'utils/isFrLanguage';
 import { v4 as uuidv4 } from 'uuid';
-import { SubscriptionEnum } from 'models/Subscription';
-import { customStyles } from 'components/FilterTicket/customStyles';
-import moment from 'moment';
 import TableCompanies from './TableCompanies';
+import './styles.scss';
 
 interface Values {
   subscription?: SubscriptionEnum;
@@ -35,7 +33,6 @@ const options = [
 
 export default function Companies() {
   const { t } = useTranslation(['translation', 'sidebar']);
-  const navigate = useNavigate();
 
   const { data, loading, run, refresh } = useGetListCompanies();
 
@@ -43,9 +40,9 @@ export default function Companies() {
     run({
       page: 0,
       searcher: {
-        subscription: {
+        subscriptionType: {
           value: SubscriptionEnum.STANDARD,
-          operator: 'contains',
+          operator: null,
         },
       },
       sorter: {},
@@ -63,15 +60,15 @@ export default function Companies() {
 
   useUpdateEffect(() => {
     run({
-      page: 1,
+      page: 0,
       searcher: {
         name: {
           value: search?.trim(),
           operator: 'contains',
         },
-        subscription: {
+        subscriptionType: {
           value: subscription,
-          operator: 'contains',
+          operator: null,
         },
         createdAt: {
           value: registerDate,

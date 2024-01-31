@@ -20,7 +20,7 @@ interface Props {
   onRefresh?: () => void;
   sortOrder?: 'ascend' | 'descend';
 }
-export default function TableCompanies({ dataSource, isLoading, pagination, onFilter, onRefresh, sortOrder }: Props) {
+export default function TableCompanies({ dataSource, isLoading, pagination, onFilter }: Props) {
   const { t } = useTranslation(['companies', 'translation']);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -30,7 +30,7 @@ export default function TableCompanies({ dataSource, isLoading, pagination, onFi
       key: 'name',
       dataIndex: 'name',
       title: () => t('name'),
-      render: (value: string, item) => (
+      render: (value: string) => (
         <Typography fontWeight={700} variant="body2">
           {value}
         </Typography>
@@ -43,7 +43,7 @@ export default function TableCompanies({ dataSource, isLoading, pagination, onFi
       title: () => t('domain'),
       render: (value: string) => (
         <Box>
-          <Stack spacing="4px" direction="row">
+          <Stack spacing="4px" direction="row" alignItems="center">
             <Typography variant="body2" fontWeight={700}>
               {t('cms')}:
             </Typography>
@@ -51,7 +51,7 @@ export default function TableCompanies({ dataSource, isLoading, pagination, onFi
               {`${value}.cms.tbus.biz`}
             </Typography>
           </Stack>
-          <Stack spacing="4px" direction="row">
+          <Stack spacing="4px" direction="row" alignItems="center">
             <Typography variant="body2" fontWeight={700}>
               {t('web')}:
             </Typography>

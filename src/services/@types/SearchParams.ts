@@ -40,7 +40,7 @@ export type Sorter<T extends AnyObject> = Partial<Record<Path<T>, 'desc' | 'asc'
 export type SearcherOperator = 'gte' | 'lte' | 'eq' | 'in' | 'contains' | 'or';
 
 interface SearcherValue {
-  operator: SearcherOperator;
+  operator: SearcherOperator | null;
   value?: any;
 }
 export type Searcher<T extends AnyObject, AdditionalKeys extends string = string> = Partial<Record<AdditionalKeys, SearcherValue | SearcherValue[]>> &
