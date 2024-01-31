@@ -141,9 +141,9 @@ export default function Companies() {
                   value: search?.trim(),
                   operator: 'contains',
                 },
-                subscription: {
+                subscriptionType: {
                   value: subscription,
-                  operator: 'contains',
+                  operator: null,
                 },
                 createdAt: {
                   value: registerDate,
