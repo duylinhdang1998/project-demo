@@ -64,13 +64,17 @@ export default function Companies() {
           operator: 'contains',
         },
         subscriptionType: {
-          value: subscription,
+          value: subscription === 'all' ? undefined : subscription,
           operator: null,
         },
-        createdAt: {
-          value: dayjs(registerDate).valueOf(),
-          operator: 'gte',
-        },
+        ...(registerDate
+          ? {
+              createdAt: {
+                value: dayjs(registerDate).valueOf(),
+                operator: 'gte',
+              },
+            }
+          : {}),
       },
       sorter: {},
     });
