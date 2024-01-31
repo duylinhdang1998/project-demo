@@ -89,9 +89,12 @@ export default function TableCompanies({ dataSource, isLoading, pagination, onFi
       key: 'remaining_days',
       dataIndex: 'remaining_days',
       title: () => t('remaining_days'),
-      render: (_, record) => (
-        <Typography variant="body2">{dayjs(record.subscription?.endDate).diff(dayjs(record.subscription?.startDate, 'day'))}</Typography>
-      ),
+      align: 'center',
+      render: (_, record) => {
+        const endDate = dayjs(record.subscription?.endDate);
+        const startDate = dayjs(record.subscription?.startDate);
+        return <Typography variant="body2">{endDate.diff(startDate, 'day')}</Typography>;
+      },
       width: 150,
     },
   ];

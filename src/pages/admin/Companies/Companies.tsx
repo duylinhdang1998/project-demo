@@ -17,14 +17,16 @@ import { isFrLanguage } from 'utils/isFrLanguage';
 import { v4 as uuidv4 } from 'uuid';
 import TableCompanies from './TableCompanies';
 import './styles.scss';
+import dayjs from 'dayjs';
 
 interface Values {
-  subscription?: SubscriptionEnum;
+  subscription?: SubscriptionEnum | string;
   search?: string;
   registerDate?: string;
 }
 
 const options = [
+  { key: uuidv4(), value: 'all', label: 'all' },
   { key: uuidv4(), value: SubscriptionEnum.TRIAL, label: SubscriptionEnum[SubscriptionEnum.TRIAL] },
   { key: uuidv4(), value: SubscriptionEnum.STANDARD, label: SubscriptionEnum[SubscriptionEnum.STANDARD] },
   { key: uuidv4(), value: SubscriptionEnum.PRO, label: SubscriptionEnum[SubscriptionEnum.PRO] },
@@ -39,19 +41,14 @@ export default function Companies() {
   useMount(() => {
     run({
       page: 0,
-      searcher: {
-        subscriptionType: {
-          value: SubscriptionEnum.STANDARD,
-          operator: null,
-        },
-      },
+      searcher: {},
       sorter: {},
     });
   });
 
   const { watch, setValue } = useForm<Values>({
     defaultValues: {
-      subscription: SubscriptionEnum.STANDARD,
+      subscription: 'all',
     },
   });
   const search = watch('search');
@@ -71,7 +68,7 @@ export default function Companies() {
           operator: null,
         },
         createdAt: {
-          value: registerDate,
+          value: dayjs(registerDate).valueOf(),
           operator: 'gte',
         },
       },
