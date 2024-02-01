@@ -92,8 +92,8 @@ export default function TableCompanies({ dataSource, isLoading, pagination, onFi
       align: 'center',
       render: (_, record) => {
         const endDate = dayjs(record.subscription?.endDate);
-        const startDate = dayjs(record.subscription?.startDate);
-        return <Typography variant="body2">{endDate.diff(startDate, 'day')}</Typography>;
+        const now = dayjs();
+        return <Typography variant="body2">{endDate.diff(now, 'day')}</Typography>;
       },
       width: 150,
     },
