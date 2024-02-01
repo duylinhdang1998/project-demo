@@ -55,10 +55,12 @@ export default function Layout() {
   const rootSidebar = !!env.rootAdmin && env.rootAdmin === 'supertbus' ? drawerContent.filter(item => item.name === 'companies') : drawerContent;
 
   useEffect(() => {
-    if (!!env.rootAdmin && env.rootAdmin === 'supertbus') {
-      navigate('/admin/companies', { replace: true });
+    if (isLoggedIn) {
+      if (!!env.rootAdmin && env.rootAdmin === 'supertbus') {
+        navigate('/admin/companies', { replace: true });
+      }
     }
-  }, [env.rootAdmin]);
+  }, [env.rootAdmin, isLoggedIn]);
 
   const drawer = (
     <Box>
