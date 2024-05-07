@@ -15,6 +15,7 @@ import { sidebars, sidebarsAgent } from './sidebar';
 import { UserRole } from 'utils/constant';
 import { useGetSystemConfig } from 'services/System/config';
 import env from 'env';
+import { getDomainName } from 'utils/getDomainName';
 
 const drawerWidth = 240;
 
@@ -56,7 +57,7 @@ export default function Layout() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      if (env.rootAdmin === 'supertbus') {
+      if (env.rootAdmin && env.rootAdmin === getDomainName()) {
         navigate('/admin/companies', { replace: true });
       }
     }
