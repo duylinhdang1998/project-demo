@@ -52,14 +52,14 @@ export default function Layout() {
 
   const container = window !== undefined ? () => window.document.body : undefined;
   const drawerContent = userInfo?.role === UserRole.ADMIN ? sidebars : sidebarsAgent;
-
-  const rootSidebar = env.rootAdmin === 'supertbus' ? drawerContent.filter(item => item.name === 'companies') : drawerContent;
+  const rootSidebar = drawerContent;
+  // const rootSidebar = env.rootAdmin === getDomainName() ? drawerContent.filter(item => item.name === 'companies') : drawerContent;
 
   useEffect(() => {
     if (isLoggedIn) {
-      if (env.rootAdmin && env.rootAdmin === getDomainName()) {
-        navigate('/admin/companies', { replace: true });
-      }
+      // if (env.rootAdmin && env.rootAdmin === getDomainName()) {
+      navigate('/admin/companies', { replace: true });
+      // }
     }
   }, [env.rootAdmin, isLoggedIn]);
 
