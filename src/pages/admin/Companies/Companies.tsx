@@ -18,6 +18,10 @@ import { v4 as uuidv4 } from 'uuid';
 import TableCompanies from './TableCompanies';
 import './styles.scss';
 import dayjs from 'dayjs';
+import { useEffect } from 'react';
+import env from 'env';
+import { useNavigate } from 'react-router-dom';
+import { getDomainName } from 'utils/getDomainName';
 
 interface Values {
   subscription?: SubscriptionEnum | string;
@@ -35,6 +39,7 @@ const options = [
 
 export default function Companies() {
   const { t } = useTranslation(['translation', 'sidebar']);
+  const navigate = useNavigate();
 
   const { data, loading, run, refresh } = useGetListCompanies();
 
@@ -54,6 +59,12 @@ export default function Companies() {
   const search = watch('search');
   const subscription = watch('subscription');
   const registerDate = watch('registerDate');
+
+  useEffect(() => {
+    if (env.rootAdmin === getDomainName()) {
+      navigate('/404');
+    }
+  }, []);
 
   useUpdateEffect(() => {
     run({

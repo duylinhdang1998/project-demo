@@ -14,6 +14,8 @@ import { profileActions } from 'store/profile/profileSlice';
 import { selectProfile } from 'store/profile/selectors';
 import { UserRole } from 'utils/constant';
 import { sidebars, sidebarsAgent } from './sidebar';
+import env from 'env';
+import { getDomainName } from 'utils/getDomainName';
 
 const drawerWidth = 240;
 
@@ -50,8 +52,8 @@ export default function Layout() {
 
   const container = window !== undefined ? () => window.document.body : undefined;
   const drawerContent = userInfo?.role === UserRole.ADMIN ? sidebars : sidebarsAgent;
-  const rootSidebar = drawerContent;
-  // const rootSidebar = env.rootAdmin === getDomainName() ? drawerContent.filter(item => item.name === 'companies') : drawerContent;
+  // const rootSidebar = drawerContent;
+  const rootSidebar = env.rootAdmin === getDomainName() ? drawerContent.filter(item => item.name === 'companies') : drawerContent;
 
   // useEffect(() => {
   //   if (isLoggedIn) {

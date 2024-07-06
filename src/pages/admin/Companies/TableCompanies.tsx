@@ -90,10 +90,11 @@ export default function TableCompanies({ dataSource, isLoading, pagination, onFi
       dataIndex: 'remaining_days',
       title: () => t('remaining_days'),
       align: 'center',
-      render: (_, record) => {
+      render: (_, record, index) => {
         const endDate = dayjs(record.subscription?.endDate);
         const now = dayjs();
-        return <Typography variant="body2">{endDate.diff(now, 'day')}</Typography>;
+        const remainingDays = endDate.diff(now, 'day') < 0 ? 0 : endDate.diff(now, 'day');
+        return <Typography variant="body2">{remainingDays}</Typography>;
       },
       width: 150,
     },
