@@ -61,7 +61,7 @@ export default function Companies() {
   const registerDate = watch('registerDate');
 
   useEffect(() => {
-    if (env.rootAdmin === getDomainName()) {
+    if (env.rootAdmin !== getDomainName()) {
       navigate('/404');
     }
   }, []);
