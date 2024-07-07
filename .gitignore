@@ -6,3 +6,4 @@ build
 public/.DS_Store
 public/locales/.DS_Store
 .vercel
+.env
