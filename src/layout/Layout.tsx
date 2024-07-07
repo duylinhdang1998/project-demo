@@ -7,15 +7,15 @@ import { LoadingScreen } from 'components/LoadingScreen/LoadingScreen';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { useEffect, useState } from 'react';
-import { Link, Navigate, Outlet } from 'react-router-dom';
+import { Link, Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { useGetSystemConfig } from 'services/System/config';
 import { selectAuth } from 'store/auth/selectors';
 import { profileActions } from 'store/profile/profileSlice';
 import { selectProfile } from 'store/profile/selectors';
 import { UserRole } from 'utils/constant';
 import { sidebars, sidebarsAgent } from './sidebar';
-import env from 'env';
 import { getDomainName } from 'utils/getDomainName';
+import env from 'env';
 
 const drawerWidth = 240;
 
@@ -48,20 +48,28 @@ export default function Layout() {
   const matches = useMediaQuery('(max-width:768px)');
 
   const { loading } = useGetSystemConfig();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const container = window !== undefined ? () => window.document.body : undefined;
   const drawerContent = userInfo?.role === UserRole.ADMIN ? sidebars : sidebarsAgent;
-  // const rootSidebar = drawerContent;
-  const rootSidebar = env.rootAdmin === getDomainName() ? drawerContent.filter(item => item.name === 'companies') : drawerContent;
+  const rootSidebar =
+    env.rootAdmin !== getDomainName()
+      ? drawerContent.filter(item => item.name !== 'companies')
+      : drawerContent.filter(item => item.name === 'companies');
 
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     // if (env.rootAdmin && env.rootAdmin === getDomainName()) {
-  //     // navigate('/admin/companies', { replace: true });
-  //     // }
-  //   }
-  // }, [env.rootAdmin, isLoggedIn]);
+  useEffect(() => {
+    if (isLoggedIn) {
+      if (env.rootAdmin && env.rootAdmin !== getDomainName() && location.pathname === '/admin/companies') {
+        navigate('/admin', { replace: true });
+        return;
+      }
+      if (env.rootAdmin && env.rootAdmin !== getDomainName()) {
+        navigate('/admin/companies', { replace: true });
+        return;
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [env.rootAdmin, isLoggedIn]);
 
   const drawer = (
     <Box>
