@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { ParamsSettings } from 'services/models/Response';
 import { getPaginationFromAntdTable } from 'utils/getPaginationFromAntdTable';
 import { getSorterParamsFromAntdTable } from 'utils/getSorterParamsFromAntdTable';
+import env from 'env';
 
 interface Props {
   dataSource?: CompaniesType[];
@@ -48,7 +49,7 @@ export default function TableCompanies({ dataSource, isLoading, pagination, onFi
               {t('cms')}:
             </Typography>
             <Typography fontSize={14} fontWeight={700} color={theme.palette.primary.main}>
-              {`${value}.cms.tbus.biz`}
+              {`${value}.${env.baseCmsDomain}`}
             </Typography>
           </Stack>
           <Stack spacing="4px" direction="row" alignItems="center">
@@ -56,7 +57,7 @@ export default function TableCompanies({ dataSource, isLoading, pagination, onFi
               {t('web')}:
             </Typography>
             <Typography fontSize={14} fontWeight={700} color={theme.palette.primary.main}>
-              {`${value}.cms.tbus.biz`}
+              {`${value}.${env.baseWebDomain}`}
             </Typography>
           </Stack>
         </Box>
@@ -90,7 +91,7 @@ export default function TableCompanies({ dataSource, isLoading, pagination, onFi
       dataIndex: 'remaining_days',
       title: () => t('remaining_days'),
       align: 'center',
-      render: (_, record, index) => {
+      render: (_, record) => {
         const endDate = dayjs(record.subscription?.endDate);
         const now = dayjs();
         const remainingDays = endDate.diff(now, 'day') < 0 ? 0 : endDate.diff(now, 'day');
